@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/**
+ * 日付の表示＋翌日・前日。
+ * 
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+	          android:layout_height="wrap_content"
+	          android:background="@android:color/background_light"
+              android:orientation="horizontal">
+            
+    <!-- 左のボタン  -->
+    <ImageButton android:layout_width="32dp"
+    			 android:layout_height="32dp"
+    		 	 android:id="@+id/date_options_left_btn"
+    			 android:src="@drawable/navigation_back"
+    			 android:background="@drawable/button_back"
+    			 android:contentDescription="Previous day"
+    			 />
+    
+    <!-- 中央のボタン  -->
+    <TextView android:layout_width="0dp"
+    		  android:layout_height="match_parent"
+    		  android:layout_weight="1"
+    		  android:gravity="center"
+    		  android:id="@+id/date_options_center_text"
+    		  />
+
+    <!-- 右のボタン  -->
+    <ImageButton android:layout_width="32dp"
+    		     android:layout_height="32dp"
+    		 	 android:id="@+id/date_options_right_btn"
+	   	     	 android:src="@drawable/navigation_forward"
+    			 android:background="@drawable/button_back"	   		
+    			 android:contentDescription="Next day"    			 
+    		/>
+    
+</LinearLayout>

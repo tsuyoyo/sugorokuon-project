@@ -1,0 +1,21 @@
+<!-- 
+/**
+  * 共通のボタンの背景（ボタン押下時）
+  *
+  * @author Tsuyoyo
+ **/
+ -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle" >
+    <solid android:color="#faebd7" />   
+    
+<!-- 
+    <gradient android:angle="270"
+		      android:startColor="#33b5e5"
+        	  android:centerColor="#4abee8"
+	          android:endColor="#77ceee"
+        	  android:type="linear"
+	          android:centerX="0.5"
+      	      android:centerY="0.5" />
+ -->      	      
+</shape>

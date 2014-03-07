@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/**
+ * 番組の情報・ホームページを表示するFragmentのlayout。
+ * それらを切り替えるボタンも含む。
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/program_viewer_root"
+    android:orientation="vertical" >
+    
+    <!-- ブラウザ拡大縮小でひっぱるところ -->
+    <LinearLayout android:layout_width="match_parent"
+          		  android:layout_height="wrap_content"       
+             	  android:gravity="center"
+	           	  android:orientation="horizontal"
+  	              android:background="@drawable/programviewer_expander_back"
+	           	  android:id="@+id/program_viewer_size_expander"
+	           	  >
+       	<ImageView android:layout_width="25dp"
+           		   android:layout_height="20dp"
+				   android:layout_gravity="center"
+  				   android:layout_marginRight="5dp"
+  				   android:src="@drawable/navigation_expand_dark" />
+       	<ImageView android:layout_width="25dp"
+           		   android:layout_height="20dp"
+				   android:layout_gravity="center"
+				   android:layout_marginLeft="5dp"
+  				   android:src="@drawable/navigation_collapse_dark" />       	
+    </LinearLayout>
+    
+    <!-- 表示するものを切り替えるRadio button -->
+    <RadioGroup android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:id="@+id/program_viewer_switcher"
+			    android:orientation="horizontal" >
+			    
+		<!-- 番組ホームページ -->
+        <RadioButton android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1"
+                     android:padding="1dp"
+                     android:gravity="center"
+                     android:button="@null"
+                     android:background="@drawable/checkbutton_back"
+                     android:id="@+id/program_viewer_switcher_homepage"
+                     android:text="@string/program_viewer_switch_homepage" />
+        
+		<!-- 番組情報 -->
+        <RadioButton android:layout_width="0dp"
+            		 android:layout_height="match_parent"
+            	 	 android:layout_weight="1"
+                     android:padding="1dp"
+                     android:button="@null"            		 
+                     android:gravity="center"            		 
+                     android:background="@drawable/checkbutton_back"
+            		 android:id="@+id/program_viewer_switcher_info"
+            		 android:text="@string/program_viewer_switch_info" />
+        
+		<!-- onAir情報 -->
+        <RadioButton android:layout_width="0dp"
+            		 android:layout_height="match_parent"
+            	 	 android:layout_weight="1"
+                     android:padding="1dp"
+                     android:button="@null"            		 
+                     android:gravity="center"            		 
+                     android:background="@drawable/checkbutton_back"
+            		 android:id="@+id/program_viewer_switcher_onair"
+            		 android:text="@string/program_viewer_switch_onair" />
+    </RadioGroup>
+    
+    <!-- 
+    	 番組HP、番組info、onAir曲リスト を切り替えながら使う。
+    -->
+    <!-- 情報表示箇所（番組ホームページ） -->
+    <LinearLayout android:layout_width="match_parent"
+	 			  android:layout_height="0dp"
+				  android:layout_weight="1"
+				  android:orientation="vertical"
+				  android:id="@+id/program_viewer_program_site_area" >
+    	<WebView android:layout_width="match_parent"
+				 android:layout_height="match_parent"
+			 	 android:layerType="software"
+			 	 android:id="@+id/program_viewer_program_site_webview" />
+    	<TextView android:layout_width="wrap_content"
+ 				  android:layout_height="wrap_content"
+ 				  android:text="@string/program_has_no_website"
+			 	  android:id="@+id/program_viewer_program_site_no_hp" 
+			 	  android:visibility="gone" />
+    </LinearLayout>
+    
+    <!-- 情報表示箇所（番組情報） : 初期状態はgone -->
+    <WebView android:layout_width="match_parent"
+			 android:layout_height="0dp"
+			 android:layout_weight="1"	
+			 android:layerType="software"		 
+			 android:id="@+id/program_viewer_program_info"
+			 android:visibility="gone"
+			 />
+    
+    <!-- 最近のonAir情報 : 初期状態はgone -->
+    <LinearLayout android:layout_width="match_parent"
+			 	  android:layout_height="0dp"
+				  android:layout_weight="1"	
+			 	  android:layerType="software"		 
+			 	  android:id="@+id/program_viewer_onair_songs"
+				  android:visibility="gone"
+			 	  >
+        
+        <!-- Loading or errorメッセージ-->
+        <TextView android:layout_width="wrap_content"
+            	  android:layout_height="wrap_content"
+  			 	  android:id="@+id/program_viewer_onair_songs_execution_info" />
+        
+        
+        <!-- 曲リスト -->
+        <LinearLayout android:layout_width="match_parent"
+			 	  	  android:layout_height="match_parent"
+			 	  	  android:orientation="vertical"
+			 	  	  android:id="@+id/program_viewer_onair_songs_area" >
+
+			<!-- ～の最近のonAir曲 -->
+	        <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="15sp"
+                      android:padding="3dp"
+                      android:id="@+id/program_viewer_onair_songs_info"
+                      />
+	        
+			<!-- 曲リスト -->
+	        <ListView android:layout_width="match_parent"
+				 	  android:layout_height="0dp"
+				 	  android:layout_weight="1"
+					  android:layout_marginLeft="3dp"
+					  android:layout_marginRight="3dp"					  
+				 	  android:id="@+id/program_viewer_onair_songs_list"
+				 	  />   		
+	         	        
+        	<!-- 今すぐ更新ボタン -->
+	        <LinearLayout android:layout_width="match_parent"
+				 	  	  android:layout_height="wrap_content"
+				 	  	  android:orientation="vertical"
+   		        	      android:layout_gravity="bottom"
+						  android:background="@drawable/actionbar_back" >       		
+	        	<ImageButton android:layout_width="match_parent"
+     		    	         android:layout_height="40dp"
+			     			 android:id="@+id/program_viewer_onair_songs_reload_btn"     			
+		    				 android:src="@drawable/navigation_refresh"
+							 android:background="@drawable/button_back"  			
+    						 android:contentDescription="RefreshOnAirSongs" />
+        	</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    
+    <!-- 読み込み中のprogress -->
+    <ProgressBar android:id="@+id/program_viewer_loading_progress"
+		         style="?android:attr/progressBarStyleHorizontal"
+        		 android:layout_width="match_parent"
+		         android:layout_height="5dp"
+		         android:visibility="visible" />
+    
+    <!-- ブラウザ操作のボタン群 -->
+    <LinearLayout android:layout_width="match_parent"
+    			  android:layout_height="wrap_content"
+    			  android:gravity="center" 			  
+    			  android:orientation="horizontal"
+    			  android:id="@+id/program_viewer_button_area"
+    			  android:background="@drawable/actionbar_back" >
+
+        <!-- ブラウザ戻る -->
+        <ImageButton android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+    			android:id="@+id/program_viewer_browser_back"     			
+    			android:src="@drawable/navigation_back"
+				android:background="@drawable/button_back"    			
+    			android:contentDescription="Back" />    			
+    			
+        <!-- ブラウザ進む -->
+        <ImageButton android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+    			android:id="@+id/program_viewer_browser_forward"     			
+    			android:src="@drawable/navigation_forward"
+				android:background="@drawable/button_back"    			
+    			android:contentDescription="Forward" />
+
+        <!-- ブラウザ更新 -->
+        <ImageButton android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+    			android:id="@+id/program_viewer_browser_refresh"     			
+    			android:src="@drawable/navigation_refresh"
+				android:background="@drawable/button_back"    			
+    			android:contentDescription="Refresh" />    			
+
+        <!-- ブラウザ読み込み中止 -->
+        <ImageButton android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+    			android:id="@+id/program_viewer_browser_cancel"
+    			android:src="@drawable/navigation_cancel"
+				android:background="@drawable/button_back"
+    			android:contentDescription="Stop" />    			
+        
+    </LinearLayout>
+
+</LinearLayout>

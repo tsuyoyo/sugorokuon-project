@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#eff7ff"
+    android:id="@+id/mainactiity_root" >
+ 
+    <!-- ActionBarの領域（v10にはActionBarが無いのでlayoutを書く） -->
+    <LinearLayout android:layout_width="match_parent"
+        		  android:layout_height="45dp"
+        		  android:background="@drawable/actionbar_back"
+        		  android:orientation="horizontal"
+        		  android:id="@+id/mainactivity_action_bar_area" >
+        		  
+        		  <!-- 局選択のdropdown -->
+        		  <Spinner android:layout_width="0dp"
+        		      	   android:layout_height="wrap_content"
+        		      	   android:id="@+id/mainactivity_action_bar_spinner"
+        		      	   android:background="@drawable/button_back"
+        		      	   android:layout_gravity="center"
+        		      	   android:layout_weight="1" />
+        		  
+        		  <!-- Radiko起動 -->
+        		  <ImageButton android:layout_width="45dp"
+        		      		   android:layout_height="45dp"
+        		      		   android:src="@drawable/hardware_headphones"
+        		      		   android:background="@drawable/button_back"
+        		      		   android:id="@+id/mainactivity_action_bar_launch_radiko"
+        		      />
+        		  
+        		  <!-- Setting起動 -->
+        		  <ImageButton android:layout_width="45dp"
+        		      		   android:layout_height="45dp"
+        		      		   android:src="@drawable/action_settings"
+        		      		   android:background="@drawable/button_back"
+        		      		   android:id="@+id/mainactivity_action_bar_launch_settings"
+        		      />        		  
+    </LinearLayout>
+    
+    
+    <!-- 日付を切り替える -->
+    <fragment android:name="tsuyogoro.sugorokuon.presenter.DateOptionFlagment"
+       		  android:layout_width="match_parent"
+        	  android:layout_height="32dp"      	  
+        	  android:id="@+id/date_switcher"
+    />
+    
+    <!-- 番組のリスト -->
+    <fragment android:name="tsuyogoro.sugorokuon.presenter.ProgramListFragment"
+       		  android:layout_width="match_parent"
+        	  android:layout_height="0dp"
+   	          android:layout_weight="40" 	          
+           	  android:id="@+id/program_list_fragment"
+    />
+    
+	<!-- 番組情報表示 -->
+    <fragment android:name="tsuyogoro.sugorokuon.presenter.ProgramInfoViewerFlagment"
+       		  android:layout_width="match_parent"
+        	  android:layout_height="0dp"
+   	          android:layout_weight="60"
+           	  android:id="@+id/program_info_fragment"
+    />
+    
+</LinearLayout>

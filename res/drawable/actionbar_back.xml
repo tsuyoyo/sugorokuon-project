@@ -1,0 +1,16 @@
+<!-- 
+/**
+  * ActionBarの背景
+  *
+  * @author Tsuyoyo
+ **/
+ -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient android:angle="270"
+	          android:startColor="#dbedff"
+        	  android:endColor="#93c9ff"
+        	  android:type="linear"
+			  />
+ 			  
+</shape>
