@@ -175,7 +175,7 @@ class ProgramListParser extends ParserBase {
 
 		// Next to <station>
 		getParser().next();
-		
+				
 		List<OnedayTimetable> timeTables = null;
 		for(int e = getParser().getEventType();
 				e != XmlPullParser.END_TAG; e = getParser().next()) {
@@ -185,8 +185,8 @@ class ProgramListParser extends ParserBase {
 				if(tagName.equals(TagName.SCD)) {
 					timeTables = parseWeelkyTimetable(stationId);
 				}
-				else if(tagName.equals(TagName.STATION_NAME)){
-					// 特に使わないので捨てる。
+				// 特に使わないので捨てる。				
+				else {
 					getText();
 				}
 			}

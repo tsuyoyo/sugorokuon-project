@@ -47,7 +47,7 @@
     
     <!-- 通知系 -->
 	<string name="progress_notification_title">ラジコンシェルジュ 番組表更新</string>
-	<string name="progress_notification_text">ラジオ局一覧を取得集</string>	
+	<string name="progress_notification_text">ラジオ局一覧を取得中</string>	
 	<string name="progress_notification_text_progress">%1$dつのラジオ局のうち%2$d局取得済み</string>
 	<string name="progress_notification_ticker">ラジコンシェルジュ - 番組表更新</string>
 	<string name="progress_notification_ticker_complete">ラジコンシェルジュの番組表更新完了</string>
