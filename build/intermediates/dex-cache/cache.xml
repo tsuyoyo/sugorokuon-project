@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/libs/libGoogleAnalyticsV2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="8d04da1c73876c93ccce8ffd39add84f9415b64c">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/libGoogleAnalyticsV2-c2da31c076827bf87b91a0b29c955eb2e68bad78.jar" />
+    </item>
+    <item
+        jar="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-5b7320faa0c9a9cdf44c921500c631b59e9961f0.jar" />
+    </item>
+    <item
+        jar="/Users/tsuyoyo/myDevWorks/Android/adt-bundle-mac-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-db8ab95d8898497257fe76a71acaad3174276d0d.jar" />
+    </item>
+    <item
+        jar="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/classes-7304154ebde189d13c5e7c9c9d10d68cafce29f2.jar" />
+    </item>
+    <item
+        jar="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/classes-37d267595697247e67f09d39a1d80ad76e902598.jar" />
+    </item>
+    <item
+        jar="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/libs/appc_sdk_2.2.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="cd322fad46262aee742f06a9bdb3572082c28a6d">
+        <dex dex="/Users/tsuyoyo/AndroidStudioProjects/Sugorokuon/app/build/intermediates/pre-dexed/debug/appc_sdk_2.2.2-6eea01d79028af537b0af27470d1c0fb770b0313.jar" />
+    </item>
+
+</items>
