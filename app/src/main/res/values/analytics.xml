@@ -3,12 +3,8 @@
 <resources>
   <!--Replace placeholder ID with your tracking ID-->  
 
-<!-- 
-  <string name="ga_trackingId">UA-34228263-2</string>
- -->
-         
   <!-- 開発用はテスト用のID -->
-  <string name="ga_trackingId">UA-36840208-1</string>
+  <string name="ga_trackingId">UA-xxxxxxxxxx8-1</string>
     
   <!--Enable Activity tracking-->
   <bool name="ga_autoActivityTracking">true</bool>
