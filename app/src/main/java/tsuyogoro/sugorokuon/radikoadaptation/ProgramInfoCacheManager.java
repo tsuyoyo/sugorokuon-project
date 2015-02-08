@@ -2,7 +2,7 @@
  * Copyright (c) 
  * 2012 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.model;
+package tsuyogoro.sugorokuon.radikoadaptation;
 
 import java.io.BufferedReader;
 import java.io.File;

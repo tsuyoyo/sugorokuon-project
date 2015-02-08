@@ -2,7 +2,7 @@
  * Copyright (c) 
  * 2012 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.model;
+package tsuyogoro.sugorokuon.radikoadaptation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import org.apache.http.impl.client.AbstractHttpClient;
 import tsuyogoro.sugorokuon.constant.Area;
 import tsuyogoro.sugorokuon.constant.SugorokuonConst;
 import tsuyogoro.sugorokuon.datatype.Station;
-import tsuyogoro.sugorokuon.model.StationListParser.LogoSize;
+
 import android.util.Log;
 
 public class StationListDownloader {
@@ -41,7 +41,7 @@ public class StationListDownloader {
      * @param client
      * @return　downloadに失敗したらnullが返る。
      */
-	public List<Station> getStationList(List<Area> areas, LogoSize logoSize,
+	public List<Station> getStationList(List<Area> areas, StationListParser.LogoSize logoSize,
 			AbstractHttpClient client) {
 		List<Station> stations = new ArrayList<Station>();		
 		for(Area area : areas) {
@@ -84,7 +84,7 @@ public class StationListDownloader {
      * @param client
      * @return downloadに失敗した場合はnullが返る。
      */
-	public List<Station> getStationList(String areaId, LogoSize logoSize,
+	public List<Station> getStationList(String areaId, StationListParser.LogoSize logoSize,
 			AbstractHttpClient client) {
 		List<Station> res = null;
 		

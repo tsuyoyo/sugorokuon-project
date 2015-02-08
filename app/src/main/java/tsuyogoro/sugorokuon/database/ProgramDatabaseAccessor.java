@@ -2,7 +2,7 @@
  * Copyright (c) 
  * 2012 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.model;
+package tsuyogoro.sugorokuon.database;
 
 import java.util.ArrayList;
 import java.util.Calendar;

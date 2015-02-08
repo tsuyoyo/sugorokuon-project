@@ -2,14 +2,15 @@
  * Copyright (c) 
  * 2012 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.viewflow;
+package tsuyogoro.sugorokuon.service.programmgr;
+
+import android.content.Context;
 
 import java.util.List;
 
 import tsuyogoro.sugorokuon.datatype.Program;
 import tsuyogoro.sugorokuon.database.ProgramDatabaseAccessor;
 import tsuyogoro.sugorokuon.settings.preference.RecommendWordPreference;
-import android.content.Context;
 
 /**
  * ProgramDatabaseAccessorがDBへ番組データをしまう際に、
@@ -18,11 +19,11 @@ import android.content.Context;
  * @author Tsuyoyo
  *
  */
-class ProgramRecommender implements ProgramDatabaseAccessor.IRecommender {
+class KeywordRecommender implements ProgramDatabaseAccessor.IRecommender {
 
     private Context mContext;
 
-    public ProgramRecommender(Context context) {
+    public KeywordRecommender(Context context) {
         mContext = context;
     }
 

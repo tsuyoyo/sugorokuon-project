@@ -20,10 +20,10 @@ import org.apache.http.impl.client.AbstractHttpClient;
 
 import tsuyogoro.sugorokuon.constant.Area;
 import tsuyogoro.sugorokuon.constant.SugorokuonConst;
+import tsuyogoro.sugorokuon.database.StationDbOpenHelper;
 import tsuyogoro.sugorokuon.datatype.Station;
-import tsuyogoro.sugorokuon.model.StationDatabaseAccessor;
-import tsuyogoro.sugorokuon.model.StationListDownloader;
-import tsuyogoro.sugorokuon.model.StationListParser.LogoSize;
+import tsuyogoro.sugorokuon.radikoadaptation.StationListDownloader;
+import tsuyogoro.sugorokuon.radikoadaptation.StationListParser.LogoSize;
 import tsuyogoro.sugorokuon.settings.preference.AreaSettingPreference;
 import tsuyogoro.sugorokuon.util.FileHandleUtil;
 import android.content.Context;
@@ -172,7 +172,7 @@ public class StationDataManager {
         // downloadStationDataが失敗していなければ処理続行。
         if(res.equals(ViewFlowEvent.COMPLETE_STATION_UPDATE)) {
             // Databaseからデータを読み込んでメンバにしまう。
-            StationDatabaseAccessor db = new StationDatabaseAccessor(context);
+            StationDbOpenHelper db = new StationDbOpenHelper(context);
             mStationData = db.getStationData();
 
 //			// 初期フォーカスは0（オススメ番組）
@@ -201,7 +201,7 @@ public class StationDataManager {
                 targetAreas, logoSize, httpClient);
 
         // 古いデータをDBから削除。
-        StationDatabaseAccessor db = new StationDatabaseAccessor(context);
+        StationDbOpenHelper db = new StationDbOpenHelper(context);
         db.clearStationData();
 
         // Downloadに失敗したらFAILED_STATION_UPDATEを返却。
@@ -229,7 +229,7 @@ public class StationDataManager {
             String filePath = downloadLogoData(s, httpClient);
 
             // DBに登録
-            StationDatabaseAccessor db = new StationDatabaseAccessor(context);
+            StationDbOpenHelper db = new StationDbOpenHelper(context);
             db.updateLogoInfo(s.id, filePath);
         }
     }

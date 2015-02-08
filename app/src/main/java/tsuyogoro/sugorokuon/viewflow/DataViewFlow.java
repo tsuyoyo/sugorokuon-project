@@ -12,7 +12,7 @@ import java.util.Locale;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import tsuyogoro.sugorokuon.datatype.Station;
-import tsuyogoro.sugorokuon.model.StationListParser.LogoSize;
+import tsuyogoro.sugorokuon.radikoadaptation.StationListParser.LogoSize;
 import tsuyogoro.sugorokuon.settings.UpdatedDateManager;
 import tsuyogoro.sugorokuon.viewflow.ProgramDataManager.IUpdateProgressListener;
 import android.content.Context;

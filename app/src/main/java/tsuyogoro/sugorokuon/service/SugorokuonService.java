@@ -49,6 +49,7 @@ public class SugorokuonService extends Service {
     static public final String EXTRA_SONG_TITLE = "extra_song_title";
 
     private RecommendReminderReserver mRemindReserver;
+
     private ProgramUpdateReserver mUpdateReserver;
 
     @Override

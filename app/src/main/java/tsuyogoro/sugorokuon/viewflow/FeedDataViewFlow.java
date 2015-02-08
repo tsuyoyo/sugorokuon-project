@@ -11,7 +11,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import tsuyogoro.sugorokuon.constant.SugorokuonConst;
 import tsuyogoro.sugorokuon.datatype.Feed;
-import tsuyogoro.sugorokuon.model.FeedDownloader;
+import tsuyogoro.sugorokuon.radikoadaptation.FeedDownloader;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;

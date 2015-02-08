@@ -2,37 +2,25 @@
  * Copyright (c) 
  * 2012 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.viewflow;
+package tsuyogoro.sugorokuon.service.programmgr;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.http.impl.client.AbstractHttpClient;
-
-import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.datatype.OnedayTimetable;
 import tsuyogoro.sugorokuon.datatype.Program;
-import tsuyogoro.sugorokuon.datatype.Station;
 import tsuyogoro.sugorokuon.database.ProgramDatabaseAccessor;
-import tsuyogoro.sugorokuon.radikoadaptation.ProgramListDownloader;
-import tsuyogoro.sugorokuon.settings.preference.RecommendWordPreference;
 import tsuyogoro.sugorokuon.util.SugorokuonUtils;
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-
-import com.google.analytics.tracking.android.EasyTracker;
 
 public class ProgramDataManager {
 
-    /*
-     * updateProgramDatabaseの進捗を受け取るためのInterface。
-     */
-    static interface IUpdateProgressListener {
-        public void onProgressUpdateProgram(int prog, int max);
-    }
+
 
     /**
      * ProgramDataManagerからのEventを受け取るためのlistener。
@@ -239,7 +227,7 @@ public class ProgramDataManager {
      */
     public void updateRecommendPrograms(Context context) {
         ProgramDatabaseAccessor db = new ProgramDatabaseAccessor(context);
-        db.updateRecommendPrograms(new ProgramRecommender(context));
+        db.updateRecommendPrograms(new KeywordRecommender(context));
     }
 
     /**
@@ -303,67 +291,7 @@ public class ProgramDataManager {
         });
     }
 
-    /**
-     * Programの情報をネットワークから取りなおして、DBを更新する。
-     *
-     * @param context
-     * @param targetStations
-     * @param httpClient
-     * @return 成功したらCOMPLETE_RECOMMEND_UPDATE、失敗したらFAILED_DATA_UPDATEが返る。
-     */
-    ViewFlowEvent updateProgramDatabase(Context context,
-                                        List<Station> targetStations, AbstractHttpClient httpClient,
-                                        IUpdateProgressListener listener) {
 
-        ViewFlowEvent res = ViewFlowEvent.COMPLETE_RECOMMEND_UPDATE;
-
-        // DBをクリア。
-        ProgramDatabaseAccessor db = new ProgramDatabaseAccessor(context);
-        db.clearAllProgramData();
-
-        // 始める前に最初のprogress。
-        listener.onProgressUpdateProgram(0, targetStations.size());
-
-        // 各stationの１週間分の番組データをとり、DBへstoreしていく。
-        ProgramListDownloader progDownloader = new ProgramListDownloader();
-        ProgramRecommender recommender = new ProgramRecommender(context);
-
-        for(int i=0; i<targetStations.size(); i++) {
-            Station station = targetStations.get(i);
-
-            List<OnedayTimetable> timeTable =
-                    progDownloader.getWeeklyTimeTable(station.id, httpClient);
-
-            if(null != timeTable) {
-                // DownloadしたデータをDBへストアする。
-                for(OnedayTimetable dayTimeTable : timeTable) {
-                    db.insertOnedayTimetable(dayTimeTable, recommender);
-                }
-
-                // Progressを送る。
-                listener.onProgressUpdateProgram(i+1, targetStations.size());
-            } else {
-                res = ViewFlowEvent.FAILED_DATA_UPDATE;
-                break;
-            }
-        }
-
-        // 検索時のrecommend情報をGAに送る。
-        List<String> recommends = RecommendWordPreference.getKeyWord(context);
-        String label = "";
-        for(String l : recommends) {
-            if(l!=null && 0 < l.length()) {
-                label += l + " , ";
-            }
-        }
-        EasyTracker.getInstance().setContext(context);
-        EasyTracker.getTracker().trackEvent(
-                context.getText(R.string.ga_event_category_program_update).toString(),
-                context.getText(R.string.ga_event_action_download_from_web).toString(),
-                label, null);
-
-        return res;
-    }
 
     private List<Program> loadRecommendProgramsFromDB(Context context) {
         ProgramDatabaseAccessor db = new ProgramDatabaseAccessor(context);
