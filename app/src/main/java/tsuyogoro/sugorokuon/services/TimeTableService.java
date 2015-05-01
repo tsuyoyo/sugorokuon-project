@@ -289,15 +289,14 @@ public class TimeTableService extends Service {
             UpdatedDateManager.updateLastUpdateTime(this);
 
             updateRecommends();
-
-            updateWeeklyTimer();
-            updateTodaysTimer();
             updateOnAirSoonTimer();
-
         } else {
             SugorokuonLog.w("Number of weekly timetable is shorter than expected : " +
                     Integer.toString(stations.size() * 7) + " but " + timeTable.size());
         }
+
+        updateWeeklyTimer();
+        updateTodaysTimer();
 
         return isSuccess;
     }
@@ -316,13 +315,13 @@ public class TimeTableService extends Service {
             UpdatedDateManager.updateLastUpdateTime(this);
 
             updateRecommends();
-
-            updateTodaysTimer();
             updateOnAirSoonTimer();
         } else {
             SugorokuonLog.w("Number of todays timetable is shorter than expected : " +
                     Integer.toString(stations.size() * 7) + " but " + timeTables.size());
         }
+
+        updateTodaysTimer();
 
         return isSuccess;
     }

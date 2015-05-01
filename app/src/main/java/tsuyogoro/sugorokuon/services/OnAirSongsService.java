@@ -13,6 +13,8 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import java.util.Calendar;
 import java.util.List;
@@ -158,7 +160,12 @@ public class OnAirSongsService extends IntentService {
 
         // Feedを取得してDBに局情報を入れる
         for (Station s : onAirSongProviders) {
-            AbstractHttpClient httpClient = new DefaultHttpClient();
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+
+            HttpParams httpParams = httpClient.getParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 60 * 1000);
+            HttpConnectionParams.setSoTimeout(httpParams, 60 * 1000);
+
             Feed f = FeedFetcher.fetch(s.id, httpClient);
             if (null != f) {
                 int added = onAirSongDb.insert(f.onAirSongs).size();

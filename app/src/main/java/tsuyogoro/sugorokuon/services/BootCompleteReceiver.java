@@ -17,7 +17,15 @@ public class BootCompleteReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            context.startService(new Intent(TimeTableService.ACTION_UPDATE_TIMER));
+            // TimeTable関連のタイマーを仕掛ける
+            Intent updateTimerIntent = new Intent(TimeTableService.ACTION_UPDATE_TIMER);
+            updateTimerIntent.setPackage(context.getPackageName());
+            context.startService(updateTimerIntent);
+
+            // OnAir曲取得のタイマー
+            Intent onAirFetchIntent = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
+            onAirFetchIntent.setPackage(context.getPackageName());
+            context.startService(onAirFetchIntent);
         }
     }
 
