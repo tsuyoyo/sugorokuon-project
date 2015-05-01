@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings_header_area_title">エリア設定</string>
+    <string name="settings_header_prefecture_category">県単位で設定</string>
+    <string name="settings_header_region_category">地域単位で設定</string>
+    <string name="settings_header_area_summary">番組情報を収集する地域を設定します。</string>
+    <string name="settings_header_keyword_title">おまかせキーワード設定</string>
+    <string name="settings_header_keyword_summary">オススメ番組を検索するためのキーワードを設定します。</string>
+    <string name="settings_header_remindtiming_title">リマインド設定</string>
+    <string name="settings_header_remindtiming_summary">オススメ番組のリマインダーの設定をします。</string>
+    <string name="settings_remindtiming_title">onAirのどのくらい前にお知らせしますか？</string>
+    <string name="settings_remindtiming_not_set">お知らせ不要</string>
+    <string name="settings_remindtiming_ten_min_before">10分前</string>
+    <string name="settings_remindtiming_thirty_min_before">30分前</string>
+    <string name="settings_remindtiming_one_hour_before">1時間前</string>
+    <string name="settings_remindtiming_two_hour_before">2時間前</string>
+    <string name="settings_remindtiming_five_hour_before">5時間前</string>
+    <string name="settings_remind_behavior_settings">お知らせの際の動作を選んでください。</string>
+    <string name="settings_remind_behavior_light">ランプ点滅</string>
+    <string name="settings_remind_behavior_sound">通知音</string>
+    <string name="settings_remind_behavior_vibration">バイブレーション</string>
+    <string name="settings_keyword_unset">未登録</string>
+    <string name="settings_keyword_slot">キーワード %d</string>
+    <string name="settings_search_target_settings_title">onAir曲の検索設定</string>
+    <string name="settings_search_target_settings_summary">onAir曲をtapした際の検索対象を設定します。</string>
+    <string name="settings_search_target_settings_youtube">Youtubeを検索</string>
+    <string name="settings_search_target_settings_google">Googleを検索</string>
+    <string name="settings_keep_station_focus_settings_title">最後に見た局を記憶する</string>
+    <string name="settings_keep_station_focus_settings_summary">次回起動時に、最後に見た局から起動します</string>
+    <string name="settings_keep_station_focus_keep">記憶する</string>
+    <string name="settings_keep_station_focus_notkeep">記憶しない（起動時にオススメ番組を表示）</string>
+    <string name="settings_browser_cache_settings_title">番組サイトのキャッシュ設定</string>
+    <string name="settings_browser_cache_settings_summary">
+        番組サイトのキャッシュをOffにすることで、容量が節約できます。この設定はラジコンシェルジュにのみ有効です。</string>
+    <string name="settings_browser_cache_settings_enable">Cacheを有効にする</string>
+    <string name="settings_browser_cache_settings_disable">Cacheを無効にする</string>
+    <string name="settings_menu_help">設定ガイド</string>
+    <string name="settings_manual_title">設定ガイド</string>
+    <string name="settings_manual">
+ラジコンシェルジュは、Radiko.jpの週間番組表が更新される月曜早朝に、backgroundで１週間分の番組表をダウンロードします
+（エリア設定に東京を選んだ場合、通信量は大体3～4MBです）。ご利用時には、設定からいくつか情報を入力していただく必要が
+あります。\n\n
+
+◆ エリア設定\n
+受信エリアを選択してください。ラジコンシェルジュは、選択いただいたエリア内で受信できるラジオ局を対象に、
+１週間分の番組表のダウンロードおよびオススメ番組の検索を行います。\n\n
+複数選択も可能ですので、Radiko以外のより広い地域のラジオ局を受信できるサービスをご利用の方は、
+日本全国を選択いただくと、例えば「好きなアーティストが、新譜リリース直後に地方のラジオ局にゲスト出演」といった場合も
+ラジコンシェルジュがアナタにお知らせを出してくれるかもしれません。
+\n\n
+◆ おまかせキーワード設定\n
+全角、半角、大文字、小文字は、なるべく正確に入力いただくと、より確実にオススメ番組がご案内できます。
+    </string>
+    <string name="settings_auto_update">番組表の自動更新</string>
+    <string name="settings_auto_update_summary">
+        アプリを使っていない時、自動で情報更新をするかどうかの設定をします</string>
+    <string name="settings_auto_update_weekly">番組表</string>
+    <string name="settings_auto_update_weekly_desc">
+        月曜早朝に一週間分の番組表、毎朝早朝に当日の最新の番組表(300KB)が自動で更新されます。
+        一ヶ月あたりの通信量は、東京に設定した場合で 20MBほど (音楽ダウンロード3曲分くらい) です。
+        Offの場合、アプリから手動で更新できます。
+    </string>
+    <string name="settings_auto_update_today">今日の番組表</string>
+    <string name="settings_auto_update_today_desc">
+        "毎朝早朝" に当日の番組表が自動で更新されます。
+        Offの場合、アプリから手動で更新できます。
+    </string>
+    <string name="settings_auto_update_onair_songs">最新のOnAir曲</string>
+    <string name="settings_auto_update_onair_songs_desc">
+        数時間ごとに最新のOnAir曲の情報が更新されます。
+        一ヶ月あたりの通信料は、東京に設定した場合で 10MBほど (音楽ダウンロード1.5曲分くらい) です。
+        Offの場合、アプリ手動で更新できますが、収集されない時間帯が出る事があります。
+    </string>
+    <string name="settings_auto_update_on">ON</string>
+    <string name="settings_auto_update_off">OFF</string>
+
+</resources>

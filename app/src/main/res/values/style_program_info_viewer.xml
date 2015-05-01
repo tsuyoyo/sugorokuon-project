@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Viewerのサイズを変えたり、タブを切り変えたりするバーのstyle -->
+    <style name="viewer_action_bar_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@color/app_accent_background</item>
+    </style>
+
+    <!-- Viewerのサイズを変えるパーツに乗せる "item" の共通style -->
+    <style name="viewer_expander_items">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- バーの上下に表示する区切り線 -->
+    <style name="viewer_expander_boarder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#9E9E9E</item>
+    </style>
+
+    <!-- Viewerを大きくしたり小さくしたりする部分 -->
+    <style name="viewer_item_sizechanger" parent="viewer_expander_items">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:src">@drawable/ic_swap_vert_black_24dp</item>
+    </style>
+
+    <!-- タブのRadioGroupのstyle -->
+    <style name="viewer_item_radio_group" parent="viewer_expander_items">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:itemPadding">5dp</item>
+    </style>
+
+    <!-- 番組サイトと情報を切り替えるタブのボタンのstyle -->
+    <style name="viewer_radio_button" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/checkbutton_back</item>
+        <item name="android:textColor">@color/abc_primary_text_material_light</item>
+    </style>
+
+</resources>

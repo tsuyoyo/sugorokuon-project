@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/onair_songs_item_layout"
+    android:orientation="horizontal">
+
+    <TextView
+        style="@style/onair_song_date"
+        android:id="@+id/onair_song_list_item_date"/>
+
+    <TextView
+        style="@style/onair_song_title"
+        android:id="@+id/onair_song_list_item_title"/>
+
+    <TextView
+        style="@style/onair_song_artist"
+        android:id="@+id/onair_song_list_item_artist"/>
+
+</LinearLayout>

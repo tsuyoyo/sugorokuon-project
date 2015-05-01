@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">ラジコンシェルジュ</string>
+    
+    <!-- Main画面 -->
+    <string name="title_recommends">今週のおすすめ</string>
+    <string name="launching_app">起動中です&#8230;</string>
+
+    <string name="dropdown_list_recommend">今週のおすすめ</string>
+    <string name="dropdown_list_app_c_advertisement">おすすめアプリ(AD)</string>
+
+    <string name="program_viewer_switch_homepage">番組サイト</string>
+    <string name="program_viewer_switch_info">番組紹介</string>
+    <string name="program_viewer_switch_loading">onAir曲情報をdownload中&#8230;</string>
+    <string name="program_viewer_onair_song_reload">今すぐ更新</string>
+    <string name="program_viewer_onair_song_search_youtube">Youtubeを検索</string>
+    <string name="program_viewer_onair_song_search_web">Googleを検索</string>
+    <string name="program_viewer_onair_song_search_info">%sの最新のonAir曲（tapで検索）</string>
+    <string name="program_viewer_onair_song_search_no_info">%sは直近のonAir曲情報を提供していないようです</string>
+    <string name="program_viewer_onair_song_search_no_info_for_recommend">この機能は各ラジオ局の番組表を開いている時に有効です。</string>    
+
+    <string name="program_viewer_onair_song_search_error">取得中にエラーが発生しました。更新ボタンを押してリトライください。</string>
+
+    <string name="option_update_now">最新の番組表を取得</string>
+    <string name="option_settings">設定</string>
+    <string name="option_search_program">番組を検索</string>
+    <string name="option_launch_radio_app">聴取アプリを起動</string>
+    <string name="option_check_update_date">番組更新日時の確認</string>
+    <string name="option_about_app">このアプリについて</string>
+    <string name="option_rate_app">このアプリを評価</string>
+    <string name="option_appc_advertisement">おすすめアプリ情報</string>    
+
+    <string name="program_list_no_data">番組情報がありません</string>
+    <string name="program_list_no_recommend">おすすめ番組はありません</string>
+
+    <string name="data_loading">番組表を取得しています</string>
+    <string name="data_loading_progress">番組表を取得しています\n(%1$d件のラジオ局のうち、%2$d件取得完了)</string>
+
+    <string name="date_loading_error_title">エラー</string>
+    <string name="date_loading_error_msg">番組表取得に失敗しました。</string>
+
+    <string name="no_update_title">info</string>
+    <string name="no_update_message">最新の番組表を取得済みです\n\n (最終更新 %s)</string>
+
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="ok">OK</string>
+
+    <string name="ask_if_to_update_data_title">番組データの取得</string>
+    <string name="ask_if_to_update_data_message">最新の番組表の取得を行います</string>
+    <string name="notify_load_continue_background">番組データ取得は、アプリを閉じてもバックグラウンドで行われます</string>    
+    <string name="notify_settings_changed_title">設定が変更されました</string>
+    <string name="notify_settings_changed_message">
+        	エリア情報/おまかせキーワードが変更されました。
+        	番組表を更新する必要があります。時間がかかる場合がありますが、続行しますか？</string>
+    <string name="update_status_dialog_title">番組更新日時</string>
+    <string name="update_status_dialog_last_update">最終番組更新\nMM月 dd日 (EEE) HH:mm</string>
+    <string name="update_status_dialog_next_update">次の自動番組更新\nMM月 dd日 (EEE) HH:mm</string>
+    <string name="program_has_no_website">この番組にはホームページがありません。</string>
+    <string name="no_area_dialog_title">エリアを設定してください</string>
+    <string name="no_area_dialog_message">設定の「エリア設定」より、聴取エリアを設定してください。</string>       
+
+    <string name="station_list_dialog_title">ラジオ局一覧</string>
+
+    <!-- OnAir曲リスト画面 -->
+    <string name="weekly_onair_song_title">今週のON AIR曲</string>
+    <string name="onair_song_no_data_for_the_day">この日のデータがありません</string>
+    <string name="menu_title_fetch_latest">最新の情報を取得</string>
+    <string name="feteching_onair_songs">最新の曲情報を取得中</string>
+
+    <!-- 通知系 -->
+	<string name="progress_notification_title">ラジコンシェルジュ 番組表更新</string>
+	<string name="progress_notification_text">ラジオ局一覧を取得中</string>	
+	<string name="progress_notification_text_progress">%1$dつのラジオ局のうち%2$d局取得済み</string>
+	<string name="progress_notification_ticker">ラジコンシェルジュ - 番組表更新</string>
+	<string name="progress_notification_ticker_complete">ラジコンシェルジュの番組表更新完了</string>
+	<string name="progress_notification_text_complete">ラジコンシェルジュの番組表更新完了</string>
+	<string name="progress_notification_ticker_failed">ラジコンシェルジュが番組表更新に失敗しました</string>
+	<string name="progress_notification_text_failed">ラジコンシェルジュが番組表更新に失敗しました</string>	
+	<string name="recommend_reminder_ticker">まもなくオススメのラジオ番組が始まります</string>
+	<string name="recommend_reminder_text">%s からonAir</string>
+	<string name="recommend_reminder_more">他 %d件</string>
+    
+    <!-- 日付・時刻系 -->
+    <string name="date_yymmdd">yyyy年 MM月 dd日</string>
+    <string name="date_mmddeee">MM月 dd日 (EEE)</string>
+    <string name="date_mmddeeehhmm">MM月 dd日 (EEE) HH:mm</string>
+    <string name="date_mm_sl_dd_eehhmm">MM/dd(EEE) HH:mm</string>
+    <string name="date_hhmm">HH:mm</string>
+    <string name="date_switcher_recommend_begin">MM月 dd日 (EEE) から</string>    
+    <string name="date_switcher_recommend_end">MM月 dd日 (EEE) のオススメ</string>
+    <string name="onair_start_time">HH:mm</string>
+    <string name="onair_end_time">- HH:mm</string>
+    <string name="onair_date">MM/dd\n(EEE)</string>
+	
+	<!-- About this app -->
+    <string name="copyright">Copyright &#169; 2012-2015 tsuyoyo All Rights Reserved.</string>
+    <string name="contact_title">作者にメール</string>
+    <string name="context_subtitle">感想・ご要望・不具合報告など、フィードバックお待ちしています</string>
+    <string name="version_info">Version : %s</string>
+    <string name="version_log_title">更新履歴</string>
+
+    <string name="ohen_dialog_text">
+        次に表示されるサイトからアプリをインストール (無料) 頂くと、
+        ラジコンシェルジュ作者に広告費が入る仕組みになっております。
+        励みになりますので、ご協力頂けますと嬉しいです (インストールされたアプリは、
+        お気に召さない場合はアンインストールして頂いて構いません) 。
+    </string>
+    
+</resources>

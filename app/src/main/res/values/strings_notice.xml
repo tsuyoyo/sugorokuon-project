@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notice_license">
+        本アプリの中で利用している一部のアイコンは
+        https://github.com/google/material-design-icons において、
+        Attribution 4.0 International の下で利用可能です。
+        ライセンスの全文は https://creativecommons.org/licenses/by-sa/4.0/deed.ja をご覧ください。
+    </string>
+</resources>

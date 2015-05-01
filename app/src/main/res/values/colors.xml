@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="actionbar_text">@color/primary_text_default_material_dark</color>
+
+    <color name="app_text_primary">@color/abc_primary_text_material_light</color>
+
+    <color name="app_text_secondary">#757575</color>
+
+    <color name="app_primary">#039BE5</color>
+
+    <color name="app_primary_dark">#29B6F6</color>
+
+    <color name="app_accent">#1976D2</color>
+
+    <color name="app_accent_background">#E1F5FE</color>
+
+    <drawable name="actionbar_background">@color/app_primary</drawable>
+
+    <color name="onair_song_primary">#303F9F</color>
+
+    <drawable name="onair_song_pager_background">@color/app_accent_background</drawable>
+</resources>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/**
+ * 番組の情報・ホームページを表示する部分のlayout
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="50"
+    android:id="@+id/program_viewer_root"
+    android:orientation="vertical" >
+
+    <View style="@style/viewer_expander_boarder" />
+
+    <!-- 表示するものを切り替えるRadio button -->
+    <LinearLayout
+        style="@style/viewer_action_bar_layout"
+        android:id="@+id/program_viewer_size_expander" >
+
+        <RadioGroup
+            style="@style/viewer_item_radio_group"
+            android:id="@+id/program_viewer_switcher" >
+
+            <!-- 番組ホームページ -->
+            <RadioButton
+                style="@style/viewer_radio_button"
+                android:id="@+id/program_viewer_switcher_homepage"
+                android:text="@string/program_viewer_switch_homepage" />
+
+            <!-- 番組情報 -->
+            <RadioButton
+                style="@style/viewer_radio_button"
+                android:id="@+id/program_viewer_switcher_info"
+                android:text="@string/program_viewer_switch_info" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View style="@style/viewer_expander_boarder" />
+
+    <!-- 情報表示箇所（番組ホームページ） -->
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:id="@+id/program_viewer_program_site_area" >
+        <WebView android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layerType="software"
+            android:id="@+id/program_viewer_program_site_webview" />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/program_has_no_website"
+            android:id="@+id/program_viewer_program_site_no_hp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- 情報表示箇所（番組情報） : 初期状態はgone -->
+    <WebView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layerType="software"
+        android:id="@+id/program_viewer_program_info"
+        android:visibility="gone"
+        />
+
+    <ProgressBar android:id="@+id/program_viewer_loading_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:visibility="visible" />
+
+    <!-- ブラウザ操作のボタン群 -->
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/program_viewer_button_area"
+        android:background="@drawable/actionbar_background" >
+
+        <!-- ブラウザ戻る -->
+        <!--
+        <ImageButton android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:id="@+id/program_viewer_browser_back"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Back" />
+-->
+        <!-- ブラウザで進む -->
+<!--
+        <ImageButton android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:id="@+id/program_viewer_browser_forward"
+            android:src="@drawable/ic_arrow_forward_black_24dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Forward" />
+-->
+
+        <!-- ブラウザで開く -->
+        <ImageButton android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:id="@+id/program_viewer_browser_app_open"
+            android:src="@drawable/ic_public_black_24dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Open browser" />
+
+    </LinearLayout>
+
+</LinearLayout>

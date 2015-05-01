@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_actiity_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eff7ff"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/main_activity_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- The main content view -->
+        <FrameLayout
+            android:id="@+id/main_activity_drawer_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+
+        <!-- The navigation drawer -->
+        <LinearLayout
+            android:id="@+id/drawer_left_layout"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/background_light"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:orientation="vertical">
+
+                    <!-- 今週のおすすめ -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_recommends"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_mood_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_recommends_this_week" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- 番組表 -->
+                    <LinearLayout style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_schedule_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_timetable_list_title" />
+                    </LinearLayout>
+
+                    <!-- 曜日ごとのラベル -->
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_monday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_tuesday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_wednesday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_thirsday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_friday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_saturday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <TextView
+                        android:id="@+id/drawer_item_time_table_sunday"
+                        style="@style/drawer_item_time_table_oneday" />
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- 今週のOnAir曲 -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_onair_songs"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_queue_music_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_onair_songs_weekly" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- 設定 -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_settings"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_settings_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_settings" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- 作者を応援 -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_launch_appc"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_thumb_up_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_app_c_advertisement" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- このアプリについて -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_about_app"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_info_outline_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_about_app" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+                    <!-- google playで評価 -->
+                    <LinearLayout
+                        android:id="@+id/drawer_item_rating"
+                        style="@style/drawer_item_layout">
+
+                        <ImageView
+                            style="@style/drawer_item_icon"
+                            android:src="@drawable/ic_star_half_grey600_36dp" />
+
+                        <TextView
+                            style="@style/drawer_item_title"
+                            android:text="@string/drawer_rating_in_google_play" />
+                    </LinearLayout>
+
+                    <View style="@style/drawer_item_border" />
+
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+
+
+</LinearLayout>

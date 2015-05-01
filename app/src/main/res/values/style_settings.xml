@@ -1,0 +1,24 @@
+
+<resources>
+
+    <style name="Theme.SugorokuonSettingsTheme" parent="android:Theme.Holo.Light" >
+        <item name="android:actionBarStyle">@style/SettingsActionBarStyle</item>
+    </style>
+
+    <style name="SettingsActionBarStyle" parent="android:Widget.Holo.ActionBar.Solid">
+        <item name="android:titleTextStyle">@style/SettingsActionBarTitleStyle</item>
+        <item name="android:background">@color/app_primary</item>
+        <item name="android:backgroundStacked">@android:color/white</item>
+    </style>
+
+    <style name="SettingsActionBarTitleStyle"
+        parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/actionbar_text</item>
+    </style>
+
+    <style name="SettingsTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/actionbar_text</item>
+    </style>
+
+</resources>

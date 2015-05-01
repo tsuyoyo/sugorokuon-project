@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/onair_songs_date_label"
+    android:id="@+id/onair_song_list_date_label">
+</TextView>

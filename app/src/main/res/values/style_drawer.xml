@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="drawer_item_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="drawer_item_icon">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="drawer_item">
+        <item name="android:textColor">@color/app_text_secondary</item>
+    </style>
+
+    <style name="drawer_item_title" parent="drawer_item">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="drawer_item_time_table_oneday" parent="drawer_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">50dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="drawer_item_border">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">#E0E0E0</item>
+    </style>
+
+</resources>

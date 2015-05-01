@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<resources>
+
+    <string name="gtm_container_id">@string/tagmanager_container_id</string>
+
+    <string name="gtm_key_interval_song_update_by_hour">intervalOnAirSongUpdateByHour</string>
+    <string name="gtm_key_weekly_update_at_hour">weeklyUpdateTimeHour</string>
+    <string name="gtm_key_weekly_update_at_minute">weeklyUpdateTimeMinute</string>
+    <string name="gtm_key_daily_update_at_hour">dailyUpdateTimeHour</string>
+    <string name="gtm_key_daily_update_at_minute">dailyUpdateTimeMinute</string>
+
+</resources>
+

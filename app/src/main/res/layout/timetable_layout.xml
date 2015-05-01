@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/timetable_fragment_top_layout">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/timetable_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40">
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/timetable_pager_tab_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@color/app_accent_background"
+                android:textColor="@color/app_text_primary"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp" />
+        </android.support.v4.view.ViewPager>
+
+        <include layout="@layout/program_info_viewer_layout"></include>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/timetable_station_list_frame">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:text=""
+            android:background="#55000000"
+            android:id="@+id/timetable_station_list_other_area" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:orientation="vertical"
+            android:background="@color/background_material_light"
+            android:layout_gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/station_list_dialog_title"
+                android:textColor="@color/actionbar_text"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:background="@color/app_primary"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/timetable_station_list"></ListView>
+        </LinearLayout>
+
+     </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_button"
+        android:padding="10dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/timetable_station_list_open_btn"
+        android:src="@drawable/ic_list_white_24dp" />
+
+</FrameLayout>

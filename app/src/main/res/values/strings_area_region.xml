@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Areaの名称 -->
+    <string name="area_hokkaido">北海道</string>
+    <string name="area_aomori">青森県</string>
+    <string name="area_iwate">岩手県</string>
+    <string name="area_miyagi">宮城県</string>
+    <string name="area_akita">秋田県</string>
+    <string name="area_yamagata">山形県</string>
+    <string name="area_fukushima">福島県</string>
+    <string name="area_ibaraki">茨城県</string>
+    <string name="area_tochigi">栃木県</string>
+    <string name="area_gunma">群馬県</string>
+    <string name="area_saitama">埼玉県</string>
+    <string name="area_chiba">千葉県</string>
+    <string name="area_tokyo">東京都</string>
+    <string name="area_kanagawa">神奈川県</string>
+    <string name="area_niigata">新潟県</string>
+    <string name="area_toyama">富山県</string>
+    <string name="area_ishikawa">石川県</string>
+    <string name="area_fukui">福井県</string>
+    <string name="area_yamanashi">山梨県</string>
+    <string name="area_nagano">長野県</string>
+    <string name="area_gifu">岐阜県</string>
+    <string name="area_shizuoka">静岡県</string>
+    <string name="area_aichi">愛知県</string>
+    <string name="area_mie">三重県</string>
+    <string name="area_shiga">滋賀県</string>
+    <string name="area_kyoto">京都府</string>
+    <string name="area_osaka">大阪府</string>
+    <string name="area_hyogo">兵庫県</string>
+    <string name="area_nara">奈良県</string>
+    <string name="area_wakayama">和歌山県</string>
+    <string name="area_tottori">鳥取県</string>
+    <string name="area_shimane">島根県</string>
+    <string name="area_okayama">岡山県</string>
+    <string name="area_hiroshima">広島県</string>
+    <string name="area_yamaguchi">山口県</string>
+    <string name="area_tokushima">徳島県</string>
+    <string name="area_kagawa">香川県</string>
+    <string name="area_ehime">愛媛県</string>
+    <string name="area_kouchi">高知県</string>
+    <string name="area_fukuoka">福岡県</string>
+    <string name="area_saga">佐賀県</string>
+    <string name="area_nagasaki">長崎県</string>
+    <string name="area_kumamoto">熊本県</string>
+    <string name="area_oita">大分県</string>
+    <string name="area_miyazaki">宮崎県</string>
+    <string name="area_kagoshima">鹿児島県</string>
+    <string name="area_okinawa">沖縄県</string>
+
+    <!-- Region -->
+    <string name="region_hokkaido">北海道</string>
+    <string name="region_tohoku">東北</string>
+    <string name="region_kanto">関東</string>
+    <string name="region_chubu">中部</string>
+    <string name="region_kinki">近畿</string>
+    <string name="region_chugoku">中国</string>
+    <string name="region_shikoku">四国</string>
+    <string name="region_kyushuokinawa">九州・沖縄</string>
+
+</resources>

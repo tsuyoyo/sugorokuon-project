@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    RobolectricがAndroidManifest.xmlの読み込みに失敗するためのworkaround
+    http://mtdevuk.com/2014/10/21/nullpointerexception-when-using-robolectric-and-google-play-services/
+    -->
+    <integer name="gms_version">@integer/google_play_services_version</integer>
+
+    <string name="google_play_app_url">market://details?id=tsuyogoro.sugorokuon</string>
+</resources>

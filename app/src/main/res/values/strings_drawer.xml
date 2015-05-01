@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_timetable_list_title">番組表</string>
+    <string name="drawer_settings">設定</string>
+    <string name="drawer_recommends_this_week">今週のおすすめ</string>
+    <string name="drawer_onair_songs_weekly">今週のOnAir曲</string>
+    <string name="drawer_app_c_advertisement">アプリ作者を応援</string>
+    <string name="drawer_about_app">このアプリについて</string>
+    <string name="drawer_rating_in_google_play">このアプリを評価</string>
+</resources>

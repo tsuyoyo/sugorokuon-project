@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+/**
+ * 番組のリストを表示する部分のlayout
+ *
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  
+    android:orientation="vertical"
+    android:background="@android:color/transparent" >
+    
+    <!-- 番組表を表示するリスト -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/program_list"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+<!--
+    <ListView android:layout_width="match_parent"
+    		  android:layout_height="0dp"
+    		  android:layout_weight="1"
+			  android:id="@+id/program_list" />
+-->
+
+    <!-- データがなかった時に表示する -->
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/program_list_no_data"
+              android:visibility="gone" />
+
+</LinearLayout>
+    

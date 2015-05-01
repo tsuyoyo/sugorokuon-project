@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Item一つ分 -->
+    <style name="onair_songs_item_layout">
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <!-- 日付ラベル -->
+    <style name="onair_songs_date_label" parent="@style/onair_songs_item_layout">
+        <item name="android:background">@color/onair_song_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">@color/actionbar_text</item>
+        <item name="android:paddingLeft">3dp</item>
+    </style>
+
+    <!-- OnAirされた時刻 -->
+    <style name="onair_song_date" parent="onair_songs_item_layout" >
+        <item name="android:layout_width">50dp</item>
+        <item name="android:textColor">@color/onair_song_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
+    <!-- 曲のタイトル -->
+    <style name="onair_song_title" parent="onair_songs_item_layout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">6</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textColor">@color/app_text_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- アーティスト名 -->
+    <style name="onair_song_artist" parent="onair_songs_item_layout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textColor">@color/app_text_secondary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+
+</resources>
