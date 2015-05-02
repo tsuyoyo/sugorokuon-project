@@ -325,9 +325,14 @@ public class SugorokuonActivity extends AppCompatActivity
         findViewById(R.id.drawer_item_launch_appc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OhenDialog dialog = new OhenDialog();
-                dialog.show(getSupportFragmentManager(), "OhenDialog");
-                mDrawerLayout.closeDrawers();
+//                OhenDialog dialog = new OhenDialog();
+//                dialog.show(getSupportFragmentManager(), "OhenDialog");
+//                mDrawerLayout.closeDrawers();
+//
+//
+                Intent test = new Intent(TimeTableService.ACTION_NOTIFY_ONAIR_SOON);
+                test.setPackage(getPackageName());
+                startService(test);
             }
         });
 

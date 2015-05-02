@@ -100,6 +100,14 @@ public class TimeTableFragment extends ProgramViewerFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (null != getView()) {
+            getView().setFocusableInTouchMode(true);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return getActivity().onOptionsItemSelected(item);
     }

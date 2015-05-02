@@ -143,11 +143,17 @@
   - http://stackoverflow.com/questions/9077933/how-to-find-mimetype-of-response
   - [MimeTypeMap#getExtensionFromMimeType(java.lang.String)](http://developer.android.com/reference/android/webkit/MimeTypeMap.html)
 
-# Gradle
+## Gradle
 - [Gradle Plugin User Guide](http://tools.android.com/tech-docs/new-build-system/user-guide)
 - [使えるGradleプロジェクトの作り方](http://www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle)
 - [使ってないresourceをビルド時に削除してくれる](https://plus.google.com/+TorNorbye/posts/eHsStybrrBf)
 
-# GenyMotion
+## GenyMotion
 - [GenyMotion](https://www.genymotion.com/#!/)
 - [Android Studio と Genymotion を使って超爆速なエミュレータ環境を構築する](http://qiita.com/bird_nitryn/items/76e145965e6732352567)
+
+## iconサイズ
+- [Androidアプリーリソース画像サイズ＆種類ー](http://blog.excite.co.jp/spdesign/19798730/)
+
+## Android StudioでGitを使う
+- [Android StudioでGitバージョン管理](http://saku-java.be-ourselves.jp/2014/05/27/android-studio-git-vcs/)

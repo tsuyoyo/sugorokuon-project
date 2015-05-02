@@ -104,7 +104,7 @@ public class WeeklyOnAirSongsFragment extends Fragment
             @Override
             public OnAirSongPagerAdapter loadInBackground() {
 
-                StationApi stationApi = new StationApi(getActivity());
+                StationApi stationApi = new StationApi(getContext());
                 List<Station> stations = stationApi.load(true);
 
                 return new OnAirSongPagerAdapter(getChildFragmentManager(), stations);

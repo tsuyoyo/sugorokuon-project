@@ -101,7 +101,7 @@ class ProgramRemindSubmitter {
                 .setContentText(subTitle)
                 .setTicker(context.getText(R.string.recommend_reminder_ticker))
                 .setLargeIcon(largeIcon)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_statusbar)
                 .setContentIntent(operation)
                 .setAutoCancel(true)
                 .setDefaults(RemindBehaviorPreference.wayToNotify(context))

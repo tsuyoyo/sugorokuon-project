@@ -92,11 +92,11 @@ public class WeeklyOnAirSongsListFragment extends Fragment implements
                 Calendar from = SugorokuonUtils.beginningOfThisWeek();
                 Calendar to = Calendar.getInstance();
 
-                OnAirSongsApi onAirSongsApi = new OnAirSongsApi(getActivity());
+                OnAirSongsApi onAirSongsApi = new OnAirSongsApi(getContext());
 
                 List<OnAirSong> songs = onAirSongsApi.search(from, to, mStationId);
 
-                SetListAdapter adapter = new SetListAdapter(getActivity());
+                SetListAdapter adapter = new SetListAdapter(getContext());
                 for (OnAirSong s : songs) {
                     adapter.addSong(s);
                 }
