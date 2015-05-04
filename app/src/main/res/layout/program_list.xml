@@ -29,6 +29,7 @@
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:id="@+id/program_list_no_data"
+              android:textColor="@color/app_text_primary"
               android:visibility="gone" />
 
 </LinearLayout>

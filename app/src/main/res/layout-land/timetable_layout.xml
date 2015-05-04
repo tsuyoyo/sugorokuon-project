@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,7 +12,7 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/timetable_pager"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="match_parent">
             <android.support.v4.view.PagerTabStrip
                 android:id="@+id/timetable_pager_tab_strip"
@@ -71,8 +71,8 @@
         android:background="@drawable/circle_button"
         android:padding="10dp"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="3dp"
         android:id="@+id/timetable_station_list_open_btn"
         android:src="@drawable/ic_list_white_24dp" />
 

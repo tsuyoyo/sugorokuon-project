@@ -188,16 +188,18 @@ public class TimeTableService extends Service {
         super.onStartCommand(intent, flags, startId);
 
         // Google tag managerの準備ができていなかったら、loadしてから処理開始
-        if (null != ContainerHolderSingleton.getContainerHolder()) {
-            doStartCommand(intent);
-        } else {
-            ContainerHolderLoader.load(this, new ContainerHolderLoader.OnLoadListener() {
-                @Override
-                public void onContainerHolderAvailable() {
-                    // Main threadへ通知が返ってくる
-                    doStartCommand(intent);
-                }
-            });
+        if (null != intent) {
+            if (null != ContainerHolderSingleton.getContainerHolder()) {
+                doStartCommand(intent);
+            } else {
+                ContainerHolderLoader.load(this, new ContainerHolderLoader.OnLoadListener() {
+                    @Override
+                    public void onContainerHolderAvailable() {
+                        // Main threadへ通知が返ってくる
+                        doStartCommand(intent);
+                    }
+                });
+            }
         }
 
         return Service.START_NOT_STICKY;
@@ -452,9 +454,7 @@ public class TimeTableService extends Service {
                     result = updateWeeklyTimeTable(new TimeTableFetcher.IWeeklyFetchProgressListener() {
                         @Override
                         public void onProgress(List<Station> fetched, List<Station> requested) {
-                            if (notifyProgress && null != mNotificationSubmitter) {
-                                publishProgress(fetched, requested);
-                            }
+                            publishProgress(fetched, requested);
                         }
                     });
                     if (!result) {
@@ -478,8 +478,10 @@ public class TimeTableService extends Service {
                 progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_FETCHED, fetched.size());
                 sendBroadcast(progress);
 
-                mNotificationSubmitter.notifyProgress(
-                        TimeTableService.this, requested.size(), fetched.size());
+                if (notifyProgress && null != mNotificationSubmitter) {
+                    mNotificationSubmitter.notifyProgress(
+                            TimeTableService.this, requested.size(), fetched.size());
+                }
             }
 
             @Override

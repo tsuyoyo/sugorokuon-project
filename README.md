@@ -138,6 +138,10 @@
 - START_NOT_STICKY または START_REDELIVER_INTENT は送られてきたコマンドを処理する間だけ実行するService。
 - つまり、リクエストされた処理が終わったら、このサービスは割と早いタイミングで死ぬ。
 
+### onStartCommandの引数のintentがnullになってしまう
+- http://9ensan.com/blog/smartphone/android/android-service-intent-nullpointerexception/
+- START_STICKY_COMPATIBILITYを返すようにして、一度commandを処理し終えて再度serviceがcallされないようにする
+
 ## DLしてきた番組アイコンのMimeType
 - 拡張子はmime typeを確認
   - http://stackoverflow.com/questions/9077933/how-to-find-mimetype-of-response
