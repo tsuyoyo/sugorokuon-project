@@ -151,6 +151,7 @@
 - [Gradle Plugin User Guide](http://tools.android.com/tech-docs/new-build-system/user-guide)
 - [使えるGradleプロジェクトの作り方](http://www.slideshare.net/MakotoYamazaki/20150425-droidkaigi-gradle)
 - [使ってないresourceをビルド時に削除してくれる](https://plus.google.com/+TorNorbye/posts/eHsStybrrBf)
+- [Android のビルドについて(Gradle)](http://mixi-inc.github.io/AndroidTraining/introductions/1.05.how-to-build-for-gradle.html)
 
 ## GenyMotion
 - [GenyMotion](https://www.genymotion.com/#!/)

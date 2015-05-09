@@ -8,8 +8,8 @@ android {
         applicationId "tsuyogoro.sugorokuon"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 202
-        versionName "2.0.2"
+        versionCode 204
+        versionName "2.0.4"
     }
     buildTypes {
         release {

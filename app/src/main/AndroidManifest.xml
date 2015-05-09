@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="tsuyogoro.sugorokuon"
-    android:versionCode="202"
-    android:versionName="2.0.2">
+    android:versionCode="204"
+    android:versionName="2.0.4">
 
     <uses-sdk android:targetSdkVersion="14"
 	          android:minSdkVersion="14" />
@@ -49,12 +49,22 @@
             android:theme="@style/Theme.SugorokuonSettingsTheme" >
         </activity>
 
-		<receiver android:name=".services.BootCompleteReceiver"
+		<receiver android:name=".services.DeviceEventReceiver"
 	  	 	      android:exported="true" >
     		<intent-filter>
         		<action android:name="android.intent.action.BOOT_COMPLETED" />
 		        <category android:name="android.intent.category.DEFAULT" />
     		</intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
 		</receiver>
 
 
@@ -121,8 +131,6 @@
         </receiver>
         <!-- AppC Core Setting End -->
 
-
     </application>
-    
 
 </manifest>

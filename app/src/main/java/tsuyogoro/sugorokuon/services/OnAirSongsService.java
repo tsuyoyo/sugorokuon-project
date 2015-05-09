@@ -130,14 +130,12 @@ public class OnAirSongsService extends IntentService {
 
         if (ACTION_FETCH_ON_AIR_SONGS.equals(action)) {
             cancelFetchTimer();
-
+            setNextFetchTimer();
             fetchLatestSetlist(intent.getBooleanExtra(EXTRA_CLEAR_OLD_DATA, false));
         }
         else if (ACTION_SET_ON_AIR_SONGS_TIMER.equals(action)) {
             cancelFetchTimer();
-            if (AutoUpdateSettingPreference.autoUpdateOnAirSongs(this)) {
-                setNextFetchTimer();
-            }
+            setNextFetchTimer();
         }
         else if (ACTION_CANCEL_ON_AIR_SONGS_TIMER.equals(action)) {
             cancelFetchTimer();
@@ -173,8 +171,6 @@ public class OnAirSongsService extends IntentService {
             }
         }
 
-        setNextFetchTimer();
-
         sendBroadcast(new Intent(NOTIFY_ON_FETCH_LATEST_SETLIST));
     }
 
@@ -196,11 +192,12 @@ public class OnAirSongsService extends IntentService {
     }
 
     private void setNextFetchTimer() {
-        Calendar nextFetchTime = Calendar.getInstance(Locale.JAPAN);
-        nextFetchTime.add(Calendar.HOUR_OF_DAY, fetchSetlistAfterByHour());
-
-        SugorokuonServiceUtil.setNextTimer(pendingIntentToFetchSetlist(),
-                nextFetchTime.getTimeInMillis(), this);
+        if (AutoUpdateSettingPreference.autoUpdateOnAirSongs(this)) {
+            Calendar nextFetchTime = Calendar.getInstance(Locale.JAPAN);
+            nextFetchTime.add(Calendar.HOUR_OF_DAY, fetchSetlistAfterByHour());
+            SugorokuonServiceUtil.setNextTimer(pendingIntentToFetchSetlist(),
+                    nextFetchTime.getTimeInMillis(), this);
+        }
     }
 
     private void cancelFetchTimer() {
