@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
+import tsuyogoro.sugorokuon.network.radikoadaptation.StationsFetcher;
 
 public class UOnAirSongsApiTest extends AndroidTestCase {
 

@@ -13,20 +13,16 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.webkit.MimeTypeMap;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tsuyogoro.sugorokuon.utils.FileHandleUtil;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
@@ -117,25 +113,25 @@ public class ProgramApi {
         Bitmap icon = null;
 
         try {
-            HttpGet httpGet = new HttpGet(originalUrl);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(3, TimeUnit.SECONDS).readTimeout(3, TimeUnit.SECONDS).build();
 
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-            HttpConnectionParams.setSoTimeout(httpParams, 3000);
+            Request request = new Request.Builder().url(originalUrl).build();
 
-            DefaultHttpClient httpClient = new DefaultHttpClient(httpParams);
-            HttpResponse res = httpClient.execute(httpGet);
+            Response response = client.newCall(request).execute();
 
             // ファイルをDLして、新しいキャッシュをストレージに作成
-            if (res.getStatusLine().getStatusCode() < 400) {
+            if (response.code() == 200) {
+                MediaType mediaType = response.body().contentType();
+
                 String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                        res.getEntity().getContentType().getValue());
+                        mediaType.type() + "/" + mediaType.subtype());
 
                 String fileName = Long.toString(Calendar.getInstance().getTimeInMillis())
                         + "." + extension;
 
                 String cachedFilePath = FileHandleUtil.saveDataToFile(
-                        res.getEntity().getContent(), cacheDirectory(), fileName);
+                        response.body().byteStream(), cacheDirectory(), fileName);
 
                 // キャッシュからBitmapを生成
                 FileInputStream is = new FileInputStream(cachedFilePath);
@@ -145,8 +141,7 @@ public class ProgramApi {
                 // DBにfilePathとoriginalUrlの組み合わせを書き込む
                 insert(originalUrl, cachedFilePath);
             } else {
-                SugorokuonLog.w("Failed to download program icon - status : "
-                        + res.getStatusLine().getStatusCode());
+                SugorokuonLog.w("Failed to download program icon - status : " + response.code());
             }
 
         } catch (IOException e) {

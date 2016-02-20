@@ -11,15 +11,12 @@ import android.content.Intent;
 import com.google.android.gms.tagmanager.Container;
 import com.google.android.gms.tagmanager.ContainerHolder;
 
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
@@ -158,13 +155,11 @@ public class OnAirSongsService extends IntentService {
 
         // Feedを取得してDBに局情報を入れる
         for (Station s : onAirSongProviders) {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
 
-            HttpParams httpParams = httpClient.getParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, 60 * 1000);
-            HttpConnectionParams.setSoTimeout(httpParams, 60 * 1000);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES).readTimeout(1, TimeUnit.MINUTES).build();
 
-            Feed f = FeedFetcher.fetch(s.id, httpClient);
+            Feed f = FeedFetcher.fetch(s.id);
             if (null != f) {
                 int added = onAirSongDb.insert(f.onAirSongs).size();
                 SugorokuonLog.d("Fetch latest songs : " + s.name + " - " + added);

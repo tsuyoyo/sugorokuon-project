@@ -4,18 +4,17 @@
  */
 package tsuyogoro.sugorokuon.network.radikoadaptation;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.IOException;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.AbstractHttpClient;
-
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tsuyogoro.sugorokuon.constants.SugorokuonConst;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
-
-import android.net.Uri;
-import android.util.Log;
 
 /**
  * 曲のFeedをdownloadして、Feedインスタンスを作るクラス。
@@ -30,27 +29,29 @@ public class FeedFetcher {
      * 現在のところ、曲のonAir情報を取得するためのみに使う（他の情報も取れるが、全て読み飛ばす）。
      *
      * @param stationId
-     * @param client
      * @return 取得に失敗した場合、nullが返る。原因はlogcatを見ること。
      */
-	public static Feed fetch(String stationId, AbstractHttpClient client) {
+	public static Feed fetch(String stationId) {
 		Feed feed = null;
 		
 		String url = createFeedUrl(stationId);
-		HttpGet httpGet = new HttpGet(url);
-		HttpResponse httpRes;
+
+		OkHttpClient client = new OkHttpClient();
+
+		Request request = new Request.Builder().url(url).build();
 		try {
 			// Download station XML data.
-			httpRes = client.execute(httpGet);
+			Response httpRes = client.newCall(request).execute();
 
             // Status codeが400以上ならばエラー。
             // 参考 ： http://www.studyinghttp.net/status_code
-			int statusCode = httpRes.getStatusLine().getStatusCode();
+			int statusCode = httpRes.code();
 
 			if(400 <= statusCode) {
 				Log.e(SugorokuonConst.LOGTAG, "Failed to download feed : status code " + statusCode);
 			} else {
-				FeedResponseParser feedResponseParser = new FeedResponseParser(httpRes.getEntity().getContent(), "UTF-8");
+				FeedResponseParser feedResponseParser = new FeedResponseParser(
+						httpRes.body().byteStream(), "UTF-8");
 				feed = feedResponseParser.parse();
 			}
 

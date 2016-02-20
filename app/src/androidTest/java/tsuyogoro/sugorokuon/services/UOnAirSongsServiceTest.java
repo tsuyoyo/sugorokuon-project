@@ -13,8 +13,6 @@ import android.test.suitebuilder.annotation.MediumTest;
 
 import junit.framework.Assert;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -32,8 +30,7 @@ public class UOnAirSongsServiceTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        List<Station> stations = StationsFetcher.fetch(
-                Area.CHIBA.id, StationLogoSize.SMALL, new DefaultHttpClient());
+        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.SMALL);
 
         StationApi stationDb = new StationApi(getContext());
         stationDb.clear();

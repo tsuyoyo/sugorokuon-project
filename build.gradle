@@ -1,9 +1,13 @@
 ext {
+    compileSdkVersion = "23"
+    buildToolsVersion = "23.0.2"
+    minSdkVersion = "14"
+    targetSdkVersion = '23'
+    supportLibVersion = "23.1.1"
+    playServiceVersion = "8.4.0"
     robolectricVersion = "3.0-rc2"
 }
 
-// http://qiita.com/opengl-8080/items/4c1aa85b4737bd362d9e
-// ルートプロジェクト以外の全サブプロジェクトに設定を適用させたい場合は、subprojects に設定を記述する。
 subprojects {
     buildscript {
         repositories {
@@ -11,7 +15,7 @@ subprojects {
         }
 
         dependencies {
-            classpath "com.android.tools.build:gradle:1.1.3"
+            classpath "com.android.tools.build:gradle:1.5.0"
         }
     }
 
@@ -20,18 +24,6 @@ subprojects {
         mavenLocal()
         mavenCentral()
     }
+
 }
-//
-//buildscript {
-//    dependencies {
-//        classpath 'com.android.tools.build:gradle:1.1.3'
-//    }
-//    repositories {
-//        jcenter()
-//    }
-//}
-//allprojects {
-//    repositories {
-//        jcenter()
-//    }
-//}
+

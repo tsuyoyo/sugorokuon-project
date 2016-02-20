@@ -9,9 +9,6 @@ import android.test.suitebuilder.annotation.MediumTest;
 
 import junit.framework.Assert;
 
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.List;
 
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
@@ -31,11 +28,10 @@ public class UProgramDownloaderTest extends AndroidTestCase {
 
     @MediumTest
     public void testDownloadWeeklyTimeTable() throws Exception {
-        AbstractHttpClient client = new DefaultHttpClient();
 
         // Download for specific station
         List<OnedayTimetable> timetables =
-                TimeTableFetcher.fetchWeeklyTable("FMT", client);
+                TimeTableFetcher.fetchWeeklyTable("FMT");
         Assert.assertEquals(7, timetables.size());
 
         for (OnedayTimetable timeTable : timetables) {
@@ -46,13 +42,10 @@ public class UProgramDownloaderTest extends AndroidTestCase {
 
     @MediumTest
     public void testDownloadTodayTimeTable() throws Exception {
-        AbstractHttpClient client = new DefaultHttpClient();
-
         Station.Builder builder = new Station.Builder();
         builder.id = "FMT";
 
-        OnedayTimetable timeTable = TimeTableFetcher.fetchTodaysTable(
-                builder.create(), client);
+        OnedayTimetable timeTable = TimeTableFetcher.fetchTodaysTable(builder.create());
 
         Assert.assertNotNull(timeTable);
         Assert.assertTrue(0 < timeTable.programs.size());

@@ -1,13 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion project.compileSdkVersion.toInteger()
+    buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
+
+        // Memo :
+        // SimpleXMLを使うようにしたら65K method制限に引っかかるようになってしまった
+        // multiDexEnabledによって制限を上げ、その影響でtestが実行できなくなったので、2行目を追加
+        // (参考 : http://stackoverflow.com/questions/29024667/multidextestrunner-does-not-work-with-multidexapplication)
+        multiDexEnabled true
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
+
         applicationId "tsuyogoro.sugorokuon"
-        minSdkVersion 14
-        targetSdkVersion 21
         versionCode 204
         versionName "2.0.4"
     }
@@ -23,16 +31,24 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.0'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${project.supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
+    compile "com.google.android.gms:play-services:${project.playServiceVersion}"
 
-    compile 'com.android.support:support-v4:21.0.+'
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.google.android.gms:play-services:7.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
 
-    // Not used in production code
-    compile 'com.mcxiaoke.volley:library:1.+'
+    // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
+    compile('com.squareup.retrofit2:converter-simplexml:2.0.0-beta4') {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+
+    }
 
     // For Robolectric
     testCompile 'junit:junit:4.10'
@@ -42,3 +58,15 @@ dependencies {
     // AppC cloud
     compile files('libs/appc_cloud_2.2.0.jar')
 }
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.1'
+    }
+}
+
+apply plugin: 'com.getkeepsafe.dexcount'

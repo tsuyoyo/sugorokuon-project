@@ -1,7 +1,3 @@
-/**
- * Copyright (c)
- * 2015 Tsuyoyo. All Rights Reserved.
- */
 package tsuyogoro.sugorokuon.network.radikoadaptation;
 
 import android.test.AndroidTestCase;
@@ -11,7 +7,10 @@ import junit.framework.Assert;
 
 import tsuyogoro.sugorokuon.models.entities.Feed;
 
-public class UFeedFetcherTest extends AndroidTestCase {
+/**
+ * Created by tsuyoyo on 16/02/09.
+ */
+public class UDeserializeTest extends AndroidTestCase {
 
     @MediumTest
     public void testDownloadFeed() throws Exception {

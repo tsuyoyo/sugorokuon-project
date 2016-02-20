@@ -9,17 +9,10 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 import junit.framework.Assert;
-
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
@@ -40,9 +33,7 @@ public class UStationDownloaderTest extends AndroidTestCase {
     @SmallTest
     public void testDownloadStations() throws Exception {
 
-        AbstractHttpClient httpClient = new DefaultHttpClient();
-        List<Station> stations = StationsFetcher.fetch(
-                Area.CHIBA.id, StationLogoSize.LARGE, httpClient);
+        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE);
 
         Assert.assertTrue(0 < stations.size());
     }
@@ -52,8 +43,7 @@ public class UStationDownloaderTest extends AndroidTestCase {
 
         long start = Calendar.getInstance().getTimeInMillis();
 
-        AbstractHttpClient httpClient = new DefaultHttpClient();
-        List<Station> stations = StationsFetcher.fetch(Area.values(), StationLogoSize.LARGE, httpClient);
+        List<Station> stations = StationsFetcher.fetch(Area.values(), StationLogoSize.LARGE);
 
         long end = Calendar.getInstance().getTimeInMillis();
         Log.d("SugorokuonTest", "testDownloadAllStations - "
@@ -62,23 +52,23 @@ public class UStationDownloaderTest extends AndroidTestCase {
         Assert.assertTrue(0 < stations.size());
     }
 
-    @SmallTest
-    public void testDownloadStationsAsync() throws Exception {
-
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        StationsFetcher.fetchAsync(Area.CHIBA.id, StationLogoSize.LARGE,
-                new StationsFetcher.IOnGetStationListener() {
-                    @Override
-                    public void onGet(List<Station> stations) {
-                        Assert.assertTrue(0 < stations.size());
-                        latch.countDown();
-                    }
-                }, queue);
-
-        latch.await();
-    }
+//    @SmallTest
+//    public void testDownloadStationsAsync() throws Exception {
+//
+//        final CountDownLatch latch = new CountDownLatch(1);
+//
+//        RequestQueue queue = Volley.newRequestQueue(getContext());
+//
+//        StationsFetcher.fetchAsync(Area.CHIBA.id, StationLogoSize.LARGE,
+//                new StationsFetcher.IOnGetStationListener() {
+//                    @Override
+//                    public void onGet(List<Station> stations) {
+//                        Assert.assertTrue(0 < stations.size());
+//                        latch.countDown();
+//                    }
+//                }, queue);
+//
+//        latch.await();
+//    }
 
 }

@@ -10,17 +10,14 @@ import android.util.Log;
 
 import junit.framework.Assert;
 
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.Calendar;
 import java.util.List;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
-import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
@@ -51,16 +48,13 @@ public class URadikoInfoDownloadTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        AbstractHttpClient httpClient = new DefaultHttpClient();
-        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id,
-                StationLogoSize.LARGE, httpClient);
+        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE);
 
         StationApi stationApi = new StationApi(getContext());
         stationApi.insert(stations);
 
         // 全番組情報を落とす
-        List<OnedayTimetable> timeTable =
-                TimeTableFetcher.fetchWeeklyTable(stations, httpClient);
+        List<OnedayTimetable> timeTable = TimeTableFetcher.fetchWeeklyTable(stations);
 
         // 全ての局の番組情報がきちんととれているかをチェック
         Assert.assertEquals(stations.size() * 7, timeTable.size());

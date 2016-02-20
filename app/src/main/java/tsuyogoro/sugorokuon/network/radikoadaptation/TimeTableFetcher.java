@@ -4,21 +4,20 @@
  */
 package tsuyogoro.sugorokuon.network.radikoadaptation;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.AbstractHttpClient;
-
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
-
-import android.net.Uri;
-import android.util.Log;
 
 /**
  * Reference
@@ -60,13 +59,11 @@ public class TimeTableFetcher {
      * 指定したStation（複数局分）の一週間分のProgram情報をdownload
      *
      * @param stations Downloadするstation IDリスト。
-     * @param client HttpClientインスタンス。
      * @return stationの一週間分のProgramTableのリスト。
      */
-    public static List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, AbstractHttpClient client) {
+    public static List<OnedayTimetable> fetchWeeklyTable(List<Station> stations) {
 
-        return fetchWeeklyTable(stations, client, null);
+        return fetchWeeklyTable(stations, null);
     }
 
     /**
@@ -74,18 +71,17 @@ public class TimeTableFetcher {
      * listenerを渡して、進捗を受け取ることができる
      *
      * @param stations Downloadするstation IDリスト。
-     * @param client HttpClientインスタンス。
      * @param progressListener 進捗を受け取る
      * @return
      */
 	public static List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, AbstractHttpClient client, IWeeklyFetchProgressListener progressListener) {
+            List<Station> stations, IWeeklyFetchProgressListener progressListener) {
 
         ArrayList<OnedayTimetable> programs = new ArrayList<OnedayTimetable>();
         ArrayList<Station> fetchedStations = new ArrayList<Station>();
 
 		for(Station station : stations) {
-			programs.addAll(fetchWeeklyTable(station.id, client));
+			programs.addAll(fetchWeeklyTable(station.id));
 
             if (null != progressListener) {
                 fetchedStations.add(station);
@@ -99,26 +95,22 @@ public class TimeTableFetcher {
      * 指定したStation（1局分）の一週間分のProgram情報をdownload
      *
      * @param stationId DownloadするstationのID。
-     * @param client HttpClientインスタンス。
      * @return stationの一週間分のProgramTableのリスト。失敗したらnull。
      */
-	public static List<OnedayTimetable> fetchWeeklyTable(String stationId,
-                                                         AbstractHttpClient client) {
+	public static List<OnedayTimetable> fetchWeeklyTable(String stationId) {
 
-        return doFetchTimeTable(stationId, API_WEEKLY_PROGRAM, client);
+        return doFetchTimeTable(stationId, API_WEEKLY_PROGRAM);
 	}
 
     /**
      * 指定したStation（1局分）の今日のProgram情報をdownload
      *
      * @param station Downloadするstation
-     * @param client HttpClientインスタンス。
      * @return stationの今日のProgramTable。失敗したらnull。
      */
-    public static OnedayTimetable fetchTodaysTable(Station station,
-                                                   AbstractHttpClient client) {
+    public static OnedayTimetable fetchTodaysTable(Station station) {
 
-        List<OnedayTimetable> tables = doFetchTimeTable(station.id, API_TODAY_PROGRAM, client);
+        List<OnedayTimetable> tables = doFetchTimeTable(station.id, API_TODAY_PROGRAM);
 
         if (null != tables) {
             return tables.get(0);
@@ -134,15 +126,13 @@ public class TimeTableFetcher {
      * stationIdsの数より少ないリストが返る
      *
      * @param stations Downloadするstationのリスト
-     * @param client HttpClientインスタンス。
      * @return listインスタンス (nullは返らない)
      */
-    public static List<OnedayTimetable> fetchTodaysTable(List<Station> stations,
-                                                         AbstractHttpClient client) {
+    public static List<OnedayTimetable> fetchTodaysTable(List<Station> stations) {
         List<OnedayTimetable> tables = new ArrayList<OnedayTimetable>();
 
         for (Station station : stations) {
-            OnedayTimetable timeTable = fetchTodaysTable(station, client);
+            OnedayTimetable timeTable = fetchTodaysTable(station);
             if (null != timeTable) {
                 tables.add(timeTable);
             }
@@ -151,8 +141,7 @@ public class TimeTableFetcher {
     }
 
 
-    private static List<OnedayTimetable> doFetchTimeTable(
-            String stationId, String api, AbstractHttpClient client) {
+    private static List<OnedayTimetable> doFetchTimeTable(String stationId, String api) {
 
         Uri.Builder uriBuilder = new Uri.Builder();
         uriBuilder.scheme("http").authority(HOST)
@@ -161,21 +150,24 @@ public class TimeTableFetcher {
                 .appendPath("program")
                 .appendPath("station")
                 .appendPath(api).appendQueryParameter(QUERY_STATION_ID, stationId);
-//        String url = api + "?" + QUERY_STATION_ID + "=" + stationId;
 
-        HttpGet httpGet = new HttpGet(uriBuilder.build().toString());
+        Request request = new Request.Builder().url(uriBuilder.build().toString()).build();
+        OkHttpClient client = new OkHttpClient();
 
         // Download program list(xml) and parse it.
-        HttpResponse httpRes;
         try {
             // Download program XML data.
-            httpRes = client.execute(httpGet);
+            Response response = client.newCall(request).execute();
 
             // Parse the response.
-            InputStream programData = httpRes.getEntity().getContent();
-            ProgramResponseParser parser = new ProgramResponseParser(programData, UTF_8);
+            InputStream programData = response.body().byteStream();//httpRes.getEntity().getContent();
 
-            return parser.parse();
+            ProgramResponseParser parser = new ProgramResponseParser(programData, UTF_8);
+            List<OnedayTimetable> timeTables = parser.parse();
+
+            programData.close();
+
+            return timeTables;
 
         } catch(IOException e) {
             Log.e("SugoRokuon", "IOException at getProgramList:" + e.getMessage());

@@ -9,13 +9,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
 import junit.framework.Assert;
-
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,9 +20,9 @@ import java.util.concurrent.Executors;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
-import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
@@ -57,13 +51,12 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        AbstractHttpClient httpClient = new DefaultHttpClient();
         List<Station> stations = StationsFetcher.fetch(Area.values(),
-                StationLogoSize.LARGE, httpClient);
+                StationLogoSize.LARGE);
 
         // 全番組情報を落とす
         List<OnedayTimetable> timeTable =
-                TimeTableFetcher.fetchWeeklyTable(stations, httpClient);
+                TimeTableFetcher.fetchWeeklyTable(stations);
 
         // 全ての局の番組情報がきちんととれているかをチェック
         Assert.assertEquals(stations.size() * 7, timeTable.size());
@@ -99,9 +92,8 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        AbstractHttpClient httpClient = new DefaultHttpClient();
         List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id,
-                StationLogoSize.LARGE, httpClient);
+                StationLogoSize.LARGE);
 
         // DBへstation情報をstore
         StationApi stationApi = new StationApi(getContext());
@@ -124,12 +116,10 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
             public void run() {
 
                 Log.d("SugorokuonTest",
-                        "testDownloadOneAreaPararel -- " + mStationId + " DL-S");
-
-                DefaultHttpClient httpClient = new DefaultHttpClient();
+                        "testDownloadOneAreaPararel -- " + mStationId + " DL-S");;
 
                 List<OnedayTimetable> weekTimeTable = TimeTableFetcher.fetchWeeklyTable(
-                        mStationId, httpClient);
+                        mStationId);
                 if (null != weekTimeTable) {
                     synchronized (timeTable) {
                         timeTable.addAll(weekTimeTable);
@@ -172,51 +162,46 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
     @LargeTest
     public void testDownloadAllStationsEach() throws Exception {
 
-        AbstractHttpClient httpClient = new DefaultHttpClient();
-
         Area[] allArea = Area.values();
 
         for (Area area : allArea) {
-            List<Station> stations = StationsFetcher.fetch(
-                    area.id, StationLogoSize.LARGE, httpClient);
+            List<Station> stations = StationsFetcher.fetch(area.id, StationLogoSize.LARGE);
             Assert.assertTrue("Failed to get stations in " + area.name(), 0 < stations.size());
         }
     }
 
-    @MediumTest
-    public void testDownloadAllStationsAsync() throws Exception {
-
-        final List<Station> res = new ArrayList<Station>();
-        final CountDownLatch latch = new CountDownLatch(Area.values().length);
-
-        final long start = Calendar.getInstance().getTimeInMillis();
-
-        // 1局分のダウンロードを非同期板で行っていく
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        for (Area area : Area.values()) {
-            StationsFetcher.fetchAsync(area.id, StationLogoSize.LARGE,
-                    new StationsFetcher.IOnGetStationListener() {
-                        @Override
-                        public void onGet(List<Station> stations) {
-                            Assert.assertTrue(0 < stations.size());
-                            synchronized (res) {
-                                addStationsWithoutDuplicate(res, stations);
-                            }
-                            latch.countDown();
-                        }
-                    }, queue);
-        }
-        latch.await();
-
-        long end = Calendar.getInstance().getTimeInMillis();
-        Log.d("SugorokuonTest", "testDownloadAllStationsAsync - " +
-                Long.toString((end - start) / 1000) + " sec");
-
-        // 一応結果を同期板と比較
-        AbstractHttpClient httpClient = new DefaultHttpClient();
-        List<Station> refResult = StationsFetcher.fetch(Area.values(),
-                StationLogoSize.LARGE, httpClient);
-    }
+//    @MediumTest
+//    public void testDownloadAllStationsAsync() throws Exception {
+//
+//        final List<Station> res = new ArrayList<Station>();
+//        final CountDownLatch latch = new CountDownLatch(Area.values().length);
+//
+//        final long start = Calendar.getInstance().getTimeInMillis();
+//
+//        // 1局分のダウンロードを非同期板で行っていく
+//        RequestQueue queue = Volley.newRequestQueue(getContext());
+//        for (Area area : Area.values()) {
+//            StationsFetcher.fetchAsync(area.id, StationLogoSize.LARGE,
+//                    new StationsFetcher.IOnGetStationListener() {
+//                        @Override
+//                        public void onGet(List<Station> stations) {
+//                            Assert.assertTrue(0 < stations.size());
+//                            synchronized (res) {
+//                                addStationsWithoutDuplicate(res, stations);
+//                            }
+//                            latch.countDown();
+//                        }
+//                    }, queue);
+//        }
+//        latch.await();
+//
+//        long end = Calendar.getInstance().getTimeInMillis();
+//        Log.d("SugorokuonTest", "testDownloadAllStationsAsync - " +
+//                Long.toString((end - start) / 1000) + " sec");
+//
+//        // 一応結果を同期板と比較
+//        List<Station> refResult = StationsFetcher.fetch(Area.values(), StationLogoSize.LARGE);
+//    }
 
     private static void addStationsWithoutDuplicate(List<Station> list, List<Station> toAdd) {
         for (Station addCand : toAdd) {
