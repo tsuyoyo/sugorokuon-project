@@ -6,3 +6,5 @@
 /build
 /app/src/main/res/values/values_not_commit.xml
 /app/src/main/res/xml/global_tracker.xml
+.idea/
+**/*.iml
