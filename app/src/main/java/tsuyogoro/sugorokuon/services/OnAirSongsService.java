@@ -25,7 +25,7 @@ import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoadaptation.FeedFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.FeedFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**

@@ -22,7 +22,7 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.radikoadaptation.StationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
 
 public class UOnAirSongsServiceTest extends AndroidTestCase {
 

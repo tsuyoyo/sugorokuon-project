@@ -1,4 +1,8 @@
-package tsuyogoro.sugorokuon.network.radikoadaptation;
+/**
+ * Copyright (c)
+ * 2015 Tsuyoyo. All Rights Reserved.
+ */
+package tsuyogoro.sugorokuon.network.radikoapi;
 
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
@@ -7,10 +11,7 @@ import junit.framework.Assert;
 
 import tsuyogoro.sugorokuon.models.entities.Feed;
 
-/**
- * Created by tsuyoyo on 16/02/09.
- */
-public class UDeserializeTest extends AndroidTestCase {
+public class UFeedFetcherTest extends AndroidTestCase {
 
     @MediumTest
     public void testDownloadFeed() throws Exception {

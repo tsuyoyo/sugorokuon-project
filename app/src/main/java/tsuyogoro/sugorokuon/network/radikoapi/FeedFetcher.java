@@ -2,7 +2,7 @@
  * Copyright (c) 
  * 2013 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.network.radikoadaptation;
+package tsuyogoro.sugorokuon.network.radikoapi;
 
 import android.net.Uri;
 import android.util.Log;

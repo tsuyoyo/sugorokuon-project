@@ -31,8 +31,8 @@ import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoadaptation.StationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoadaptation.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.TimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
