@@ -11,6 +11,7 @@ import junit.framework.Assert;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
@@ -55,6 +56,31 @@ public class UProgramDownloaderTest extends AndroidTestCase {
     public void testDownloadTomorrowTimeTable() throws Exception {
         // Memo : 必要なら考えるけど、station IDを指定して翌日の番組表は取れない
         Assert.assertTrue(false);
+    }
+
+    @MediumTest
+    public void testTimeTableApiClientWeekly() throws Exception {
+        TimeTableApiClient apiClient = new TimeTableApiClient(new OkHttpClient());
+
+        TimeTableApiClient.TimeTableRoot res = apiClient.fetchWeeklyTimeTable("QRR");
+        Assert.assertNotNull(res);
+        Assert.assertFalse(res.stations.isEmpty());
+        Assert.assertTrue(1 == res.stations.size());
+        Assert.assertTrue(res.stations.get(0).timetables.size() > 0);
+
+        for (TimeTableApiClient.TimeTableRoot.Station.OnedayTimetable t : res.stations.get(0).timetables) {
+            Assert.assertTrue(t.programs.size() > 0);
+        }
+    }
+
+    @MediumTest
+    public void testTimeTableApiClientToday() throws Exception {
+        TimeTableApiClient apiClient = new TimeTableApiClient(new OkHttpClient());
+
+        TimeTableApiClient.TimeTableRoot res = apiClient.fetchTodaysTimeTable("QRR");
+        Assert.assertNotNull(res);
+        Assert.assertFalse(res.stations.isEmpty());
+        Assert.assertEquals(1, res.stations.get(0).timetables.size());
     }
 
 }
