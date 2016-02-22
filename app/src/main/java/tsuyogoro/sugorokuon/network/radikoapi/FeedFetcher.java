@@ -61,7 +61,12 @@ public class FeedFetcher {
 		
 		return feed;
 	}
-	
+
+
+//	http://radiko.jp/v3/feed/pc/noa/INT.xml
+//	http://radiko.jp/v3/feed/pc/cm/INT.xml
+//	http://radiko.jp/v3/feed/pc/sns/INT.xml
+
 	private static String createFeedUrl(String stationId) {
         Uri.Builder builder = new Uri.Builder();
 
