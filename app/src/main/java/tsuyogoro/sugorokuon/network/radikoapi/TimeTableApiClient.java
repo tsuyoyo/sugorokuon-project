@@ -4,8 +4,15 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.convert.Convert;
+import org.simpleframework.xml.convert.Registry;
+import org.simpleframework.xml.convert.RegistryStrategy;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.strategy.Strategy;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -29,17 +36,28 @@ class TimeTableApiClient {
     }
 
     public TimeTableApiClient(OkHttpClient client) {
+
+        // 日付のフィールドを、Serializer内でparseしてCalendar型にしてしまうための設定
+        Registry registry = new Registry();
+        Strategy strategy = new RegistryStrategy(registry);
+        Serializer serializer = new Persister(strategy);
+        try {
+            registry.bind(Calendar.class, ApiDateConverter.class);
+        } catch (Exception e) {
+            SugorokuonLog.e("Failed to bind converter : " + e.getMessage());
+            throw new IllegalStateException("Failed to bind converter for date field of programs");
+        }
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RadikoApiCommon.API_ROOT)
                 .client(client)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create(serializer))
                 .build();
 
         mTimeTableApiService = retrofit.create(TimeTableApiService.class);
     }
 
     /**
-     *
      * @param stationId
      * @return 失敗したらnull
      */
@@ -53,7 +71,6 @@ class TimeTableApiClient {
     }
 
     /**
-     *
      * @param stationId
      * @return 失敗したらnull
      */
@@ -69,6 +86,7 @@ class TimeTableApiClient {
     @Root
     public static class TimeTableRoot {
 
+        // 謎の値。
         @Element
         public int ttl;
 
@@ -93,8 +111,10 @@ class TimeTableApiClient {
 
             @Root(name = "progs")
             public static class OnedayTimetable {
-                @Element
-                public String date;
+
+                @Element(name = "date")
+                @Convert(ApiDateConverter.class)
+                public Calendar date;
 
                 @ElementList(inline = true)
                 public List<Program> programs;
@@ -104,10 +124,12 @@ class TimeTableApiClient {
 
                     // Formatted yyyyMMddhhmmss
                     @Attribute(name = "ft")
+                    @Convert(ApiDateConverter.class)
                     public String startTime;
 
                     // Formatted yyyyMMddhhmmss
                     @Attribute(name = "to")
+                    @Convert(ApiDateConverter.class)
                     public String endTime;
 
                     @Attribute(name = "ftl")
@@ -117,7 +139,7 @@ class TimeTableApiClient {
                     public String endTimeHHmm;
 
                     @Attribute(name = "dur")
-                    public String durationInSec;
+                    public int durationInSec;
 
                     @Element
                     public String title;
