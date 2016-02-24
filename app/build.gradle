@@ -7,14 +7,6 @@ android {
     defaultConfig {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
-
-        // Memo :
-        // SimpleXMLを使うようにしたら65K method制限に引っかかるようになってしまった
-        // multiDexEnabledによって制限を上げ、その影響でtestが実行できなくなったので、2行目を追加
-        // (参考 : http://stackoverflow.com/questions/29024667/multidextestrunner-does-not-work-with-multidexapplication)
-        multiDexEnabled true
-        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
-
         applicationId "tsuyogoro.sugorokuon"
         versionCode 204
         versionName "2.0.4"
@@ -23,16 +15,19 @@ android {
         release {
             // automatically remove unused resources
             // https://plus.google.com/+TorNorbye/posts/eHsStybrrBf
-            minifyEnabled false
-            shrinkResources true
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.0'
-
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
     compile "com.android.support:cardview-v7:${project.supportLibVersion}"
