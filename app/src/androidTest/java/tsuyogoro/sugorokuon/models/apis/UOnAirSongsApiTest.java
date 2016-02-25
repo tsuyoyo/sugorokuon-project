@@ -28,7 +28,8 @@ public class UOnAirSongsApiTest extends AndroidTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        mTarget.deleteAll();
+        // TODO : なぜかproguardをかけると「見つかりません」になるので、一旦コメントアウト
+//        mTarget.deleteAll();
         mTarget = null;
     }
 

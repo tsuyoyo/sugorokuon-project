@@ -13,8 +13,6 @@ import android.test.suitebuilder.annotation.MediumTest;
 
 import junit.framework.Assert;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +22,7 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.radikoadaptation.StationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
 
 public class UOnAirSongsServiceTest extends AndroidTestCase {
 
@@ -32,8 +30,7 @@ public class UOnAirSongsServiceTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        List<Station> stations = StationsFetcher.fetch(
-                Area.CHIBA.id, StationLogoSize.SMALL, new DefaultHttpClient());
+        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.SMALL);
 
         StationApi stationDb = new StationApi(getContext());
         stationDb.clear();

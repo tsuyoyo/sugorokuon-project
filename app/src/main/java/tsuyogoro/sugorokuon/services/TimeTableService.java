@@ -11,33 +11,28 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.constants.Area;
-import tsuyogoro.sugorokuon.constants.NotifyTiming;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
-import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
-import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
-import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
-import tsuyogoro.sugorokuon.network.radikoadaptation.StationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoadaptation.TimeTableFetcher;
 import tsuyogoro.sugorokuon.models.prefs.AreaSettingPreference;
+import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
+import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
+import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.TimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -259,8 +254,7 @@ public class TimeTableService extends Service {
 
         Area[] areas = AreaSettingPreference.getTargetAreas(this);
 
-        List<Station> stations =
-                StationsFetcher.fetch(areas, LOGO_SIZE, new DefaultHttpClient());
+        List<Station> stations = StationsFetcher.fetch(areas, LOGO_SIZE);
 
         if (null == stations) {
             return false;
@@ -281,7 +275,7 @@ public class TimeTableService extends Service {
         List<Station> stations = mStationApi.load();
 
         List<OnedayTimetable> timeTable = TimeTableFetcher.fetchWeeklyTable(
-                stations, new DefaultHttpClient(), progressListener);
+                stations, progressListener);
 
         boolean isSuccess = (timeTable.size() == stations.size() * 7);
         if (isSuccess) {
@@ -307,8 +301,7 @@ public class TimeTableService extends Service {
 
         List<Station> stations = mStationApi.load();
 
-        List<OnedayTimetable> timeTables =
-                TimeTableFetcher.fetchTodaysTable(stations, new DefaultHttpClient());
+        List<OnedayTimetable> timeTables = TimeTableFetcher.fetchTodaysTable(stations);
 
         boolean isSuccess = (timeTables.size() == stations.size());
         if (isSuccess) {

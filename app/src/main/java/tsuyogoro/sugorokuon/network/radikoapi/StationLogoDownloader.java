@@ -2,19 +2,18 @@
  * Copyright (c)
  * 2013 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.network.radikoadaptation;
+package tsuyogoro.sugorokuon.network.radikoapi;
 
 import android.os.Environment;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.AbstractHttpClient;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.utils.FileHandleUtil;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
@@ -34,24 +33,24 @@ class StationLogoDownloader {
      * ラジオ局のlogoイメージをdownloadし、filePathを返却する
      *
      * @param station
-     * @param httpClient
      * @return 失敗した場合はnull
      */
-    public static String download(Station station, AbstractHttpClient httpClient) {
-
-        HttpGet httpGet = new HttpGet(station.logoUrl);
-
-        HttpResponse httpRes;
+    public static String download(Station station) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(station.logoUrl).build();
 
         InputStream is;
         String path = null;
 
         try {
-            is = httpClient.execute(httpGet).getEntity().getContent();
-            path = FileHandleUtil.saveDataToFile(is, cacheDirectory(),
-                    logoFileName(station.id));
+            Response response = client.newCall(request).execute();
 
-            is.close();
+            if (response.code() <= 400) {
+                is = response.body().byteStream();
+                path = FileHandleUtil.saveDataToFile(is, cacheDirectory(),
+                        logoFileName(station.id));
+                is.close();
+            }
         } catch (IOException e) {
             SugorokuonLog.e("Fail to get (Logo url = " + station.logoUrl +
                     ") : "  + e.getMessage());

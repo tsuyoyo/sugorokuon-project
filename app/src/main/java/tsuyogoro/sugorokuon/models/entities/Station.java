@@ -8,32 +8,44 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Text;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import tsuyogoro.sugorokuon.utils.FileHandleUtil;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
+import org.simpleframework.xml.Root;
+
 public class Station {
 
-    public final String id;
+    public String id;
 
-    public final String name;
+    public String name;
 
-    public final String ascii_name;
+    public String ascii_name;
 
-    public final String siteUrl;
+    public String siteUrl;
 
-    public final String logoUrl;
+    public String logoUrl;
 
-    public final String bannerUrl;
+    public String bannerUrl;
 
     private String mLogoCachePath;
 
     private boolean mIsOnAirSongsAvailable = false;
+
+    public Station() {
+
+    }
 
     private Station(String id, String name, String ascii_name,
                     String siteUrl, String logoUrl, String bannerUrl, String logoCachePath) {

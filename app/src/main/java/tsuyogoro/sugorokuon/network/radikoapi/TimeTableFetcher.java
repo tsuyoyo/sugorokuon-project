@@ -1,0 +1,196 @@
+/**
+ * Copyright (c)
+ * 2012 Tsuyoyo. All Rights Reserved.
+ */
+package tsuyogoro.sugorokuon.network.radikoapi;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
+import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.utils.SugorokuonLog;
+
+/**
+ * Reference
+ * http://www.dcc-jpl.com/foltia/wiki/radikomemo
+ *
+ * @author Tsuyoyo
+ *
+ */
+public class TimeTableFetcher {
+
+    private final static String API_WEEKLY_PROGRAM = "weekly";
+
+    private final static String API_TODAY_PROGRAM = "today";
+
+    private TimeTableFetcher() {
+
+    }
+
+    /**
+     * Weekly TimeTableの進捗を受け取るlistener (時間がかかるので)
+     *
+     */
+    public static interface IWeeklyFetchProgressListener {
+        /**
+         *
+         * @param fetched 取得が完了した分
+         * @param requested fetchWeeklyTableメソッドに要求した分
+         */
+        public void onProgress(List<Station> fetched, List<Station> requested);
+    }
+
+    /**
+     * 指定したStation（複数局分）の一週間分のProgram情報をdownload
+     *
+     * @param stations Downloadするstation IDリスト。
+     * @return stationの一週間分のProgramTableのリスト。
+     */
+    public static List<OnedayTimetable> fetchWeeklyTable(List<Station> stations) {
+
+        return fetchWeeklyTable(stations, null);
+    }
+
+    /**
+     * 指定したStation（複数局分）の一週間分のProgram情報をdownload
+     * listenerを渡して、進捗を受け取ることができる
+     *
+     * @param stations Downloadするstation IDリスト。
+     * @param progressListener 進捗を受け取る
+     * @return
+     */
+    public static List<OnedayTimetable> fetchWeeklyTable(
+            List<Station> stations, IWeeklyFetchProgressListener progressListener) {
+
+        ArrayList<OnedayTimetable> programs = new ArrayList<OnedayTimetable>();
+        ArrayList<Station> fetchedStations = new ArrayList<Station>();
+
+        for (Station station : stations) {
+            programs.addAll(fetchWeeklyTable(station.id));
+
+            if (null != progressListener) {
+                fetchedStations.add(station);
+                progressListener.onProgress(fetchedStations, stations);
+            }
+        }
+        return programs;
+    }
+
+    /**
+     * 指定したStation（1局分）の一週間分のProgram情報をdownload
+     *
+     * @param stationId DownloadするstationのID。
+     * @return stationの一週間分のProgramTableのリスト。失敗したらnull。
+     */
+    public static List<OnedayTimetable> fetchWeeklyTable(String stationId) {
+
+        return doFetchTimeTable(stationId, API_WEEKLY_PROGRAM);
+    }
+
+    /**
+     * 指定したStation（1局分）の今日のProgram情報をdownload
+     *
+     * @param station Downloadするstation
+     * @return stationの今日のProgramTable。失敗したらnull。
+     */
+    public static OnedayTimetable fetchTodaysTable(Station station) {
+
+        List<OnedayTimetable> tables = doFetchTimeTable(station.id, API_TODAY_PROGRAM);
+
+        if (null != tables) {
+            return tables.get(0);
+        } else {
+            SugorokuonLog.w("Failed to get today's time table : " + station.ascii_name);
+            return null;
+        }
+    }
+
+    /**
+     * 指定したStation（複数局分）の今日のProgram情報をdownload
+     * 取得できたstationのTimeTableが返るが、(失敗したものがあった場合は
+     * stationIdsの数より少ないリストが返る
+     *
+     * @param stations Downloadするstationのリスト
+     * @return listインスタンス (nullは返らない)
+     */
+    public static List<OnedayTimetable> fetchTodaysTable(List<Station> stations) {
+        List<OnedayTimetable> tables = new ArrayList<OnedayTimetable>();
+
+        for (Station station : stations) {
+            OnedayTimetable timeTable = fetchTodaysTable(station);
+            if (null != timeTable) {
+                tables.add(timeTable);
+            }
+        }
+        return tables;
+    }
+
+
+    private static List<OnedayTimetable> doFetchTimeTable(String stationId, String apiName) {
+
+        TimeTableApiClient api = new TimeTableApiClient(new OkHttpClient());
+        TimeTableApiClient.TimeTableRoot dataFromRadiko = null;
+        switch (apiName) {
+            case API_TODAY_PROGRAM:
+                dataFromRadiko = api.fetchTodaysTimeTable(stationId);
+                break;
+            case API_WEEKLY_PROGRAM:
+                dataFromRadiko = api.fetchWeeklyTimeTable(stationId);
+                break;
+        }
+
+        if (dataFromRadiko == null) {
+            SugorokuonLog.w("Failed to fetch : " + apiName + " programs - station = " + stationId);
+            return null;
+        }
+
+        return convertAppModel(dataFromRadiko);
+    }
+
+    private static List<OnedayTimetable> convertAppModel(TimeTableApiClient.TimeTableRoot apiResponse) {
+        List<OnedayTimetable> res = new ArrayList<>();
+
+        for (TimeTableApiClient.TimeTableRoot.Station s : apiResponse.stations) {
+
+            for (TimeTableApiClient.TimeTableRoot.Station.TimeTable t : s.timetables) {
+                OnedayTimetable onedayTimetable = new OnedayTimetable(t.date, s.id);
+                onedayTimetable.programs = new ArrayList<>();
+
+                for (TimeTableApiClient.TimeTableRoot.Station.TimeTable.Program p : t.programs) {
+                    Program.Builder builder = new Program.Builder();
+
+                    builder.startTime = p.startTime;
+                    builder.endTime = p.endTime;
+                    builder.url = p.url;
+                    builder.stationId = s.id;
+
+                    if (p.desc != null) {
+                        builder.description = AlphabetNormalizer.zenkakuToHankaku(p.desc);
+                    }
+                    if (p.info != null) {
+                        builder.info = AlphabetNormalizer.zenkakuToHankaku(p.info);
+                    }
+                    if (p.personality != null) {
+                        builder.personalities = AlphabetNormalizer.zenkakuToHankaku(p.personality);
+                    }
+                    if (p.sub_title != null) {
+                        builder.subtitle = AlphabetNormalizer.zenkakuToHankaku(p.sub_title);
+                    }
+                    if (p.title != null) {
+                        builder.title = AlphabetNormalizer.zenkakuToHankaku(p.title);
+                    }
+
+                    onedayTimetable.programs.add(builder.create());
+                }
+
+                res.add(onedayTimetable);
+            }
+        }
+
+        return res;
+    }
+
+}

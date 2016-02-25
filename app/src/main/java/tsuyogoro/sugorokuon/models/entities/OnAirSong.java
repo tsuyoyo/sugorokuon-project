@@ -16,14 +16,17 @@ public class OnAirSong {
 	
 	public final Calendar date;
 
-    public final String itemId;
-	
-	public OnAirSong(String stationId, String artist, String title,
-                     Calendar date, String itemId) {
+	public final String imageUrl;
+
+	public String amazon;
+
+	public String recochoku;
+
+	public OnAirSong(String stationId, String artist, String title, Calendar date, String imageUrl) {
         this.stationId = stationId;
 		this.artist = artist;
 		this.title  = title;
-        this.itemId = itemId;
+		this.imageUrl = imageUrl;
 
         // radikoからミリ秒まで細かいデータが来ることは無いので
         // 余計なズレが起きないようここでリセットしておく
