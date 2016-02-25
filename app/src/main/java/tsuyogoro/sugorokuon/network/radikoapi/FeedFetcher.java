@@ -4,16 +4,12 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
-import android.net.Uri;
-import android.util.Log;
-
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import tsuyogoro.sugorokuon.constants.SugorokuonConst;
 import tsuyogoro.sugorokuon.models.entities.Feed;
+import tsuyogoro.sugorokuon.models.entities.OnAirSong;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -26,56 +22,33 @@ public class FeedFetcher {
 
     /**
      * Feedをdownloadする。
-     * 現在のところ、曲のonAir情報を取得するためのみに使う（他の情報も取れるが、全て読み飛ばす）。
      *
      * @param stationId
      * @return 取得に失敗した場合、nullが返る。原因はlogcatを見ること。
      */
 	public static Feed fetch(String stationId) {
-		Feed feed = null;
-		
-		String url = createFeedUrl(stationId);
 
-		OkHttpClient client = new OkHttpClient();
+		FeedApiClient api = new FeedApiClient(new OkHttpClient());
+		FeedApiClient.NowOnAir nowOnAir = api.fetchNowOnAirSongs(stationId);
 
-		Request request = new Request.Builder().url(url).build();
-		try {
-			// Download station XML data.
-			Response httpRes = client.newCall(request).execute();
-
-            // Status codeが400以上ならばエラー。
-            // 参考 ： http://www.studyinghttp.net/status_code
-			int statusCode = httpRes.code();
-
-			if(400 <= statusCode) {
-				Log.e(SugorokuonConst.LOGTAG, "Failed to download feed : status code " + statusCode);
-			} else {
-				FeedResponseParser feedResponseParser = new FeedResponseParser(
-						httpRes.body().byteStream(), "UTF-8");
-				feed = feedResponseParser.parse();
-			}
-
-		} catch(IOException e) {
-            SugorokuonLog.e("IOException at fetching feed : " + e.getMessage());
+		if (nowOnAir == null) {
+			SugorokuonLog.e("Failed to fetch Feed : stationId = " + stationId);
+			return null;
 		}
-		
-		return feed;
-	}
 
+		List<OnAirSong> onAirSongs = new ArrayList<>();
 
-//	http://radiko.jp/v3/feed/pc/noa/INT.xml
-//	http://radiko.jp/v3/feed/pc/cm/INT.xml
-//	http://radiko.jp/v3/feed/pc/sns/INT.xml
+		for (FeedApiClient.NowOnAir.Item s : nowOnAir.onAirSongs) {
+			OnAirSong song = new OnAirSong(stationId,
+					(s.artist != null) ? AlphabetNormalizer.zenkakuToHankaku(s.artist) : "",
+					(s.title != null) ? AlphabetNormalizer.zenkakuToHankaku(s.title) : "",
+					s.stamp, s.img);
+			song.amazon = s.amazon;
+			song.recochoku = s.recochoku;
+			onAirSongs.add(song);
+		}
 
-	private static String createFeedUrl(String stationId) {
-        Uri.Builder builder = new Uri.Builder();
-
-        // "http://radiko.jp/v2/station/feed_PC/";
-        builder.scheme("http").authority("radiko.jp")
-                .appendPath("v2").appendPath("station").appendPath("feed_PC")
-                .appendPath(stationId + ".xml");
-
-        return builder.build().toString();
+		return new Feed(onAirSongs);
 	}
 	
 }

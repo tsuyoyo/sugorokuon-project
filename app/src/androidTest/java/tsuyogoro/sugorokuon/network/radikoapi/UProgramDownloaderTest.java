@@ -68,7 +68,7 @@ public class UProgramDownloaderTest extends AndroidTestCase {
         Assert.assertTrue(1 == res.stations.size());
         Assert.assertTrue(res.stations.get(0).timetables.size() > 0);
 
-        for (TimeTableApiClient.TimeTableRoot.Station.OnedayTimetable t : res.stations.get(0).timetables) {
+        for (TimeTableApiClient.TimeTableRoot.Station.TimeTable t : res.stations.get(0).timetables) {
             Assert.assertTrue(t.programs.size() > 0);
         }
     }

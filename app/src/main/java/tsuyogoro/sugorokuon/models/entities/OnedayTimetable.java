@@ -27,7 +27,13 @@ public class OnedayTimetable {
         this.date.set(Calendar.MILLISECOND, 0);
 
         this.stationId = stationId;
-        this.programs = new ArrayList<Program>();
+        this.programs = new ArrayList<>();
+    }
+
+    public OnedayTimetable(Calendar data, String stationId) {
+        this.date = data;
+        this.stationId = stationId;
+        this.programs = new ArrayList<>();
     }
 
 }

@@ -4,9 +4,7 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
-import org.simpleframework.xml.convert.Converter;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.transform.Transform;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +14,7 @@ import java.util.Locale;
 
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-class ApiDateConverter implements Converter<Calendar> {
+class ApiDateConverter implements Transform<Calendar> {
 
     private static final String FORMAT_yyyyMMdd = "yyyyMMdd";
 
@@ -54,19 +52,12 @@ class ApiDateConverter implements Converter<Calendar> {
     }
 
     @Override
-    public Calendar read(InputNode node) throws Exception {
-
-        // メモ : node.getValue()で値が取れるのは1回限りで、2回呼ぶとnullが返ってくる
-        String value = node.getValue();
-        if (value == null) {
-            SugorokuonLog.d("node.getValue() returns null though DateConverter is called");
-            return null;
-        }
+    public Calendar read(String value) throws Exception {
 
         String formatPattern = decideFormatPatten(value);
         if (formatPattern == null) {
             SugorokuonLog.w("Format of date in program list is different from expected ones"
-                    + node.getValue());
+                    + value);
             return null;
         }
 
@@ -90,7 +81,8 @@ class ApiDateConverter implements Converter<Calendar> {
     }
 
     @Override
-    public void write(OutputNode node, Calendar value) throws Exception {
+    public String write(Calendar value) throws Exception {
         // No use case to serialize
+        return null;
     }
 }

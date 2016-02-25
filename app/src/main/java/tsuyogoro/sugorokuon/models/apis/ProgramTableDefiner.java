@@ -125,17 +125,17 @@ class ProgramTableDefiner extends BaseTableDefiner {
         statement.bindLong(
                 ProgramTableColumn.END_TIME.ordinal() + 1, p.endTime.getTimeInMillis());
         statement.bindString(
-                ProgramTableColumn.TITLE.ordinal() + 1, p.title);
+                ProgramTableColumn.TITLE.ordinal() + 1, (p.title != null) ? p.title : "");
         statement.bindString(
-                ProgramTableColumn.SUBTITLE.ordinal() + 1, p.subtitle);
+                ProgramTableColumn.SUBTITLE.ordinal() + 1, (p.subtitle != null) ? p.subtitle : "");
         statement.bindString(
-                ProgramTableColumn.PERSONALITIES.ordinal() + 1, p.personalities);
+                ProgramTableColumn.PERSONALITIES.ordinal() + 1, (p.personalities != null) ? p.personalities : "");
         statement.bindString(
-                ProgramTableColumn.DESCRIPTION.ordinal() + 1, p.description);
+                ProgramTableColumn.DESCRIPTION.ordinal() + 1, (p.description != null) ? p.description : "");
         statement.bindString(
-                ProgramTableColumn.INFO.ordinal() + 1, p.info);
+                ProgramTableColumn.INFO.ordinal() + 1, (p.info != null) ? p.info : "");
         statement.bindString(
-                ProgramTableColumn.URL.ordinal() + 1, p.url);
+                ProgramTableColumn.URL.ordinal() + 1, (p.url != null) ? p.url : "");
         statement.bindLong(
                 ProgramTableColumn.ISRECOMMEND.ordinal() + 1, (p.recommend()) ? 1 : 0);
     }

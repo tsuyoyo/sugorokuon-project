@@ -1,3 +1,7 @@
+/**
+ * Copyright (c)
+ * 2016 Tsuyoyo. All Rights Reserved.
+ */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
 import org.simpleframework.xml.Attribute;
@@ -60,6 +64,7 @@ class StationApiClient {
         @Attribute
         public String area_name;
 
+        @Root(name = "station")
         public static class Station {
 
             @Element
@@ -89,6 +94,7 @@ class StationApiClient {
             @ElementList(inline = true)
             public List<Logo> logos;
 
+            @Root(name = "logo")
             public static class Logo {
                 @Attribute
                 public int width;

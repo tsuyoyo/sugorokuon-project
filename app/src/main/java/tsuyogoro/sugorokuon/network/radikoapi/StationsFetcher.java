@@ -84,7 +84,7 @@ public class StationsFetcher {
         for (Station s : stations) {
             // OnAir曲情報を提供しているか
             Feed f = FeedFetcher.fetch(s.id);
-            if (0 < f.onAirSongs.size()) {
+            if (f != null && 0 < f.onAirSongs.size()) {
                 s.setOnAirSongsAvailable(true);
                 SugorokuonLog.d(" - " + s.id + " : onAir info available");
             }

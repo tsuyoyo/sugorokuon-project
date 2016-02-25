@@ -291,7 +291,6 @@ public class OnAirSongsApi {
         ContentValues cv = new ContentValues();
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.STATION_ID.name, song.stationId);
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.DATE.name, song.date.getTimeInMillis());
-        cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.ITEMID.name, song.itemId);
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.ARTIST.name, song.artist);
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.TITLE.name, song.title);
         return cv;

@@ -1,12 +1,20 @@
+/**
+ * Copyright (c)
+ * 2016 Tsuyoyo. All Rights Reserved.
+ */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Text;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.transform.RegistryMatcher;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -17,7 +25,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-public class FeedApiClient {
+class FeedApiClient {
 
     // TODO : 載せるかどうか考える
 //	http://radiko.jp/v3/feed/pc/sns/INT.xml
@@ -25,10 +33,16 @@ public class FeedApiClient {
     private final FeedApiService mFeedApiService;
 
     public FeedApiClient(OkHttpClient client) {
+
+        // 日付のフィールドを、Serializer内でparseしてCalendar型にしてしまうための設定
+        RegistryMatcher registryMatcher = new RegistryMatcher();
+        registryMatcher.bind(Calendar.class, new ApiDateConverter());
+        Serializer serializer = new Persister(registryMatcher);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RadikoApiCommon.API_ROOT)
-                .client(new OkHttpClient())
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .client(client)
+                .addConverterFactory(SimpleXmlConverterFactory.create(serializer))
                 .build();
 
         mFeedApiService = retrofit.create(FeedApiService.class);
@@ -126,7 +140,7 @@ public class FeedApiClient {
             public String program_title;
 
             @Attribute
-            public String stamp;
+            public Calendar stamp;
 
         }
     }
@@ -156,7 +170,7 @@ public class FeedApiClient {
             public String itemid;
 
             @Attribute
-            public String stamp;
+            public Calendar stamp;
         }
     }
 
