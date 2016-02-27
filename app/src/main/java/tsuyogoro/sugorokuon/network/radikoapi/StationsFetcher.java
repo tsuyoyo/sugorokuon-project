@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +28,11 @@ public class StationsFetcher {
      * @param logoSize
      * @return　downloadに失敗したらnullが返る。
      */
-    static public List<Station> fetch(Area[] areas, StationLogoSize logoSize) {
+    static public List<Station> fetch(Area[] areas, StationLogoSize logoSize, String logoCacheDir) {
 
         List<Station> stations = new ArrayList<>();
         for (Area area : areas) {
-            List<Station> areaStations = fetch(area.id, logoSize);
+            List<Station> areaStations = fetch(area.id, logoSize, logoCacheDir);
             if (null == areaStations) {
                 stations = null;
                 break;
@@ -43,6 +44,7 @@ public class StationsFetcher {
         return stations;
     }
 
+
     /**
      * areaIdで特定されるAreaのstation listをdownloadする。
      *
@@ -50,7 +52,7 @@ public class StationsFetcher {
      * @param logoSize
      * @return downloadに失敗した場合はnullが返る。
      */
-    static public List<Station> fetch(String areaId, StationLogoSize logoSize) {
+    static public List<Station> fetch(String areaId, StationLogoSize logoSize, String logoCacheDir) {
 
         StationApiClient api = new StationApiClient(new OkHttpClient());
         StationApiClient.StationList data = api.fetchStationList(areaId);
@@ -64,7 +66,7 @@ public class StationsFetcher {
             result.add(convertResponseToModel(s));
         }
 
-        completeStationInfo(result);
+        completeStationInfo(result, logoCacheDir);
 
         return result;
     }
@@ -80,7 +82,8 @@ public class StationsFetcher {
         return builder.create();
     }
 
-    static private void completeStationInfo(List<Station> stations) {
+    static private void completeStationInfo(List<Station> stations, String logoCacheDir) {
+
         for (Station s : stations) {
             // OnAir曲情報を提供しているか
             Feed f = FeedFetcher.fetch(s.id);
@@ -90,7 +93,7 @@ public class StationsFetcher {
             }
 
             // 局のlogoファイルを落としてしまっておく
-            s.setLogoCachePath(StationLogoDownloader.download(s));
+            s.setLogoCachePath(StationLogoDownloader.download(s, logoCacheDir));
         }
     }
 

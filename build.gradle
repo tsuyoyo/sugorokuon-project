@@ -5,6 +5,7 @@ ext {
     targetSdkVersion = '23'
     supportLibVersion = "23.1.1"
     playServiceVersion = "8.4.0"
+    retrofitVersion = "2.0.0-beta4"
     robolectricVersion = "3.0-rc2"
 }
 
@@ -21,6 +22,7 @@ subprojects {
 
     repositories {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        jcenter()
         mavenLocal()
         mavenCentral()
     }

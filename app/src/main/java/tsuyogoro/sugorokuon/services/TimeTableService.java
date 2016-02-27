@@ -7,10 +7,13 @@ package tsuyogoro.sugorokuon.services;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -126,6 +129,8 @@ public class TimeTableService extends Service {
     public static final int NOTIFICATION_ID_FOR_UPDATE_PROGRESS = 100;
 
     private static final StationLogoSize LOGO_SIZE = StationLogoSize.LARGE;
+
+    private static String LOGO_CACHE_DIR_NAME = "stationlogo";
 
     private StationApi mStationApi;
 
@@ -252,9 +257,19 @@ public class TimeTableService extends Service {
 
     private boolean updateStation() {
 
+        String logoCachedDir;
+        try {
+            PackageManager m = getPackageManager();
+            PackageInfo p = m.getPackageInfo(getPackageName(), 0);
+            logoCachedDir = p.applicationInfo.dataDir + File.separator + LOGO_CACHE_DIR_NAME;
+        } catch (PackageManager.NameNotFoundException e) {
+            SugorokuonLog.w("Error Package name not found " + e);
+            return false;
+        }
+
         Area[] areas = AreaSettingPreference.getTargetAreas(this);
 
-        List<Station> stations = StationsFetcher.fetch(areas, LOGO_SIZE);
+        List<Station> stations = StationsFetcher.fetch(areas, LOGO_SIZE, logoCachedDir);
 
         if (null == stations) {
             return false;

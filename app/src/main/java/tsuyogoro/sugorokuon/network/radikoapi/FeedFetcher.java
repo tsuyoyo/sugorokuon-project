@@ -32,7 +32,7 @@ public class FeedFetcher {
 		FeedApiClient.NowOnAir nowOnAir = api.fetchNowOnAirSongs(stationId);
 
 		if (nowOnAir == null) {
-			SugorokuonLog.e("Failed to fetch Feed : stationId = " + stationId);
+			SugorokuonLog.d("No feed : stationId = " + stationId);
 			return null;
 		}
 

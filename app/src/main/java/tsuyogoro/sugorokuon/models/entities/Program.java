@@ -102,29 +102,13 @@ public class Program {
      * @return 存在しなければnullを返す
      */
     public Bitmap getSymbolIcon(Context context) {
-
-        List<String> imgUrls = new ArrayList<String>();
-
-        String programDesc = (null != description) ? description : "";
-        programDesc += (null != info) ? info : "";
-
-        // メモ :
-        // "|" (or) を使って2つ条件を書くと後者が上手く検出されないのでやむを得ず2つに分けた
-        Matcher m1 = Pattern.compile("<img src=\'([^\'\\n]*)\'").matcher(programDesc);
-        while (m1.find()) {
-            imgUrls.add(m1.group(1));
-        }
-        Matcher m2 = Pattern.compile("<img src=\"([^\"\\n]*)\"").matcher(programDesc);
-        while (m2.find()) {
-            imgUrls.add(m2.group(1));
-        }
+        List<String> imgUrls = findSymbolIcon();
 
         // 番組のdescription or infoに記載された画像で、一番最初に出てきたものを取得する
         // (これで良いかどうかは別途考える)
         Bitmap icon = null;
 
         if (!imgUrls.isEmpty()) {
-
             String url = imgUrls.get(0);
 
             ProgramApi programApi = new ProgramApi(context);
@@ -142,6 +126,45 @@ public class Program {
         }
 
         return icon;
+    }
+
+    /**
+     * TimeTableなどのリストで使う、番組の画像ファイルパス (URL) を取得。
+     *
+     * @return 存在しなければnullを返す
+     */
+    public String getSymbolIconPath(Context context) {
+        List<String> imgUrls = findSymbolIcon();
+
+        // 番組のdescription or infoに記載された画像で、一番最初に出てきたものを取得する
+        // (これで良いかどうかは別途考える)
+        if (!imgUrls.isEmpty()) {
+            return imgUrls.get(0);
+        } else {
+            // 番組のアイコンが無ければ、局のアイコンを代わりに使う
+            StationApi stationApi = new StationApi(context);
+            return stationApi.load(stationId).getLogoCachePath();
+        }
+    }
+
+    private List<String> findSymbolIcon() {
+        List<String> imgUrls = new ArrayList<String>();
+
+        String programDesc = (null != description) ? description : "";
+        programDesc += (null != info) ? info : "";
+
+        // メモ :
+        // "|" (or) を使って2つ条件を書くと後者が上手く検出されないのでやむを得ず2つに分けた
+        Matcher m1 = Pattern.compile("<img src=\'([^\'\\n]*)\'").matcher(programDesc);
+        while (m1.find()) {
+            imgUrls.add(m1.group(1));
+        }
+        Matcher m2 = Pattern.compile("<img src=\"([^\"\\n]*)\"").matcher(programDesc);
+        while (m2.find()) {
+            imgUrls.add(m2.group(1));
+        }
+
+        return imgUrls;
     }
 
 }

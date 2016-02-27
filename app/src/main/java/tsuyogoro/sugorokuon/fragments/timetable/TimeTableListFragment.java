@@ -6,6 +6,7 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -23,16 +24,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class TimeTableListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Program>> {
@@ -176,37 +183,39 @@ public class TimeTableListFragment extends Fragment
         public static class ViewHolder extends RecyclerView.ViewHolder
                 implements View.OnClickListener {
 
-            class IconFetcherTask extends AsyncTask<Program, Void, Drawable> {
+            class IconFetcherTask extends AsyncTask<Program, Void, String> {
 
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    // 横画面の時はアイコン無し
+                    // 横画面の時はアイコン無しなので、mImageViewがnullということがありうる
                     if (null != mImageView) {
-                        mImageView.setVisibility(View.GONE);
-                        mImageView.setImageResource(android.R.color.transparent);
+                        mImageView.setImageResource(0);
                     }
                 }
 
                 @Override
-                protected Drawable doInBackground(Program... params) {
-                    Program p = params[0];
-                    Bitmap icon = p.getSymbolIcon(mContext);
-
-                    if (null != icon) {
-                        return new BitmapDrawable(mContext.getResources(), icon);
-                    } else {
-                        return null;
-                    }
+                protected String doInBackground(Program... params) {
+                    String iconPath = params[0].getSymbolIconPath(mContext);
+                    SugorokuonLog.d("Program symbol icon : " + iconPath);
+                    return iconPath;
                 }
 
                 @Override
-                protected void onPostExecute(Drawable iconData) {
-                    super.onPostExecute(iconData);
-                    if (null != iconData && null != mImageView) {
-                        mImageView.setVisibility(View.VISIBLE);
-                        mImageView.setImageDrawable(iconData);
+                protected void onPostExecute(String iconPath) {
+                    super.onPostExecute(iconPath);
+
+                    if (null != iconPath && null != mImageView) {
+                        if (iconPath.startsWith("http")) {
+                            float scale = mContext.getResources().getDisplayMetrics().density;
+                            Picasso.with(mContext).load(iconPath)
+                                    .transform(new CropCircleTransformation())
+                                    .into(mImageView);
+                        } else {
+                            Picasso.with(mContext).load(new File(iconPath))
+                                    .into(mImageView);
+                        }
                     }
                 }
             }

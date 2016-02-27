@@ -53,6 +53,12 @@
 -keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
 
+# Picasso
+-dontwarn com.squareup.picasso.**
+
+# Picasso Transformations
+-dontwarn jp.co.cyberagent.android.gpuimage.**
+
 # Okio
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*

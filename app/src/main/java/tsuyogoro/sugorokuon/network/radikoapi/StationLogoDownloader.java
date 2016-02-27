@@ -4,6 +4,9 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import java.io.File;
@@ -35,7 +38,7 @@ class StationLogoDownloader {
      * @param station
      * @return 失敗した場合はnull
      */
-    public static String download(Station station) {
+    public static String download(Station station, String cacheDir) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(station.logoUrl).build();
 
@@ -47,9 +50,11 @@ class StationLogoDownloader {
 
             if (response.code() <= 400) {
                 is = response.body().byteStream();
-                path = FileHandleUtil.saveDataToFile(is, cacheDirectory(),
+                path = FileHandleUtil.saveDataToFile(is, cacheDir,//cacheDirectory(cacheDir),
                         logoFileName(station.id));
                 is.close();
+
+                SugorokuonLog.d("Saved filed in " + path);
             }
         } catch (IOException e) {
             SugorokuonLog.e("Fail to get (Logo url = " + station.logoUrl +
@@ -65,9 +70,20 @@ class StationLogoDownloader {
         return stationId + "_" + now.getTimeInMillis() + ".png";
     }
 
-    private static String cacheDirectory() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath()
-                + File.separator + LOGO_CACHE_DIR;
+    private static String cacheDirectory(Context context) {
+
+        PackageManager m = context.getPackageManager();
+        try {
+            PackageInfo p = m.getPackageInfo(context.getPackageName(), 0);
+            return p.applicationInfo.dataDir;
+        } catch (PackageManager.NameNotFoundException e) {
+            SugorokuonLog.w("Error Package name not found " + e);
+        }
+
+        return null;
+
+//        return Environment.getExternalStorageDirectory().getAbsolutePath()
+//                + File.separator + LOGO_CACHE_DIR;
     }
 
 }
