@@ -18,7 +18,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
@@ -32,10 +35,12 @@ import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
+import tsuyogoro.sugorokuon.network.StationFetcher;
+import tsuyogoro.sugorokuon.network.TimeTableFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoapi.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -134,6 +139,12 @@ public class TimeTableService extends Service {
 
     private StationApi mStationApi;
 
+    @Inject
+    TimeTableFetcher timeTableFetcher;
+
+    @Inject
+    StationFetcher stationsFetcher;
+
     private TimeTableApi mTimeTableApi;
 
     private AsyncTask<Void, List<Station>, Boolean> mWeeklyUpdateTask;
@@ -169,6 +180,7 @@ public class TimeTableService extends Service {
         super.onCreate();
         mStationApi = new StationApi(this);
         mTimeTableApi = new TimeTableApi(this);
+        ((SugorokuonApplication) getApplication()).component().inject(this);
     }
 
     @Override
@@ -269,7 +281,7 @@ public class TimeTableService extends Service {
 
         Area[] areas = AreaSettingPreference.getTargetAreas(this);
 
-        List<Station> stations = StationsFetcher.fetch(areas, LOGO_SIZE, logoCachedDir);
+        List<Station> stations = stationsFetcher.fetch(areas, LOGO_SIZE, logoCachedDir);
 
         if (null == stations) {
             return false;
@@ -289,7 +301,7 @@ public class TimeTableService extends Service {
 
         List<Station> stations = mStationApi.load();
 
-        List<OnedayTimetable> timeTable = TimeTableFetcher.fetchWeeklyTable(
+        List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(
                 stations, progressListener);
 
         boolean isSuccess = (timeTable.size() == stations.size() * 7);
@@ -316,7 +328,7 @@ public class TimeTableService extends Service {
 
         List<Station> stations = mStationApi.load();
 
-        List<OnedayTimetable> timeTables = TimeTableFetcher.fetchTodaysTable(stations);
+        List<OnedayTimetable> timeTables = timeTableFetcher.fetchTodaysTable(stations);
 
         boolean isSuccess = (timeTables.size() == stations.size());
         if (isSuccess) {

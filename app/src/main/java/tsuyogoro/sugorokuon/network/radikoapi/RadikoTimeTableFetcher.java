@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.TimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -20,50 +21,24 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
  * @author Tsuyoyo
  *
  */
-public class TimeTableFetcher {
+public class RadikoTimeTableFetcher implements TimeTableFetcher {
 
     private final static String API_WEEKLY_PROGRAM = "weekly";
 
     private final static String API_TODAY_PROGRAM = "today";
 
-    private TimeTableFetcher() {
-
+    public RadikoTimeTableFetcher() {
     }
 
-    /**
-     * Weekly TimeTableの進捗を受け取るlistener (時間がかかるので)
-     *
-     */
-    public static interface IWeeklyFetchProgressListener {
-        /**
-         *
-         * @param fetched 取得が完了した分
-         * @param requested fetchWeeklyTableメソッドに要求した分
-         */
-        public void onProgress(List<Station> fetched, List<Station> requested);
-    }
-
-    /**
-     * 指定したStation（複数局分）の一週間分のProgram情報をdownload
-     *
-     * @param stations Downloadするstation IDリスト。
-     * @return stationの一週間分のProgramTableのリスト。
-     */
-    public static List<OnedayTimetable> fetchWeeklyTable(List<Station> stations) {
+    @Override
+    public List<OnedayTimetable> fetchWeeklyTable(List<Station> stations) {
 
         return fetchWeeklyTable(stations, null);
     }
 
-    /**
-     * 指定したStation（複数局分）の一週間分のProgram情報をdownload
-     * listenerを渡して、進捗を受け取ることができる
-     *
-     * @param stations Downloadするstation IDリスト。
-     * @param progressListener 進捗を受け取る
-     * @return
-     */
-    public static List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, IWeeklyFetchProgressListener progressListener) {
+    @Override
+    public List<OnedayTimetable> fetchWeeklyTable(
+            List<Station> stations, TimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
         ArrayList<OnedayTimetable> programs = new ArrayList<OnedayTimetable>();
         ArrayList<Station> fetchedStations = new ArrayList<Station>();
@@ -79,24 +54,14 @@ public class TimeTableFetcher {
         return programs;
     }
 
-    /**
-     * 指定したStation（1局分）の一週間分のProgram情報をdownload
-     *
-     * @param stationId DownloadするstationのID。
-     * @return stationの一週間分のProgramTableのリスト。失敗したらnull。
-     */
-    public static List<OnedayTimetable> fetchWeeklyTable(String stationId) {
+    @Override
+    public List<OnedayTimetable> fetchWeeklyTable(String stationId) {
 
         return doFetchTimeTable(stationId, API_WEEKLY_PROGRAM);
     }
 
-    /**
-     * 指定したStation（1局分）の今日のProgram情報をdownload
-     *
-     * @param station Downloadするstation
-     * @return stationの今日のProgramTable。失敗したらnull。
-     */
-    public static OnedayTimetable fetchTodaysTable(Station station) {
+    @Override
+    public OnedayTimetable fetchTodaysTable(Station station) {
 
         List<OnedayTimetable> tables = doFetchTimeTable(station.id, API_TODAY_PROGRAM);
 
@@ -108,15 +73,8 @@ public class TimeTableFetcher {
         }
     }
 
-    /**
-     * 指定したStation（複数局分）の今日のProgram情報をdownload
-     * 取得できたstationのTimeTableが返るが、(失敗したものがあった場合は
-     * stationIdsの数より少ないリストが返る
-     *
-     * @param stations Downloadするstationのリスト
-     * @return listインスタンス (nullは返らない)
-     */
-    public static List<OnedayTimetable> fetchTodaysTable(List<Station> stations) {
+    @Override
+    public List<OnedayTimetable> fetchTodaysTable(List<Station> stations) {
         List<OnedayTimetable> tables = new ArrayList<OnedayTimetable>();
 
         for (Station station : stations) {
@@ -128,8 +86,7 @@ public class TimeTableFetcher {
         return tables;
     }
 
-
-    private static List<OnedayTimetable> doFetchTimeTable(String stationId, String apiName) {
+    private List<OnedayTimetable> doFetchTimeTable(String stationId, String apiName) {
 
         TimeTableApiClient api = new TimeTableApiClient(new OkHttpClient());
         TimeTableApiClient.TimeTableRoot dataFromRadiko = null;
@@ -150,7 +107,7 @@ public class TimeTableFetcher {
         return convertAppModel(dataFromRadiko);
     }
 
-    private static List<OnedayTimetable> convertAppModel(TimeTableApiClient.TimeTableRoot apiResponse) {
+    private List<OnedayTimetable> convertAppModel(TimeTableApiClient.TimeTableRoot apiResponse) {
         List<OnedayTimetable> res = new ArrayList<>();
 
         for (TimeTableApiClient.TimeTableRoot.Station s : apiResponse.stations) {

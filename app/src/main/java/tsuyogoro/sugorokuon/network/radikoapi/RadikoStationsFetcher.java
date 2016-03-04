@@ -4,7 +4,6 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,22 +12,20 @@ import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.StationFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-public class StationsFetcher {
+public class RadikoStationsFetcher implements StationFetcher {
 
-    public StationsFetcher() {
+    private RadikoFeedFetcher mFeedFetcher;
+
+    public RadikoStationsFetcher() {
+        mFeedFetcher = new RadikoFeedFetcher();
     }
 
-    /**
-     * areaIdのリストに入っているareaに属する全てのラジオ局情報をdownloadする。
-     * stationIdに重複はないよう、listを作成する。
-     *
-     * @param areas
-     * @param logoSize
-     * @return　downloadに失敗したらnullが返る。
-     */
-    static public List<Station> fetch(Area[] areas, StationLogoSize logoSize, String logoCacheDir) {
+    @Override
+    public List<Station> fetch(Area[] areas, StationLogoSize logoSize, String logoCacheDir) {
 
         List<Station> stations = new ArrayList<>();
         for (Area area : areas) {
@@ -44,15 +41,8 @@ public class StationsFetcher {
         return stations;
     }
 
-
-    /**
-     * areaIdで特定されるAreaのstation listをdownloadする。
-     *
-     * @param areaId
-     * @param logoSize
-     * @return downloadに失敗した場合はnullが返る。
-     */
-    static public List<Station> fetch(String areaId, StationLogoSize logoSize, String logoCacheDir) {
+    @Override
+    public List<Station> fetch(String areaId, StationLogoSize logoSize, String logoCacheDir) {
 
         StationApiClient api = new StationApiClient(new OkHttpClient());
         StationApiClient.StationList data = api.fetchStationList(areaId);
@@ -71,7 +61,7 @@ public class StationsFetcher {
         return result;
     }
 
-    static private Station convertResponseToModel(StationApiClient.StationList.Station responseData) {
+    private Station convertResponseToModel(StationApiClient.StationList.Station responseData) {
         Station.Builder builder = new Station.Builder();
         builder.ascii_name = responseData.ascii_name;
         builder.bannerUrl = responseData.banner;
@@ -82,11 +72,11 @@ public class StationsFetcher {
         return builder.create();
     }
 
-    static private void completeStationInfo(List<Station> stations, String logoCacheDir) {
+    private void completeStationInfo(List<Station> stations, String logoCacheDir) {
 
         for (Station s : stations) {
             // OnAir曲情報を提供しているか
-            Feed f = FeedFetcher.fetch(s.id);
+            Feed f = mFeedFetcher.fetch(s.id);
             if (f != null && 0 < f.onAirSongs.size()) {
                 s.setOnAirSongsAvailable(true);
                 SugorokuonLog.d(" - " + s.id + " : onAir info available");
@@ -97,7 +87,7 @@ public class StationsFetcher {
         }
     }
 
-    static private void addStationsWithoutDuplicate(List<Station> list,
+    private void addStationsWithoutDuplicate(List<Station> list,
                                                     List<Station> toAdd) {
         for (Station addCand : toAdd) {
             boolean isNew = true;

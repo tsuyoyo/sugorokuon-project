@@ -9,6 +9,10 @@ import android.app.Application;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
+import tsuyogoro.sugorokuon.di.AppComponent;
+import tsuyogoro.sugorokuon.di.DaggerAppComponent;
+import tsuyogoro.sugorokuon.di.NetworkApiModule;
+
 public class SugorokuonApplication extends Application {
 
     private Tracker mTracker;
@@ -22,4 +26,17 @@ public class SugorokuonApplication extends Application {
         return  mTracker;
     }
 
+    private AppComponent mAppComponent;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mAppComponent = DaggerAppComponent.builder()
+                .networkApiModule(new NetworkApiModule())
+                .build();
+    }
+
+    public AppComponent component() {
+        return mAppComponent;
+    }
 }

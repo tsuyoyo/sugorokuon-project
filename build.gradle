@@ -7,6 +7,7 @@ ext {
     playServiceVersion = "8.4.0"
     retrofitVersion = "2.0.0-beta4"
     robolectricVersion = "3.0-rc2"
+    daggerVersion = "2.0.2"
 }
 
 subprojects {

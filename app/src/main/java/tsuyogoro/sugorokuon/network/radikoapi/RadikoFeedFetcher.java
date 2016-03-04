@@ -10,6 +10,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
+import tsuyogoro.sugorokuon.network.FeedFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -18,15 +19,10 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
  * @author Tsuyoyo
  *
  */
-public class FeedFetcher {
+public class RadikoFeedFetcher implements FeedFetcher {
 
-    /**
-     * Feedをdownloadする。
-     *
-     * @param stationId
-     * @return 取得に失敗した場合、nullが返る。原因はlogcatを見ること。
-     */
-	public static Feed fetch(String stationId) {
+	@Override
+	public Feed fetch(String stationId) {
 
 		FeedApiClient api = new FeedApiClient(new OkHttpClient());
 		FeedApiClient.NowOnAir nowOnAir = api.fetchNowOnAirSongs(stationId);

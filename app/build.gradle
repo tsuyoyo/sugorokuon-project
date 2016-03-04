@@ -1,4 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion project.compileSdkVersion.toInteger()
@@ -34,6 +46,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
     compile "com.google.android.gms:play-services:${project.playServiceVersion}"
 
+    // TODO : License!!
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
@@ -47,6 +60,9 @@ dependencies {
     }
     compile "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
 
+    compile "com.google.dagger:dagger:${project.daggerVersion}"
+    apt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    provided 'javax.annotation:jsr250-api:1.0'
 
 
     // For Robolectric
@@ -59,13 +75,3 @@ dependencies {
 }
 
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.1'
-    }
-}
-
-apply plugin: 'com.getkeepsafe.dexcount'
