@@ -6,20 +6,24 @@ package tsuyogoro.sugorokuon.utils;
 
 import android.util.Log;
 
+import tsuyogoro.sugorokuon.variables.LogSettings;
+
 public class SugorokuonLog {
 
-    static final private String TAG = "SugorokuonLog";
-
     static public void d(String msg) {
-        Log.d(TAG, msg);
+        if (LogSettings.LOG_LEVEL <= Log.DEBUG) {
+            Log.d(LogSettings.TAG, msg);
+        }
     }
 
     static public void w(String msg) {
-        Log.w(TAG, msg);
+        if (LogSettings.LOG_LEVEL <= Log.WARN) {
+            Log.w(LogSettings.TAG, msg);
+        }
     }
 
     static public void e(String msg) {
-        Log.e(TAG, msg);
+        Log.e(LogSettings.TAG, msg);
     }
 
 }
