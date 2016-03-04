@@ -31,7 +31,7 @@ public class FileHandleUtil {
             }
 
             // 空のファイルを作る
-            fullPath = dirName + fileName;
+            fullPath = dirName + (dirName.endsWith("/") ? fileName : "/" + fileName);
             File dataFile = new File(fullPath);
             if(!dataFile.exists()) {
                 dataFile.createNewFile();

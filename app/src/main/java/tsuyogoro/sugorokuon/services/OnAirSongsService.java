@@ -14,18 +14,20 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.OkHttpClient;
+import javax.inject.Inject;
+
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
+import tsuyogoro.sugorokuon.network.FeedFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoapi.FeedFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoFeedFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -84,6 +86,9 @@ public class OnAirSongsService extends IntentService {
 
     private static final int DEFAULT_FETCH_PERIOD_HOUR = 2;
 
+    @Inject
+    FeedFetcher feedFetcher;
+
     public OnAirSongsService() {
         // (Memo) IntentServiceのコンストラクタ、worker threadの名前を渡す
         // https://groups.google.com/forum/#!topic/android-developers/HVBnJ15amVc
@@ -93,6 +98,7 @@ public class OnAirSongsService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        ((SugorokuonApplication) getApplication()).component().inject(this);
     }
 
     @Override
@@ -155,11 +161,7 @@ public class OnAirSongsService extends IntentService {
 
         // Feedを取得してDBに局情報を入れる
         for (Station s : onAirSongProviders) {
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(1, TimeUnit.MINUTES).readTimeout(1, TimeUnit.MINUTES).build();
-
-            Feed f = FeedFetcher.fetch(s.id);
+            Feed f = feedFetcher.fetch(s.id);
             if (null != f) {
                 int added = onAirSongDb.insert(f.onAirSongs).size();
                 SugorokuonLog.d("Fetch latest songs : " + s.name + " - " + added);

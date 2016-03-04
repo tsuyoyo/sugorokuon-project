@@ -14,12 +14,16 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.TimeTableFetcher;
 
 public class UProgramDownloaderTest extends AndroidTestCase {
+
+    private TimeTableFetcher target;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        target = new RadikoTimeTableFetcher();
     }
 
     @Override
@@ -31,8 +35,7 @@ public class UProgramDownloaderTest extends AndroidTestCase {
     public void testDownloadWeeklyTimeTable() throws Exception {
 
         // Download for specific station
-        List<OnedayTimetable> timetables =
-                TimeTableFetcher.fetchWeeklyTable("FMT");
+        List<OnedayTimetable> timetables = target.fetchWeeklyTable("FMT");
         Assert.assertEquals(7, timetables.size());
 
         for (OnedayTimetable timeTable : timetables) {
@@ -46,7 +49,7 @@ public class UProgramDownloaderTest extends AndroidTestCase {
         Station.Builder builder = new Station.Builder();
         builder.id = "FMT";
 
-        OnedayTimetable timeTable = TimeTableFetcher.fetchTodaysTable(builder.create());
+        OnedayTimetable timeTable = target.fetchTodaysTable(builder.create());
 
         Assert.assertNotNull(timeTable);
         Assert.assertTrue(0 < timeTable.programs.size());

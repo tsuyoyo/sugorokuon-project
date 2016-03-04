@@ -4,12 +4,14 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
+import android.content.pm.PackageManager;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Log;
 
 import junit.framework.Assert;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,15 +22,38 @@ import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.StationFetcher;
+import tsuyogoro.sugorokuon.network.TimeTableFetcher;
 
 // 局情報取得、番組情報取得、データベースへのストア、を全てテスト。
 // パフォーマンスも測定。
 // 時間がかかるテストは@LargeTestのannotation付き。
 public class URadikoInfoDownloadTest extends AndroidTestCase {
 
+    private String getLogoCacheDirName() {
+        String logoCachedDir = null;
+        try {
+            String pkgName = getContext().getPackageName();
+            logoCachedDir = getContext().getPackageManager().getPackageInfo(pkgName, 0)
+                    .applicationInfo.dataDir + File.separator + "stationlogos";
+        } catch (PackageManager.NameNotFoundException e) {
+            Assert.assertTrue("Error Package name not found " + e, false);
+        }
+        return logoCachedDir;
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
+        String logoCacheDir = getLogoCacheDirName();
+        File cacheDir = new File(logoCacheDir);
+        if (cacheDir.exists()) {
+            for (File logo : cacheDir.listFiles()) {
+                Assert.assertTrue("Old Logo should success to be deleted : " + logo.getName(),
+                        logo.delete());
+            }
+        }
     }
 
     @Override
@@ -48,13 +73,16 @@ public class URadikoInfoDownloadTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE);
+        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE,
+                getLogoCacheDirName());
 
         StationApi stationApi = new StationApi(getContext());
         stationApi.insert(stations);
 
         // 全番組情報を落とす
-        List<OnedayTimetable> timeTable = TimeTableFetcher.fetchWeeklyTable(stations);
+        TimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
+        List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(stations);
 
         // 全ての局の番組情報がきちんととれているかをチェック
         Assert.assertEquals(stations.size() * 7, timeTable.size());

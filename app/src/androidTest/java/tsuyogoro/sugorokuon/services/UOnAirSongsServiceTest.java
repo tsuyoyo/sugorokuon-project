@@ -8,11 +8,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 
 import junit.framework.Assert;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -22,15 +24,39 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.radikoapi.StationsFetcher;
+import tsuyogoro.sugorokuon.network.StationFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
 
 public class UOnAirSongsServiceTest extends AndroidTestCase {
+
+    private String getLogoCacheDirName() {
+        String logoCachedDir = null;
+        try {
+            String pkgName = getContext().getPackageName();
+            logoCachedDir = getContext().getPackageManager().getPackageInfo(pkgName, 0)
+                    .applicationInfo.dataDir + File.separator + "stationlogos";
+        } catch (PackageManager.NameNotFoundException e) {
+            Assert.assertTrue("Error Package name not found " + e, false);
+        }
+        return logoCachedDir;
+    }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.SMALL);
+        String logoCacheDir = getLogoCacheDirName();
+        File cacheDir = new File(logoCacheDir);
+        if (cacheDir.exists()) {
+            for (File logo : cacheDir.listFiles()) {
+                Assert.assertTrue("Old Logo should success to be deleted : " + logo.getName(),
+                        logo.delete());
+            }
+        }
+
+        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.SMALL,
+                getLogoCacheDirName());
 
         StationApi stationDb = new StationApi(getContext());
         stationDb.clear();

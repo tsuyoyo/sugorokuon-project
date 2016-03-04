@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,7 +90,7 @@ public class TimeTableApi {
                 } catch (SQLiteConstraintException e) {
                     // (Memo) API Specと違うんだが、なぜかこのException
                     ids[i] = -1;
-                    Log.e("Sugorokuon", "Failed to insert : " + e.getMessage());
+                    SugorokuonLog.w("Failed to insert : " + e.getMessage());
                 }
             }
             statement.close();

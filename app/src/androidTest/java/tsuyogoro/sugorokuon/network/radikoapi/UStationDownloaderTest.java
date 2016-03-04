@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
 
+import android.content.pm.PackageManager;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
@@ -11,18 +12,41 @@ import android.util.Log;
 
 import junit.framework.Assert;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.StationFetcher;
 
 public class UStationDownloaderTest extends AndroidTestCase {
+
+    private String getLogoCacheDirName() {
+        String logoCachedDir = null;
+        try {
+            String pkgName = getContext().getPackageName();
+            logoCachedDir = getContext().getPackageManager().getPackageInfo(pkgName, 0)
+                    .applicationInfo.dataDir + File.separator + "stationlogos";
+        } catch (PackageManager.NameNotFoundException e) {
+            Assert.assertTrue("Error Package name not found " + e, false);
+        }
+        return logoCachedDir;
+    }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
+        String logoCacheDir = getLogoCacheDirName();
+        File cacheDir = new File(logoCacheDir);
+        if (cacheDir.exists()) {
+            for (File logo : cacheDir.listFiles()) {
+                Assert.assertTrue("Old Logo should success to be deleted : " + logo.getName(),
+                        logo.delete());
+            }
+        }
     }
 
     @Override
@@ -33,9 +57,22 @@ public class UStationDownloaderTest extends AndroidTestCase {
     @SmallTest
     public void testDownloadStations() throws Exception {
 
-        List<Station> stations = StationsFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE);
+//        File testDir = new File(getLogoCacheDirName());
+//        if (!testDir.mkdir()) {
+//            String dir = getLogoCacheDirName();
+//            SugorokuonLog.e("Failed to create : " + getLogoCacheDirName());
+//            Assert.assertTrue(false);
+//        }
 
-        Assert.assertTrue(0 < stations.size());
+        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE,
+                getLogoCacheDirName());
+
+        Assert.assertTrue(stations.size() > 0);
+
+        File cachedDir = new File(getLogoCacheDirName());
+        assertTrue("Cached directory was not created", cachedDir.exists());
+        assertTrue("No file is stored in cached dir", cachedDir.listFiles().length > 0);
     }
 
     @MediumTest
@@ -43,7 +80,9 @@ public class UStationDownloaderTest extends AndroidTestCase {
 
         long start = Calendar.getInstance().getTimeInMillis();
 
-        List<Station> stations = StationsFetcher.fetch(Area.values(), StationLogoSize.LARGE);
+        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        List<Station> stations = stationFetcher.fetch(Area.values(), StationLogoSize.LARGE,
+                getLogoCacheDirName());
 
         long end = Calendar.getInstance().getTimeInMillis();
         Log.d("SugorokuonTest", "testDownloadAllStations - "

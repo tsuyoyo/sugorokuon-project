@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 
+ * Copyright (c)
  * 2012 Tsuyoyo. All Rights Reserved.
  */
 package tsuyogoro.sugorokuon.network.radikoapi;
@@ -11,10 +11,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-import tsuyogoro.sugorokuon.constants.SugorokuonConst;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.utils.SugorokuonLog;
+
 import android.os.Environment;
-import android.util.Log;
 
 /**
  * 番組のinfo(htmlのフォーマットでサーバから落ちてくる番組情報）のキャッシュの管理。
@@ -24,9 +24,9 @@ import android.util.Log;
  *
  */
 class ProgramInfoCacheManager {
-	
-	private static final String CACHE_DIR = "radiconcierge" + 
-		File.separator + "infocache" + File.separator;
+
+    private static final String CACHE_DIR = "radiconcierge" +
+            File.separator + "infocache" + File.separator;
 
     /**
      * 指定したProgramの、infoのcacheファイル（html）を生成し、pathを返却
@@ -34,71 +34,71 @@ class ProgramInfoCacheManager {
      * @param p
      * @return 失敗したら空文字が返る。
      */
-	public String createInfoCache(Program p) {
-    	String fullPath = null;
-		try {
+    public String createInfoCache(Program p) {
+        String fullPath = null;
+        try {
             // フォルダの有無を確認して、無かったら作る。
-	    	File dir = new File(getCacheDirectory());
-	    	if(!dir.exists()) {
-	    		dir.mkdirs();
-	    	}
+            File dir = new File(getCacheDirectory());
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
 
-			String fileName = createFileName(p.stationId,
+            String fileName = createFileName(p.stationId,
                     Long.toString(p.startTime.getTimeInMillis()));
-			fullPath = getCacheDirectory() + fileName;
+            fullPath = getCacheDirectory() + fileName;
 
             File cacheFile = new File(fullPath);
-	    	if(!cacheFile.exists()) {
-	    		cacheFile.createNewFile();
-	    	}
-	    	FileOutputStream fos = new FileOutputStream(cacheFile);
-	        fos.write(changeInfoToHtmldata(p.info).getBytes());
-	        fos.close();
-		} catch(IOException e) {
-			Log.e(SugorokuonConst.LOGTAG, "createInfoCache : " + e.getMessage());
-			fullPath = "";
-		}
-		
-		return fullPath;
-	}
-	
-	private String createFileName(String stationId, String startTime) {
-		return stationId + "_" + startTime + ".html";
-	}
-	
-	private String getCacheDirectory() {
-		File ext = Environment.getExternalStorageDirectory();
-    	return ext.getAbsolutePath() + File.separator + CACHE_DIR;		
-	}
-	
-	private String changeInfoToHtmldata(String info) {
-		return "<html><head><meta http-equiv=\"content-type\""
-			+ "content=\"text/html;charset=UTF-8\"></head>" 
-			+ info + "</html>";
-	}
+            if (!cacheFile.exists()) {
+                cacheFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(cacheFile);
+            fos.write(changeInfoToHtmldata(p.info).getBytes());
+            fos.close();
+        } catch (IOException e) {
+            SugorokuonLog.w("createInfoCache : " + e.getMessage());
+            fullPath = "";
+        }
+
+        return fullPath;
+    }
+
+    private String createFileName(String stationId, String startTime) {
+        return stationId + "_" + startTime + ".html";
+    }
+
+    private String getCacheDirectory() {
+        File ext = Environment.getExternalStorageDirectory();
+        return ext.getAbsolutePath() + File.separator + CACHE_DIR;
+    }
+
+    private String changeInfoToHtmldata(String info) {
+        return "<html><head><meta http-equiv=\"content-type\""
+                + "content=\"text/html;charset=UTF-8\"></head>"
+                + info + "</html>";
+    }
 
     /**
      * InfoのCacheデータを全て削除。
      *
      */
-	public void clearInfoCache() {
-    	File dir = new File(getCacheDirectory());
-    	if(dir.exists()) {
-    		deleteFiles(dir);
-    	}
-	}
-	
+    public void clearInfoCache() {
+        File dir = new File(getCacheDirectory());
+        if (dir.exists()) {
+            deleteFiles(dir);
+        }
+    }
+
     private void deleteFiles(File dir) {
-    	if(dir.isDirectory()) {
-    		String[] files = dir.list();
-    		for(String f : files) {
-    			deleteFiles(new File(f));
-    		}
-    		dir.delete();
-    	} else if(dir.isFile()){
-    		dir.delete();
-    	}
-    	return;
+        if (dir.isDirectory()) {
+            String[] files = dir.list();
+            for (String f : files) {
+                deleteFiles(new File(f));
+            }
+            dir.delete();
+        } else if (dir.isFile()) {
+            dir.delete();
+        }
+        return;
     }
 
 
@@ -110,8 +110,8 @@ class ProgramInfoCacheManager {
      * @return
      */
     public String readInfoCache(String stationId, String startTime) {
-    	String fullPath = getCacheDirectory() + createFileName(stationId, startTime);
-    	return readInfoCache(fullPath);
+        String fullPath = getCacheDirectory() + createFileName(stationId, startTime);
+        return readInfoCache(fullPath);
     }
 
     /**
@@ -121,25 +121,25 @@ class ProgramInfoCacheManager {
      * @return
      */
     public String readInfoCache(String cacheFileName) {
-    	String data = "";
-    	File cacheFile = new File(cacheFileName);
-        try{
-        	FileReader reader = new FileReader(cacheFile);
+        String data = "";
+        File cacheFile = new File(cacheFileName);
+        try {
+            FileReader reader = new FileReader(cacheFile);
             BufferedReader b = new BufferedReader(reader);
             String s;
-            while((s = b.readLine())!=null){
-            	data += s;
+            while ((s = b.readLine()) != null) {
+                data += s;
             }
             reader.close();
-        }catch(FileNotFoundException e){
-        	data = "";
-        	Log.e(SugorokuonConst.LOGTAG, "readInfoCache : " + e.getMessage());
-        }catch(IOException e){
-        	data = "";
-        	Log.e(SugorokuonConst.LOGTAG, "readInfoCache : " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            data = "";
+            SugorokuonLog.w("readInfoCache : " + e.getMessage());
+        } catch (IOException e) {
+            data = "";
+            SugorokuonLog.w("readInfoCache : " + e.getMessage());
         }
-        
-    	return data;
+
+        return data;
     }
-    
+
 }
