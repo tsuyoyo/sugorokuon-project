@@ -2,7 +2,7 @@
  * Copyright (c)
  * 2016 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.variables;
+package tsuyogoro.sugorokuon;
 
 import android.util.Log;
 

@@ -12,7 +12,7 @@ import tsuyogoro.sugorokuon.services.TimeTableService;
 
 @Singleton
 @Component(modules = {NetworkApiModule.class})
-public interface AppComponent {
+public interface NetworkApiComponent {
 
     void inject(OnAirSongsService onAirSongsService);
 

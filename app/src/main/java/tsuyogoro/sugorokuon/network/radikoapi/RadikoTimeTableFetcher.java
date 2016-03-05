@@ -7,10 +7,10 @@ package tsuyogoro.sugorokuon.network.radikoapi;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.OkHttpWrapper;
 import tsuyogoro.sugorokuon.network.TimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
@@ -88,7 +88,7 @@ public class RadikoTimeTableFetcher implements TimeTableFetcher {
 
     private List<OnedayTimetable> doFetchTimeTable(String stationId, String apiName) {
 
-        TimeTableApiClient api = new TimeTableApiClient(new OkHttpClient());
+        TimeTableApiClient api = new TimeTableApiClient(OkHttpWrapper.buildClient());
         TimeTableApiClient.TimeTableRoot dataFromRadiko = null;
         switch (apiName) {
             case API_TODAY_PROGRAM:
