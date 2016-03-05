@@ -6,7 +6,7 @@ package tsuyogoro.sugorokuon.utils;
 
 import android.util.Log;
 
-import tsuyogoro.sugorokuon.variables.LogSettings;
+import tsuyogoro.sugorokuon.LogSettings;
 
 public class SugorokuonLog {
 

@@ -7,16 +7,14 @@ package tsuyogoro.sugorokuon.network.radikoapi;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
 import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.OkHttpWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
  * 曲のFeedをdownloadして、Feedインスタンスを作るクラス。
- *
- * @author Tsuyoyo
  *
  */
 public class RadikoFeedFetcher implements FeedFetcher {
@@ -24,7 +22,7 @@ public class RadikoFeedFetcher implements FeedFetcher {
 	@Override
 	public Feed fetch(String stationId) {
 
-		FeedApiClient api = new FeedApiClient(new OkHttpClient());
+		FeedApiClient api = new FeedApiClient(OkHttpWrapper.buildClient());
 		FeedApiClient.NowOnAir nowOnAir = api.fetchNowOnAirSongs(stationId);
 
 		if (nowOnAir == null) {

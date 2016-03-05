@@ -208,7 +208,6 @@ public class TimeTableListFragment extends Fragment
 
                     if (null != iconPath && null != mImageView) {
                         if (iconPath.startsWith("http")) {
-                            float scale = mContext.getResources().getDisplayMetrics().density;
                             Picasso.with(mContext).load(iconPath)
                                     .transform(new CropCircleTransformation())
                                     .into(mImageView);

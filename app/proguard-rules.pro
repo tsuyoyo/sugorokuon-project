@@ -80,6 +80,9 @@
     @org.simpleframework.xml.* <init>(...);
 }
 
+# Stetho
+# it's necessary according to https://github.com/facebook/stetho/issues/42
+-keep class com.facebook.stetho.** {*;}
 
 # ----------------------------------------
 # Android and Java

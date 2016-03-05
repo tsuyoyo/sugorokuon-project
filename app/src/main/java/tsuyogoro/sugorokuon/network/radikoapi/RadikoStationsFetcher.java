@@ -7,12 +7,11 @@ package tsuyogoro.sugorokuon.network.radikoapi;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.OkHttpWrapper;
 import tsuyogoro.sugorokuon.network.StationFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
@@ -44,7 +43,7 @@ public class RadikoStationsFetcher implements StationFetcher {
     @Override
     public List<Station> fetch(String areaId, StationLogoSize logoSize, String logoCacheDir) {
 
-        StationApiClient api = new StationApiClient(new OkHttpClient());
+        StationApiClient api = new StationApiClient(OkHttpWrapper.buildClient());
         StationApiClient.StationList data = api.fetchStationList(areaId);
 
         if (data == null) {
