@@ -53,6 +53,12 @@ public class SearchFragment extends SearchFragmentBase
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SugorokuonApplication.getRefWatcher(getActivity()).watch(this);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 

@@ -80,6 +80,7 @@ public class TimeTableFragment extends ProgramViewerFragment {
         if (null != mSetupTask && mSetupTask.getStatus().equals(AsyncTask.Status.RUNNING)) {
             mSetupTask.cancel(true);
         }
+        SugorokuonApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override

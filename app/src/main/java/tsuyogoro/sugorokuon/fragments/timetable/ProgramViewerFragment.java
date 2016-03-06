@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.prefs.BrowserCacheSettingPreference;
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
@@ -30,9 +31,8 @@ import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
  * Listとブラウザを半々に表示する画面のFragmentクラス
  * サイズの変更や、Listのアイテム選択からのブラウザloadをhandlingする
  * このクラスを継承するFragmentは、layoutの中に
- *     <include layout="@layout/program_info_viewer_layout"></include>
+ * <include layout="@layout/program_info_viewer_layout"></include>
  * を含むこと
- *
  */
 @SuppressLint("SetJavaScriptEnabled")
 abstract class ProgramViewerFragment extends Fragment
@@ -108,7 +108,7 @@ abstract class ProgramViewerFragment extends Fragment
         }
 
         // 番組サイト。その番組がHPを持っていなかったら、「この番組にはHPがありません」と表示。
-        if (0 < program.url.length()) {
+        if (program.url != null && 0 < program.url.length()) {
             getView().findViewById(R.id.program_viewer_program_site_no_hp)
                     .setVisibility(View.GONE);
             mSiteViewer.setVisibility(View.VISIBLE);
@@ -145,6 +145,7 @@ abstract class ProgramViewerFragment extends Fragment
             mSiteViewer.clearCache(true);
             mInfoViewer.clearCache(true);
         }
+        SugorokuonApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     private void setupWebView(WebView webView,
@@ -228,7 +229,7 @@ abstract class ProgramViewerFragment extends Fragment
         // focusを当てる。
         int ids[] = {
                 R.id.program_viewer_switcher_homepage,
-                R.id.program_viewer_switcher_info };
+                R.id.program_viewer_switcher_info};
         for (int id : ids) {
             if (id == sFocusedInfoType) {
                 ((RadioButton) root.findViewById(id)).setChecked(true);
@@ -302,7 +303,7 @@ abstract class ProgramViewerFragment extends Fragment
                         String focusedSite = mSiteViewer.getUrl();
                         if (null != focusedSite) {
                             Uri uri = Uri.parse(focusedSite);
-                            Intent i = new Intent(Intent.ACTION_VIEW,uri);
+                            Intent i = new Intent(Intent.ACTION_VIEW, uri);
                             startActivity(i);
                         }
                         break;
