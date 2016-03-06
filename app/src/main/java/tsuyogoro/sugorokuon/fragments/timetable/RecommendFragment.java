@@ -65,6 +65,7 @@ public class RecommendFragment extends SearchFragmentBase {
         if (null != mUpdateReceiver) {
             getActivity().unregisterReceiver(mUpdateReceiver);
         }
+        SugorokuonApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override

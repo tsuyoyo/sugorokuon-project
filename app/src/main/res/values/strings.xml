@@ -63,6 +63,12 @@
 
     <string name="station_list_dialog_title">ラジオ局一覧</string>
 
+    <!-- Permission系 -->
+    <string name="permission_not_enough_to_launch_app">アプリを使うのに必要なpermissionが許可されませんでした</string>
+    <string name="permission_mandatory_never_asked_again">
+        アプリを使うのに必要なpermissionが完全に拒否されています。設定からpermissionの設定を変更して下さい。
+    </string>
+
     <!-- OnAir曲リスト画面 -->
     <string name="weekly_onair_song_title">今週のON AIR曲</string>
     <string name="onair_song_no_data_for_the_day">この日のデータがありません</string>

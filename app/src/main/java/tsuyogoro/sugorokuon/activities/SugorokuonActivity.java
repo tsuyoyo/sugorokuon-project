@@ -7,9 +7,11 @@ package tsuyogoro.sugorokuon.activities;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
@@ -20,15 +22,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.app_c.cloud.sdk.AppCCloud;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
+import tsuyogoro.sugorokuon.BuildConfig;
+import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.fragments.AboutAppFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
@@ -214,6 +221,48 @@ public class SugorokuonActivity extends AppCompatActivity
         // 初期位置へフォーカスを
         if (null == savedInstanceState || getIntent().getAction().equals(ACTION_OPEN_TIMETABLE)) {
             openTodaysTimeTableFragment();
+        }
+
+        // アプリ生存期間内に必要なDangerous permissionをリクエスト
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Set<String> requirePermissionsSet = new HashSet<>();
+            for (String p : BuildTypeVariables.PERMISSIONS_GET_AT_LAUNCH_APP) {
+                if (checkSelfPermission(p) != PackageManager.PERMISSION_GRANTED) {
+                    // 必要なpermissionに対して「今後は表示をしない」が選択されている場合
+                    if (!shouldShowRequestPermissionRationale(p)) {
+                        finish();
+                        Toast.makeText(this,
+                                getString(R.string.permission_mandatory_never_asked_again),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        requirePermissionsSet.add(p);
+                    }
+                }
+            }
+            if (requirePermissionsSet.size() > 0) {
+                String[] requirePermissions = new String[requirePermissionsSet.size()];
+                requirePermissionsSet.toArray(requirePermissions);
+                requestPermissions(requirePermissions, 100);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        boolean enoughPermissionAllowed = true;
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                SugorokuonLog.d("Permission denied : " + permissions[i]);
+                enoughPermissionAllowed = false;
+            }
+        }
+        if (!enoughPermissionAllowed) {
+            finish();
+            Toast.makeText(this, getString(R.string.permission_not_enough_to_launch_app),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -539,11 +588,9 @@ public class SugorokuonActivity extends AppCompatActivity
 
             if (updateStation) {
                 action = TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE;
-            }
-            else if (updateToday) {
+            } else if (updateToday) {
                 action = TimeTableService.ACTION_UPDATE_TODAYS_TIME_TABLE;
-            }
-            else {
+            } else {
                 action = TimeTableService.ACTION_UPDATE_WEEKLY_TIME_TABLE;
             }
 
