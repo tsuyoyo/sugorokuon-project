@@ -33,8 +33,7 @@ class OnAirSongTableDefiner extends BaseTableDefiner {
 
         ARTIST("artist", "TEXT"),
 
-        // feedの中の "itemid" attribute。用途がよくわからないけど一応。
-        ITEMID("itemid", "TEXT"),
+        IMAGE("image", "TEXT"),
 
         ;
 
@@ -74,14 +73,14 @@ class OnAirSongTableDefiner extends BaseTableDefiner {
         String stationId = c.getString(c.getColumnIndex(OnAirSongsTableColumn.STATION_ID.name));
         String artist = c.getString(c.getColumnIndex(OnAirSongsTableColumn.ARTIST.name));
         String title = c.getString(c.getColumnIndex(OnAirSongsTableColumn.TITLE.name));
-        String itemId = c.getString(c.getColumnIndex(OnAirSongsTableColumn.ITEMID.name));
+        String image = c.getString(c.getColumnIndex(OnAirSongsTableColumn.IMAGE.name));
 
         // UnixTimeのOnAir日時をCalendarクラスへ
         long dateMilliSec = c.getLong(c.getColumnIndex(OnAirSongsTableColumn.DATE.name));
         Calendar date = Calendar.getInstance();
         date.setTime(new Date(dateMilliSec));
 
-        return new OnAirSong(stationId, artist, title, date, itemId);
+        return new OnAirSong(stationId, artist, title, date, image);
     }
 
     @Override

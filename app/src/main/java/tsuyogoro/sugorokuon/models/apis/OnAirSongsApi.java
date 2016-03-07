@@ -293,6 +293,7 @@ public class OnAirSongsApi {
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.DATE.name, song.date.getTimeInMillis());
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.ARTIST.name, song.artist);
         cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.TITLE.name, song.title);
+        cv.put(OnAirSongTableDefiner.OnAirSongsTableColumn.IMAGE.name, song.imageUrl);
         return cv;
     }
 
@@ -303,7 +304,7 @@ public class OnAirSongsApi {
                 OnAirSongTableDefiner.OnAirSongsTableColumn.DATE.name,
                 OnAirSongTableDefiner.OnAirSongsTableColumn.TITLE.name,
                 OnAirSongTableDefiner.OnAirSongsTableColumn.ARTIST.name,
-                OnAirSongTableDefiner.OnAirSongsTableColumn.ITEMID.name
+                OnAirSongTableDefiner.OnAirSongsTableColumn.IMAGE.name
         };
         Cursor c = db.query(OnAirSongTableDefiner.TABLE_NAME,
                 requestColumns, selection, selectionArgs, null, null,

@@ -36,7 +36,9 @@ public class RadikoFeedFetcher implements FeedFetcher {
 			OnAirSong song = new OnAirSong(stationId,
 					(s.artist != null) ? AlphabetNormalizer.zenkakuToHankaku(s.artist) : "",
 					(s.title != null) ? AlphabetNormalizer.zenkakuToHankaku(s.title) : "",
-					s.stamp, s.img);
+					s.stamp,
+					(s.img != null) ? s.img : s.img_large);
+
 			song.amazon = s.amazon;
 			song.recochoku = s.recochoku;
 			onAirSongs.add(song);

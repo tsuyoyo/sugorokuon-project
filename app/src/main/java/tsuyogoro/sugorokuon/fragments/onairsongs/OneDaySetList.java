@@ -9,7 +9,10 @@ import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,10 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.databinding.OnairSongListItemSongBinding;
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
-import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 class OneDaySetList {
 
@@ -78,8 +81,14 @@ class OneDaySetList {
         }
         // 1曲分の情報
         else {
-            OnairSongListItemSongBinding binding = DataBindingUtil.inflate(
-                    inflater, R.layout.onair_song_list_item_song, parent, false);;
+            OnairSongListItemSongBinding binding;
+
+            if (convertView == null || DataBindingUtil.getBinding(convertView) == null) {
+                binding = DataBindingUtil.inflate(
+                        inflater, R.layout.onair_song_list_item_song, parent, false);
+            } else {
+                binding = DataBindingUtil.getBinding(convertView);
+            }
 
             SimpleDateFormat formatter = new SimpleDateFormat(
                     context.getString(R.string.date_hhmm), Locale.JAPAN);
@@ -87,6 +96,11 @@ class OneDaySetList {
             OnAirSong song = mSongs.get(position - 1);
             binding.setSong(song);
             binding.setDate(formatter.format(new Date(song.date.getTimeInMillis())));
+
+            if (song.imageUrl != null && song.imageUrl.length() > 0) {
+                Picasso.with(context).load(song.imageUrl).transform(new CropCircleTransformation())
+                        .into(binding.onairSongListImg);
+            }
 
             view = binding.getRoot();
         }

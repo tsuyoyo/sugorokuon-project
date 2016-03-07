@@ -229,7 +229,7 @@ public class SugorokuonActivity extends AppCompatActivity
             for (String p : BuildTypeVariables.PERMISSIONS_GET_AT_LAUNCH_APP) {
                 if (checkSelfPermission(p) != PackageManager.PERMISSION_GRANTED) {
                     // 必要なpermissionに対して「今後は表示をしない」が選択されている場合
-                    if (!shouldShowRequestPermissionRationale(p)) {
+                    if (shouldShowRequestPermissionRationale(p)) {
                         finish();
                         Toast.makeText(this,
                                 getString(R.string.permission_mandatory_never_asked_again),
