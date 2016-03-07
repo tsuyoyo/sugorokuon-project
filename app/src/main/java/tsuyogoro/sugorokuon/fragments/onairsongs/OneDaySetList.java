@@ -5,8 +5,10 @@
 package tsuyogoro.sugorokuon.fragments.onairsongs;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +21,9 @@ import java.util.List;
 import java.util.Locale;
 
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.databinding.OnairSongListItemSongBinding;
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
+import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 class OneDaySetList {
 
@@ -52,8 +56,10 @@ class OneDaySetList {
         return size;
     }
 
-    public View getView(int position, LayoutInflater inflater, Context context) {
+    public View getView(int position, View convertView, ViewGroup parent, Context context) {
         View view;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
 
         // 日付ラベル
         if (0 == position) {
@@ -72,20 +78,17 @@ class OneDaySetList {
         }
         // 1曲分の情報
         else {
-            view = inflater.inflate(R.layout.onair_song_list_item_song, null);
+            OnairSongListItemSongBinding binding = DataBindingUtil.inflate(
+                    inflater, R.layout.onair_song_list_item_song, parent, false);;
 
-            OnAirSong song = mSongs.get(position - 1);
-
-            TextView date = (TextView) view.findViewById(R.id.onair_song_list_item_date);
             SimpleDateFormat formatter = new SimpleDateFormat(
                     context.getString(R.string.date_hhmm), Locale.JAPAN);
-            date.setText(formatter.format(new Date(song.date.getTimeInMillis())));
 
-            TextView title = (TextView) view.findViewById(R.id.onair_song_list_item_title);
-            title.setText(song.title);
+            OnAirSong song = mSongs.get(position - 1);
+            binding.setSong(song);
+            binding.setDate(formatter.format(new Date(song.date.getTimeInMillis())));
 
-            TextView artist = (TextView) view.findViewById(R.id.onair_song_list_item_artist);
-            artist.setText(song.artist);
+            view = binding.getRoot();
         }
 
         return view;

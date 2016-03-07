@@ -96,7 +96,7 @@ public class WeeklyOnAirSongsListFragment extends Fragment implements
 
                 List<OnAirSong> songs = onAirSongsApi.search(from, to, mStationId);
 
-                SetListAdapter adapter = new SetListAdapter(getContext());
+                SetListAdapter adapter = new SetListAdapter();
                 for (OnAirSong s : songs) {
                     adapter.addSong(s);
                 }

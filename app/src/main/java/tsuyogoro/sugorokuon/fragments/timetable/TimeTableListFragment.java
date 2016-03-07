@@ -5,10 +5,6 @@
 package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -92,11 +87,7 @@ public class TimeTableListFragment extends Fragment
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        SugorokuonApplication.getRefWatcher(getActivity()).watch(this);
-    }
+
 
     @Override
     public Loader<List<Program>> onCreateLoader(int id, final Bundle args) {
