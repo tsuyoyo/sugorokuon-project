@@ -5,7 +5,7 @@
 package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +17,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -31,11 +30,10 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
-import tsuyogoro.sugorokuon.SugorokuonApplication;
+import tsuyogoro.sugorokuon.databinding.ProgramListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
-import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class TimeTableListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Program>> {
@@ -66,9 +64,6 @@ public class TimeTableListFragment extends Fragment
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // 区切り線
-        mRecyclerView.addItemDecoration(new TimeTableListDivider(getActivity()));
-
         mLayoutManager = new LinearLayoutManager(getActivity());
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -86,8 +81,6 @@ public class TimeTableListFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
 
     @Override
     public Loader<List<Program>> onCreateLoader(int id, final Bundle args) {
@@ -169,9 +162,11 @@ public class TimeTableListFragment extends Fragment
 
         private ItemClickListener mListener;
 
+        private Context mContext;
+
         private interface ItemClickListener {
 
-            public void onItemClicked(Program program);
+            void onItemClicked(Program program);
 
         }
 
@@ -181,90 +176,26 @@ public class TimeTableListFragment extends Fragment
         public static class ViewHolder extends RecyclerView.ViewHolder
                 implements View.OnClickListener {
 
-            class IconFetcherTask extends AsyncTask<Program, Void, String> {
-
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-
-                    // 横画面の時はアイコン無しなので、mImageViewがnullということがありうる
-                    if (null != mImageView) {
-                        mImageView.setImageResource(0);
-                    }
-                }
-
-                @Override
-                protected String doInBackground(Program... params) {
-                    String iconPath = params[0].getSymbolIconPath(mContext);
-                    SugorokuonLog.d("Program symbol icon : " + iconPath);
-                    return iconPath;
-                }
-
-                @Override
-                protected void onPostExecute(String iconPath) {
-                    super.onPostExecute(iconPath);
-
-                    if (null != iconPath && null != mImageView) {
-                        if (iconPath.startsWith("http")) {
-                            Picasso.with(mContext).load(iconPath)
-                                    .transform(new CropCircleTransformation())
-                                    .into(mImageView);
-                        } else {
-                            Picasso.with(mContext).load(new File(iconPath))
-                                    .into(mImageView);
-                        }
-                    }
-                }
-            }
-
-            private final TextView mStartTime;
-            private final TextView mEndTime;
-            private final TextView mTitle;
-            private final TextView mPersonalities;
-            private final ImageView mImageView;
-
-            private Program mProgram;
-
-            private final Context mContext;
+            private final ProgramListItemCardBinding mBinding;
 
             private ItemClickListener mListener;
 
-            private IconFetcherTask mIconFetcherTask;
-
-            public ViewHolder(View view, Context context, ItemClickListener listener) {
+            public ViewHolder(View view, ItemClickListener listener) {
                 super(view);
                 view.setOnClickListener(this);
 
-                mStartTime = (TextView) view.findViewById(R.id.program_list_item_starttime);
-                mEndTime = (TextView) view.findViewById(R.id.program_list_item_endtime);
-                mTitle = (TextView) view.findViewById(R.id.program_list_item_title);
-                mPersonalities = (TextView) view.findViewById(R.id.program_list_item_personality);
-                mImageView = (ImageView) view.findViewById(R.id.program_list_item_image);
-
-                mContext = context;
+                mBinding = DataBindingUtil.bind(view);
                 mListener = listener;
             }
 
-            void replace(Program program) {
-                mProgram = program;
-
-                mStartTime.setText(sFormatStartTime.format(new Date(program.startTime.getTimeInMillis())));
-                mEndTime.setText(sFormatEndTime.format(new Date(program.endTime.getTimeInMillis())));
-                mTitle.setText(program.title);
-                mPersonalities.setText(program.personalities);
-
-                if (null != mIconFetcherTask &&
-                        mIconFetcherTask.getStatus().equals(AsyncTask.Status.RUNNING)) {
-                    mIconFetcherTask.cancel(true);
-                }
-                mIconFetcherTask = new IconFetcherTask();
-                mIconFetcherTask.execute(mProgram);
+            public ProgramListItemCardBinding getBinding() {
+                return mBinding;
             }
 
             @Override
             public void onClick(View v) {
-                if (null != mProgram) {
-                    mListener.onItemClicked(mProgram);
+                if (null != mBinding.getProgram()) {
+                    mListener.onItemClicked(mBinding.getProgram());
                 }
             }
         }
@@ -272,6 +203,7 @@ public class TimeTableListFragment extends Fragment
         public TimeTableListAdapter(List<Program> programs, ItemClickListener listener, Context context) {
             mPrograms = programs;
             mListener = listener;
+            mContext = context;
 
             if (null == sFormatStartTime || null == sFormatEndTime) {
                 sFormatStartTime = new SimpleDateFormat(
@@ -281,7 +213,6 @@ public class TimeTableListFragment extends Fragment
             }
         }
 
-        // Create new views (invoked by the layout manager)
         @Override
         public TimeTableListAdapter.ViewHolder onCreateViewHolder(
                 ViewGroup parent, int viewType) {
@@ -289,14 +220,32 @@ public class TimeTableListFragment extends Fragment
             View v = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.program_list_item_card, parent, false);
 
-            ViewHolder vh = new ViewHolder(v, parent.getContext(), mListener);
+            ViewHolder vh = new ViewHolder(v, mListener);
             return vh;
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.replace(mPrograms.get(position));
+            Program program = mPrograms.get(position);
+            holder.getBinding().setProgram(program);
+
+            String iconPath = program.getSymbolIconPath(mContext);
+            if (iconPath != null) {
+                if (iconPath.startsWith("http")) {
+                    Picasso.with(mContext).load(iconPath)
+                            .transform(new CropCircleTransformation())
+                            .into(holder.getBinding().programListItemImage);
+                } else {
+                    Picasso.with(mContext).load(new File(iconPath))
+                            .into(holder.getBinding().programListItemImage);
+                }
+            }
+
+            String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
+            holder.getBinding().setStarttime(start);
+
+            String end = sFormatEndTime.format(new Date(program.endTime.getTimeInMillis()));
+            holder.getBinding().setEndtime(end);
         }
 
         @Override
