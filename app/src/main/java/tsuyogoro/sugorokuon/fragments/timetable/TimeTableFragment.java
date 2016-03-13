@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -264,7 +266,11 @@ public class TimeTableFragment extends ProgramViewerFragment {
                 getString(R.string.date_mmddeee), Locale.JAPANESE);
         Calendar c = Calendar.getInstance();
         c.set(year, month-1, date);
-        getActivity().setTitle(dateFormat.format(new Date(c.getTimeInMillis())));
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(dateFormat.format(new Date(c.getTimeInMillis())));
+        }
     }
 
     private void setStationListVisibility(boolean visible) {

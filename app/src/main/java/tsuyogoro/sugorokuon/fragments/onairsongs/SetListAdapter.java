@@ -26,10 +26,7 @@ class SetListAdapter extends BaseAdapter {
 
     private final List<OneDaySetList> mData = new ArrayList<>();
 
-    private Context mContext;
-
-    public SetListAdapter (Context context) {
-        mContext = context;
+    public SetListAdapter () {
     }
 
     public void addSong(OnAirSong song) {
@@ -91,10 +88,9 @@ class SetListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Map<Integer, Integer> index = calculateIndexForView(position);
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-
-        return mData.get(index.get(0)).getView(index.get(1), inflater, mContext);
+        int indexDay = index.get(0);
+        int indexInTheDay = index.get(1);
+        return mData.get(indexDay).getView(indexInTheDay, convertView, parent, parent.getContext());
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -207,6 +208,10 @@ public class SugorokuonActivity extends AppCompatActivity
 
         setContentView(R.layout.main_activity_layout);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         setupDrawer();
 
         // TODO : ActionBarじゃなくてToolBarにしたい
@@ -229,13 +234,12 @@ public class SugorokuonActivity extends AppCompatActivity
             for (String p : BuildTypeVariables.PERMISSIONS_GET_AT_LAUNCH_APP) {
                 if (checkSelfPermission(p) != PackageManager.PERMISSION_GRANTED) {
                     // 必要なpermissionに対して「今後は表示をしない」が選択されている場合
-                    if (!shouldShowRequestPermissionRationale(p)) {
+                    if (shouldShowRequestPermissionRationale(p)) {
                         finish();
                         Toast.makeText(this,
                                 getString(R.string.permission_mandatory_never_asked_again),
                                 Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         requirePermissionsSet.add(p);
                     }
                 }
@@ -330,6 +334,8 @@ public class SugorokuonActivity extends AppCompatActivity
         findViewById(R.id.drawer_item_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 startActivityForResult(new Intent(SugorokuonActivity.this,
                         SugorokuonSettingActivity.class), REQUESTCODE_SETTINGS);
                 mDrawerLayout.closeDrawers();

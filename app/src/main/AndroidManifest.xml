@@ -4,32 +4,33 @@
     package="tsuyogoro.sugorokuon">
 
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-	    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".SugorokuonApplication"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.SugorokuonTheme"
-        android:hardwareAccelerated="true" >
+        android:theme="@style/Theme.SugorokuonTheme">
 
-        <!-- Referred :
+        <!--
+        Referred :
         Setup
          https://developer.android.com/google/play-services/setup.html
         tools:replaceを置いてる理由 (RobolectricがAndroidManifestのparseを失敗する)
          https://github.com/robolectric/robolectric/issues/1399
         -->
-        <meta-data android:name="com.google.android.gms.version"
-            tools:replace="android:value"
-            android:value="@integer/gms_version" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/gms_version"
+            tools:replace="android:value" />
 
         <activity
             android:name=".activities.SugorokuonActivity"
-            android:launchMode="singleTask"
-            android:label="@string/app_name">
-
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="tsuyogoro.sugorokuon.action_open_timetable" />
@@ -40,17 +41,23 @@
         <activity
             android:name=".activities.SugorokuonSettingActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.SugorokuonSettingsTheme" >
-        </activity>
+            android:theme="@style/Theme.SugorokuonSettingsTheme"/>
 
-		<receiver android:name=".services.DeviceEventReceiver"
-	  	 	      android:exported="true" >
-    		<intent-filter>
-        		<action android:name="android.intent.action.BOOT_COMPLETED" />
-		        <category android:name="android.intent.category.DEFAULT" />
-    		</intent-filter>
+        <activity
+            android:name=".activities.AreaSelectActivity"
+            android:label="@string/title_activity_area_select" />
+
+        <receiver
+            android:name=".services.DeviceEventReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
                 <data android:scheme="package" />
             </intent-filter>
             <intent-filter>
@@ -59,11 +66,11 @@
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
-		</receiver>
+        </receiver>
 
-
-        <service android:name=".services.OnAirSongsService"
-            android:exported="false" >
+        <service
+            android:name=".services.OnAirSongsService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="tsuyogoro.sugorokuon.service.action_fetch_on_air_songs" />
                 <action android:name="tsuyogoro.sugorokuon.service.action_cancel_on_air_songs_timer" />
@@ -71,9 +78,9 @@
                 <action android:name="tsuyogoro.sugorokuon.service.action_notify_on_air_songs_info" />
             </intent-filter>
         </service>
-
-        <service android:name=".services.TimeTableService"
-            android:exported="false" >
+        <service
+            android:name=".services.TimeTableService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="tsuyogoro.sugorokuon.service.action_update_station_and_time_table" />
                 <action android:name="tsuyogoro.sugorokuon.service.action_update_weekly_time_table" />
@@ -84,7 +91,6 @@
             </intent-filter>
         </service>
 
-
         <!-- AppC Core Setting Start -->
         <meta-data
             android:name="appc_media_key"
@@ -94,33 +100,30 @@
             android:name="net.app_c.cloud.sdk.AppCAdActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name="net.app_c.cloud.sdk.AppCRecoveryActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name="net.app_c.cloud.sdk.AppCAgreementActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <!-- AppC Core Setting End -->
+
 
         <!-- AppC Core Setting Start -->
         <receiver
             android:name="net.app_c.cloud.sdk.AppCPkgReceiver"
             android:enabled="true"
             android:exported="false"
-            android:label="BootStrap" >
+            android:label="BootStrap">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
 
-                <data android:scheme="package" >
-                </data>
+                <data android:scheme="package"></data>
             </intent-filter>
         </receiver>
         <!-- AppC Core Setting End -->

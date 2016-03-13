@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/onair_songs_item_layout"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="song" type="tsuyogoro.sugorokuon.models.entities.OnAirSong"/>
+        <variable name="date" type="String" />
+    </data>
+    <LinearLayout
+        style="@style/onair_songs_item_layout"
+        android:orientation="horizontal">
 
-    <TextView
-        style="@style/onair_song_date"
-        android:id="@+id/onair_song_list_item_date"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/onair_song_list_img" />
 
-    <TextView
-        style="@style/onair_song_title"
-        android:id="@+id/onair_song_list_item_title"/>
+        <TextView
+            style="@style/onair_song_date"
+            android:text="@{date}"
+            android:id="@+id/onair_song_list_item_date"/>
 
-    <TextView
-        style="@style/onair_song_artist"
-        android:id="@+id/onair_song_list_item_artist"/>
+        <TextView
+            style="@style/onair_song_title"
+            android:text="@{song.title}"
+            android:id="@+id/onair_song_list_item_title"/>
 
-</LinearLayout>
+        <TextView
+            style="@style/onair_song_artist"
+            android:text="@{song.artist}"
+            android:id="@+id/onair_song_list_item_artist"/>
+
+    </LinearLayout>
+</layout>

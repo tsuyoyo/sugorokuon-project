@@ -23,6 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 class FeedApiClient {
@@ -50,10 +51,10 @@ class FeedApiClient {
 
     public interface FeedApiService {
         @GET("v3/feed/pc/noa/{stationId}.xml")
-        Call<NowOnAir> getNowOnAirSongs(@Path("stationId") String stationId);
+        Call<NowOnAir> getNowOnAirSongs(@Path("stationId") String stationId, @Query("_") long timeMs);
 
         @GET("v3/feed/pc/cm/{stationId}.xml")
-        Call<Cm> getCm(@Path("stationId") String stationId);
+        Call<Cm> getCm(@Path("stationId") String stationId, @Query("_") long timeMs);
     }
 
     /**
@@ -64,7 +65,8 @@ class FeedApiClient {
     public NowOnAir fetchNowOnAirSongs(String stationId) {
 
         try {
-            return mFeedApiService.getNowOnAirSongs(stationId).execute().body();
+            long timeInMs = Calendar.getInstance().getTimeInMillis();
+            return mFeedApiService.getNowOnAirSongs(stationId, timeInMs).execute().body();
         } catch (IOException e) {
             SugorokuonLog.e("Failed to fetch onAir songs list : " + e.getMessage());
         }
@@ -80,7 +82,8 @@ class FeedApiClient {
     public Cm fetchCm(String stationId) {
 
         try {
-            return mFeedApiService.getCm(stationId).execute().body();
+            long timeInMs = Calendar.getInstance().getTimeInMillis();
+            return mFeedApiService.getCm(stationId, timeInMs).execute().body();
         } catch (IOException e) {
             SugorokuonLog.e("Failed to fetch CM : " + e.getMessage());
         }
