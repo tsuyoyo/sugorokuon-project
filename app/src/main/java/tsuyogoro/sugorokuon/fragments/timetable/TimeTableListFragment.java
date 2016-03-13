@@ -180,6 +180,8 @@ public class TimeTableListFragment extends Fragment
 
             private ItemClickListener mListener;
 
+            private Program program;
+
             public ViewHolder(View view, ItemClickListener listener) {
                 super(view);
                 view.setOnClickListener(this);
@@ -194,8 +196,8 @@ public class TimeTableListFragment extends Fragment
 
             @Override
             public void onClick(View v) {
-                if (null != mBinding.getProgram()) {
-                    mListener.onItemClicked(mBinding.getProgram());
+                if (null != program) {
+                    mListener.onItemClicked(program);
                 }
             }
         }
@@ -227,6 +229,8 @@ public class TimeTableListFragment extends Fragment
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Program program = mPrograms.get(position);
+            holder.program = program;
+
             holder.getBinding().setProgram(program);
 
             String iconPath = program.getSymbolIconPath(mContext);

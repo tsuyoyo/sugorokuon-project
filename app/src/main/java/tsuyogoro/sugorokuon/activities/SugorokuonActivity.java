@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -207,6 +208,10 @@ public class SugorokuonActivity extends AppCompatActivity
 
         setContentView(R.layout.main_activity_layout);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+
         setupDrawer();
 
         // TODO : ActionBarじゃなくてToolBarにしたい
@@ -234,8 +239,7 @@ public class SugorokuonActivity extends AppCompatActivity
                         Toast.makeText(this,
                                 getString(R.string.permission_mandatory_never_asked_again),
                                 Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    } else {
                         requirePermissionsSet.add(p);
                     }
                 }
@@ -330,6 +334,8 @@ public class SugorokuonActivity extends AppCompatActivity
         findViewById(R.id.drawer_item_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 startActivityForResult(new Intent(SugorokuonActivity.this,
                         SugorokuonSettingActivity.class), REQUESTCODE_SETTINGS);
                 mDrawerLayout.closeDrawers();

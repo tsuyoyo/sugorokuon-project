@@ -10,6 +10,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="3dp"
         android:orientation="vertical"
         android:layout_gravity="center"
         android:clickable="true"
@@ -20,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="horizontal">
             <!-- 開始時刻 -->
             <TextView
@@ -44,6 +46,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android.support.v7.cardview:cardElevation="0dp"
@@ -52,6 +55,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:orientation="horizontal">
 
 
@@ -83,7 +88,7 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.title}"
                         android:textColor="@color/app_text_primary"
-                        android:textSize="20sp" />
+                        android:textSize="16sp" />
 
                     <!-- パーソナリティ -->
                     <TextView
@@ -93,7 +98,7 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.personalities}"
                         android:textColor="@color/app_text_secondary"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
             </LinearLayout>
