@@ -59,4 +59,6 @@
     <string name="region_shikoku">四国</string>
     <string name="region_kyushuokinawa">九州・沖縄</string>
 
+    <string name="area_select_activity_title">地域選択</string>
+
 </resources>
