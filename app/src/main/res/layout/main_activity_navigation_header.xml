@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_accent"
+    >
+
+    <ImageView
+        android:id="@+id/navigation_header_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"
+        android:layout_margin="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/navigation_header_icon"
+        android:id="@+id/navigation_header_title"
+        android:textColor="@color/actionbar_text"
+        android:text="表示する日付を選択"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="15dp"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigation_header_title"
+        android:id="@+id/date_spinner"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="8dp"/>
+
+</RelativeLayout>

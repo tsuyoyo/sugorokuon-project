@@ -14,14 +14,19 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -212,9 +217,9 @@ public class SugorokuonActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        setupDrawer();
+//        setupDrawer();
+        setupNavigationHeader();
 
-        // TODO : ActionBarじゃなくてToolBarにしたい
 
         // TimeTableServiceとbindして、fetchタスクの状態を見るのに使う
         Intent intent = new Intent(this, TimeTableService.class);
@@ -250,6 +255,31 @@ public class SugorokuonActivity extends AppCompatActivity
                 requestPermissions(requirePermissions, 100);
             }
         }
+    }
+
+    private final int[] mOrderedDateInWeek = new int[] {
+            Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
+            Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
+    };
+
+    private void setupNavigationHeader() {
+        String[] dateStrings = new String[mOrderedDateInWeek.length];
+        for (int i=0; i<mOrderedDateInWeek.length; i++) {
+            dateStrings[i] = dateStringByDayOfWeek(mOrderedDateInWeek[i]);
+        }
+        ArrayAdapter<String> dateSpinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, dateStrings);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.main_activity_navigation_header);
+        Spinner dateSpinner = (Spinner) navigationView.getHeaderView(0).findViewById(R.id.date_spinner);
+        dateSpinner.setAdapter(dateSpinnerAdapter);
+    }
+
+    private String dateStringByDayOfWeek(int dayOfWeek) {
+        Calendar d = SugorokuonUtils.dayOfThisWeek(dayOfWeek);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                getString(R.string.date_mmddeee), Locale.JAPANESE);
+        return dateFormat.format(new Date(d.getTimeInMillis()));
     }
 
     @Override
@@ -301,13 +331,13 @@ public class SugorokuonActivity extends AppCompatActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+//        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+//        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void setupDrawer() {

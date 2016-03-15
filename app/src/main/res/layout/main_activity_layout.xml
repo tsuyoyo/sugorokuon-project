@@ -45,7 +45,13 @@
         </android.support.design.widget.CoordinatorLayout >
 
         <!-- The navigation drawer -->
-        <include layout="@layout/main_activity_navigation_drawer" />
+        <android.support.design.widget.NavigationView
+            android:id="@+id/main_activity_navigation_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/main_activity_navigation_header"
+            app:menu="@menu/main_activity_navigation_item" />
 
     </android.support.v4.widget.DrawerLayout>
 
