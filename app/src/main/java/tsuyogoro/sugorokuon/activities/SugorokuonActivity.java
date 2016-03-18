@@ -9,25 +9,20 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import net.app_c.cloud.sdk.AppCCloud;
@@ -40,15 +35,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import tsuyogoro.sugorokuon.BuildConfig;
 import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
-import tsuyogoro.sugorokuon.fragments.AboutAppFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.MessageDialogFragment;
-import tsuyogoro.sugorokuon.fragments.dialogs.OhenDialog;
-import tsuyogoro.sugorokuon.fragments.onairsongs.WeeklyOnAirSongsFragment;
-import tsuyogoro.sugorokuon.fragments.timetable.RecommendFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SearchFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsChangedAlertDialog;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsLauncherDialogFragment;
@@ -217,9 +207,9 @@ public class SugorokuonActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-//        setupDrawer();
-        setupNavigationHeader();
+        setupDrawer();
 
+        setupTabLayout();
 
         // TimeTableServiceとbindして、fetchタスクの状態を見るのに使う
         Intent intent = new Intent(this, TimeTableService.class);
@@ -230,7 +220,7 @@ public class SugorokuonActivity extends AppCompatActivity
 
         // 初期位置へフォーカスを
         if (null == savedInstanceState || getIntent().getAction().equals(ACTION_OPEN_TIMETABLE)) {
-            openTodaysTimeTableFragment();
+//            openTodaysTimeTableFragment();
         }
 
         // アプリ生存期間内に必要なDangerous permissionをリクエスト
@@ -257,29 +247,114 @@ public class SugorokuonActivity extends AppCompatActivity
         }
     }
 
-    private final int[] mOrderedDateInWeek = new int[] {
+    private final int[] mOrderedDateInWeek = new int[]{
             Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
             Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
     };
 
-    private void setupNavigationHeader() {
-        String[] dateStrings = new String[mOrderedDateInWeek.length];
-        for (int i=0; i<mOrderedDateInWeek.length; i++) {
-            dateStrings[i] = dateStringByDayOfWeek(mOrderedDateInWeek[i]);
-        }
-        ArrayAdapter<String> dateSpinnerAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, dateStrings);
+    private void setupTabLayout() {
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return getFragmentByDayOfWeek(mOrderedDateInWeek[position]);
+            }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.main_activity_navigation_header);
-        Spinner dateSpinner = (Spinner) navigationView.getHeaderView(0).findViewById(R.id.date_spinner);
-        dateSpinner.setAdapter(dateSpinnerAdapter);
+            @Override
+            public int getCount() {
+                return mOrderedDateInWeek.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                // TODO : Define strings
+                switch (position) {
+                    case 0:
+                        return "Mon";
+                    case 1:
+                        return "Tue";
+                    case 2:
+                        return "Wed";
+                    case 3:
+                        return "Thu";
+                    case 4:
+                        return "Fri";
+                    case 5:
+                        return "Sat";
+                    case 6:
+                    default:
+                        return "Sun";
+                }
+            }
+        };
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_activity_date_tab);
+        tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Calendar d = SugorokuonUtils.dayOfThisWeek(mOrderedDateInWeek[position]);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat(
+                        getString(R.string.date_mmddeee), Locale.JAPANESE);
+                String date = dateFormat.format(new Date(d.getTimeInMillis()));
+
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setTitle(date);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
-    private String dateStringByDayOfWeek(int dayOfWeek) {
+    private Fragment getFragmentByDayOfWeek(int dayOfWeek) {
+        Fragment timeTableFragment = new TimeTableFragment();
         Calendar d = SugorokuonUtils.dayOfThisWeek(dayOfWeek);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                getString(R.string.date_mmddeee), Locale.JAPANESE);
-        return dateFormat.format(new Date(d.getTimeInMillis()));
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_YEAR, d.get(Calendar.YEAR));
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_MONTH, d.get(Calendar.MONTH) + 1);
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_DATE, d.get(Calendar.DATE));
+
+        String stationId = getIntent().getStringExtra(EXTRA_STATION_ID);
+        if (null != stationId) {
+            bundle.putString(TimeTableFragment.PARAMS_KEY_STATION_ID, stationId);
+        }
+
+        timeTableFragment.setArguments(bundle);
+
+        return timeTableFragment;
+    }
+
+    // dayOfWeekは、Calendar#SUNDAY ~ Calendar#SATURDAY
+    private void openTimeTableFragment(int dayOfWeek, boolean enableReturnByBackKey) {
+        Fragment f = new TimeTableFragment();
+
+        Calendar d = SugorokuonUtils.dayOfThisWeek(dayOfWeek);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_YEAR, d.get(Calendar.YEAR));
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_MONTH, d.get(Calendar.MONTH) + 1);
+        bundle.putInt(TimeTableFragment.PARAMS_KEY_DATE, d.get(Calendar.DATE));
+
+        String stationId = getIntent().getStringExtra(EXTRA_STATION_ID);
+        if (null != stationId) {
+            bundle.putString(TimeTableFragment.PARAMS_KEY_STATION_ID, stationId);
+        }
+
+        f.setArguments(bundle);
+
+        switchFragments(f, enableReturnByBackKey);
     }
 
     @Override
@@ -331,13 +406,13 @@ public class SugorokuonActivity extends AppCompatActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        mDrawerToggle.syncState();
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-//        mDrawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private void setupDrawer() {
@@ -348,74 +423,74 @@ public class SugorokuonActivity extends AppCompatActivity
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        // 今週のオススメリストを開く
-        findViewById(R.id.drawer_item_recommends).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchFragments(new RecommendFragment(), true);
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
-        // 番組表を開く
-        setupTimeTableList();
-
-        // 設定を起動
-        findViewById(R.id.drawer_item_settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                startActivityForResult(new Intent(SugorokuonActivity.this,
-                        SugorokuonSettingActivity.class), REQUESTCODE_SETTINGS);
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
-        // 今週よくかかった曲
-        findViewById(R.id.drawer_item_onair_songs).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null == getSupportFragmentManager().findFragmentByTag(
-                        TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT)) {
-                    switchFragments(new WeeklyOnAirSongsFragment(), true,
-                            TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT);
-                }
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
-        // このアプリについて
-        findViewById(R.id.drawer_item_about_app).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchFragments(new AboutAppFragment(), true);
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
-        // このアプリを評価
-        findViewById(R.id.drawer_item_rating).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent googlePlayIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.google_play_app_url)));
-                googlePlayIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(googlePlayIntent);
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
-        // 作者を応援
-        findViewById(R.id.drawer_item_launch_appc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OhenDialog dialog = new OhenDialog();
-                dialog.show(getSupportFragmentManager(), "OhenDialog");
-                mDrawerLayout.closeDrawers();
-            }
-        });
-
+//        // 今週のオススメリストを開く
+//        findViewById(R.id.drawer_item_recommends).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                switchFragments(new RecommendFragment(), true);
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
+//        // 番組表を開く
+//        setupTimeTableList();
+//
+//        // 設定を起動
+//        findViewById(R.id.drawer_item_settings).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                startActivityForResult(new Intent(SugorokuonActivity.this,
+//                        SugorokuonSettingActivity.class), REQUESTCODE_SETTINGS);
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
+//        // 今週よくかかった曲
+//        findViewById(R.id.drawer_item_onair_songs).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null == getSupportFragmentManager().findFragmentByTag(
+//                        TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT)) {
+//                    switchFragments(new WeeklyOnAirSongsFragment(), true,
+//                            TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT);
+//                }
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
+//        // このアプリについて
+//        findViewById(R.id.drawer_item_about_app).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                switchFragments(new AboutAppFragment(), true);
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
+//        // このアプリを評価
+//        findViewById(R.id.drawer_item_rating).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent googlePlayIntent = new Intent(Intent.ACTION_VIEW,
+//                        Uri.parse(getString(R.string.google_play_app_url)));
+//                googlePlayIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(googlePlayIntent);
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
+//        // 作者を応援
+//        findViewById(R.id.drawer_item_launch_appc).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                OhenDialog dialog = new OhenDialog();
+//                dialog.show(getSupportFragmentManager(), "OhenDialog");
+//                mDrawerLayout.closeDrawers();
+//            }
+//        });
+//
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
@@ -438,59 +513,6 @@ public class SugorokuonActivity extends AppCompatActivity
 
     private void switchFragments(Fragment f, boolean enableReturnByBack) {
         switchFragments(f, enableReturnByBack, null);
-    }
-
-    private void setupTimeTableList() {
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_monday),
-                Calendar.MONDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_tuesday),
-                Calendar.TUESDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_wednesday),
-                Calendar.WEDNESDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_thirsday),
-                Calendar.THURSDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_friday),
-                Calendar.FRIDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_saturday),
-                Calendar.SATURDAY);
-        setupDrawerTimeTableDay((TextView) findViewById(R.id.drawer_item_time_table_sunday),
-                Calendar.SUNDAY);
-    }
-
-    private void setupDrawerTimeTableDay(TextView textView, final int dayOfWeek) {
-        Calendar d = SugorokuonUtils.dayOfThisWeek(dayOfWeek);
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                getString(R.string.date_mmddeee), Locale.JAPANESE);
-        textView.setText(dateFormat.format(new Date(d.getTimeInMillis())));
-
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTimeTableFragment(dayOfWeek, true);
-                mDrawerLayout.closeDrawers();
-            }
-        });
-    }
-
-    // dayOfWeekは、Calendar#SUNDAY ~ Calendar#SATURDAY
-    private void openTimeTableFragment(int dayOfWeek, boolean enableReturnByBackKey) {
-        Fragment f = new TimeTableFragment();
-
-        Calendar d = SugorokuonUtils.dayOfThisWeek(dayOfWeek);
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(TimeTableFragment.PARAMS_KEY_YEAR, d.get(Calendar.YEAR));
-        bundle.putInt(TimeTableFragment.PARAMS_KEY_MONTH, d.get(Calendar.MONTH) + 1);
-        bundle.putInt(TimeTableFragment.PARAMS_KEY_DATE, d.get(Calendar.DATE));
-
-        String stationId = getIntent().getStringExtra(EXTRA_STATION_ID);
-        if (null != stationId) {
-            bundle.putString(TimeTableFragment.PARAMS_KEY_STATION_ID, stationId);
-        }
-
-        f.setArguments(bundle);
-
-        switchFragments(f, enableReturnByBackKey);
     }
 
     @Override

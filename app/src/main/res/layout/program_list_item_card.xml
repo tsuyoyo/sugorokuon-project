@@ -20,8 +20,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
+            android:paddingLeft="@dimen/margin_small"
             android:orientation="horizontal">
             <!-- 開始時刻 -->
             <TextView
@@ -31,7 +30,7 @@
                 android:gravity="start|center_vertical"
                 android:text="@{starttime}"
                 android:textColor="@color/app_primary"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_large" />
             <!-- 終了時刻 -->
             <TextView
                 android:id="@+id/program_list_item_endtime"
@@ -40,7 +39,7 @@
                 android:gravity="end|center_vertical"
                 android:text="@{endtime}"
                 android:textColor="@color/app_primary"
-                android:textSize="14sp" />
+                android:textSize="@dimen/textsize_standard" />
         </LinearLayout>
 
         <android.support.v7.widget.CardView
@@ -55,8 +54,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
                 android:orientation="horizontal">
 
 
@@ -66,8 +65,8 @@
                     android:src="@color/app_primary"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="@dimen/margin_standard"
+                    android:layout_marginRight="@dimen/margin_standard"
                     android:layout_gravity="center_vertical"
                     />
 
@@ -88,7 +87,7 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.title}"
                         android:textColor="@color/app_text_primary"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/textsize_large" />
 
                     <!-- パーソナリティ -->
                     <TextView
@@ -98,7 +97,7 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.personalities}"
                         android:textColor="@color/app_text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textsize_standard" />
 
                 </LinearLayout>
             </LinearLayout>

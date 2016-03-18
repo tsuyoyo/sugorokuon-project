@@ -13,6 +13,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -260,17 +261,6 @@ public class TimeTableFragment extends ProgramViewerFragment {
             }
         };
         mSetupTask.execute();
-
-        // ActionBarに、表示している番組表の日付を出す
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                getString(R.string.date_mmddeee), Locale.JAPANESE);
-        Calendar c = Calendar.getInstance();
-        c.set(year, month-1, date);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(dateFormat.format(new Date(c.getTimeInMillis())));
-        }
     }
 
     private void setStationListVisibility(boolean visible) {
