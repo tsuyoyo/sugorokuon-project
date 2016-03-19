@@ -288,6 +288,7 @@ public class SugorokuonActivity extends AppCompatActivity
         };
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
+        viewPager.setOffscreenPageLimit(mOrderedDateInWeek.length);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_activity_date_tab);

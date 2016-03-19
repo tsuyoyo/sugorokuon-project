@@ -158,9 +158,10 @@ public class TimeTableFragment extends ProgramViewerFragment {
                 mPagerAdapter = timeTablePagerAdapter;
 
                 mViewPager.setAdapter(mPagerAdapter);
-                mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
                     }
 
                     @Override
@@ -171,6 +172,7 @@ public class TimeTableFragment extends ProgramViewerFragment {
 
                     @Override
                     public void onPageScrollStateChanged(int state) {
+
                     }
                 });
 
