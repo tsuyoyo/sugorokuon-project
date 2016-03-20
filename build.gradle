@@ -3,7 +3,7 @@ ext {
     buildToolsVersion = "23.0.2"
     minSdkVersion = "14"
     targetSdkVersion = '23'
-    supportLibVersion = "23.1.1"
+    supportLibVersion = "23.2.1"
     playServiceVersion = "8.4.0"
     retrofitVersion = "2.0.0-beta4"
     robolectricVersion = "3.0-rc2"

@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.fragments.timetable;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,7 +35,7 @@ class TimeTablePagerAdapter extends FragmentPagerAdapter {
      * @param month 5月なら5 (Calendarみたいに-1しない)
      * @param date
      */
-    public TimeTablePagerAdapter(FragmentManager fm, TimeTableFragment fragment,
+    public TimeTablePagerAdapter(FragmentManager fm, Context context,
                                  int year, int month, int date) {
         super(fm);
 
@@ -42,7 +43,7 @@ class TimeTablePagerAdapter extends FragmentPagerAdapter {
         mMonth = month;
         mDate = date;
 
-        StationApi stationApi = new StationApi(fragment.getActivity());
+        StationApi stationApi = new StationApi(context);
         mStations = stationApi.load();
     }
 

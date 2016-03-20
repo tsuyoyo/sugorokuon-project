@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<group android:checkableBehavior="single">-->
-        <!--<item android:id="@+id/main_drawer_menu_recommends" />-->
-        <!--<item android:id="@+id/main_drawer_menu_monday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_tuesday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_wednesday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_thursday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_friday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_saturday" />-->
-        <!--<item android:id="@+id/main_drawer_menu_sunday" />-->
-    <!--</group>-->
-
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/main_drawer_menu_recommends"
+            android:title="@string/drawer_recommends_this_week"
+            android:icon="@drawable/ic_star_half_grey600_36dp" />
         <item
             android:id="@+id/main_drawer_menu_onair_songs"
             android:title="@string/drawer_onair_songs_weekly"

@@ -51,11 +51,72 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+            <!-- 画面右下に常に表示するボタン-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/main_activity_open_stations_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="@dimen/margin_standard"
+                android:clickable="true"
+                android:src="@drawable/ic_list_white_24dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                app:layout_anchorGravity="top|right"
+                app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"/>
+
+            <!-- ラジオ局一覧 -->
+            <LinearLayout
+                android:id="@+id/main_activity_stationlist_bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="32dp"
+                app:layout_behavior="@string/bottom_sheet_behavior">
+
+                <LinearLayout
+                    android:id="@+id/main_actiity_stationlist_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:paddingLeft="@dimen/margin_standard"
+                    android:orientation="horizontal"
+                    android:background="@color/app_primary"
+                    android:gravity="center_vertical"
+                    android:clickable="true">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:scaleType="center"
+                        android:paddingRight="@dimen/margin_small"
+                        android:src="@drawable/ic_list_white_24dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="ラジオステーション一覧"
+                        android:textColor="@color/actionbar_text"
+                        android:textSize="@dimen/textsize_small"
+                        />
+                </LinearLayout>
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/main_activity_station_list" />
+                </android.support.v4.widget.NestedScrollView>
+
+            </LinearLayout>
+
         </android.support.design.widget.CoordinatorLayout>
 
         <!-- The navigation drawer -->
         <android.support.design.widget.NavigationView
-            android:id="@+id/main_activity_navigation_header"
+            android:id="@+id/main_activity_navigation_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"

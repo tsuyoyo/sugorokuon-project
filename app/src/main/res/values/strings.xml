@@ -7,6 +7,14 @@
     <string name="title_recommends">今週のおすすめ</string>
     <string name="launching_app">起動中です&#8230;</string>
 
+    <string name="date_tab_switcher_monday">Mon</string>
+    <string name="date_tab_switcher_tuesday">Tue</string>
+    <string name="date_tab_switcher_wednesday">Wed</string>
+    <string name="date_tab_switcher_thursday">Thu</string>
+    <string name="date_tab_switcher_friday">Fri</string>
+    <string name="date_tab_switcher_saturday">Sat</string>
+    <string name="date_tab_switcher_sunday">Sun</string>
+
     <string name="dropdown_list_recommend">今週のおすすめ</string>
     <string name="dropdown_list_app_c_advertisement">おすすめアプリ(AD)</string>
 
