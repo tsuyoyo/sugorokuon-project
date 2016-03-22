@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_actiity_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,15 +31,17 @@
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+                <!-- https://android.googlesource.com/platform/frameworks/support.git/+/master/design/res/values/styles.xml -->
                 <android.support.design.widget.TabLayout
                     android:id="@+id/main_activity_date_tab"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabGravity="fill"
-                    app:tabIndicatorColor="@color/actionbar_text"
-                    app:tabMode="fixed"
+                    android:layout_height="32dp"
+                    app:tabTextAppearance="@style/SugorokuonDateTabTextAppearance"
                     app:tabSelectedTextColor="@color/actionbar_text"
-                    app:tabTextAppearance="@style/SugorokuonDateTabTextAppearance" />
+                    app:tabIndicatorColor="@color/actionbar_text"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
+                     />
 
             </android.support.design.widget.AppBarLayout>
 
@@ -68,7 +69,7 @@
             <LinearLayout
                 android:id="@+id/main_activity_stationlist_bottom_sheet"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="96dp"
                 android:orientation="vertical"
                 android:background="@android:color/white"
                 app:behavior_hideable="false"
@@ -103,10 +104,12 @@
                 <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
                         android:id="@+id/main_activity_station_list" />
                 </android.support.v4.widget.NestedScrollView>
 

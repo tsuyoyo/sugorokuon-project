@@ -20,12 +20,15 @@ http://developer.android.com/guide/topics/ui/actionbar.html
 
     <style name="SugorokuonDateTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
+        <!-- Support libのbugで動かないっぽい
+             https://code.google.com/p/android/issues/detail?id=202399&q=textAllCaps&colspec=ID%20Status%20Priority%20Owner%20Summary%20Stars%20Reporter%20Opened
+             https://code.google.com/p/android/issues/detail?id=204118&q=textAllCaps&colspec=ID%20Status%20Priority%20Owner%20Summary%20Stars%20Reporter%20Opened -->
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="SugorokuonDateTabTheme" parent="Base.Widget.Design.TabLayout">
-        <item name="tabSelectedTextColor">@color/actionbar_text</item>
-        <item name="tabTextAppearance">@style/SugorokuonDateTabTextAppearance</item>
-    </style>
+    <!--<style name="SugorokuonDateTabTheme" parent="Base.Widget.Design.TabLayout">-->
+        <!--<item name="tabSelectedTextColor">@color/actionbar_text</item>-->
+        <!--<item name="tabTextAppearance">@style/SugorokuonDateTabTextAppearance</item>-->
+    <!--</style>-->
 
 </resources>

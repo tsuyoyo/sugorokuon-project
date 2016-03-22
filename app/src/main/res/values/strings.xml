@@ -7,13 +7,21 @@
     <string name="title_recommends">今週のおすすめ</string>
     <string name="launching_app">起動中です&#8230;</string>
 
-    <string name="date_tab_switcher_monday">Mon</string>
-    <string name="date_tab_switcher_tuesday">Tue</string>
-    <string name="date_tab_switcher_wednesday">Wed</string>
-    <string name="date_tab_switcher_thursday">Thu</string>
-    <string name="date_tab_switcher_friday">Fri</string>
-    <string name="date_tab_switcher_saturday">Sat</string>
-    <string name="date_tab_switcher_sunday">Sun</string>
+    <!--<string name="date_tab_switcher_monday">Mon</string>-->
+    <!--<string name="date_tab_switcher_tuesday">Tue</string>-->
+    <!--<string name="date_tab_switcher_wednesday">Wed</string>-->
+    <!--<string name="date_tab_switcher_thursday">Thu</string>-->
+    <!--<string name="date_tab_switcher_friday">Fri</string>-->
+    <!--<string name="date_tab_switcher_saturday">Sat</string>-->
+    <!--<string name="date_tab_switcher_sunday">Sun</string>-->
+    <string name="date_tab_switcher_monday">月</string>
+    <string name="date_tab_switcher_tuesday">火</string>
+    <string name="date_tab_switcher_wednesday">水</string>
+    <string name="date_tab_switcher_thursday">木</string>
+    <string name="date_tab_switcher_friday">金</string>
+    <string name="date_tab_switcher_saturday">土</string>
+    <string name="date_tab_switcher_sunday">日</string>
+
 
     <string name="dropdown_list_recommend">今週のおすすめ</string>
     <string name="dropdown_list_app_c_advertisement">おすすめアプリ(AD)</string>

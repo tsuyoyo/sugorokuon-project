@@ -26,7 +26,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -212,21 +215,7 @@ public class SugorokuonActivity extends AppCompatActivity
             setSupportActionBar(toolbar);
         }
 
-        // test test test
-        // TODO : StationListを非同期でloadしてAdapterを生成する
-        findViewById(R.id.main_actiity_stationlist_title).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View bottomSheet = findViewById(R.id.main_activity_stationlist_bottom_sheet);
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-
-                if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            }
-        });
+        setupStationListBottomSheet();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_activity_open_stations_btn);
         if (fab != null) {
@@ -281,6 +270,61 @@ public class SugorokuonActivity extends AppCompatActivity
                 requirePermissionsSet.toArray(requirePermissions);
                 requestPermissions(requirePermissions, 100);
             }
+        }
+    }
+
+    private StationListAdapter.IStationListListener mStationListListener = new StationListAdapter.IStationListListener() {
+        @Override
+        public void onStationSelected(Station station) {
+            // Activeなfragmentへstationを切り替えるように指示
+        }
+    };
+
+    private void setupStationListBottomSheet() {
+        View titleBar = findViewById(R.id.main_actiity_stationlist_title);
+        if (titleBar != null) {
+            titleBar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View bottomSheet = findViewById(R.id.main_activity_stationlist_bottom_sheet);
+                    BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+
+                    // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
+                    if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    // 一番大きくなっている状態 (layout_heightの高さで表示されている)
+                    else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                }
+            });
+            AsyncTask<Void, Void, List<Station>> stationLoaderTask =
+                    new AsyncTask<Void, Void, List<Station>>() {
+                        @Override
+                        protected List<Station> doInBackground(Void... params) {
+                            return (new StationApi(SugorokuonActivity.this)).load();
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<Station> stations) {
+                            super.onPostExecute(stations);
+                            RecyclerView stationList =
+                                    (RecyclerView) findViewById(R.id.main_activity_station_list);
+                            if (stationList != null) {
+                                stationList.setLayoutManager(new LinearLayoutManager(
+                                        SugorokuonActivity.this, LinearLayoutManager.HORIZONTAL, false));
+
+                                StationListAdapter adapter = new StationListAdapter(
+                                        stations, mStationListListener);
+                                Log.d("TestTestTest", "onPostExecuted : " + adapter.getItemCount());
+                                stationList.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+
+                            }
+                        }
+                    };
+            stationLoaderTask.execute();
         }
     }
 
