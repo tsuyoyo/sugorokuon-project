@@ -45,11 +45,12 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <!-- The main content view -->
+            <!-- The main content view. margin is same as peekHeight of bottom sheet -->
             <android.support.v4.view.ViewPager
                 android:id="@+id/main_activity_tab_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="32dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <!-- 画面右下に常に表示するボタン-->
@@ -101,17 +102,11 @@
                         />
                 </LinearLayout>
 
-                <android.support.v4.widget.NestedScrollView
+                <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical">
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:id="@+id/main_activity_station_list" />
-                </android.support.v4.widget.NestedScrollView>
+                    android:layout_height="64dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/main_activity_station_list"/>
 
             </LinearLayout>
 

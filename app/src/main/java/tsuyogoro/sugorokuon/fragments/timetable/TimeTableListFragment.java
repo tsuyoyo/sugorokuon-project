@@ -14,6 +14,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -189,7 +190,17 @@ public class TimeTableListFragment extends Fragment
                 view.setOnClickListener(this);
 
                 mBinding = DataBindingUtil.bind(view);
+
+                mBinding.programListItemOpenBrowser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (program.url != null && program.url.length() > 0) {
+                            Log.d("TestTestTest", "Clicked open browser : " + program.url);
+                        }
+                    }
+                });
                 mListener = listener;
+
             }
 
             public ProgramListItemCardBinding getBinding() {
