@@ -6,8 +6,10 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -120,10 +122,25 @@ public class TimeTableListFragment extends Fragment
         mAdapter = new TimeTableListAdapter(programs, new TimeTableListAdapter.ItemClickListener() {
             @Override
             public void onItemClicked(Program program) {
+
+                // TODO : BottomSheetDialogを呼びたい
+
+                // TODO : 旧形式のレイアウトであればこれまで通りのフローに流した方が良いのかも
                 // ParentFragmentは、PagerAdapterを生成しているTimeTableFragmentになる
-                IProgramListItemTappedListener listener =
-                        (IProgramListItemTappedListener) getParentFragment();
-                listener.onProgramTapped(program);
+//                IProgramListItemTappedListener listener =
+//                        (IProgramListItemTappedListener) getParentFragment();
+//                listener.onProgramTapped(program);
+            }
+
+            @Override
+            public void onBrowserOpenClicked(Program program) {
+                if (program.url != null && program.url.length() > 0) {
+                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                    CustomTabsIntent intent = intentBuilder.setShowTitle(true)
+                            .setToolbarColor(getActivity().getColor(R.color.app_primary)).build();
+
+                    intent.launchUrl(getActivity(), Uri.parse(program.url));
+                }
             }
         }, getActivity());
 
@@ -170,6 +187,8 @@ public class TimeTableListFragment extends Fragment
         private interface ItemClickListener {
 
             void onItemClicked(Program program);
+
+            void onBrowserOpenClicked(Program program);
 
         }
 
@@ -241,9 +260,9 @@ public class TimeTableListFragment extends Fragment
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Program program = mPrograms.get(position);
-            holder.program = program;
+            final Program program = mPrograms.get(position);
 
+            holder.program = program;
             holder.getBinding().setProgram(program);
 
             String iconPath = program.getSymbolIconPath(mContext);
@@ -257,6 +276,17 @@ public class TimeTableListFragment extends Fragment
                             .into(holder.getBinding().programListItemImage);
                 }
             }
+
+            holder.getBinding().programListItemOpenBrowser.setVisibility(
+                    (program.url != null) && (program.url.length() > 0) ? View.VISIBLE : View.GONE);
+
+            holder.getBinding().programListItemOpenBrowser.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onBrowserOpenClicked(program);
+                        }
+                    });
 
             String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
             holder.getBinding().setStarttime(start);

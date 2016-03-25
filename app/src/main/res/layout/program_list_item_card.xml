@@ -4,6 +4,8 @@
         <variable name="program" type="tsuyogoro.sugorokuon.models.entities.Program"/>
         <variable name="starttime" type="String" />
         <variable name="endtime" type="String" />
+        <import type="android.view.View" />
+        <!--<variable name=""  type="boolean" />-->
     </data>
     <LinearLayout
         xmlns:android.support.v7.cardview="http://schemas.android.com/apk/res-auto"
@@ -116,6 +118,7 @@
                     android:scaleType="center"
                     android:src="@drawable/ic_open_in_browser_grey_600_18dp"
                     android:background="?attr/selectableItemBackground"
+                    android:visibility="@{(program.url != null) ? View.VISIBLE : View.GONE}"
                  />
 
             </LinearLayout>
