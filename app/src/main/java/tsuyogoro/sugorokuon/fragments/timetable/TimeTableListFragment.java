@@ -138,21 +138,7 @@ public class TimeTableListFragment extends Fragment
             @Override
             public void onBrowserOpenClicked(Program program) {
                 if (program.url != null && program.url.length() > 0) {
-                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-
-                    int color;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        color = getActivity().getColor(R.color.app_primary);
-                    } else {
-                        color = getActivity().getResources().getColor(R.color.app_primary);
-                    }
-                    CustomTabsIntent intent = intentBuilder.setShowTitle(true)
-                            .setToolbarColor(color)
-                            .setStartAnimations(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left)
-                            .setExitAnimations(getActivity(), R.anim.slide_in_left, R.anim.slide_out_right)
-                            .build();
-
-                    intent.launchUrl(getActivity(), Uri.parse(program.url));
+                    SugorokuonUtils.launchChromeTab(getActivity(), Uri.parse(program.url));
                 }
             }
         }, getActivity());

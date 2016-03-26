@@ -32,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -273,12 +274,21 @@ public class SugorokuonActivity extends AppCompatActivity
         }
     }
 
-    private StationListAdapter.IStationListListener mStationListListener = new StationListAdapter.IStationListListener() {
-        @Override
-        public void onStationSelected(Station station) {
-            // Activeなfragmentへstationを切り替えるように指示
-        }
-    };
+    private StationListAdapter.IStationListListener mStationListListener =
+            new StationListAdapter.IStationListListener() {
+                @Override
+                public void onStationSelected(Station station) {
+                    // Activeなfragmentへstationを切り替えるように指示
+                }
+
+                @Override
+                public void onStationLongTapped(Station station) {
+                    if (station.siteUrl != null) {
+                        SugorokuonUtils.launchChromeTab(
+                                SugorokuonActivity.this, Uri.parse(station.siteUrl));
+                    }
+                }
+            };
 
     private void setupStationListBottomSheet() {
         View titleBar = findViewById(R.id.main_actiity_stationlist_title);
@@ -289,13 +299,18 @@ public class SugorokuonActivity extends AppCompatActivity
                     View bottomSheet = findViewById(R.id.main_activity_stationlist_bottom_sheet);
                     BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
 
-                    // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
-                    if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }
-                    // 一番大きくなっている状態 (layout_heightの高さで表示されている)
-                    else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    TextView titleText = (TextView) findViewById(R.id.main_actiity_stationlist_title_text);
+                    if (titleText != null) {
+                        // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
+                        if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            titleText.setText(getString(R.string.station_list_dialog_description));
+                        }
+                        // 一番大きくなっている状態 (layout_heightの高さで表示されている)
+                        else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            titleText.setText(getString(R.string.station_list_dialog_title));
+                        }
                     }
                 }
             });

@@ -94,10 +94,12 @@
                         android:paddingRight="@dimen/margin_small"
                         android:src="@drawable/ic_list_white_24dp" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/main_actiity_stationlist_title_text"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="ラジオステーション一覧"
+                        android:text="@string/station_list_dialog_title"
                         android:textColor="@color/actionbar_text"
                         android:textSize="@dimen/textsize_small"
                         />

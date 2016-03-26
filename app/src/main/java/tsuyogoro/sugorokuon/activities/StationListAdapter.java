@@ -26,6 +26,8 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
     public interface IStationListListener {
         void onStationSelected(Station station);
+
+        void onStationLongTapped(Station station);
     }
 
     public StationListAdapter(List<Station> stations, IStationListListener listener) {
@@ -55,7 +57,7 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
     }
 
     public static class StationListViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener{
+            implements View.OnClickListener, View.OnLongClickListener {
 
         private Station station;
 
@@ -66,6 +68,8 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
         public StationListViewHolder(View itemView, IStationListListener stationListListener) {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setLongClickable(true);
+            itemView.setOnLongClickListener(this);
             mBinding = DataBindingUtil.bind(itemView);
             listener = stationListListener;
         }
@@ -79,6 +83,14 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
             if (station != null) {
                 listener.onStationSelected(station);
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (station != null) {
+                listener.onStationLongTapped(station);
+            }
+            return true;
         }
     }
 }
