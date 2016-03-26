@@ -317,7 +317,7 @@ public class SugorokuonActivity extends AppCompatActivity
 
                                 StationListAdapter adapter = new StationListAdapter(
                                         stations, mStationListListener);
-                                Log.d("TestTestTest", "onPostExecuted : " + adapter.getItemCount());
+
                                 stationList.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
 

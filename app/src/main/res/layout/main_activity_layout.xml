@@ -39,6 +39,7 @@
                     app:tabTextAppearance="@style/SugorokuonDateTabTextAppearance"
                     app:tabSelectedTextColor="@color/actionbar_text"
                     app:tabIndicatorColor="@color/actionbar_text"
+                    app:tabIndicatorHeight="0dp"
                     app:tabGravity="fill"
                     app:tabMode="fixed"
                      />

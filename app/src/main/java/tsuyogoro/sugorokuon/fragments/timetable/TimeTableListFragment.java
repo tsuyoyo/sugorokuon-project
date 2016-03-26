@@ -7,7 +7,9 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,7 @@ import tsuyogoro.sugorokuon.databinding.ProgramListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
 
 public class TimeTableListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Program>> {
@@ -136,8 +139,18 @@ public class TimeTableListFragment extends Fragment
             public void onBrowserOpenClicked(Program program) {
                 if (program.url != null && program.url.length() > 0) {
                     CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+
+                    int color;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        color = getActivity().getColor(R.color.app_primary);
+                    } else {
+                        color = getActivity().getResources().getColor(R.color.app_primary);
+                    }
                     CustomTabsIntent intent = intentBuilder.setShowTitle(true)
-                            .setToolbarColor(getActivity().getColor(R.color.app_primary)).build();
+                            .setToolbarColor(color)
+                            .setStartAnimations(getActivity(), R.anim.slide_in_right, R.anim.slide_out_left)
+                            .setExitAnimations(getActivity(), R.anim.slide_in_left, R.anim.slide_out_right)
+                            .build();
 
                     intent.launchUrl(getActivity(), Uri.parse(program.url));
                 }
@@ -276,9 +289,6 @@ public class TimeTableListFragment extends Fragment
                             .into(holder.getBinding().programListItemImage);
                 }
             }
-
-            holder.getBinding().programListItemOpenBrowser.setVisibility(
-                    (program.url != null) && (program.url.length() > 0) ? View.VISIBLE : View.GONE);
 
             holder.getBinding().programListItemOpenBrowser.setOnClickListener(
                     new View.OnClickListener() {

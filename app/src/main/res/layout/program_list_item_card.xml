@@ -52,15 +52,19 @@
             android:layout_marginRight="0dp"
             android.support.v7.cardview:cardElevation="0dp"
             android.support.v7.cardview:cardCornerRadius="0dp">
-
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_standard"
+                android:paddingRight="@dimen/margin_standard"
+                android:background="?android:attr/selectableItemBackground">
 
                 <!-- 番組の提供するアイコン画像 -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/program_list_item_image_layout"
+                    android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
@@ -69,17 +73,17 @@
                         android:src="@color/app_primary"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="@dimen/margin_standard"
                         android:layout_marginRight="@dimen/margin_standard"
                         />
                 </LinearLayout>
+
+                <!--android:background="@drawable/listitem_back"-->
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/margin_standard"
                     android:paddingBottom="@dimen/margin_standard"
-                    android:background="@drawable/listitem_back"
                     android:baselineAligned="false"
                     android:orientation="vertical"
                     android:layout_weight="1"
@@ -106,19 +110,22 @@
                         android:textSize="@dimen/textsize_standard" />
                 </LinearLayout>
 
+
+                <!--android:paddingTop="@dimen/margin_small"-->
+                <!--android:paddingBottom="@dimen/margin_small"-->
+                <!--android:paddingRight="@dimen/margin_standard"-->
+
                 <!-- ブラウザで開くボタン -->
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/program_list_item_open_browser"
-                    android:layout_width="48dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/margin_small"
-                    android:paddingBottom="@dimen/margin_small"
-                    android:paddingLeft="@dimen/margin_standard"
-                    android:paddingRight="@dimen/margin_standard"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_standard"
                     android:scaleType="center"
-                    android:src="@drawable/ic_open_in_browser_grey_600_18dp"
+                    android:src="@drawable/ic_home_grey_600_24dp"
                     android:background="?attr/selectableItemBackground"
-                    android:visibility="@{(program.url != null) ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{(program.url.length() > 0) ? View.VISIBLE : View.GONE}"
                  />
 
             </LinearLayout>
