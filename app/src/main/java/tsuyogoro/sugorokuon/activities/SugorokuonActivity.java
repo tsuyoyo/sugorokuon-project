@@ -31,6 +31,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -218,11 +219,24 @@ public class SugorokuonActivity extends AppCompatActivity
 
         setupStationListBottomSheet();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_activity_open_stations_btn);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.main_activity_open_stations_btn);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // TODO : 多分これだけで別クラスにしても良いかもしれないレベル
+                    final View fabMenuArea = findViewById(R.id.main_activity_fab_menu_area);
+                    fabMenuArea.setVisibility(View.VISIBLE);
+                    fabMenuArea.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            fabMenuArea.setVisibility(View.GONE);
+                            return true;
+                        }
+                    });
+
+
+
                     // メモ：多分BottomSheetDialogを使うべき
                     // http://qiita.com/KohsakuOnozawa/items/2509ddad54e0734e67a8
 

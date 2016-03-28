@@ -54,19 +54,6 @@
                 android:layout_marginBottom="32dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            <!-- 画面右下に常に表示するボタン-->
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/main_activity_open_stations_btn"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginRight="@dimen/margin_standard"
-                android:clickable="true"
-                android:src="@drawable/ic_list_white_24dp"
-                app:borderWidth="0dp"
-                app:fabSize="normal"
-                app:layout_anchorGravity="top|right"
-                app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"/>
-
             <!-- ラジオ局一覧 -->
             <LinearLayout
                 android:id="@+id/main_activity_stationlist_bottom_sheet"
@@ -113,6 +100,19 @@
 
             </LinearLayout>
 
+            <!-- 画面右下に常に表示するボタン-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/main_activity_open_stations_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="@dimen/margin_standard"
+                android:clickable="true"
+                android:src="@drawable/ic_list_white_24dp"
+                app:borderWidth="0dp"
+                app:fabSize="normal"
+                app:layout_anchorGravity="top|right"
+                app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"/>
+
         </android.support.design.widget.CoordinatorLayout>
 
         <!-- The navigation drawer -->
@@ -125,5 +125,16 @@
             app:menu="@menu/main_activity_navigation_item" />
 
     </android.support.v4.widget.DrawerLayout>
+
+    <!-- Floating action buttonを押した時に出現させるMenu群 -->
+    <!-- TODO : だけど、これ無くてもいいかも…。やりたいのはMenu群にしたいだけ -->
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_activity_fab_menu_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DDFFFFFF"
+        android:visibility="gone">
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.design.widget.CoordinatorLayout>
