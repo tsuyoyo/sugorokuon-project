@@ -78,7 +78,7 @@ class TimeTableApiClient {
         return null;
     }
 
-    @Root
+    @Root(strict = false)
     public static class TimeTableRoot {
 
         // 謎の値。
@@ -92,7 +92,7 @@ class TimeTableApiClient {
         @ElementList
         public List<Station> stations;
 
-        @Root(name = "station")
+        @Root(name = "station", strict = false)
         public static class Station {
 
             @Attribute
@@ -104,7 +104,7 @@ class TimeTableApiClient {
             @ElementList(name = "scd")
             public List<TimeTable> timetables;
 
-            @Root(name = "progs")
+            @Root(name = "progs", strict = false)
             public static class TimeTable {
 
                 @Element(name = "date")
@@ -113,27 +113,27 @@ class TimeTableApiClient {
                 @ElementList(inline = true)
                 public List<Program> programs;
 
-                @Root(name = "prog")
+                @Root(name = "prog", strict = false)
                 public static class Program {
 
-                    // Formatted yyyyMMddhhmmss
-                    @Attribute(name = "ft")
+                    // Formatted yyyyMMddHHmmss
+                    @Attribute(name = "ft", required = false)
                     public Calendar startTime;
 
-                    // Formatted yyyyMMddhhmmss
-                    @Attribute(name = "to")
+                    // Formatted yyyyMMddHHmmss
+                    @Attribute(name = "to", required = false)
                     public Calendar endTime;
 
-                    @Attribute(name = "ftl")
+                    @Attribute(name = "ftl", required = false)
                     public String startTimeHHmm;
 
-                    @Attribute(name = "tol")
+                    @Attribute(name = "tol", required = false)
                     public String endTimeHHmm;
 
-                    @Attribute(name = "dur")
+                    @Attribute(name = "dur", required = false)
                     public int durationInSec;
 
-                    @Element
+                    @Element(required = false)
                     public String title;
 
                     @Element(required = false)
@@ -154,7 +154,7 @@ class TimeTableApiClient {
                     @ElementList(required = false)
                     public List<Meta> metas;
 
-                    @Root(name = "meta")
+                    @Root(name = "meta", strict = false)
                     public static class Meta {
                         @Attribute
                         public String name;

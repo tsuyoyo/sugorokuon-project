@@ -100,7 +100,7 @@ class FeedApiClient {
         public String station;
     }
 
-    @Root
+    @Root(strict = false)
     public static class NowOnAir {
 
         @Element(name = "station")
@@ -109,7 +109,7 @@ class FeedApiClient {
         @ElementList(name = "noa")
         public List<Item> onAirSongs;
 
-        @Root(name = "item")
+        @Root(name = "item", strict = false)
         public static class Item {
 
             @Attribute

@@ -18,17 +18,17 @@ class ApiDateConverter implements Transform<Calendar> {
 
     private static final String FORMAT_yyyyMMdd = "yyyyMMdd";
 
-    private static final String FORMAT_yyyyMMddhhmmss = "yyyyMMddhhmmss";
+    private static final String FORMAT_yyyyMMddHHmmss = "yyyyMMddHHmmss";
 
-    private static final String FORMAT_yyyy_MM_dd_hh_mm_ss = "yyyy-MM-dd hh:mm:ss";
+    private static final String FORMAT_yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
 
     private String decideFormatPatten(String dateStr) {
         if (dateStr.length() == FORMAT_yyyyMMdd.length()) {
             return FORMAT_yyyyMMdd;
-        } else if (dateStr.length() == FORMAT_yyyyMMddhhmmss.length()) {
-            return FORMAT_yyyyMMddhhmmss;
-        } else if (dateStr.length() == FORMAT_yyyy_MM_dd_hh_mm_ss.length()) {
-            return FORMAT_yyyy_MM_dd_hh_mm_ss;
+        } else if (dateStr.length() == FORMAT_yyyyMMddHHmmss.length()) {
+            return FORMAT_yyyyMMddHHmmss;
+        } else if (dateStr.length() == FORMAT_yyyy_MM_dd_HH_mm_ss.length()) {
+            return FORMAT_yyyy_MM_dd_HH_mm_ss;
         } else {
             return null;
         }
@@ -42,8 +42,8 @@ class ApiDateConverter implements Transform<Calendar> {
                 c.set(Calendar.SECOND, 0);
                 c.set(Calendar.MILLISECOND, 0);
                 break;
-            case FORMAT_yyyyMMddhhmmss:
-            case FORMAT_yyyy_MM_dd_hh_mm_ss:
+            case FORMAT_yyyyMMddHHmmss:
+            case FORMAT_yyyy_MM_dd_HH_mm_ss:
                 c.set(Calendar.MILLISECOND, 0);
                 break;
             default:
