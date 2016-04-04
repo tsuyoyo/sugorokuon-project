@@ -19,4 +19,6 @@
     <color name="onair_song_primary">#303F9F</color>
 
     <drawable name="onair_song_pager_background">@color/app_accent_background</drawable>
+
+    <color name="background_floating_action_btn_list">#DDFFFFFF</color>
 </resources>

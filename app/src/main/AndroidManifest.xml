@@ -44,6 +44,10 @@
             android:theme="@style/Theme.SugorokuonSettingsTheme"/>
 
         <activity
+            android:name=".activities.OnAirSongsActivity"
+            android:label="@string/app_name" />
+
+        <activity
             android:name=".activities.AreaSelectActivity"
             android:label="@string/title_activity_area_select" />
 
@@ -90,43 +94,6 @@
                 <action android:name="tsuyogoro.sugorokuon.service.action_update_timer" />
             </intent-filter>
         </service>
-
-        <!-- AppC Core Setting Start -->
-        <meta-data
-            android:name="appc_media_key"
-            android:value="@string/appc_media_key" />
-
-        <activity
-            android:name="net.app_c.cloud.sdk.AppCAdActivity"
-            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity
-            android:name="net.app_c.cloud.sdk.AppCRecoveryActivity"
-            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity
-            android:name="net.app_c.cloud.sdk.AppCAgreementActivity"
-            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|uiMode|touchscreen"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
-        <!-- AppC Core Setting End -->
-
-
-        <!-- AppC Core Setting Start -->
-        <receiver
-            android:name="net.app_c.cloud.sdk.AppCPkgReceiver"
-            android:enabled="true"
-            android:exported="false"
-            android:label="BootStrap">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-
-                <data android:scheme="package"></data>
-            </intent-filter>
-        </receiver>
-        <!-- AppC Core Setting End -->
 
     </application>
 

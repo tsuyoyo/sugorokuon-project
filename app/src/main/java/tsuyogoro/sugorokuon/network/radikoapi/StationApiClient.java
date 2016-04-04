@@ -52,7 +52,7 @@ class StationApiClient {
     }
 
     //<stations area_id="JP13" area_name="TOKYO JAPAN">
-    @Root
+    @Root(strict = false)
     public static class StationList {
 
         @ElementList(inline = true)
@@ -64,7 +64,7 @@ class StationApiClient {
         @Attribute
         public String area_name;
 
-        @Root(name = "station")
+        @Root(name = "station", strict = false)
         public static class Station {
 
             @Element
@@ -94,7 +94,7 @@ class StationApiClient {
             @ElementList(inline = true)
             public List<Logo> logos;
 
-            @Root(name = "logo")
+            @Root(name = "logo", strict = false)
             public static class Logo {
                 @Attribute
                 public int width;

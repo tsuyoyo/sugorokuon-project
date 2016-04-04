@@ -11,30 +11,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.SugorokuonApplication;
@@ -61,16 +50,15 @@ public class TimeTableFragment extends ProgramViewerFragment {
 
     private TimeTablePagerAdapter mPagerAdapter;
 
-    private View mStationListFrame;
+//    private View mStationListFrame;
 
-    private ImageButton mStationListOpenBtn;
+//    private ImageButton mStationListOpenBtn;
 
     private AsyncTask<Void, Void, TimeTablePagerAdapter> mSetupTask;
 
     /**
      * 局の情報の更新などを入れる際、これを呼ぶこと
      * current pageのindexがはみ出ちゃうかもしれない
-     *
      */
     public static void resetCurrentPageIndex(Context context) {
         LastStationFocusPreference.saveLastFocusedIndex(context, 0);
@@ -122,18 +110,86 @@ public class TimeTableFragment extends ProgramViewerFragment {
         return inflater.inflate(R.layout.timetable_layout, null);
     }
 
+    private View mRootView;
+
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mRootView = view;
+        mViewPager = (ViewPager) mRootView.findViewById(R.id.timetable_pager);
+
+        // TimeTablePagerAdapterを作る時にDBアクセスがあるので、
+        // 一度backgroundに逃す
+        loadDataAsync(getActivity());
+
+        // Backキーのハンドリング
+        mRootView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                SugorokuonLog.d("onKeyListener is called");
+
+                boolean consumed = false;
+
+                if (KeyEvent.ACTION_DOWN == event.getAction()
+                        && KeyEvent.KEYCODE_BACK == keyCode) {
+//                    if (View.VISIBLE == mStationListFrame.getVisibility()) {
+//                        setStationListVisibility(false);
+//                        consumed = true;
+//
+//                        SugorokuonLog.d("station is closed");
+//                    } else
+                    if (isInfoViewerVisible()) {
+                        consumed = backWebView();
+                        if (!consumed) {
+                            consumed = closeInfoViewer();
+                        }
+
+                        SugorokuonLog.d("WebView handled it");
+                    }
+                }
+                SugorokuonLog.d("onKeyListener is done : " + consumed);
+                return consumed;
+            }
+        });
+
+        // TODO : 16/3/19 これをFloating Action Buttonにせねば
+        // StationList
+//        mStationListOpenBtn = (ImageButton) mRootView.findViewById(
+//                R.id.timetable_station_list_open_btn);
+//        mStationListFrame = mRootView.findViewById(R.id.timetable_station_list_frame);
+
+//        mStationListOpenBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                setStationListVisibility(true);
+//                closeInfoViewer();
+//            }
+//        });
+
+        // 下のフレームへタッチを通さない
+//        mStationListFrame.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return true;
+//            }
+//        });
+//        mRootView.findViewById(R.id.timetable_station_list_other_area)
+//                .setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setStationListVisibility(false);
+//                    }
+//                });
+
+    }
+
+    public void loadDataAsync(final Context context) {
 
         final int year = getArguments().getInt(PARAMS_KEY_YEAR);
         final int month = getArguments().getInt(PARAMS_KEY_MONTH);
         final int date = getArguments().getInt(PARAMS_KEY_DATE);
 
-        mViewPager = (ViewPager) view.findViewById(R.id.timetable_pager);
-
-        // TimeTablePagerAdapterを作る時にDBアクセスがあるので、
-        // 一度backgroundに逃す
         mSetupTask = new AsyncTask<Void, Void, TimeTablePagerAdapter>() {
             @Override
             protected TimeTablePagerAdapter doInBackground(Void... params) {
@@ -142,7 +198,8 @@ public class TimeTableFragment extends ProgramViewerFragment {
                 }
 
                 TimeTablePagerAdapter timeTablePagerAdapter = new TimeTablePagerAdapter(
-                        getChildFragmentManager(), TimeTableFragment.this, year, month, date);
+//                        getChildFragmentManager(), TimeTableFragment.this, year, month, date);
+                        getChildFragmentManager(), context, year, month, date);
                 return timeTablePagerAdapter;
             }
 
@@ -154,12 +211,33 @@ public class TimeTableFragment extends ProgramViewerFragment {
                     return;
                 }
 
+                //------------------
+                // EventBusにregsisterしてみる？
+//                mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                    @Override
+//                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPageSelected(int position) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPageScrollStateChanged(int state) {
+//
+//                    }
+//                });
+                //-------------
+
                 mPagerAdapter = timeTablePagerAdapter;
 
                 mViewPager.setAdapter(mPagerAdapter);
-                mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
                     }
 
                     @Override
@@ -170,6 +248,7 @@ public class TimeTableFragment extends ProgramViewerFragment {
 
                     @Override
                     public void onPageScrollStateChanged(int state) {
+
                     }
                 });
 
@@ -187,105 +266,38 @@ public class TimeTableFragment extends ProgramViewerFragment {
 
                 // PagerTabのindicatorはjavaからしか設定できないみたい
                 PagerTabStrip tabStrip =
-                        (PagerTabStrip) view.findViewById(R.id.timetable_pager_tab_strip);
+                        (PagerTabStrip) mRootView.findViewById(R.id.timetable_pager_tab_strip);
                 tabStrip.setTabIndicatorColorResource(R.color.app_primary);
 
-                // StationList
-                mStationListOpenBtn = (ImageButton) view.findViewById(
-                        R.id.timetable_station_list_open_btn);
-                mStationListFrame = view.findViewById(R.id.timetable_station_list_frame);
-
-                mStationListOpenBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setStationListVisibility(true);
-                        closeInfoViewer();
-                    }
-                });
-                ListView stationList = (ListView) view.findViewById(R.id.timetable_station_list);
-                stationList.setAdapter(new StationListAdapter());
-                stationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        setStationListVisibility(false);
-                        mViewPager.setCurrentItem(position);
-                    }
-                });
-
-                // 下のフレームへタッチを通さない
-                mStationListFrame.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });
-                view.findViewById(R.id.timetable_station_list_other_area)
-                        .setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                setStationListVisibility(false);
-                            }
-                        });
-
-                // Backキーのハンドリング
-                view.setOnKeyListener(new View.OnKeyListener() {
-                    @Override
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        SugorokuonLog.d("onKeyListener is called");
-
-                        boolean consumed = false;
-
-                        if (KeyEvent.ACTION_DOWN == event.getAction()
-                                && KeyEvent.KEYCODE_BACK == keyCode) {
-                            if (View.VISIBLE == mStationListFrame.getVisibility()) {
-                                setStationListVisibility(false);
-                                consumed = true;
-
-                                SugorokuonLog.d("station is closed");
-                            }
-                            else if (isInfoViewerVisible()) {
-                                consumed = backWebView();
-                                if (!consumed) {
-                                    consumed = closeInfoViewer();
-                                }
-
-                                SugorokuonLog.d("WebView handled it");
-                            }
-                        }
-                        SugorokuonLog.d("onKeyListener is done : " + consumed);
-                        return consumed;
-                    }
-                });
                 SugorokuonLog.d("setOnKeyListener was done");
+
+//                ListView stationList = (ListView) mRootView.findViewById(R.id.timetable_station_list);
+//                stationList.setAdapter(new StationListAdapter());
+//                stationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        setStationListVisibility(false);
+//                        mViewPager.setCurrentItem(position);
+//                    }
+//                });
             }
         };
         mSetupTask.execute();
-
-        // ActionBarに、表示している番組表の日付を出す
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                getString(R.string.date_mmddeee), Locale.JAPANESE);
-        Calendar c = Calendar.getInstance();
-        c.set(year, month-1, date);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(dateFormat.format(new Date(c.getTimeInMillis())));
-        }
     }
 
-    private void setStationListVisibility(boolean visible) {
-        if (visible) {
-            mStationListFrame.setVisibility(View.VISIBLE);
-            mStationListOpenBtn.setVisibility(View.GONE);
-        } else {
-            mStationListFrame.setVisibility(View.GONE);
-            mStationListOpenBtn.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void setStationListVisibility(boolean visible) {
+//        if (visible) {
+//            mStationListFrame.setVisibility(View.VISIBLE);
+//            mStationListOpenBtn.setVisibility(View.GONE);
+//        } else {
+//            mStationListFrame.setVisibility(View.GONE);
+//            mStationListOpenBtn.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     private int getStationIndex(String stationId) {
         int index = -1;
-        for (int i=0; i < mPagerAdapter.getCount(); i++) {
+        for (int i = 0; i < mPagerAdapter.getCount(); i++) {
             if (mPagerAdapter.getStation(i).id.equals(stationId)) {
                 index = i;
                 break;
@@ -326,6 +338,17 @@ public class TimeTableFragment extends ProgramViewerFragment {
             name.setText(station.name);
 
             return view;
+        }
+    }
+
+    public void setFocus(Station station) {
+        int stationsNum = mPagerAdapter.getCount();
+
+        for (int i=0; i < stationsNum; i++) {
+            if (mPagerAdapter.getStation(i).id.equals(station.id)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
         }
     }
 

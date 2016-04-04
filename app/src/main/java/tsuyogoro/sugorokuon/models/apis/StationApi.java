@@ -25,6 +25,10 @@ public class StationApi {
      * @param context
      */
     public StationApi(Context context) {
+        if (context == null) {
+            SugorokuonLog.w("Context is null in StationApi constructor");
+            throw new IllegalArgumentException("Context is null in StationApi constructor");
+        }
         mDbOpenHelper = new StationDbOpenHelper(context);
     }
 

@@ -6,17 +6,24 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -34,6 +41,7 @@ import tsuyogoro.sugorokuon.databinding.ProgramListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
 
 public class TimeTableListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Program>> {
@@ -75,6 +83,8 @@ public class TimeTableListFragment extends Fragment
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getLoaderManager().initLoader(0, getArguments(), this);
+
+        // TOOD : この辺でぐるぐる出したい
     }
 
     @Override
@@ -110,6 +120,9 @@ public class TimeTableListFragment extends Fragment
         };
     }
 
+    private static final String TEXT_HTML = "text/html";
+    private static final String UTF_8 = "UTF-8";
+
     @Override
     public void onLoadFinished(Loader<List<Program>> loader, List<Program> programs) {
 
@@ -117,10 +130,40 @@ public class TimeTableListFragment extends Fragment
         mAdapter = new TimeTableListAdapter(programs, new TimeTableListAdapter.ItemClickListener() {
             @Override
             public void onItemClicked(Program program) {
+
+                BottomSheetDialog bottomSheet = new BottomSheetDialog(getActivity());
+
+                View bottomSheetRoot = LayoutInflater.from(
+                        getActivity()).inflate(R.layout.program_bottom_sheet_layout, null, false);
+
+                WebView infoView = (WebView) bottomSheetRoot.findViewById(
+                        R.id.program_bottom_sheet_program_info);
+                infoView.loadDataWithBaseURL(null,
+                        program.description + "<BR><BR><BR>" + program.info,
+                        TEXT_HTML, UTF_8, null);
+
+                TextView title = (TextView) bottomSheetRoot.findViewById(
+                        R.id.program_bottom_sheet_program_title);
+                title.setText(program.title);
+
+                bottomSheet.setContentView(bottomSheetRoot);
+
+                bottomSheet.show();
+
+                // ここでWebViewに番組情報を表示する
+
+                // TODO : 旧形式のレイアウトであればこれまで通りのフローに流した方が良いのかも
                 // ParentFragmentは、PagerAdapterを生成しているTimeTableFragmentになる
-                IProgramListItemTappedListener listener =
-                        (IProgramListItemTappedListener) getParentFragment();
-                listener.onProgramTapped(program);
+//                IProgramListItemTappedListener listener =
+//                        (IProgramListItemTappedListener) getParentFragment();
+//                listener.onProgramTapped(program);
+            }
+
+            @Override
+            public void onBrowserOpenClicked(Program program) {
+                if (program.url != null && program.url.length() > 0) {
+                    SugorokuonUtils.launchChromeTab(getActivity(), Uri.parse(program.url));
+                }
             }
         }, getActivity());
 
@@ -168,6 +211,8 @@ public class TimeTableListFragment extends Fragment
 
             void onItemClicked(Program program);
 
+            void onBrowserOpenClicked(Program program);
+
         }
 
         // Provide a reference to the views for each data item
@@ -187,7 +232,17 @@ public class TimeTableListFragment extends Fragment
                 view.setOnClickListener(this);
 
                 mBinding = DataBindingUtil.bind(view);
+
+                mBinding.programListItemOpenBrowser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (program.url != null && program.url.length() > 0) {
+                            Log.d("TestTestTest", "Clicked open browser : " + program.url);
+                        }
+                    }
+                });
                 mListener = listener;
+
             }
 
             public ProgramListItemCardBinding getBinding() {
@@ -228,9 +283,9 @@ public class TimeTableListFragment extends Fragment
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Program program = mPrograms.get(position);
-            holder.program = program;
+            final Program program = mPrograms.get(position);
 
+            holder.program = program;
             holder.getBinding().setProgram(program);
 
             String iconPath = program.getSymbolIconPath(mContext);
@@ -244,6 +299,14 @@ public class TimeTableListFragment extends Fragment
                             .into(holder.getBinding().programListItemImage);
                 }
             }
+
+            holder.getBinding().programListItemOpenBrowser.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mListener.onBrowserOpenClicked(program);
+                        }
+                    });
 
             String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
             holder.getBinding().setStarttime(start);

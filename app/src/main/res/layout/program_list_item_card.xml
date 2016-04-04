@@ -4,6 +4,8 @@
         <variable name="program" type="tsuyogoro.sugorokuon.models.entities.Program"/>
         <variable name="starttime" type="String" />
         <variable name="endtime" type="String" />
+        <import type="android.view.View" />
+        <!--<variable name=""  type="boolean" />-->
     </data>
     <LinearLayout
         xmlns:android.support.v7.cardview="http://schemas.android.com/apk/res-auto"
@@ -20,8 +22,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
+            android:paddingLeft="@dimen/margin_small"
             android:orientation="horizontal">
             <!-- 開始時刻 -->
             <TextView
@@ -31,7 +32,7 @@
                 android:gravity="start|center_vertical"
                 android:text="@{starttime}"
                 android:textColor="@color/app_primary"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_large" />
             <!-- 終了時刻 -->
             <TextView
                 android:id="@+id/program_list_item_endtime"
@@ -40,7 +41,7 @@
                 android:gravity="end|center_vertical"
                 android:text="@{endtime}"
                 android:textColor="@color/app_primary"
-                android:textSize="14sp" />
+                android:textSize="@dimen/textsize_standard" />
         </LinearLayout>
 
         <android.support.v7.widget.CardView
@@ -51,34 +52,42 @@
             android:layout_marginRight="0dp"
             android.support.v7.cardview:cardElevation="0dp"
             android.support.v7.cardview:cardCornerRadius="0dp">
-
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/margin_standard"
+                android:paddingRight="@dimen/margin_standard"
+                android:background="?android:attr/selectableItemBackground">
 
                 <!-- 番組の提供するアイコン画像 -->
-                <ImageView
-                    android:id="@+id/program_list_item_image"
-                    android:src="@color/app_primary"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    />
+                <LinearLayout
+                    android:id="@+id/program_list_item_image_layout"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/program_list_item_image"
+                        android:src="@color/app_primary"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="@dimen/margin_standard"
+                        />
+                </LinearLayout>
+
+                <!--android:background="@drawable/listitem_back"-->
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/listitem_back"
+                    android:paddingTop="@dimen/margin_standard"
+                    android:paddingBottom="@dimen/margin_standard"
                     android:baselineAligned="false"
                     android:orientation="vertical"
-                    android:layout_weight="70"
-                    android:padding="5dp">
+                    android:layout_weight="1"
+                    >
 
                     <!-- タイトル -->
                     <TextView
@@ -88,7 +97,7 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.title}"
                         android:textColor="@color/app_text_primary"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/textsize_large" />
 
                     <!-- パーソナリティ -->
                     <TextView
@@ -98,9 +107,27 @@
                         android:gravity="start|center_vertical"
                         android:text="@{program.personalities}"
                         android:textColor="@color/app_text_secondary"
-                        android:textSize="14sp" />
-
+                        android:textSize="@dimen/textsize_standard" />
                 </LinearLayout>
+
+
+                <!--android:paddingTop="@dimen/margin_small"-->
+                <!--android:paddingBottom="@dimen/margin_small"-->
+                <!--android:paddingRight="@dimen/margin_standard"-->
+
+                <!-- ブラウザで開くボタン -->
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/program_list_item_open_browser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/margin_standard"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_home_grey_600_24dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:visibility="@{(program.url.length() > 0) ? View.VISIBLE : View.GONE}"
+                 />
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

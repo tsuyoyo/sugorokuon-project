@@ -2,8 +2,9 @@
 
 - ラジコンシェルジュ開発メモ
 
-# Googleのコードを見れるopen grok
+# Googleのコード
 
+- [Google Git](https://android.googlesource.com/)
 - [Androidソースコード検索サービス](https://sites.google.com/site/devcollaboration/codesearch)
 
 # Google tab manager

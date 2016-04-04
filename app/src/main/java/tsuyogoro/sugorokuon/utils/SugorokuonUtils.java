@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 
+ * Copyright (c)
  * 2012 Tsuyoyo. All Rights Reserved.
  */
 package tsuyogoro.sugorokuon.utils;
@@ -7,11 +7,16 @@ package tsuyogoro.sugorokuon.utils;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
+import android.support.customtabs.CustomTabsIntent;
+
+import tsuyogoro.sugorokuon.R;
 
 /**
  * Util関数をここにまとめる。
@@ -28,14 +33,14 @@ public class SugorokuonUtils {
      * @return
      */
     public static Calendar changeOnAirTimeToCalendar(String input) {
-        int year  = Integer.valueOf(input.substring( 0, 4));
-        int month = Integer.valueOf(input.substring( 4, 6));
-        int day   = Integer.valueOf(input.substring( 6, 8));
-        int hour  = Integer.valueOf(input.substring( 8, 10));
-        int min   = Integer.valueOf(input.substring(10, 12));
+        int year = Integer.valueOf(input.substring(0, 4));
+        int month = Integer.valueOf(input.substring(4, 6));
+        int day = Integer.valueOf(input.substring(6, 8));
+        int hour = Integer.valueOf(input.substring(8, 10));
+        int min = Integer.valueOf(input.substring(10, 12));
 
         Calendar c = Calendar.getInstance(Locale.JAPAN);
-        c.set(year, month-1, day, hour, min, 0);
+        c.set(year, month - 1, day, hour, min, 0);
         c.set(Calendar.MILLISECOND, 0);
         return c;
     }
@@ -96,8 +101,7 @@ public class SugorokuonUtils {
         else if (Calendar.MONDAY == d.get(Calendar.DAY_OF_WEEK)
                 && 5 > d.get(Calendar.HOUR_OF_DAY)) {
             d.add(Calendar.DATE, -7);
-        }
-        else {
+        } else {
             d.add(Calendar.DATE, (-1) * (d.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY));
         }
         d.set(Calendar.HOUR_OF_DAY, 0);
@@ -124,6 +128,26 @@ public class SugorokuonUtils {
         }
 
         return d;
+    }
+
+
+    public static void launchChromeTab(Activity activity, Uri uri) {
+
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+
+        int color;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            color = activity.getColor(R.color.app_primary);
+        } else {
+            color = activity.getResources().getColor(R.color.app_primary);
+        }
+        CustomTabsIntent intent = intentBuilder.setShowTitle(true)
+                .setToolbarColor(color)
+                .setStartAnimations(activity, R.anim.slide_in_right, R.anim.slide_out_left)
+                .setExitAnimations(activity, R.anim.slide_in_left, R.anim.slide_out_right)
+                .build();
+
+        intent.launchUrl(activity, uri);
     }
 
 }

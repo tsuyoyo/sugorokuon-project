@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/main_drawer_menu_recommends"
+            android:title="@string/drawer_recommends_this_week"
+            android:icon="@drawable/ic_star_half_grey600_36dp" />
+        <item
+            android:id="@+id/main_drawer_menu_onair_songs"
+            android:title="@string/drawer_onair_songs_weekly"
+            android:icon="@drawable/ic_queue_music_grey600_36dp" />
+        <item
+            android:id="@+id/main_drawer_menu_settings"
+            android:title="@string/drawer_settings"
+            android:icon="@drawable/ic_settings_grey600_36dp" />
+        <item
+            android:id="@+id/main_drawer_menu_about"
+            android:title="@string/drawer_about_app"
+            android:icon="@drawable/ic_info_outline_grey600_36dp"/>
+        <item
+            android:id="@+id/main_drawer_menu_rating"
+            android:title="@string/drawer_rating_in_google_play"
+            android:icon="@drawable/ic_star_half_grey600_36dp"/>
+    </group>
+
+</menu>

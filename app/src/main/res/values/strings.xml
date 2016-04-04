@@ -7,6 +7,14 @@
     <string name="title_recommends">今週のおすすめ</string>
     <string name="launching_app">起動中です&#8230;</string>
 
+    <string name="date_tab_switcher_monday">月</string>
+    <string name="date_tab_switcher_tuesday">火</string>
+    <string name="date_tab_switcher_wednesday">水</string>
+    <string name="date_tab_switcher_thursday">木</string>
+    <string name="date_tab_switcher_friday">金</string>
+    <string name="date_tab_switcher_saturday">土</string>
+    <string name="date_tab_switcher_sunday">日</string>
+
     <string name="dropdown_list_recommend">今週のおすすめ</string>
     <string name="dropdown_list_app_c_advertisement">おすすめアプリ(AD)</string>
 
@@ -62,6 +70,7 @@
     <string name="no_area_dialog_message">設定の「エリア設定」より、聴取エリアを設定してください。</string>
 
     <string name="station_list_dialog_title">ラジオ局一覧</string>
+    <string name="station_list_dialog_description">長押しで局のホームページが開きます</string>
 
     <!-- Permission系 -->
     <string name="permission_not_enough_to_launch_app">アプリを使うのに必要なpermissionが許可されませんでした</string>
