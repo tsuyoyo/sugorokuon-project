@@ -36,13 +36,12 @@
                     android:id="@+id/main_activity_date_tab"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
-                    app:tabTextAppearance="@style/SugorokuonDateTabTextAppearance"
-                    app:tabSelectedTextColor="@color/actionbar_text"
+                    app:tabGravity="fill"
                     app:tabIndicatorColor="@color/actionbar_text"
                     app:tabIndicatorHeight="0dp"
-                    app:tabGravity="fill"
                     app:tabMode="fixed"
-                     />
+                    app:tabSelectedTextColor="@color/actionbar_text"
+                    app:tabTextAppearance="@style/SugorokuonDateTabTextAppearance" />
 
             </android.support.design.widget.AppBarLayout>
 
@@ -59,8 +58,8 @@
                 android:id="@+id/main_activity_stationlist_bottom_sheet"
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
-                android:orientation="vertical"
                 android:background="@android:color/white"
+                android:orientation="vertical"
                 app:behavior_hideable="false"
                 app:behavior_peekHeight="32dp"
                 app:layout_behavior="@string/bottom_sheet_behavior">
@@ -69,17 +68,19 @@
                     android:id="@+id/main_actiity_stationlist_title"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
-                    android:paddingLeft="@dimen/margin_standard"
-                    android:orientation="horizontal"
                     android:background="@color/app_primary"
+                    android:clickable="true"
                     android:gravity="center_vertical"
-                    android:clickable="true">
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/margin_standard">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:scaleType="center"
                         android:paddingRight="@dimen/margin_small"
+                        android:scaleType="center"
                         android:src="@drawable/ic_list_white_24dp" />
+
                     <TextView
                         android:id="@+id/main_actiity_stationlist_title_text"
                         android:layout_width="0dp"
@@ -88,15 +89,14 @@
                         android:gravity="center_vertical"
                         android:text="@string/station_list_dialog_title"
                         android:textColor="@color/actionbar_text"
-                        android:textSize="@dimen/textsize_small"
-                        />
+                        android:textSize="@dimen/textsize_small" />
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/main_activity_station_list"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/main_activity_station_list"/>
+                    android:layout_gravity="center_vertical" />
 
             </LinearLayout>
 
@@ -105,13 +105,17 @@
                 android:id="@+id/main_activity_open_stations_btn"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="@dimen/margin_standard"
                 android:layout_marginRight="@dimen/margin_standard"
                 android:clickable="true"
                 android:src="@drawable/ic_list_white_24dp"
                 app:borderWidth="0dp"
-                app:fabSize="normal"
-                app:layout_anchorGravity="top|right"
-                app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"/>
+                app:fabSize="normal" />
+
+                <!--app:layout_anchorGravity="top|right"-->
+                <!--app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"-->
+                <!--/>-->
 
         </android.support.design.widget.CoordinatorLayout>
 
@@ -127,14 +131,87 @@
     </android.support.v4.widget.DrawerLayout>
 
     <!-- Floating action buttonを押した時に出現させるMenu群 -->
-    <!-- TODO : だけど、これ無くてもいいかも…。やりたいのはMenu群にしたいだけ -->
-    <android.support.design.widget.CoordinatorLayout
+    <RelativeLayout
         android:id="@+id/main_activity_fab_menu_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DDFFFFFF"
+        android:background="@color/background_floating_action_btn_list"
         android:visibility="gone">
 
-    </android.support.design.widget.CoordinatorLayout>
+        <!-- 画面右下に常に表示するボタン-->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_activity_fab_close_btn_list"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/margin_standard"
+            android:layout_marginRight="@dimen/margin_standard"
+            android:clickable="true"
+            android:src="@drawable/ic_close_white_24dp"
+            app:borderWidth="0dp"
+            app:fabSize="normal" />
+
+        <!-- onAir曲リストを表示 -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_activity_fab_open_song_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="30dp"
+            android:layout_above="@+id/main_activity_fab_close_btn_list"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="24dp"
+            android:clickable="true"
+            android:src="@drawable/ic_queue_music_white_24dp"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/main_activity_fab_open_song_list_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="4dp"
+            android:layout_toLeftOf="@+id/main_activity_fab_open_song_list"
+            android:layout_alignTop="@+id/main_activity_fab_open_song_list"
+            android:background="@android:color/white"
+            android:padding="4dp"
+            android:elevation="8dp"
+            android:text="OnAir曲を表示"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <!-- お気に入りの番組リストを表示 -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/main_activity_fab_open_favorite_list"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="30dp"
+            android:layout_above="@+id/main_activity_fab_open_song_list"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="24dp"
+            android:clickable="true"
+            android:src="@drawable/ic_star_half_white_24dp"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/main_activity_fab_open_favorite_list_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/main_activity_fab_open_favorite_list"
+            android:layout_alignTop="@+id/main_activity_fab_open_favorite_list"
+            android:background="@android:color/white"
+            android:padding="4dp"
+            android:elevation="8dp"
+            android:text="今週のオススメ"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

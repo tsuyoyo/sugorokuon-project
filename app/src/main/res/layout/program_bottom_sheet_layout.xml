@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/program_bottom_sheet_program_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:textSize="@dimen/textsize_standard"
+        android:textColor="@android:color/white"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:background="@color/app_primary"/>
+
+    <!-- 情報表示箇所（番組情報） : 初期状態はgone -->
+    <WebView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layerType="software"
+        android:id="@+id/program_bottom_sheet_program_info"
+        />
+
+    <!-- ブラウザ操作のボタン群 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/program_bottom_sheet_button_area"
+        android:background="@drawable/actionbar_background" >
+
+        <!-- 閉じる -->
+        <ImageButton android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:id="@+id/program_bottom_sheet_button_close"
+            android:src="@drawable/ic_close_black_24dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Close" />
+
+        <!-- ブラウザで開く -->
+        <ImageButton android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_weight="1"
+            android:id="@+id/program_bottom_sheet_button_open_browser"
+            android:src="@drawable/ic_public_black_24dp"
+            android:background="@drawable/button_background"
+            android:contentDescription="Open browser" />
+
+    </LinearLayout>
+
+</LinearLayout>

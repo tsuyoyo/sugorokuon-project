@@ -120,6 +120,11 @@ public class WeeklyOnAirSongsFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<OnAirSongPagerAdapter> loader, OnAirSongPagerAdapter adapter) {
+
+        if (isDetached()) {
+            return;
+        }
+
         ViewPager viewPager = (ViewPager) getView().findViewById(R.id.onair_song_list_pager);
         viewPager.setAdapter(adapter);
 

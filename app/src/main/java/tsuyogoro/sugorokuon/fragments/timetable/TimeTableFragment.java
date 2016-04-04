@@ -211,6 +211,26 @@ public class TimeTableFragment extends ProgramViewerFragment {
                     return;
                 }
 
+                //------------------
+                // EventBusにregsisterしてみる？
+//                mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                    @Override
+//                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPageSelected(int position) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onPageScrollStateChanged(int state) {
+//
+//                    }
+//                });
+                //-------------
+
                 mPagerAdapter = timeTablePagerAdapter;
 
                 mViewPager.setAdapter(mPagerAdapter);
@@ -318,6 +338,17 @@ public class TimeTableFragment extends ProgramViewerFragment {
             name.setText(station.name);
 
             return view;
+        }
+    }
+
+    public void setFocus(Station station) {
+        int stationsNum = mPagerAdapter.getCount();
+
+        for (int i=0; i < stationsNum; i++) {
+            if (mPagerAdapter.getStation(i).id.equals(station.id)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
         }
     }
 
