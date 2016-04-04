@@ -8,3 +8,4 @@
 /app/src/main/res/xml/global_tracker.xml
 .idea/
 **/*.iml
+gradle.properties
