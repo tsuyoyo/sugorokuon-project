@@ -7,11 +7,8 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -120,9 +117,6 @@ public class TimeTableListFragment extends Fragment
         };
     }
 
-    private static final String TEXT_HTML = "text/html";
-    private static final String UTF_8 = "UTF-8";
-
     @Override
     public void onLoadFinished(Loader<List<Program>> loader, List<Program> programs) {
 
@@ -131,24 +125,7 @@ public class TimeTableListFragment extends Fragment
             @Override
             public void onItemClicked(Program program) {
 
-                BottomSheetDialog bottomSheet = new BottomSheetDialog(getActivity());
-
-                View bottomSheetRoot = LayoutInflater.from(
-                        getActivity()).inflate(R.layout.program_bottom_sheet_layout, null, false);
-
-                WebView infoView = (WebView) bottomSheetRoot.findViewById(
-                        R.id.program_bottom_sheet_program_info);
-                infoView.loadDataWithBaseURL(null,
-                        program.description + "<BR><BR><BR>" + program.info,
-                        TEXT_HTML, UTF_8, null);
-
-                TextView title = (TextView) bottomSheetRoot.findViewById(
-                        R.id.program_bottom_sheet_program_title);
-                title.setText(program.title);
-
-                bottomSheet.setContentView(bottomSheetRoot);
-
-                bottomSheet.show();
+                ProgramInfoBottomSheetMaker.show(program, getActivity());
 
                 // ここでWebViewに番組情報を表示する
 

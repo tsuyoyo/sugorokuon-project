@@ -7,6 +7,8 @@ package tsuyogoro.sugorokuon.fragments.timetable;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -15,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,7 +38,7 @@ import tsuyogoro.sugorokuon.models.entities.Program;
  * <p/>
  * 子クラスは、DBからのデータ取得の仕方と、画面特有の機能を実装すること。
  */
-abstract class SearchFragmentBase extends ProgramViewerFragment implements
+abstract class SearchFragmentBase extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Program>> {
 
     abstract protected List<Program> doSearch(Bundle args);
@@ -87,7 +90,10 @@ abstract class SearchFragmentBase extends ProgramViewerFragment implements
                 new SearchResultListCardAdapter.ItemClickListener() {
                     @Override
                     public void onItemClicked(Program program) {
-                        onProgramTapped(program);
+                        ProgramInfoBottomSheetMaker.show(program, getActivity());
+
+                        // TODO : 旧レイアウト用
+                        //onProgramTapped(program);
                     }
                 };
 
@@ -109,11 +115,6 @@ abstract class SearchFragmentBase extends ProgramViewerFragment implements
 
     @Override
     public void onLoaderReset(Loader<List<Program>> loader) {
-    }
-
-    @Override
-    protected int listAreaViewId() {
-        return R.id.search_result_list;
     }
 
     static private class SearchResultListCardAdapter

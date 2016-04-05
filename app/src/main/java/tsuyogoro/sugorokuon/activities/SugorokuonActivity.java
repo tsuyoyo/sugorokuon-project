@@ -628,7 +628,8 @@ public class SugorokuonActivity extends AppCompatActivity
             }
             break;
             case R.id.menu_launch_search: {
-                switchFragments(new SearchFragment(), true);
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
                 consumed = true;
             }
             break;
@@ -667,17 +668,13 @@ public class SugorokuonActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_drawer_menu_recommends:
+                Intent recommendIntent = new Intent(this, RecommendActivity.class);
+                startActivity(recommendIntent);
+                mDrawerLayout.closeDrawers();
                 break;
             case R.id.main_drawer_menu_onair_songs:
-
                 Intent onAirSongsIntent = new Intent(this, OnAirSongsActivity.class);
                 startActivity(onAirSongsIntent);
-//                        if (getSupportFragmentManager().findFragmentByTag(
-//                                TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT) == null) {
-//                            switchFragments(new WeeklyOnAirSongsFragment(), true,
-//                                    TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT);
-//                        }
-                // TODO : Activityを起動するようにする (今Activityが無いので作る)
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.main_drawer_menu_settings:

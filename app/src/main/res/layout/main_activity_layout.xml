@@ -129,6 +129,7 @@
             app:headerLayout="@layout/main_activity_navigation_header"
             app:menu="@menu/main_activity_navigation_item" >
 
+            <!-- For footer -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +137,11 @@
                 android:orientation="vertical"
                 android:layout_gravity="bottom">
 
-                <!-- For footer -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ohen_text"
+                    android:textSize="@dimen/textsize_small" />
                 <!--
                 サイズ (320 x 50 は、下記サイトを参考にした)
                   https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
