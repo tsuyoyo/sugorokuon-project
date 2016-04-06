@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,18 +15,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,9 +32,6 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,7 +45,6 @@ import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.MessageDialogFragment;
-import tsuyogoro.sugorokuon.fragments.timetable.SearchFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsChangedAlertDialog;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsLauncherDialogFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.TimeTableFetchAlertDialog;
@@ -71,11 +63,9 @@ import tsuyogoro.sugorokuon.utils.RadikoLauncher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
 
-public class SugorokuonActivity extends AppCompatActivity
+public class SugorokuonActivity extends DrawableActivity
         implements SettingsChangedAlertDialog.IListener, TimeTableFetchProgressDialog.IListener
-        , HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener
-        , NavigationView.OnNavigationItemSelectedListener {
-
+        , HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener {
     /**
      * TimeTableを明示的に開きたいときはこのActionを送る
      * EXTRA_STATION_IDを使って局を指定することができる
@@ -95,10 +85,6 @@ public class SugorokuonActivity extends AppCompatActivity
     private static final String TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT = "weekly_onair_songs_fragment";
 
     private static final int REQUESTCODE_SETTINGS = 100;
-
-    private DrawerLayout mDrawerLayout;
-
-    private ActionBarDrawerToggle mDrawerToggle;
 
     private StatusCheckerTask mStatusCheckerTask;
 
@@ -213,7 +199,9 @@ public class SugorokuonActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.main_activity_layout);
+        // Main Activityのコンテンツ
+        LayoutInflater inflater = LayoutInflater.from(this);
+        inflater.inflate(R.layout.main_activity_content_layout, getContentRoot(), true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         if (toolbar != null) {
@@ -225,7 +213,7 @@ public class SugorokuonActivity extends AppCompatActivity
 
         setupFloatingActionButton();
 
-        setupDrawer();
+        setupDrawer(true);
 
         setupSwitchDateTabs();
 
@@ -260,11 +248,6 @@ public class SugorokuonActivity extends AppCompatActivity
                 requestPermissions(requirePermissions, 100);
             }
         }
-
-        // For AdMob
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
     }
 
     private void setupFloatingActionButton() {
@@ -568,35 +551,6 @@ public class SugorokuonActivity extends AppCompatActivity
         unbindService(mServiceConnection);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private void setupDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_activity_drawer_layout);
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, R.string.app_name, R.string.app_name);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        NavigationView navView = (NavigationView) findViewById(R.id.main_activity_navigation_view);
-        navView.setNavigationItemSelectedListener(this);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-    }
-
     private void switchFragments(Fragment f, boolean enableReturnByBack, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -660,40 +614,7 @@ public class SugorokuonActivity extends AppCompatActivity
                 break;
         }
 
-        return mDrawerToggle.onOptionsItemSelected(item)
-                || super.onOptionsItemSelected(item) || consumed;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_drawer_menu_recommends:
-                Intent recommendIntent = new Intent(this, RecommendActivity.class);
-                startActivity(recommendIntent);
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.main_drawer_menu_onair_songs:
-                Intent onAirSongsIntent = new Intent(this, OnAirSongsActivity.class);
-                startActivity(onAirSongsIntent);
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.main_drawer_menu_settings:
-                mDrawerLayout.closeDrawers();
-                Intent intentForSettings = new Intent(
-                        SugorokuonActivity.this, SugorokuonSettingActivity.class);
-                startActivityForResult(intentForSettings, REQUESTCODE_SETTINGS);
-                break;
-            case R.id.main_drawer_menu_about:
-                break;
-            case R.id.main_drawer_menu_rating:
-                mDrawerLayout.closeDrawers();
-                Intent googlePlayIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.google_play_app_url)));
-                googlePlayIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(googlePlayIntent);
-                break;
-        }
-        return true;
+        return super.onOptionsItemSelected(item) || consumed;
     }
 
     @Override
@@ -844,4 +765,8 @@ public class SugorokuonActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected boolean isMainActivity() {
+        return true;
+    }
 }
