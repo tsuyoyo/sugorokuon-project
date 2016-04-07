@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.activities;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -17,16 +18,20 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -195,8 +200,12 @@ public class SugorokuonActivity extends DrawableActivity
         }
     };
 
+    // test
+    ProgressDialog mProgressDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         // Main Activityのコンテンツ
@@ -296,7 +305,21 @@ public class SugorokuonActivity extends DrawableActivity
                             favoriteListBtnLabel.startAnimation(subFabAnimation);
 
                             songListBtn.show();
+                            songListBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startOnAirSongsActivity();
+                                    fabMenuArea.setVisibility(View.GONE);
+                                }
+                            });
                             favoriteListBtn.show();
+                            favoriteListBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startRecommendActivity();
+                                    fabMenuArea.setVisibility(View.GONE);
+                                }
+                            });
 
                             fabMenuArea.setVisibility(View.VISIBLE);
                         }
@@ -337,7 +360,7 @@ public class SugorokuonActivity extends DrawableActivity
                     int currentFocus = mViewPager.getCurrentItem();
 
                     TimeTableFragment timeTableFragment =
-                            (TimeTableFragment) mDateTabAdapter.getItem(currentFocus);
+                            mDateTabAdapter.getRegisteredFragment(currentFocus);
 
                     timeTableFragment.setFocus(station);
                 }
@@ -416,48 +439,66 @@ public class SugorokuonActivity extends DrawableActivity
             Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
     };
 
-    private FragmentPagerAdapter mDateTabAdapter;
+    private DatePagerAdapter mDateTabAdapter;
+
+    private class DatePagerAdapter extends FragmentPagerAdapter {
+
+        public DatePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = getFragmentByDayOfWeek(mOrderedDateInWeek[position]);
+            return fragment;
+        }
+
+        SparseArray<TimeTableFragment> registeredFragments = new SparseArray<>();
+
+        public TimeTableFragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+        // Configuration changeでFragmentが作り変えられても、Adapter経由でPagerの中のFragmentに
+        // アクセスするには、作ったFragmentを手の届く所に対比させないといけない (-> registeredFragments)
+        // http://stackoverflow.com/questions/8785221/retrieve-a-fragment-from-a-viewpager
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            TimeTableFragment fragment = (TimeTableFragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return mOrderedDateInWeek.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.date_tab_switcher_monday);
+                case 1:
+                    return getString(R.string.date_tab_switcher_tuesday);
+                case 2:
+                    return getString(R.string.date_tab_switcher_wednesday);
+                case 3:
+                    return getString(R.string.date_tab_switcher_thursday);
+                case 4:
+                    return getString(R.string.date_tab_switcher_friday);
+                case 5:
+                    return getString(R.string.date_tab_switcher_saturday);
+                case 6:
+                    return getString(R.string.date_tab_switcher_sunday);
+                default:
+                    return "";
+            }
+        }
+    };
 
     private void setupSwitchDateTabs() {
-        mDateTabAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            TimeTableFragment[] mFragments = new TimeTableFragment[mOrderedDateInWeek.length];
-
-            @Override
-            public Fragment getItem(int position) {
-                if (mFragments[position] == null) {
-                    mFragments[position] = getFragmentByDayOfWeek(mOrderedDateInWeek[position]);
-                }
-                return mFragments[position];
-            }
-
-            @Override
-            public int getCount() {
-                return mOrderedDateInWeek.length;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch (position) {
-                    case 0:
-                        return getString(R.string.date_tab_switcher_monday);
-                    case 1:
-                        return getString(R.string.date_tab_switcher_tuesday);
-                    case 2:
-                        return getString(R.string.date_tab_switcher_wednesday);
-                    case 3:
-                        return getString(R.string.date_tab_switcher_thursday);
-                    case 4:
-                        return getString(R.string.date_tab_switcher_friday);
-                    case 5:
-                        return getString(R.string.date_tab_switcher_saturday);
-                    case 6:
-                        return getString(R.string.date_tab_switcher_sunday);
-                    default:
-                        return "";
-                }
-            }
-        };
+        mDateTabAdapter = new DatePagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
         if (mViewPager != null) {
@@ -665,6 +706,9 @@ public class SugorokuonActivity extends DrawableActivity
         if (completed) {
             setupSwitchDateTabs();
             openTodaysTimeTableFragment();
+
+            // TODO : StationListのadapterをnotifyする
+
         } else {
             Bundle params = new Bundle();
             params.putString(MessageDialogFragment.KEY_MESSAGE, getString(R.string.date_loading_error_msg));

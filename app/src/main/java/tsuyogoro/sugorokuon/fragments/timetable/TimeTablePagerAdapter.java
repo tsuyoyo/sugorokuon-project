@@ -30,7 +30,6 @@ class TimeTablePagerAdapter extends FragmentPagerAdapter {
      * コンストラクタ
      *
      * @param fm
-     * @param fragment
      * @param year
      * @param month 5月なら5 (Calendarみたいに-1しない)
      * @param date

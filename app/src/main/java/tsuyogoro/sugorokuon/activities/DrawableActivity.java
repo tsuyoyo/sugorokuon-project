@@ -36,9 +36,14 @@ public class DrawableActivity extends AppCompatActivity
         setContentView(R.layout.drawable_activity_layout);
 
         // For AdMob
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        final AdView mAdView = (AdView) findViewById(R.id.adView);
+        new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }
+        }.run();
     }
 
     @Override
@@ -90,13 +95,11 @@ public class DrawableActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_drawer_menu_recommends:
-                Intent recommendIntent = new Intent(this, RecommendActivity.class);
-                callStartActivity(recommendIntent);
+                startRecommendActivity();
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.main_drawer_menu_onair_songs:
-                Intent onAirSongsIntent = new Intent(this, OnAirSongsActivity.class);
-                callStartActivity(onAirSongsIntent);
+                startOnAirSongsActivity();
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.main_drawer_menu_settings:
@@ -128,6 +131,16 @@ public class DrawableActivity extends AppCompatActivity
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected void startOnAirSongsActivity() {
+        Intent onAirSongsIntent = new Intent(this, OnAirSongsActivity.class);
+        callStartActivity(onAirSongsIntent);
+    }
+
+    protected void startRecommendActivity() {
+        Intent recommendIntent = new Intent(this, RecommendActivity.class);
+        callStartActivity(recommendIntent);
     }
 
     protected boolean isMainActivity() {

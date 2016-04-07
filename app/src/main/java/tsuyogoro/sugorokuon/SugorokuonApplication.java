@@ -6,6 +6,7 @@ package tsuyogoro.sugorokuon;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -38,9 +39,7 @@ public class SugorokuonApplication extends Application {
         super.onCreate();
 
         StethoWrapper.setup(this);
-
         mRefWatcher = LeakCanary.install(this);
-
         mAppComponent = DaggerNetworkApiComponent.builder()
                 .networkApiModule(new NetworkApiModule())
                 .build();

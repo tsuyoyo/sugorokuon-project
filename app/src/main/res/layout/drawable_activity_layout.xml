@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawable_actiity_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,9 +14,9 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/drawable_actiity_content_root"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/drawable_actiity_content_root" />
+            android:layout_height="match_parent" />
 
         <!-- The navigation drawer -->
         <android.support.design.widget.NavigationView
@@ -26,15 +25,17 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/drawable_activity_navigation_header"
-            app:menu="@menu/drawer_activity_navigation_item" >
+            app:menu="@menu/drawer_activity_navigation_item">
 
+            <!-- TODO : スマホの横画面でmenuが隠れてしまうので検討 -->
             <!-- For footer -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_small"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
                 android:orientation="vertical"
-                android:layout_gravity="bottom">
+                android:padding="@dimen/margin_small">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -53,9 +54,7 @@
                     android:layout_width="320dp"
                     android:layout_height="50dp"
                     ads:adSize="BANNER"
-                    ads:adUnitId="@string/adUnitId">
-                </com.google.android.gms.ads.AdView>
-
+                    ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
             </LinearLayout>
 
         </android.support.design.widget.NavigationView>
