@@ -592,25 +592,25 @@ public class SugorokuonActivity extends DrawableActivity
         unbindService(mServiceConnection);
     }
 
-    private void switchFragments(Fragment f, boolean enableReturnByBack, String tag) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (null != tag) {
-            transaction.replace(R.id.main_activity_drawer_content_layout, f, tag);
-        } else {
-            transaction.replace(R.id.main_activity_drawer_content_layout, f);
-        }
-
-        if (enableReturnByBack) {
-            transaction.addToBackStack(null);
-        }
-
-        transaction.commit();
-    }
-
-    private void switchFragments(Fragment f, boolean enableReturnByBack) {
-        switchFragments(f, enableReturnByBack, null);
-    }
+//    private void switchFragments(Fragment f, boolean enableReturnByBack, String tag) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//
+//        if (null != tag) {
+//            transaction.replace(R.id.main_activity_drawer_content_layout, f, tag);
+//        } else {
+//            transaction.replace(R.id.main_activity_drawer_content_layout, f);
+//        }
+//
+//        if (enableReturnByBack) {
+//            transaction.addToBackStack(null);
+//        }
+//
+//        transaction.commit();
+//    }
+//
+//    private void switchFragments(Fragment f, boolean enableReturnByBack) {
+//        switchFragments(f, enableReturnByBack, null);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
