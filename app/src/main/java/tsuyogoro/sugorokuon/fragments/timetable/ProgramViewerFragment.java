@@ -23,6 +23,7 @@ import android.widget.RadioGroup;
 
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.SugorokuonApplication;
+import tsuyogoro.sugorokuon.fragments.WebViewUrlHandler;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.prefs.BrowserCacheSettingPreference;
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
@@ -171,23 +172,7 @@ abstract class ProgramViewerFragment extends Fragment
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-                if ("mailto:".length() < url.length()
-                        && url.substring(0, 7).equals("mailto:")) {
-                    Uri uri = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-                    startActivity(intent);
-                    webView.reload();
-                } else if ("http://twitter.com".length() < url.length()
-                        && url.substring(0, 18).equals("http://twitter.com")) {
-                    Intent tweetIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(tweetIntent);
-                } else if ("http://www.facebook.com/".length() < url.length()
-                        && url.substring(0, 24).equals("http://www.facebook.com/")) {
-                    Intent fbIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(fbIntent);
-                } else {
-                    webView.loadUrl(url);
-                }
+                WebViewUrlHandler.handleOverrideUrl(webView, getActivity(), url);
                 return true;
             }
 

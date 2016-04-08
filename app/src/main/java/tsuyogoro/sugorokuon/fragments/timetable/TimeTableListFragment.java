@@ -127,8 +127,6 @@ public class TimeTableListFragment extends Fragment
 
                 ProgramInfoBottomSheetMaker.show(program, getActivity());
 
-                // ここでWebViewに番組情報を表示する
-
                 // TODO : 旧形式のレイアウトであればこれまで通りのフローに流した方が良いのかも
                 // ParentFragmentは、PagerAdapterを生成しているTimeTableFragmentになる
 //                IProgramListItemTappedListener listener =

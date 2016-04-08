@@ -123,7 +123,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/margin_standard"
                     android:scaleType="center"
-                    android:src="@drawable/ic_home_grey_600_24dp"
+                    android:src="@drawable/ic_public_grey_600_24dp"
                     android:background="?attr/selectableItemBackground"
                     android:visibility="@{(program.url.length() > 0) ? View.VISIBLE : View.GONE}"
                  />
