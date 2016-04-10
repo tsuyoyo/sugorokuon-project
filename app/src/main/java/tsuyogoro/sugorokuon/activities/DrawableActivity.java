@@ -111,6 +111,9 @@ public class DrawableActivity extends AppCompatActivity
                 }
                 break;
             case R.id.main_drawer_menu_about:
+                Intent aboutIntent = new Intent(this, AboutActivity.class);
+                startActivity(aboutIntent);
+                mDrawerLayout.closeDrawers();
                 break;
             case R.id.main_drawer_menu_rating:
                 mDrawerLayout.closeDrawers();

@@ -59,8 +59,7 @@ dependencies {
     compile "com.google.android.gms:play-services:${project.playServiceVersion}"
     compile "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
 
-    // TODO : License!!
-    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'jp.wasabeef:picasso-transformations:1.3.1'
 
