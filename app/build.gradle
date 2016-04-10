@@ -20,8 +20,8 @@ android {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         applicationId "tsuyogoro.sugorokuon"
-        versionCode 204
-        versionName "2.0.4"
+        versionCode 220
+        versionName "2.2.0"
     }
     buildTypes {
         release {

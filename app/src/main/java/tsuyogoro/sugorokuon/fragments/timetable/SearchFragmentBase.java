@@ -202,7 +202,6 @@ abstract class SearchFragmentBase extends Fragment implements
             StationApi stationApi = new StationApi(binding.getRoot().getContext());
             Station station = stationApi.load(program.stationId);
             binding.programListItemStationLogo.setImageBitmap(station.loadLogo(context));
-            binding.setStationName(station.name);
 
             binding.programListItemDate.setText(mFormatters.formatOnAirDate(program.startTime));
             binding.programListItemStarttime.setText(mFormatters.formatStartTime(program.startTime));

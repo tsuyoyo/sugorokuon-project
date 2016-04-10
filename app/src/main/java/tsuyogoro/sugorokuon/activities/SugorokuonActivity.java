@@ -200,9 +200,6 @@ public class SugorokuonActivity extends DrawableActivity
         }
     };
 
-    // test
-    ProgressDialog mProgressDialog;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -707,7 +704,24 @@ public class SugorokuonActivity extends DrawableActivity
             setupSwitchDateTabs();
             openTodaysTimeTableFragment();
 
-            // TODO : StationListのadapterをnotifyする
+            AsyncTask<Void, Void, List<Station>> stationLoaderTask =
+                    new AsyncTask<Void, Void, List<Station>>() {
+                        @Override
+                        protected List<Station> doInBackground(Void... params) {
+                            return (new StationApi(SugorokuonActivity.this)).load();
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<Station> stations) {
+                            super.onPostExecute(stations);
+                            RecyclerView stationList =
+                                    (RecyclerView) findViewById(R.id.main_activity_station_list);
+                            if (stationList != null) {
+                                ((StationListAdapter) stationList.getAdapter()).update(stations);
+                            }
+                        }
+                    };
+            stationLoaderTask.execute();
 
         } else {
             Bundle params = new Bundle();
