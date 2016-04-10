@@ -10,6 +10,9 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.databinding.ProgramBottomSheetLayoutBinding;
 import tsuyogoro.sugorokuon.fragments.WebViewUrlHandler;
@@ -45,9 +48,12 @@ public class ProgramInfoBottomSheetMaker {
             }
         });
 
-        binding.programBottomSheetProgramInfo.loadDataWithBaseURL(null,
-                program.description + "<BR><BR><BR>" + program.info,
-                TEXT_HTML, UTF_8, null);
+        String htmlData = (program.description != null) ? program.description : "";
+        htmlData += "<BR><BR><BR>";
+        htmlData += (program.info != null) ? program.info : "";
+
+        binding.programBottomSheetProgramInfo.loadDataWithBaseURL(
+                null, htmlData,TEXT_HTML, UTF_8, null);
 
         binding.programBottomSheetProgramInfo.setWebViewClient(new WebViewClient() {
             @Override
@@ -55,6 +61,16 @@ public class ProgramInfoBottomSheetMaker {
                 return WebViewUrlHandler.handleOverrideUrl(view, activity, url);
             }
         });
+
+        // For AdMob
+        final AdView mAdView = (AdView) binding.getRoot().findViewById(R.id.adView);
+        new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            }
+        }.run();
 
         bottomSheet.setContentView(binding.getRoot());
 

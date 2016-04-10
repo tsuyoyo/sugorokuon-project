@@ -106,8 +106,8 @@
     <string name="date_switcher_recommend_begin">MM月 dd日 (EEE) から</string>
     <string name="date_switcher_recommend_end">MM月 dd日 (EEE) のオススメ</string>
     <string name="onair_start_time">HH:mm</string>
-    <string name="onair_end_time">- HH:mm</string>
-    <string name="onair_date">MM/dd\n(EEE)</string>
+    <string name="onair_end_time"> - HH:mm</string>
+    <string name="onair_date">MM/dd(EEE)</string>
 
     <!-- About this app -->
     <string name="copyright">Copyright &#169; 2012-2015 tsuyoyo All Rights Reserved.</string>

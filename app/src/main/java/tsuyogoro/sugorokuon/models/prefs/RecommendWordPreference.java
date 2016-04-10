@@ -29,7 +29,7 @@ public class RecommendWordPreference {
     private static final String PREF_KEY_WORDS = PREF_KEY_WORDS_PREFIX + "_%d";
 
     // おすすめワードを入れるSlot数
-    public static final int SLOT_NUM = 5;
+    public static final int SLOT_NUM = 10;
 
     /**
      * targetScreenにオススメキーワード設定のPreferenceを追加する。

@@ -61,7 +61,7 @@
                 android:paddingRight="@dimen/margin_standard"
                 android:background="?android:attr/selectableItemBackground">
 
-                <!-- 番組の提供するアイコン画像 -->
+                <!-- 番組アイコン画像 -->
                 <LinearLayout
                     android:id="@+id/program_list_item_image_layout"
                     android:layout_width="56dp"

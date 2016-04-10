@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,10 +29,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.databinding.SearchResultListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.models.entities.Station;
 
 /**
  * program_list.xmlのlayoutを使ってlistを表示させるFragmentのベースクラス。
@@ -195,12 +200,27 @@ abstract class SearchFragmentBase extends Fragment implements
             binding.setProgram(mSearchResult.get(position));
 
             StationApi stationApi = new StationApi(binding.getRoot().getContext());
-            binding.programListItemStationLogo.setImageBitmap(
-                    stationApi.load(program.stationId).loadLogo(context));
+            Station station = stationApi.load(program.stationId);
+            binding.programListItemStationLogo.setImageBitmap(station.loadLogo(context));
+            binding.setStationName(station.name);
 
             binding.programListItemDate.setText(mFormatters.formatOnAirDate(program.startTime));
             binding.programListItemStarttime.setText(mFormatters.formatStartTime(program.startTime));
             binding.programListItemEndtime.setText(mFormatters.formatEndTime(program.endTime));
+
+
+            String iconPath = program.getSymbolIconPath(context);
+            if (iconPath != null) {
+                if (iconPath.startsWith("http")) {
+                    Picasso.with(context).load(iconPath)
+                            .transform(new CropCircleTransformation())
+                            .into(binding.programListItemImage);
+                } else {
+                    Picasso.with(context).load(new File(iconPath))
+                            .into(binding.programListItemImage);
+                }
+            }
+
         }
 
         @Override
