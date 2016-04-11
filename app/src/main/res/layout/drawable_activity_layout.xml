@@ -54,7 +54,7 @@
                     android:layout_width="320dp"
                     android:layout_height="50dp"
                     ads:adSize="BANNER"
-                    ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+                    ads:adUnitId="@string/adUnitId" />
             </LinearLayout>
 
         </android.support.design.widget.NavigationView>

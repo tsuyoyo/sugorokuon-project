@@ -7,11 +7,15 @@ package tsuyogoro.sugorokuon.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
@@ -32,18 +36,20 @@ public class DrawableActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.drawable_activity_layout);
 
         // For AdMob
+        // 広告の初期化が非常に遅い (2秒くらい) ので、起動後に行うことにする (5秒delay)
         final AdView mAdView = (AdView) findViewById(R.id.adView);
-        new Runnable() {
+        Handler handler = new Handler(getMainLooper());
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
             }
-        }.run();
+        }, 5000);
+
     }
 
     @Override

@@ -4,7 +4,6 @@
  */
 package tsuyogoro.sugorokuon.activities;
 
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -20,7 +19,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +46,7 @@ import java.util.Set;
 
 import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.fragments.dialogs.HelloV22DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.MessageDialogFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsChangedAlertDialog;
@@ -69,8 +68,8 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
 
 public class SugorokuonActivity extends DrawableActivity
-        implements SettingsChangedAlertDialog.IListener, TimeTableFetchProgressDialog.IListener
-        , HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener {
+        implements SettingsChangedAlertDialog.IListener, TimeTableFetchProgressDialog.IListener,
+        HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener {
     /**
      * TimeTableを明示的に開きたいときはこのActionを送る
      * EXTRA_STATION_IDを使って局を指定することができる
@@ -85,6 +84,7 @@ public class SugorokuonActivity extends DrawableActivity
     private static final String TAG_WELCOME_DIALOG = "welcome_dialog";
     private static final String TAG_NO_AREA_DIALOG = "no_area_dialog";
     private static final String TAG_HELLO_V2_DIALOG = "hello_v2_dialog";
+    private static final String TAG_HELLO_V2_2_DIALOG = "hello_v2_2_dialog";
 
     private static final String TAG_TIME_TABLE_FRAGMENT = "time_table_fragment";
     private static final String TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT = "weekly_onair_songs_fragment";
@@ -101,6 +101,7 @@ public class SugorokuonActivity extends DrawableActivity
         private static final int SHOULD_SHOW_WELCOME = 4;
         private static final int SHOULD_SHOW_PROGRESS = 5;
         private static final int SHOULD_SHOW_HELLO_V2 = 6;
+        private static final int SHOULD_SHOW_HELLO_V2_2 = 7;
     }
 
     // アプリの状態 (番組表は落とし済みか...etc) をチェックして振る舞いを決めるtask
@@ -121,6 +122,10 @@ public class SugorokuonActivity extends DrawableActivity
 
             if (!LaunchedCheckPreference.hasLaunched(SugorokuonActivity.this)) {
                 return DataCheckResult.SHOULD_SHOW_WELCOME;
+            }
+
+            if (!LaunchedCheckPreference.hasV22Launched(SugorokuonActivity.this)) {
+                return DataCheckResult.SHOULD_SHOW_HELLO_V2_2;
             }
 
             if (!LaunchedCheckPreference.hasV2Launched(SugorokuonActivity.this)) {
@@ -178,6 +183,9 @@ public class SugorokuonActivity extends DrawableActivity
                 case DataCheckResult.SHOULD_SHOW_HELLO_V2:
                     showHelloV2Dialog();
                     break;
+                case DataCheckResult.SHOULD_SHOW_HELLO_V2_2:
+                    showHelloV2_2Dialog();
+                    break;
             }
 
             mStatusCheckerTask = null;
@@ -202,25 +210,19 @@ public class SugorokuonActivity extends DrawableActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         // Main Activityのコンテンツ
         LayoutInflater inflater = LayoutInflater.from(this);
         inflater.inflate(R.layout.main_activity_content_layout, getContentRoot(), true);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         if (toolbar != null) {
             toolbar.setTitle("");
             setSupportActionBar(toolbar);
         }
-
         setupStationListBottomSheet();
-
         setupFloatingActionButton();
-
         setupDrawer(true);
-
         setupSwitchDateTabs();
 
         // TimeTableServiceとbindして、fetchタスクの状態を見るのに使う
@@ -492,7 +494,9 @@ public class SugorokuonActivity extends DrawableActivity
                     return "";
             }
         }
-    };
+    }
+
+    ;
 
     private void setupSwitchDateTabs() {
         mDateTabAdapter = new DatePagerAdapter(getSupportFragmentManager());
@@ -516,21 +520,26 @@ public class SugorokuonActivity extends DrawableActivity
 
                 @Override
                 public void onPageSelected(int position) {
-                    Calendar d = SugorokuonUtils.dayOfThisWeek(mOrderedDateInWeek[position]);
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(
-                            getString(R.string.date_mmddeee), Locale.JAPANESE);
-                    String date = dateFormat.format(new Date(d.getTimeInMillis()));
-
-                    if (getSupportActionBar() != null) {
-                        getSupportActionBar().setTitle(date);
-                    }
+                    setActionBarTitle(position);
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
             });
+
+        }
+    }
+
+    private void setActionBarTitle(int positionInDatePager) {
+        Calendar d = SugorokuonUtils.dayOfThisWeek(mOrderedDateInWeek[positionInDatePager]);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                getString(R.string.date_mmddeee), Locale.JAPANESE);
+        String date = dateFormat.format(new Date(d.getTimeInMillis()));
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(date);
         }
     }
 
@@ -573,13 +582,18 @@ public class SugorokuonActivity extends DrawableActivity
 
     private void openTodaysTimeTableFragment() {
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
+        int dayInWeek = SugorokuonUtils.getDayInRadioTimeTable();
 
-        int dateToday = Calendar.getInstance(Locale.JAPAN).get(Calendar.DAY_OF_WEEK);
-        for (int index = 0; index < mOrderedDateInWeek.length; index++) {
-            if (dateToday == mOrderedDateInWeek[index]) {
-                viewPager.setCurrentItem(index);
-            }
+        if (dayInWeek == Calendar.SUNDAY) {
+            mViewPager.setCurrentItem(6);
+        } else {
+            mViewPager.setCurrentItem(dayInWeek - Calendar.MONDAY);
+        }
+
+        // 初期フォーカスが月曜日の場合、DateTabPagerの初期フォーカスが元々月曜なので、
+        // ViewPagerのonPageSelectedが走らない。よって手動でタイトルを仕掛ける。
+        if (dayInWeek == Calendar.MONDAY) {
+            setActionBarTitle(0);
         }
     }
 
@@ -795,6 +809,16 @@ public class SugorokuonActivity extends DrawableActivity
         if (null == getSupportFragmentManager().findFragmentByTag(TAG_HELLO_V2_DIALOG)) {
             HelloV2DialogFragment dialog = new HelloV2DialogFragment();
             dialog.show(getSupportFragmentManager(), TAG_HELLO_V2_DIALOG);
+        }
+    }
+
+    private void showHelloV2_2Dialog() {
+        if (null == getSupportFragmentManager().findFragmentByTag(TAG_HELLO_V2_2_DIALOG)) {
+            HelloV22DialogFragment dialog = new HelloV22DialogFragment();
+            dialog.show(getSupportFragmentManager(), TAG_HELLO_V2_2_DIALOG);
+            LaunchedCheckPreference.setLaunchedV22(this);
+            LaunchedCheckPreference.setLaunchedV2(this);
+            LaunchedCheckPreference.setLaunched(this);
         }
     }
 

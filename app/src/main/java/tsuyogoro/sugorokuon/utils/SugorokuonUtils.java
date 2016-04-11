@@ -130,6 +130,20 @@ public class SugorokuonUtils {
         return d;
     }
 
+    /**
+     * ラジオ番組表的に今が何曜日なのかを返す
+     *
+     * @return
+     */
+    public static int getDayInRadioTimeTable() {
+        Calendar d = Calendar.getInstance();
+
+        if (d.get(Calendar.HOUR_OF_DAY) < 5) {
+            d.add(Calendar.DATE, -1);
+        }
+
+        return d.get(Calendar.DAY_OF_WEEK);
+    }
 
     public static void launchChromeTab(Activity activity, Uri uri) {
 
