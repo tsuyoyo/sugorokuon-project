@@ -163,7 +163,6 @@ public class SugorokuonActivity extends DrawableActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-
             switch (result) {
                 case DataCheckResult.SHOULD_SHOW_PROGRESS:
                     showTimeTableFetchProgress();
@@ -832,6 +831,12 @@ public class SugorokuonActivity extends DrawableActivity
             Intent intent = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
             intent.setPackage(getPackageName());
             startService(intent);
+
+            Intent intentForOnAirSongUpdate = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
+            intentForOnAirSongUpdate.setClass(this, OnAirSongsService.class);
+            intent.putExtra(OnAirSongsService.EXTRA_CLEAR_OLD_DATA, true);
+
+            startService(intentForOnAirSongUpdate);
 
             LaunchedCheckPreference.setLaunchedV2(this);
         } else {

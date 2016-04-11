@@ -5,6 +5,7 @@
 package tsuyogoro.sugorokuon.models.apis;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ class OnAirSongDbOpenHelper extends BaseDbOpenHelper {
 
     private static final String DB_NAME = "onairsongs";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private List<BaseTableDefiner> mTableDefiners = new ArrayList<BaseTableDefiner>();
 
@@ -27,4 +28,5 @@ class OnAirSongDbOpenHelper extends BaseDbOpenHelper {
     List<BaseTableDefiner> getTableDefiners() {
         return mTableDefiners;
     }
+
 }
