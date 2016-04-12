@@ -5,6 +5,7 @@
 package tsuyogoro.sugorokuon;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 

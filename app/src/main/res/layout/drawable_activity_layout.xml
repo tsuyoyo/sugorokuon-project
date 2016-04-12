@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawable_actiity_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eff7ff"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawable_activity_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/drawable_actiity_content_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- The navigation drawer -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/drawable_activity_navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/drawable_activity_navigation_header"
+            app:menu="@menu/drawer_activity_navigation_item">
+
+            <!-- TODO : スマホの横画面でmenuが隠れてしまうので検討 -->
+            <!-- For footer -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_small">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ohen_text"
+                    android:textSize="@dimen/textsize_small" />
+                <!--
+                サイズ (320 x 50 は、下記サイトを参考にした)
+                  https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
+                @string/adUnitId
+                  build.gradleの中にStringを定義した
+                  resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
+                -->
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="320dp"
+                    android:layout_height="50dp"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="@string/adUnitId" />
+            </LinearLayout>
+
+        </android.support.design.widget.NavigationView>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</android.support.design.widget.CoordinatorLayout>

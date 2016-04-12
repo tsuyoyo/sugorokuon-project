@@ -98,8 +98,9 @@ class OneDaySetList {
             binding.setDate(formatter.format(new Date(song.date.getTimeInMillis())));
 
             if (song.imageUrl != null && song.imageUrl.length() > 0) {
-                Picasso.with(context).load(song.imageUrl).transform(new CropCircleTransformation())
-                        .into(binding.onairSongListImg);
+                Picasso.with(context).load(song.imageUrl).into(binding.onairSongListImg);
+            } else {
+                binding.onairSongListImg.setImageResource(R.drawable.ic_music_note_grey_600_48dp);
             }
 
             view = binding.getRoot();

@@ -5,8 +5,10 @@
 package tsuyogoro.sugorokuon.fragments.timetable;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -15,17 +17,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.databinding.SearchResultListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Program;
+import tsuyogoro.sugorokuon.models.entities.Station;
 
 /**
  * program_list.xmlのlayoutを使ってlistを表示させるFragmentのベースクラス。
@@ -35,7 +44,7 @@ import tsuyogoro.sugorokuon.models.entities.Program;
  * <p/>
  * 子クラスは、DBからのデータ取得の仕方と、画面特有の機能を実装すること。
  */
-abstract class SearchFragmentBase extends ProgramViewerFragment implements
+abstract class SearchFragmentBase extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Program>> {
 
     abstract protected List<Program> doSearch(Bundle args);
@@ -83,15 +92,17 @@ abstract class SearchFragmentBase extends ProgramViewerFragment implements
     @Override
     public void onLoadFinished(Loader<List<Program>> loader, List<Program> programs) {
 
-        SearchResultListCardAdapter.ItemClickListener listener =
-                new SearchResultListCardAdapter.ItemClickListener() {
-                    @Override
-                    public void onItemClicked(Program program) {
-                        onProgramTapped(program);
-                    }
-                };
+        ItemClickListener listener = new ItemClickListener() {
+            @Override
+            public void onItemClicked(Program program) {
+                ProgramInfoBottomSheetMaker.show(program, getActivity());
 
-        mAdapter = new SearchResultListCardAdapter(programs, listener, getActivity());
+                // TODO : 旧レイアウト用
+                //onProgramTapped(program);
+            }
+        };
+
+        mAdapter = new SearchResultAdapter(programs, listener, getActivity());
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -111,118 +122,109 @@ abstract class SearchFragmentBase extends ProgramViewerFragment implements
     public void onLoaderReset(Loader<List<Program>> loader) {
     }
 
-    @Override
-    protected int listAreaViewId() {
-        return R.id.search_result_list;
+    public static class Formatters {
+
+        private SimpleDateFormat mStartTime;
+
+        private SimpleDateFormat mEndTime;
+
+        private SimpleDateFormat mOnAirDate;
+
+        public Formatters(Context context) {
+            mStartTime = new SimpleDateFormat(
+                    context.getString(R.string.onair_start_time), Locale.US);
+            mEndTime = new SimpleDateFormat(
+                    context.getString(R.string.onair_end_time), Locale.US);
+            mOnAirDate = new SimpleDateFormat(
+                    context.getString(R.string.onair_date), Locale.JAPAN);
+        }
+
+        public CharSequence formatOnAirDate(Calendar onAirDate) {
+            return mOnAirDate.format(new Date(onAirDate.getTimeInMillis()));
+        }
+
+        public CharSequence formatStartTime(Calendar onAirDate) {
+            return mStartTime.format(new Date(onAirDate.getTimeInMillis()));
+        }
+
+        public CharSequence formatEndTime(Calendar onAirDate) {
+            return mEndTime.format(new Date(onAirDate.getTimeInMillis()));
+        }
+
     }
 
-    static private class SearchResultListCardAdapter
-            extends RecyclerView.Adapter<SearchResultListCardAdapter.ViewHolder> {
+    public interface ItemClickListener {
 
-        private static SimpleDateFormat sFormatStartTime;
+        void onItemClicked(Program program);
 
-        private static SimpleDateFormat sFormatEndTime;
+    }
 
-        private static SimpleDateFormat sFormatOnAirDate;
+    private static class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private Context mContext;
+        private List<Program> mSearchResult;
 
-        private List<Program> mPrograms;
+        private Formatters mFormatters;
 
         private ItemClickListener mListener;
 
-        interface ItemClickListener {
-
-            public void onItemClicked(Program program);
-
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-
-            private View mView;
-
-            private Program mProgram;
-
-            public ViewHolder(View view, final ItemClickListener listener) {
-                super(view);
-
-                mView = view;
-
-                mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (null != mProgram) {
-                            listener.onItemClicked(mProgram);
-                        }
-                    }
-                });
-            }
-
-            void replace(Program program, Context context) {
-                mProgram = program;
-
-                TextView startTime = (TextView) mView.findViewById(R.id.program_list_item_starttime);
-                TextView endTime = (TextView) mView.findViewById(R.id.program_list_item_endtime);
-
-                startTime.setText(sFormatStartTime.format(new Date(program.startTime.getTimeInMillis())));
-                endTime.setText(sFormatEndTime.format(new Date(program.endTime.getTimeInMillis())));
-
-                // Title
-                TextView title = (TextView) mView.findViewById(R.id.program_list_item_title);
-                title.setText(program.title);
-
-                // パーソナリティ
-                TextView per = (TextView) mView.findViewById(R.id.program_list_item_personality);
-                per.setText(program.personalities);
-
-                // onAirの日付
-                TextView date = (TextView) mView.findViewById(R.id.program_list_item_date);
-                date.setText(sFormatOnAirDate.format(new Date(program.startTime.getTimeInMillis())));
-
-                // 局のロゴ
-                StationApi stationApi = new StationApi(context);
-                ImageView logo = (ImageView) mView.findViewById(R.id.program_list_item_station_logo);
-                logo.setImageBitmap(stationApi.load(program.stationId).loadLogo(context));
-            }
-        }
-
-        public SearchResultListCardAdapter(List<Program> programs,
-                                           ItemClickListener listener, Context context) {
-            mContext = context;
-            mPrograms = programs;
+        public SearchResultAdapter(List<Program> programs,
+                                   ItemClickListener listener, Context context) {
+            mSearchResult = new ArrayList<>(programs);
+            mFormatters = new Formatters(context);
             mListener = listener;
+        }
 
-            if (null == sFormatStartTime || null == sFormatEndTime || null == sFormatOnAirDate) {
-                sFormatStartTime = new SimpleDateFormat(
-                        mContext.getString(R.string.onair_start_time), Locale.US);
-                sFormatEndTime = new SimpleDateFormat(
-                        mContext.getString(R.string.onair_end_time), Locale.US);
-                sFormatOnAirDate = new SimpleDateFormat(
-                        mContext.getString(R.string.onair_date), Locale.JAPAN);
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            final SearchResultListItemCardBinding binding = DataBindingUtil.inflate(
+                    inflater, R.layout.search_result_list_item_card, parent, false);
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClicked(binding.getProgram());
+                }
+            });
+
+            return new RecyclerView.ViewHolder(binding.getRoot()) {
+            };
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            SearchResultListItemCardBinding binding = DataBindingUtil.getBinding(holder.itemView);
+            Context context = binding.getRoot().getContext();
+            Program program = mSearchResult.get(position);
+
+            binding.setProgram(mSearchResult.get(position));
+
+            StationApi stationApi = new StationApi(binding.getRoot().getContext());
+            Station station = stationApi.load(program.stationId);
+            binding.programListItemStationLogo.setImageBitmap(station.loadLogo(context));
+
+            binding.programListItemDate.setText(mFormatters.formatOnAirDate(program.startTime));
+            binding.programListItemStarttime.setText(mFormatters.formatStartTime(program.startTime));
+            binding.programListItemEndtime.setText(mFormatters.formatEndTime(program.endTime));
+
+
+            String iconPath = program.getSymbolIconPath(context);
+            if (iconPath != null) {
+                if (iconPath.startsWith("http")) {
+                    Picasso.with(context).load(iconPath)
+                            .transform(new CropCircleTransformation())
+                            .into(binding.programListItemImage);
+                } else {
+                    Picasso.with(context).load(new File(iconPath))
+                            .into(binding.programListItemImage);
+                }
             }
-        }
 
-        // Create new views (invoked by the layout manager)
-        @Override
-        public SearchResultListCardAdapter.ViewHolder onCreateViewHolder(
-                ViewGroup parent, int viewType) {
-
-            View v = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.search_result_list_item_card, parent, false);
-
-            ViewHolder vh = new ViewHolder(v, mListener);
-            return vh;
-        }
-
-        // Replace the contents of a view (invoked by the layout manager)
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.replace(mPrograms.get(position), mContext);
         }
 
         @Override
         public int getItemCount() {
-            return (null != mPrograms) ? mPrograms.size() : 0;
+            return mSearchResult.size();
         }
     }
 

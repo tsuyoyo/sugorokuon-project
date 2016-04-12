@@ -8,7 +8,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,29 +15,26 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,9 +46,9 @@ import java.util.Set;
 
 import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.fragments.dialogs.HelloV22DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.MessageDialogFragment;
-import tsuyogoro.sugorokuon.fragments.timetable.SearchFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsChangedAlertDialog;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsLauncherDialogFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.TimeTableFetchAlertDialog;
@@ -71,11 +67,9 @@ import tsuyogoro.sugorokuon.utils.RadikoLauncher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils;
 
-public class SugorokuonActivity extends AppCompatActivity
-        implements SettingsChangedAlertDialog.IListener, TimeTableFetchProgressDialog.IListener
-        , HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener
-        , NavigationView.OnNavigationItemSelectedListener {
-
+public class SugorokuonActivity extends DrawableActivity
+        implements SettingsChangedAlertDialog.IListener, TimeTableFetchProgressDialog.IListener,
+        HelloV2DialogFragment.IHelloV2DialogListener, TimeTableFetchAlertDialog.OnOptionSelectedListener {
     /**
      * TimeTableを明示的に開きたいときはこのActionを送る
      * EXTRA_STATION_IDを使って局を指定することができる
@@ -90,15 +84,12 @@ public class SugorokuonActivity extends AppCompatActivity
     private static final String TAG_WELCOME_DIALOG = "welcome_dialog";
     private static final String TAG_NO_AREA_DIALOG = "no_area_dialog";
     private static final String TAG_HELLO_V2_DIALOG = "hello_v2_dialog";
+    private static final String TAG_HELLO_V2_2_DIALOG = "hello_v2_2_dialog";
 
     private static final String TAG_TIME_TABLE_FRAGMENT = "time_table_fragment";
     private static final String TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT = "weekly_onair_songs_fragment";
 
     private static final int REQUESTCODE_SETTINGS = 100;
-
-    private DrawerLayout mDrawerLayout;
-
-    private ActionBarDrawerToggle mDrawerToggle;
 
     private StatusCheckerTask mStatusCheckerTask;
 
@@ -110,6 +101,7 @@ public class SugorokuonActivity extends AppCompatActivity
         private static final int SHOULD_SHOW_WELCOME = 4;
         private static final int SHOULD_SHOW_PROGRESS = 5;
         private static final int SHOULD_SHOW_HELLO_V2 = 6;
+        private static final int SHOULD_SHOW_HELLO_V2_2 = 7;
     }
 
     // アプリの状態 (番組表は落とし済みか...etc) をチェックして振る舞いを決めるtask
@@ -130,6 +122,10 @@ public class SugorokuonActivity extends AppCompatActivity
 
             if (!LaunchedCheckPreference.hasLaunched(SugorokuonActivity.this)) {
                 return DataCheckResult.SHOULD_SHOW_WELCOME;
+            }
+
+            if (!LaunchedCheckPreference.hasV22Launched(SugorokuonActivity.this)) {
+                return DataCheckResult.SHOULD_SHOW_HELLO_V2_2;
             }
 
             if (!LaunchedCheckPreference.hasV2Launched(SugorokuonActivity.this)) {
@@ -167,7 +163,6 @@ public class SugorokuonActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-
             switch (result) {
                 case DataCheckResult.SHOULD_SHOW_PROGRESS:
                     showTimeTableFetchProgress();
@@ -186,6 +181,9 @@ public class SugorokuonActivity extends AppCompatActivity
                     break;
                 case DataCheckResult.SHOULD_SHOW_HELLO_V2:
                     showHelloV2Dialog();
+                    break;
+                case DataCheckResult.SHOULD_SHOW_HELLO_V2_2:
+                    showHelloV2_2Dialog();
                     break;
             }
 
@@ -213,20 +211,17 @@ public class SugorokuonActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.main_activity_layout);
-
+        // Main Activityのコンテンツ
+        LayoutInflater inflater = LayoutInflater.from(this);
+        inflater.inflate(R.layout.main_activity_content_layout, getContentRoot(), true);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         if (toolbar != null) {
             toolbar.setTitle("");
             setSupportActionBar(toolbar);
         }
-
         setupStationListBottomSheet();
-
         setupFloatingActionButton();
-
-        setupDrawer();
-
+        setupDrawer(true);
         setupSwitchDateTabs();
 
         // TimeTableServiceとbindして、fetchタスクの状態を見るのに使う
@@ -260,11 +255,6 @@ public class SugorokuonActivity extends AppCompatActivity
                 requestPermissions(requirePermissions, 100);
             }
         }
-
-        // For AdMob
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
     }
 
     private void setupFloatingActionButton() {
@@ -313,7 +303,21 @@ public class SugorokuonActivity extends AppCompatActivity
                             favoriteListBtnLabel.startAnimation(subFabAnimation);
 
                             songListBtn.show();
+                            songListBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startOnAirSongsActivity();
+                                    fabMenuArea.setVisibility(View.GONE);
+                                }
+                            });
                             favoriteListBtn.show();
+                            favoriteListBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startRecommendActivity();
+                                    fabMenuArea.setVisibility(View.GONE);
+                                }
+                            });
 
                             fabMenuArea.setVisibility(View.VISIBLE);
                         }
@@ -354,7 +358,7 @@ public class SugorokuonActivity extends AppCompatActivity
                     int currentFocus = mViewPager.getCurrentItem();
 
                     TimeTableFragment timeTableFragment =
-                            (TimeTableFragment) mDateTabAdapter.getItem(currentFocus);
+                            mDateTabAdapter.getRegisteredFragment(currentFocus);
 
                     timeTableFragment.setFocus(station);
                 }
@@ -433,48 +437,68 @@ public class SugorokuonActivity extends AppCompatActivity
             Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY
     };
 
-    private FragmentPagerAdapter mDateTabAdapter;
+    private DatePagerAdapter mDateTabAdapter;
+
+    private class DatePagerAdapter extends FragmentPagerAdapter {
+
+        public DatePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment = getFragmentByDayOfWeek(mOrderedDateInWeek[position]);
+            return fragment;
+        }
+
+        SparseArray<TimeTableFragment> registeredFragments = new SparseArray<>();
+
+        public TimeTableFragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
+        // Configuration changeでFragmentが作り変えられても、Adapter経由でPagerの中のFragmentに
+        // アクセスするには、作ったFragmentを手の届く所に対比させないといけない (-> registeredFragments)
+        // http://stackoverflow.com/questions/8785221/retrieve-a-fragment-from-a-viewpager
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            TimeTableFragment fragment = (TimeTableFragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return mOrderedDateInWeek.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.date_tab_switcher_monday);
+                case 1:
+                    return getString(R.string.date_tab_switcher_tuesday);
+                case 2:
+                    return getString(R.string.date_tab_switcher_wednesday);
+                case 3:
+                    return getString(R.string.date_tab_switcher_thursday);
+                case 4:
+                    return getString(R.string.date_tab_switcher_friday);
+                case 5:
+                    return getString(R.string.date_tab_switcher_saturday);
+                case 6:
+                    return getString(R.string.date_tab_switcher_sunday);
+                default:
+                    return "";
+            }
+        }
+    }
+
+    ;
 
     private void setupSwitchDateTabs() {
-        mDateTabAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-
-            TimeTableFragment[] mFragments = new TimeTableFragment[mOrderedDateInWeek.length];
-
-            @Override
-            public Fragment getItem(int position) {
-                if (mFragments[position] == null) {
-                    mFragments[position] = getFragmentByDayOfWeek(mOrderedDateInWeek[position]);
-                }
-                return mFragments[position];
-            }
-
-            @Override
-            public int getCount() {
-                return mOrderedDateInWeek.length;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch (position) {
-                    case 0:
-                        return getString(R.string.date_tab_switcher_monday);
-                    case 1:
-                        return getString(R.string.date_tab_switcher_tuesday);
-                    case 2:
-                        return getString(R.string.date_tab_switcher_wednesday);
-                    case 3:
-                        return getString(R.string.date_tab_switcher_thursday);
-                    case 4:
-                        return getString(R.string.date_tab_switcher_friday);
-                    case 5:
-                        return getString(R.string.date_tab_switcher_saturday);
-                    case 6:
-                        return getString(R.string.date_tab_switcher_sunday);
-                    default:
-                        return "";
-                }
-            }
-        };
+        mDateTabAdapter = new DatePagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
         if (mViewPager != null) {
@@ -495,21 +519,26 @@ public class SugorokuonActivity extends AppCompatActivity
 
                 @Override
                 public void onPageSelected(int position) {
-                    Calendar d = SugorokuonUtils.dayOfThisWeek(mOrderedDateInWeek[position]);
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(
-                            getString(R.string.date_mmddeee), Locale.JAPANESE);
-                    String date = dateFormat.format(new Date(d.getTimeInMillis()));
-
-                    if (getSupportActionBar() != null) {
-                        getSupportActionBar().setTitle(date);
-                    }
+                    setActionBarTitle(position);
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
             });
+
+        }
+    }
+
+    private void setActionBarTitle(int positionInDatePager) {
+        Calendar d = SugorokuonUtils.dayOfThisWeek(mOrderedDateInWeek[positionInDatePager]);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                getString(R.string.date_mmddeee), Locale.JAPANESE);
+        String date = dateFormat.format(new Date(d.getTimeInMillis()));
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(date);
         }
     }
 
@@ -552,13 +581,18 @@ public class SugorokuonActivity extends AppCompatActivity
 
     private void openTodaysTimeTableFragment() {
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.main_activity_tab_viewpager);
+        int dayInWeek = SugorokuonUtils.getDayInRadioTimeTable();
 
-        int dateToday = Calendar.getInstance(Locale.JAPAN).get(Calendar.DAY_OF_WEEK);
-        for (int index = 0; index < mOrderedDateInWeek.length; index++) {
-            if (dateToday == mOrderedDateInWeek[index]) {
-                viewPager.setCurrentItem(index);
-            }
+        if (dayInWeek == Calendar.SUNDAY) {
+            mViewPager.setCurrentItem(6);
+        } else {
+            mViewPager.setCurrentItem(dayInWeek - Calendar.MONDAY);
+        }
+
+        // 初期フォーカスが月曜日の場合、DateTabPagerの初期フォーカスが元々月曜なので、
+        // ViewPagerのonPageSelectedが走らない。よって手動でタイトルを仕掛ける。
+        if (dayInWeek == Calendar.MONDAY) {
+            setActionBarTitle(0);
         }
     }
 
@@ -568,54 +602,25 @@ public class SugorokuonActivity extends AppCompatActivity
         unbindService(mServiceConnection);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private void setupDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_activity_drawer_layout);
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, R.string.app_name, R.string.app_name);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        NavigationView navView = (NavigationView) findViewById(R.id.main_activity_navigation_view);
-        navView.setNavigationItemSelectedListener(this);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-    }
-
-    private void switchFragments(Fragment f, boolean enableReturnByBack, String tag) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (null != tag) {
-            transaction.replace(R.id.main_activity_drawer_content_layout, f, tag);
-        } else {
-            transaction.replace(R.id.main_activity_drawer_content_layout, f);
-        }
-
-        if (enableReturnByBack) {
-            transaction.addToBackStack(null);
-        }
-
-        transaction.commit();
-    }
-
-    private void switchFragments(Fragment f, boolean enableReturnByBack) {
-        switchFragments(f, enableReturnByBack, null);
-    }
+//    private void switchFragments(Fragment f, boolean enableReturnByBack, String tag) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//
+//        if (null != tag) {
+//            transaction.replace(R.id.main_activity_drawer_content_layout, f, tag);
+//        } else {
+//            transaction.replace(R.id.main_activity_drawer_content_layout, f);
+//        }
+//
+//        if (enableReturnByBack) {
+//            transaction.addToBackStack(null);
+//        }
+//
+//        transaction.commit();
+//    }
+//
+//    private void switchFragments(Fragment f, boolean enableReturnByBack) {
+//        switchFragments(f, enableReturnByBack, null);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -628,7 +633,8 @@ public class SugorokuonActivity extends AppCompatActivity
             }
             break;
             case R.id.menu_launch_search: {
-                switchFragments(new SearchFragment(), true);
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
                 consumed = true;
             }
             break;
@@ -659,44 +665,7 @@ public class SugorokuonActivity extends AppCompatActivity
                 break;
         }
 
-        return mDrawerToggle.onOptionsItemSelected(item)
-                || super.onOptionsItemSelected(item) || consumed;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_drawer_menu_recommends:
-                break;
-            case R.id.main_drawer_menu_onair_songs:
-
-                Intent onAirSongsIntent = new Intent(this, OnAirSongsActivity.class);
-                startActivity(onAirSongsIntent);
-//                        if (getSupportFragmentManager().findFragmentByTag(
-//                                TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT) == null) {
-//                            switchFragments(new WeeklyOnAirSongsFragment(), true,
-//                                    TAG_WEEKLY_ON_AIR_SONGS_FRAGMENT);
-//                        }
-                // TODO : Activityを起動するようにする (今Activityが無いので作る)
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.main_drawer_menu_settings:
-                mDrawerLayout.closeDrawers();
-                Intent intentForSettings = new Intent(
-                        SugorokuonActivity.this, SugorokuonSettingActivity.class);
-                startActivityForResult(intentForSettings, REQUESTCODE_SETTINGS);
-                break;
-            case R.id.main_drawer_menu_about:
-                break;
-            case R.id.main_drawer_menu_rating:
-                mDrawerLayout.closeDrawers();
-                Intent googlePlayIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.google_play_app_url)));
-                googlePlayIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(googlePlayIntent);
-                break;
-        }
-        return true;
+        return super.onOptionsItemSelected(item) || consumed;
     }
 
     @Override
@@ -747,6 +716,26 @@ public class SugorokuonActivity extends AppCompatActivity
         if (completed) {
             setupSwitchDateTabs();
             openTodaysTimeTableFragment();
+
+            AsyncTask<Void, Void, List<Station>> stationLoaderTask =
+                    new AsyncTask<Void, Void, List<Station>>() {
+                        @Override
+                        protected List<Station> doInBackground(Void... params) {
+                            return (new StationApi(SugorokuonActivity.this)).load();
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<Station> stations) {
+                            super.onPostExecute(stations);
+                            RecyclerView stationList =
+                                    (RecyclerView) findViewById(R.id.main_activity_station_list);
+                            if (stationList != null) {
+                                ((StationListAdapter) stationList.getAdapter()).update(stations);
+                            }
+                        }
+                    };
+            stationLoaderTask.execute();
+
         } else {
             Bundle params = new Bundle();
             params.putString(MessageDialogFragment.KEY_MESSAGE, getString(R.string.date_loading_error_msg));
@@ -822,6 +811,16 @@ public class SugorokuonActivity extends AppCompatActivity
         }
     }
 
+    private void showHelloV2_2Dialog() {
+        if (null == getSupportFragmentManager().findFragmentByTag(TAG_HELLO_V2_2_DIALOG)) {
+            HelloV22DialogFragment dialog = new HelloV22DialogFragment();
+            dialog.show(getSupportFragmentManager(), TAG_HELLO_V2_2_DIALOG);
+            LaunchedCheckPreference.setLaunchedV22(this);
+            LaunchedCheckPreference.setLaunchedV2(this);
+            LaunchedCheckPreference.setLaunched(this);
+        }
+    }
+
     @Override
     public void onStartV2app(boolean positive) {
         if (positive) {
@@ -832,6 +831,12 @@ public class SugorokuonActivity extends AppCompatActivity
             Intent intent = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
             intent.setPackage(getPackageName());
             startService(intent);
+
+            Intent intentForOnAirSongUpdate = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
+            intentForOnAirSongUpdate.setClass(this, OnAirSongsService.class);
+            intent.putExtra(OnAirSongsService.EXTRA_CLEAR_OLD_DATA, true);
+
+            startService(intentForOnAirSongUpdate);
 
             LaunchedCheckPreference.setLaunchedV2(this);
         } else {
@@ -847,4 +852,8 @@ public class SugorokuonActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected boolean isMainActivity() {
+        return true;
+    }
 }

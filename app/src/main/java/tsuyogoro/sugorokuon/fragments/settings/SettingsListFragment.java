@@ -42,16 +42,18 @@ public class SettingsListFragment extends ListFragment {
                 getString(R.string.settings_header_area_title),
                 getString(R.string.settings_auto_update),
                 getString(R.string.settings_header_keyword_title),
-                getString(R.string.settings_header_remindtiming_title),
-                getString(R.string.settings_browser_cache_settings_title)
+                getString(R.string.settings_header_remindtiming_title)
+//                ,
+//                getString(R.string.settings_browser_cache_settings_title)
         };
 
         final String[] summaries = new String [] {
                 getString(R.string.settings_header_area_summary),
                 getString(R.string.settings_auto_update_summary),
                 getString(R.string.settings_header_keyword_summary),
-                getString(R.string.settings_header_remindtiming_summary),
-                getString(R.string.settings_browser_cache_settings_summary)
+                getString(R.string.settings_header_remindtiming_summary)
+//                ,
+//                getString(R.string.settings_browser_cache_settings_summary)
         };
 
         super.onViewCreated(view, savedInstanceState);
@@ -101,10 +103,10 @@ public class SettingsListFragment extends ListFragment {
                 f = new ReminderSettingFragment();
                 fragmentTag = "ReminderSettings";
                 break;
-            case 4:
-                f = new BrowserCacheSettingsPreferenceFragment();
-                fragmentTag = "BrowseCacheSettings";
-                break;
+//            case 4:
+//                f = new BrowserCacheSettingsPreferenceFragment();
+//                fragmentTag = "BrowseCacheSettings";
+//                break;
         }
 
         if (null != f) {

@@ -35,6 +35,17 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
         mListener = listener;
     }
 
+    /**
+     * データを置き換えて (古いデータをclearして) notifyする
+     *
+     * @param stations
+     */
+    public void update(List<Station> stations) {
+        mStation.clear();;
+        mStation.addAll(stations);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mStation.size();

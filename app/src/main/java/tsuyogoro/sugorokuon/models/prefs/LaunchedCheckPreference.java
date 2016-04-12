@@ -20,6 +20,8 @@ public class LaunchedCheckPreference {
 
     private static final String PREF_KEY_WORDS_V2 = "pref_key_launched_ver2_x";
 
+    private static final String PREF_KEY_WORDS_V2_2 = "pref_key_launched_ver2_2";
+
     /**
      * このアプリを起動したことがあるかどうか？
      *
@@ -56,6 +58,23 @@ public class LaunchedCheckPreference {
     public static void setLaunchedV2(Context context) {
         Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putBoolean(PREF_KEY_WORDS_V2, true);
+        editor.apply();
+    }
+
+    /**
+     * v2.2のアプリを起動したことがあるか?
+     *
+     * @param context
+     * @return
+     */
+    public static boolean hasV22Launched(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_KEY_WORDS_V2_2, false);
+    }
+
+    public static void setLaunchedV22(Context context) {
+        Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putBoolean(PREF_KEY_WORDS_V2_2, true);
         editor.apply();
     }
 

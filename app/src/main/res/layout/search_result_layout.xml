@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/search_result_fragment_top_layout">
 
-    <!--
-    <fragment
-        android:name="tsuyogoro.sugorokuon.fragments.timetable.RecommendListFragment"
-        android:id="@+id/search_result_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="40" />
-        -->
-
     <include
         layout="@layout/program_list"
         android:id="@+id/search_result_list"
@@ -21,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="40"></include>
 
-    <include layout="@layout/program_info_viewer_layout"></include>
+    <!--<include layout="@layout/program_info_viewer_layout"></include>-->
 
 
 </LinearLayout>

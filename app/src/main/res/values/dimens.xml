@@ -13,4 +13,7 @@
     <dimen name="textsize_small">12sp</dimen>
     <dimen name="textsize_standard">14sp</dimen>
     <dimen name="textsize_large">16sp</dimen>
+
+    <dimen name="cardview_elevation_normal">4dp</dimen>
+
 </resources>
