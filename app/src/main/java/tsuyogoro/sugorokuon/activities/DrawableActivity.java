@@ -45,7 +45,7 @@ public class DrawableActivity extends AppCompatActivity
                 AdRequest adRequest = new AdRequest.Builder().build();
                 mAdView.loadAd(adRequest);
             }
-        }, 5000);
+        }, 3000);
 
     }
 
