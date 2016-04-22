@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.activities;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import net.nend.android.NendAdIconLayout;
+import net.nend.android.NendAdIconLoader;
 
 import java.util.List;
 
@@ -48,7 +53,7 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
 
     @Override
     public int getItemCount() {
-        return mStation.size();
+        return mStation.size() + 1;
     }
 
     @Override
@@ -58,13 +63,43 @@ public class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.
         return new StationListViewHolder(v, mListener);
     }
 
+    private NendAdIconLoader mIconLoader;
+
     @Override
     public void onBindViewHolder(StationListViewHolder holder, int position) {
-        Station station = mStation.get(position);
-        holder.station = station;
-        holder.getBinding().setStation(station);
-        holder.getBinding().mainActivityStationListIcon.setImageBitmap(
-                BitmapFactory.decodeFile(station.getLogoCachePath()));
+
+        // 一番左に広告を表示する
+        if (position == 0) {
+            holder.getBinding().setIsAdEntry(true);
+
+            if (mIconLoader == null) {
+                Context context = holder.getBinding().getRoot().getContext();
+                mIconLoader = new NendAdIconLoader(context.getApplicationContext(),
+                        context.getResources().getInteger(R.integer.nend_spot_id),
+                        context.getResources().getString(R.string.nend_api_key));
+            }
+
+            holder.getBinding().nendAdicon.setTitleVisible(false);
+            holder.getBinding().nendAdicon.setIconSpaceEnabled(false);
+
+            mIconLoader.addIconView(holder.getBinding().nendAdicon);
+            mIconLoader.loadAd();
+
+            holder.station = null;
+            holder.getBinding().setStation(null);
+            holder.getBinding().mainActivityStationListIcon.setImageDrawable(null);
+
+        } else {
+
+            holder.getBinding().setIsAdEntry(false);
+
+            Station station = mStation.get(position - 1);
+            holder.station = station;
+            holder.getBinding().setStation(station);
+            holder.getBinding().mainActivityStationListIcon.setImageBitmap(
+                    BitmapFactory.decodeFile(station.getLogoCachePath()));
+        }
+
     }
 
     public static class StationListViewHolder extends RecyclerView.ViewHolder

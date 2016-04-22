@@ -8,6 +8,13 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        // nendSDK
+        url 'http://fan-adn.github.io/nendSDK-Android-lib/library'
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'android-apt'
@@ -58,6 +65,9 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
     compile "com.google.android.gms:play-services:${project.playServiceVersion}"
     compile "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
+
+    // nendメディエーション用アダプター
+    compile 'net.nend.android:nend-adapter:1.2.4'
 
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'

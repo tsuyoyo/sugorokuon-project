@@ -155,3 +155,7 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+# nend SDK
+-keep class net.nend.android.** { *; }
+-keep public class com.google.ads.mediation.* { public *; }
