@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_speed_dial_menu_onair_songs"
+        android:icon="@drawable/ic_queue_music_white_24dp"
+        android:title="@string/fab_menu_onair_songs" />
+    <item
+        android:id="@+id/fab_speed_dial_menu_recommend"
+        android:icon="@drawable/ic_star_half_white_24dp"
+        android:title="@string/fab_menu_recommend"/>
+</menu>

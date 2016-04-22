@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV22DialogFragment;
@@ -258,95 +260,34 @@ public class SugorokuonActivity extends DrawableActivity
     }
 
     private void setupFloatingActionButton() {
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(
-                R.id.main_activity_open_stations_btn);
 
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.main_activity_fab_speed_dial);
 
-                    // FABを押した時にsub menuのボタンは大きくなるアニメーションをする
-                    final FloatingActionButton songListBtn = (FloatingActionButton) findViewById(
-                            R.id.main_activity_fab_open_song_list);
-                    final FloatingActionButton favoriteListBtn = (FloatingActionButton) findViewById(
-                            R.id.main_activity_fab_open_favorite_list);
-                    final TextView songListBtnLabel = (TextView) findViewById(
-                            R.id.main_activity_fab_open_song_list_label);
-                    final TextView favoriteListBtnLabel = (TextView) findViewById(
-                            R.id.main_activity_fab_open_favorite_list_label);
-
-                    songListBtn.setVisibility(View.INVISIBLE);
-                    favoriteListBtn.setVisibility(View.INVISIBLE);
-                    songListBtnLabel.setVisibility(View.INVISIBLE);
-                    favoriteListBtnLabel.setVisibility(View.INVISIBLE);
-
-
-                    // FABを押した際、白い背景をフェードインさせる
-                    final View fabMenuArea = findViewById(R.id.main_activity_fab_menu_area);
-                    Animation bgAnimation = new AlphaAnimation(0f, 1f);
-                    bgAnimation.setDuration(200);
-
-                    bgAnimation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            Animation subFabAnimation = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f, 50, 50);
-                            subFabAnimation.setDuration(200);
-
-                            songListBtnLabel.setVisibility(View.VISIBLE);
-                            songListBtnLabel.startAnimation(subFabAnimation);
-                            favoriteListBtnLabel.setVisibility(View.VISIBLE);
-                            favoriteListBtnLabel.startAnimation(subFabAnimation);
-
-                            songListBtn.show();
-                            songListBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startOnAirSongsActivity();
-                                    fabMenuArea.setVisibility(View.GONE);
-                                }
-                            });
-                            favoriteListBtn.show();
-                            favoriteListBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startRecommendActivity();
-                                    fabMenuArea.setVisibility(View.GONE);
-                                }
-                            });
-
-                            fabMenuArea.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
-                    fabMenuArea.startAnimation(bgAnimation);
-
-                    FloatingActionButton closeFab = (FloatingActionButton) findViewById(
-                            R.id.main_activity_fab_close_btn_list);
-                    closeFab.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            fabMenuArea.setVisibility(View.GONE);
-                        }
-                    });
-
-                    fabMenuArea.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            fabMenuArea.setVisibility(View.GONE);
-                            return true;
-                        }
-                    });
-                }
-            });
+        if (fabSpeedDial == null) {
+            return;
         }
+
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                boolean consumed;
+                switch (menuItem.getItemId()) {
+                    case R.id.fab_speed_dial_menu_onair_songs:
+                        startOnAirSongsActivity();
+                        consumed = true;
+                        break;
+                    case R.id.fab_speed_dial_menu_recommend:
+                        startRecommendActivity();
+                        consumed = true;
+                        break;
+                    default:
+                        consumed = super.onMenuItemSelected(menuItem);
+                        break;
+                }
+                return consumed;
+            }
+        });
+
     }
 
     private ViewPager mViewPager;
@@ -384,21 +325,16 @@ public class SugorokuonActivity extends DrawableActivity
                     TextView titleText = (TextView) findViewById(
                             R.id.main_actiity_stationlist_title_text);
 
-                    final FloatingActionButton fab = (FloatingActionButton) findViewById(
-                            R.id.main_activity_open_stations_btn);
-
-                    if (titleText != null && fab != null) {
+                    if (titleText != null) {
                         // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
                         if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             titleText.setText(getString(R.string.station_list_dialog_description));
-                            fab.hide();
                         }
                         // 一番大きくなっている状態 (layout_heightの高さで表示されている)
                         else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                             titleText.setText(getString(R.string.station_list_dialog_title));
-                            fab.show();
                         }
                     }
                 }

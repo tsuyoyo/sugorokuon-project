@@ -116,6 +116,9 @@
     <string name="version_info">Version : %s</string>
     <string name="version_log_title">更新履歴</string>
 
+    <string name="fab_menu_onair_songs">OnAir曲を表示</string>
+    <string name="fab_menu_recommend">今週のオススメ</string>
+
     <string name="ohen_dialog_text">
         次に表示されるサイトからアプリをインストール (無料) 頂くと、
         ラジコンシェルジュ作者に広告費が入る仕組みになっております。

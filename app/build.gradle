@@ -95,6 +95,9 @@ dependencies {
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
+    // fab-speed-dial
+    compile 'io.github.yavski:fab-speed-dial:1.0.3'
+
     // For Robolectric
 //    testCompile 'junit:junit:4.10'
 //    testCompile 'org.assertj:assertj-core:1.7.0'

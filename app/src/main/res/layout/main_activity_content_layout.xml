@@ -97,108 +97,21 @@
 
             </LinearLayout>
 
-
         </LinearLayout>
 
-        <!-- 画面右下に常に表示するボタン-->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/main_activity_open_stations_btn"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/margin_standard"
-            android:layout_marginRight="@dimen/margin_standard"
-            android:clickable="true"
-            android:src="@drawable/ic_list_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="normal" />
+        <io.github.yavski.fabspeeddial.FabSpeedDial
+            android:id="@+id/main_activity_fab_speed_dial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/fab_speed_dial_menu_main"
+            app:miniFabBackgroundTint="@color/app_accent"
+            app:miniFabDrawableTint="@android:color/white"
+            app:miniFabTitleTextColor="@color/app_accent"
+            app:layout_anchorGravity="top|right"
+            app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"
+            />
 
-        <!--app:layout_anchorGravity="top|right"-->
-        <!--app:layout_anchor="@+id/main_activity_stationlist_bottom_sheet"-->
-        <!--/>-->
     </android.support.design.widget.CoordinatorLayout>
 
-    <!-- Floating action buttonを押した時に出現させるMenu群 -->
-    <RelativeLayout
-        android:id="@+id/main_activity_fab_menu_area"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_floating_action_btn_list"
-        android:visibility="gone">
-
-        <!-- 画面右下に常に表示するボタン-->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/main_activity_fab_close_btn_list"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/margin_standard"
-            android:layout_marginRight="@dimen/margin_standard"
-            android:clickable="true"
-            android:src="@drawable/ic_close_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="normal" />
-
-        <!-- onAir曲リストを表示 -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/main_activity_fab_open_song_list"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="30dp"
-            android:layout_above="@+id/main_activity_fab_close_btn_list"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="24dp"
-            android:clickable="true"
-            android:src="@drawable/ic_queue_music_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="mini"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/main_activity_fab_open_song_list_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginTop="4dp"
-            android:layout_toLeftOf="@+id/main_activity_fab_open_song_list"
-            android:layout_alignTop="@+id/main_activity_fab_open_song_list"
-            android:background="@android:color/white"
-            android:padding="4dp"
-            android:elevation="8dp"
-            android:text="OnAir曲を表示"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-        <!-- お気に入りの番組リストを表示 -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/main_activity_fab_open_favorite_list"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="30dp"
-            android:layout_above="@+id/main_activity_fab_open_song_list"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="24dp"
-            android:clickable="true"
-            android:src="@drawable/ic_star_half_white_24dp"
-            app:borderWidth="0dp"
-            app:fabSize="mini"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/main_activity_fab_open_favorite_list_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_toLeftOf="@+id/main_activity_fab_open_favorite_list"
-            android:layout_alignTop="@+id/main_activity_fab_open_favorite_list"
-            android:background="@android:color/white"
-            android:padding="4dp"
-            android:elevation="8dp"
-            android:text="今週のオススメ"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-    </RelativeLayout>
 </merge>
