@@ -210,6 +210,11 @@ public class TimeTableService extends Service {
                         // Main threadへ通知が返ってくる
                         doStartCommand(intent);
                     }
+
+                    @Override
+                    public void onLatestContainerAvailable(String newVersion) {
+
+                    }
                 });
             }
         }

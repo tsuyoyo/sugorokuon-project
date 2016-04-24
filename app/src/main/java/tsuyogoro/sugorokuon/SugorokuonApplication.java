@@ -16,6 +16,9 @@ import com.squareup.leakcanary.RefWatcher;
 import tsuyogoro.sugorokuon.di.DaggerNetworkApiComponent;
 import tsuyogoro.sugorokuon.di.NetworkApiComponent;
 import tsuyogoro.sugorokuon.di.NetworkApiModule;
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
+import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class SugorokuonApplication extends Application {
 
@@ -43,6 +46,18 @@ public class SugorokuonApplication extends Application {
         mAppComponent = DaggerNetworkApiComponent.builder()
                 .networkApiModule(new NetworkApiModule())
                 .build();
+
+        ContainerHolderLoader.load(this, new ContainerHolderLoader.OnLoadListener() {
+            @Override
+            public void onContainerHolderAvailable() {
+                SugorokuonLog.d("ContainerHolader is loaded");
+            }
+
+            @Override
+            public void onLatestContainerAvailable(String containerVersion) {
+                SugorokuonLog.d("New container is loaded : version = " + containerVersion);
+            }
+        });
     }
 
     public NetworkApiComponent component() {

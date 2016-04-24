@@ -123,6 +123,11 @@ public class OnAirSongsService extends IntentService {
                     });
                     workerThread.start();
                 }
+
+                @Override
+                public void onLatestContainerAvailable(String newVersion) {
+                    // TODO : 何かする？
+                }
             });
         }
     }

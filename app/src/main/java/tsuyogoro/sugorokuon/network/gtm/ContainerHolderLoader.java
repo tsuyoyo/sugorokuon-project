@@ -26,7 +26,15 @@ public class ContainerHolderLoader {
          * これが呼ばれた後、
          * ContainerHolderSingleton#getContentHolderが使えるようになる
          */
-        public void onContainerHolderAvailable();
+        void onContainerHolderAvailable();
+
+        /**
+         * ContainerHolderにContainerAvailableListenerをセットすると、
+         * より最新のcontainerが使えるようになった時にcallbackが来る。
+         * その時、ContainerHolderSingletonが更新されて、このcallbackが呼ばれる (ようにした)。
+         *
+         */
+        void onLatestContainerAvailable(String newVersion);
     }
 
     /**
@@ -41,9 +49,8 @@ public class ContainerHolderLoader {
         TagManager tagManager = TagManager.getInstance(context.getApplicationContext());
         tagManager.setVerboseLoggingEnabled(true);
 
-        PendingResult<ContainerHolder> pending =
-                tagManager.loadContainerPreferNonDefault(context.getString(R.string.gtm_container_id),
-                        R.raw.gtm_default_container);
+        PendingResult<ContainerHolder> pending = tagManager.loadContainerPreferFresh(
+                context.getString(R.string.gtm_container_id), R.raw.gtm_default_container);
 
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -52,10 +59,6 @@ public class ContainerHolderLoader {
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
             @Override
             public void onResult(ContainerHolder containerHolder) {
-
-                ContainerHolderSingleton.setContainerHolder(containerHolder);
-
-                Container container = containerHolder.getContainer();
 
                 if (!containerHolder.getStatus().isSuccess()) {
                     SugorokuonLog.e("failure loading container");
@@ -69,7 +72,7 @@ public class ContainerHolderLoader {
                     @Override
                     public void onContainerAvailable(ContainerHolder containerHolder, String containerVersion) {
                         ContainerHolderSingleton.setContainerHolder(containerHolder);
-                        SugorokuonLog.d("New container is available : " + containerVersion);
+                        onLoadListener.onLatestContainerAvailable(containerVersion);
                     }
                 });
 

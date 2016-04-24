@@ -33,7 +33,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
         }
