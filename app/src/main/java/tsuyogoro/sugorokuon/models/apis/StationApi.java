@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,19 +80,24 @@ public class StationApi {
 
         Cursor c;
 
-        c = readableDb.query(StationTableDefiner.TABLE_NAME,
-                StationTableDefiner.allColumnNames(),
-                where, whereArgs, null, null, null);
+        try {
+            c = readableDb.query(StationTableDefiner.TABLE_NAME,
+                    StationTableDefiner.allColumnNames(),
+                    where, whereArgs, null, null, null);
 
-        c.moveToFirst();
+            c.moveToFirst();
 
-        for (int i = 0; i < c.getCount(); i++) {
-            stations.add(StationTableDefiner.createData(c));
-            c.moveToNext();
+            for (int i = 0; i < c.getCount(); i++) {
+                stations.add(StationTableDefiner.createData(c));
+                c.moveToNext();
+            }
+
+            c.close();
+            readableDb.close();
+
+        } catch (SQLiteException e) {
+            SugorokuonLog.w(e.getMessage());
         }
-
-        c.close();
-        readableDb.close();
 
         return stations;
     }

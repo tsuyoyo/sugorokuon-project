@@ -21,8 +21,8 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class NhkStationsFetcher {
 
-    // TODO : メモ - StationにAPI Typeみたいなものを付け加えて、TimeTableFetcherをきりかえるのはいかがか
-    // TODO: サーバ落ちてても大丈夫なようにする
+    public static final String STATION_TYPE_NHK = "NHK";
+
     public List<Station> fetch() {
         Request request = new Request.Builder()
                 .url(NhkConfigs.getServerUrl() + "/station/nhk")
@@ -42,6 +42,10 @@ public class NhkStationsFetcher {
             Gson gson = new Gson();
             stations = gson.fromJson(response.body().string(),
                     new TypeToken<List<Station>>() {}.getType());
+
+            for (Station station : stations) {
+                station.type = STATION_TYPE_NHK;
+            }
 
         } catch (IOException e) {
             SugorokuonLog.e("IOException at fetching station data : " + e.getMessage());

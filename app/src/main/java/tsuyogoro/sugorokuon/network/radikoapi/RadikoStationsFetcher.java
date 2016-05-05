@@ -17,6 +17,8 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class RadikoStationsFetcher implements IRadikoStationFetcher {
 
+    public static final String RADIKO_STATION_TYPE = "radiko";
+
     private RadikoFeedFetcher mFeedFetcher;
 
     public RadikoStationsFetcher() {
@@ -83,6 +85,8 @@ public class RadikoStationsFetcher implements IRadikoStationFetcher {
 
             // 局のlogoファイルを落としてしまっておく
             s.setLogoCachePath(StationLogoDownloader.download(s, logoCacheDir));
+
+            s.type = RADIKO_STATION_TYPE;
         }
     }
 
