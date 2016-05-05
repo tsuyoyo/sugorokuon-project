@@ -24,10 +24,9 @@ import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
-import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoFeedFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoFeedFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -87,7 +86,7 @@ public class OnAirSongsService extends IntentService {
     private static final int DEFAULT_FETCH_PERIOD_HOUR = 2;
 
     @Inject
-    FeedFetcher feedFetcher;
+    IRadikoFeedFetcher feedFetcher;
 
     public OnAirSongsService() {
         // (Memo) IntentServiceのコンストラクタ、worker threadの名前を渡す

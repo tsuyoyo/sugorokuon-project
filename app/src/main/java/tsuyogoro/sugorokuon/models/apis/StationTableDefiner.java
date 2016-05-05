@@ -17,6 +17,9 @@ class StationTableDefiner extends BaseTableDefiner {
         // Station ID
         ID("id", "TEXT PRIMARY KEY"),
 
+        // Station Type (e.g. "radiko", "NHK"...etc)
+        TYPE("type", "TEXT"),
+
         // Station name(例：文化放送)
         NAME("name", "TEXT"),
 
@@ -93,6 +96,7 @@ class StationTableDefiner extends BaseTableDefiner {
         Station.Builder builder = new Station.Builder();
 
         builder.id = c.getString(c.getColumnIndex(StationTableColumn.ID.name));
+        builder.type = c.getString(c.getColumnIndex(StationTableColumn.TYPE.name));
         builder.name = c.getString(c.getColumnIndex(StationTableColumn.NAME.name));
         builder.ascii_name = c.getString(c.getColumnIndex(StationTableColumn.ASCII_NAME.name));
         builder.siteUrl = c.getString(c.getColumnIndex(StationTableColumn.SITE_URL.name));

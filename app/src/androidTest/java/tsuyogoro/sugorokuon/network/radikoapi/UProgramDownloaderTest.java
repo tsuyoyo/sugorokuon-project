@@ -14,11 +14,11 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
 
 public class UProgramDownloaderTest extends AndroidTestCase {
 
-    private TimeTableFetcher target;
+    private IRadikoTimeTableFetcher target;
 
     @Override
     protected void setUp() throws Exception {

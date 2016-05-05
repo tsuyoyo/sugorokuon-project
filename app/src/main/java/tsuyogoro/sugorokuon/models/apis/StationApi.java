@@ -179,6 +179,7 @@ public class StationApi {
         ContentValues cv = new ContentValues();
 
         cv.put(StationTableDefiner.StationTableColumn.ID.columnName(), station.id);
+        cv.put(StationTableDefiner.StationTableColumn.TYPE.columnName(), station.type);
         cv.put(StationTableDefiner.StationTableColumn.NAME.columnName(), station.name);
         cv.put(StationTableDefiner.StationTableColumn.ASCII_NAME.columnName(), station.ascii_name);
         cv.put(StationTableDefiner.StationTableColumn.SITE_URL.columnName(), station.siteUrl);

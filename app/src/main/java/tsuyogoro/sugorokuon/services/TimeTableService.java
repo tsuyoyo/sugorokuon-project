@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.File;
 import java.util.Calendar;
@@ -35,12 +36,12 @@ import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
-import tsuyogoro.sugorokuon.network.StationFetcher;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -140,10 +141,10 @@ public class TimeTableService extends Service {
     private StationApi mStationApi;
 
     @Inject
-    TimeTableFetcher timeTableFetcher;
+    IRadikoTimeTableFetcher timeTableFetcher;
 
     @Inject
-    StationFetcher stationsFetcher;
+    IRadikoStationFetcher stationsFetcher;
 
     private TimeTableApi mTimeTableApi;
 
@@ -292,6 +293,18 @@ public class TimeTableService extends Service {
             return false;
         }
 
+        // test test --------------------
+        NhkStationsFetcher nhkStationsFetcher = new NhkStationsFetcher();
+        List<Station> nhkStations = nhkStationsFetcher.fetch();
+
+        if (nhkStations != null && nhkStations.size() > 0) {
+            NhkTimeTableFetcher nhkTimeTableFetcher = new NhkTimeTableFetcher();
+            OnedayTimetable onedayTimetable = nhkTimeTableFetcher.fetch(Calendar.getInstance(),
+                    NhkTimeTableFetcher.FETCH_TODAY, "130", nhkStations.get(0).id);
+        }
+        // test test ---------------------
+
+
         mStationApi.clear();
         mStationApi.insert(stations);
 
@@ -302,7 +315,7 @@ public class TimeTableService extends Service {
     // 見た感じweeklyを取っても、todayの分はupdateされているっぽい
     // weeklyを取った後にあえてtodayの取得に行ったほうが良いかと思ったが、そうでもなさそう
     private boolean updateWeeklyTimeTable(
-            TimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
+            IRadikoTimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
         List<Station> stations = mStationApi.load();
 
@@ -476,7 +489,7 @@ public class TimeTableService extends Service {
                 }
 
                 if (!toUpdateStation || result) {
-                    result = updateWeeklyTimeTable(new TimeTableFetcher.IWeeklyFetchProgressListener() {
+                    result = updateWeeklyTimeTable(new IRadikoTimeTableFetcher.IWeeklyFetchProgressListener() {
                         @Override
                         public void onProgress(List<Station> fetched, List<Station> requested) {
                             publishProgress(fetched, requested);

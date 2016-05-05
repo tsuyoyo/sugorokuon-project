@@ -12,10 +12,10 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
-import tsuyogoro.sugorokuon.network.StationFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-public class RadikoStationsFetcher implements StationFetcher {
+public class RadikoStationsFetcher implements IRadikoStationFetcher {
 
     private RadikoFeedFetcher mFeedFetcher;
 

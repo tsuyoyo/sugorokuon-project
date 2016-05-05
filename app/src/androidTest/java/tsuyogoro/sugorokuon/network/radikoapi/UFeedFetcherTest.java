@@ -11,13 +11,13 @@ import junit.framework.Assert;
 
 import okhttp3.OkHttpClient;
 import tsuyogoro.sugorokuon.models.entities.Feed;
-import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoFeedFetcher;
 
 public class UFeedFetcherTest extends AndroidTestCase {
 
     @MediumTest
     public void testDownloadFeed() throws Exception {
-        FeedFetcher feedFetcher = new RadikoFeedFetcher();
+        IRadikoFeedFetcher feedFetcher = new RadikoFeedFetcher();
         Feed feed = feedFetcher.fetch("FMT");
         Assert.assertTrue(0 < feed.onAirSongs.size());
     }

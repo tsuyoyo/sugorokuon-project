@@ -11,7 +11,7 @@ import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -21,7 +21,7 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
  * @author Tsuyoyo
  *
  */
-public class RadikoTimeTableFetcher implements TimeTableFetcher {
+public class RadikoTimeTableFetcher implements IRadikoTimeTableFetcher {
 
     private final static String API_WEEKLY_PROGRAM = "weekly";
 
@@ -38,7 +38,7 @@ public class RadikoTimeTableFetcher implements TimeTableFetcher {
 
     @Override
     public List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, TimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
+            List<Station> stations, IRadikoTimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
         ArrayList<OnedayTimetable> programs = new ArrayList<OnedayTimetable>();
         ArrayList<Station> fetchedStations = new ArrayList<Station>();

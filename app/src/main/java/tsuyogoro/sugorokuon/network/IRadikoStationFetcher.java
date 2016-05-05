@@ -6,7 +6,7 @@ import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
-public interface StationFetcher {
+public interface IRadikoStationFetcher {
 
     /**
      * areaIdのリストに入っているareaに属する全てのラジオ局情報をdownloadする。

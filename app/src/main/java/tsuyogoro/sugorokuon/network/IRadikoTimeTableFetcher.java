@@ -5,7 +5,7 @@ import java.util.List;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
-public interface TimeTableFetcher {
+public interface IRadikoTimeTableFetcher {
 
     /**
      * Weekly TimeTableの進捗を受け取るlistener (時間がかかるので)
@@ -28,8 +28,8 @@ public interface TimeTableFetcher {
      * @param progressListener 進捗を受け取る
      * @return
      */
-    List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, TimeTableFetcher.IWeeklyFetchProgressListener progressListener);
+    List<OnedayTimetable> fetchWeeklyTable(List<Station> stations,
+                                           IRadikoTimeTableFetcher.IWeeklyFetchProgressListener progressListener);
 
     /**
      * 指定したStation（複数局分）の一週間分のProgram情報をdownload

@@ -22,8 +22,8 @@ import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.StationFetcher;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
 
 // 局情報取得、番組情報取得、データベースへのストア、を全てテスト。
 // パフォーマンスも測定。
@@ -73,7 +73,7 @@ public class URadikoInfoDownloadTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        IRadikoStationFetcher stationFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE,
                 getLogoCacheDirName());
 
@@ -81,7 +81,7 @@ public class URadikoInfoDownloadTest extends AndroidTestCase {
         stationApi.insert(stations);
 
         // 全番組情報を落とす
-        TimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
+        IRadikoTimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
         List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(stations);
 
         // 全ての局の番組情報がきちんととれているかをチェック

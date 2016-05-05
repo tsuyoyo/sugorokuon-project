@@ -9,7 +9,7 @@ import java.util.List;
 
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.OnAirSong;
-import tsuyogoro.sugorokuon.network.FeedFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoFeedFetcher;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
@@ -17,7 +17,7 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
  * 曲のFeedをdownloadして、Feedインスタンスを作るクラス。
  *
  */
-public class RadikoFeedFetcher implements FeedFetcher {
+public class RadikoFeedFetcher implements IRadikoFeedFetcher {
 
 	@Override
 	public Feed fetch(String stationId) {
