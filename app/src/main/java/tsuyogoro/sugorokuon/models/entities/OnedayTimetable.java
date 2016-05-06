@@ -20,6 +20,12 @@ public class OnedayTimetable {
 
     public String stationId;
 
+    /**
+     * trueだったら番組表リストに広告を出す
+     *
+     */
+    public boolean isShowAd = false;
+
     public OnedayTimetable(int year, int month, int day, String stationId) {
 
         this.date = Calendar.getInstance(Locale.JAPAN);

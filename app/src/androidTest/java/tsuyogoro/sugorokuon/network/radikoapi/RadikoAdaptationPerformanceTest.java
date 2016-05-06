@@ -27,8 +27,8 @@ import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
-import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
 
 public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
 
@@ -81,12 +81,12 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        IRadikoStationFetcher stationsFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationsFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationsFetcher.fetch(Area.values(),
                 StationLogoSize.LARGE, getLogoCacheDirName());
 
         // 全番組情報を落とす
-        IRadikoTimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
+        ITimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
         List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(stations);
 
         // 全ての局の番組情報がきちんととれているかをチェック
@@ -123,7 +123,7 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
         long start = Calendar.getInstance().getTimeInMillis();
 
         // 全リージョンのstation情報を落とす
-        IRadikoStationFetcher stationFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationFetcher.fetch(Area.CHIBA.id,
                 StationLogoSize.LARGE, getLogoCacheDirName());
 
@@ -150,7 +150,7 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
                 Log.d("SugorokuonTest",
                         "testDownloadOneAreaPararel -- " + mStationId + " DL-S");
 
-                IRadikoTimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
+                ITimeTableFetcher timeTableFetcher = new RadikoTimeTableFetcher();
                 List<OnedayTimetable> weekTimeTable = timeTableFetcher.fetchWeeklyTable(
                         mStationId);
                 if (null != weekTimeTable) {
@@ -197,7 +197,7 @@ public class RadikoAdaptationPerformanceTest extends AndroidTestCase {
 
         Area[] allArea = Area.values();
 
-        IRadikoStationFetcher stationFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationFetcher = new RadikoStationsFetcher();
         for (Area area : allArea) {
             List<Station> stations = stationFetcher.fetch(
                     area.id, StationLogoSize.LARGE, getLogoCacheDirName());

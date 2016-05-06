@@ -12,9 +12,9 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -36,12 +36,14 @@ import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
-import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
-import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
 import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
 import tsuyogoro.sugorokuon.network.nhk.NhkTimeTableFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -141,14 +143,20 @@ public class TimeTableService extends Service {
     private StationApi mStationApi;
 
     @Inject
-    IRadikoTimeTableFetcher timeTableFetcher;
+    ITimeTableFetcher timeTableFetcher;
 
     @Inject
-    IRadikoStationFetcher stationsFetcher;
+    IStationFetcher stationsFetcher;
+
+    @Inject
+    NhkStationsFetcher nhkStationsFetcher;
+
+    @Inject
+    NhkTimeTableFetcher nhkTimeTableFetcher;
 
     private TimeTableApi mTimeTableApi;
 
-    private AsyncTask<Void, List<Station>, Boolean> mWeeklyUpdateTask;
+    private AsyncTask<Void, Integer, Boolean> mWeeklyUpdateTask;
 
     private AsyncTask<Void, Void, Boolean> mTodaysUpdateTask;
 
@@ -293,15 +301,22 @@ public class TimeTableService extends Service {
             return false;
         }
 
-        // test test --------------------
-        NhkStationsFetcher nhkStationsFetcher = new NhkStationsFetcher();
-        List<Station> nhkStations = nhkStationsFetcher.fetch();
-
-        if (nhkStations != null && nhkStations.size() > 0) {
-            NhkTimeTableFetcher nhkTimeTableFetcher = new NhkTimeTableFetcher();
-            OnedayTimetable onedayTimetable = nhkTimeTableFetcher.fetch(Calendar.getInstance(),
-                    NhkTimeTableFetcher.FETCH_TODAY, "130", nhkStations.get(0).id);
+        List<Station> nhkStations = nhkStationsFetcher.fetch(areas, LOGO_SIZE, logoCachedDir);
+        if (null != nhkStations) {
+            stations.addAll(nhkStations);
         }
+        // test test --------------------
+
+//        // TODO : NHKのstationを取得してstationsへadd
+//
+//        NhkStationsFetcher nhkStationsFetcher = new NhkStationsFetcher();
+//        List<Station> nhkStations = nhkStationsFetcher.fetch();
+//
+//        if (nhkStations != null && nhkStations.size() > 0) {
+//            NhkTimeTableFetcher nhkTimeTableFetcher = new NhkTimeTableFetcher();
+//            OnedayTimetable onedayTimetable = nhkTimeTableFetcher.fetch(Calendar.getInstance(),
+//                    NhkTimeTableFetcher.FETCH_TODAY, "130", nhkStations.get(0).id);
+//        }
         // test test ---------------------
 
 
@@ -315,14 +330,27 @@ public class TimeTableService extends Service {
     // 見た感じweeklyを取っても、todayの分はupdateされているっぽい
     // weeklyを取った後にあえてtodayの取得に行ったほうが良いかと思ったが、そうでもなさそう
     private boolean updateWeeklyTimeTable(
-            IRadikoTimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
+            ITimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
-        List<Station> stations = mStationApi.load();
+        List<Station> allStations = mStationApi.load();
+
+        List<Station> radikoStations = new ArrayList<>();
+        for (Station s : allStations) {
+            if (s.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+                radikoStations.add(s);
+            }
+        }
 
         List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(
-                stations, progressListener);
+                radikoStations, progressListener);
 
-        boolean isSuccess = (timeTable.size() == stations.size() * 7);
+        boolean isSuccess = (timeTable.size() > 0);
+
+        // NhkTimetableFetcherでも進捗通知が出来るように、このようなことをする (もっと良いやり方があれば...)
+        // TODO : 130は東京のID。可変にできるように考える。
+        timeTable.addAll(nhkTimeTableFetcher.fetchThisWeek("130",
+                allStations, radikoStations.size(), progressListener));
+
         if (isSuccess) {
             mTimeTableApi.clear();
             mTimeTableApi.insert(timeTable);
@@ -333,7 +361,7 @@ public class TimeTableService extends Service {
             updateOnAirSoonTimer();
         } else {
             SugorokuonLog.w("Number of weekly timetable is shorter than expected : " +
-                    Integer.toString(stations.size() * 7) + " but " + timeTable.size());
+                    Integer.toString(allStations.size() * 7) + " but " + timeTable.size());
         }
 
         updateWeeklyTimer();
@@ -349,6 +377,10 @@ public class TimeTableService extends Service {
         List<OnedayTimetable> timeTables = timeTableFetcher.fetchTodaysTable(stations);
 
         boolean isSuccess = (timeTables.size() == stations.size());
+
+        // TODO : 130は東京のID。可変にできるように考える。
+        timeTables.addAll(nhkTimeTableFetcher.fetchToday("130", stations));
+
         if (isSuccess) {
             mTimeTableApi.update(timeTables);
 
@@ -458,10 +490,10 @@ public class TimeTableService extends Service {
         sendBroadcast(notification);
     }
 
-    private AsyncTask<Void, List<Station>, Boolean> generateWeeklyUpdateTask(
+    private AsyncTask<Void, Integer, Boolean> generateWeeklyUpdateTask(
             final boolean toUpdateStation, final boolean notifyProgress) {
 
-        return new AsyncTask<Void, List<Station>, Boolean>() {
+        return new AsyncTask<Void, Integer, Boolean>() {
 
             private UpdateProgressSubmitter mNotificationSubmitter;
 
@@ -489,9 +521,9 @@ public class TimeTableService extends Service {
                 }
 
                 if (!toUpdateStation || result) {
-                    result = updateWeeklyTimeTable(new IRadikoTimeTableFetcher.IWeeklyFetchProgressListener() {
+                    result = updateWeeklyTimeTable(new ITimeTableFetcher.IWeeklyFetchProgressListener() {
                         @Override
-                        public void onProgress(List<Station> fetched, List<Station> requested) {
+                        public void onProgress(int fetched,int requested) {
                             publishProgress(fetched, requested);
                         }
                     });
@@ -505,20 +537,20 @@ public class TimeTableService extends Service {
             }
 
             @Override
-            protected void onProgressUpdate(List<Station>... values) {
+            protected void onProgressUpdate(Integer... values) {
                 super.onProgressUpdate(values);
 
-                List<Station> fetched = values[0];
-                List<Station> requested = values[1];
+                int fetched = values[0];
+                int requested = values[1];
 
                 Intent progress = new Intent(NotifyAction.ACTION_NOTIFY_WEEKLY_FETCH_PROGRESS);
-                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_TOTAL, requested.size());
-                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_FETCHED, fetched.size());
+                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_TOTAL, requested);
+                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_FETCHED, fetched);
                 sendBroadcast(progress);
 
                 if (notifyProgress && null != mNotificationSubmitter) {
                     mNotificationSubmitter.notifyProgress(
-                            TimeTableService.this, requested.size(), fetched.size());
+                            TimeTableService.this, requested, fetched);
                 }
             }
 

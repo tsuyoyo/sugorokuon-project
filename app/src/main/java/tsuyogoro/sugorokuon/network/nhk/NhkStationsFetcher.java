@@ -1,29 +1,37 @@
 package tsuyogoro.sugorokuon.network.nhk;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.simpleframework.xml.core.Complete;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dagger.Component;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import tsuyogoro.sugorokuon.constants.Area;
+import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.StationLogoDownloader;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-public class NhkStationsFetcher {
+public class NhkStationsFetcher implements IStationFetcher {
 
     public static final String STATION_TYPE_NHK = "NHK";
 
-    public List<Station> fetch() {
+    @Override
+    public List<Station> fetch(Area[] areas, StationLogoSize logoSize, String logoCacheDir) {
+        return doFetch(logoCacheDir);
+    }
+
+    @Override
+    public List<Station> fetch(String areaId, StationLogoSize logoSize, String logoCacheDir) {
+        return doFetch(logoCacheDir);
+    }
+
+    private List<Station> doFetch(String logoCacheDir) {
         Request request = new Request.Builder()
                 .url(NhkConfigs.getServerUrl() + "/station/nhk")
                 .get()
@@ -55,7 +63,17 @@ public class NhkStationsFetcher {
             stations = new ArrayList<>();
         }
 
+        completeStationInfo(stations, logoCacheDir);
+
         return stations;
+    }
+
+    private void completeStationInfo(List<Station> stations, String logoCacheDir) {
+        for (Station s : stations) {
+            s.setOnAirSongsAvailable(false);
+            s.setLogoCachePath(StationLogoDownloader.download(s, logoCacheDir));
+            s.type = STATION_TYPE_NHK;
+        }
     }
 
 }

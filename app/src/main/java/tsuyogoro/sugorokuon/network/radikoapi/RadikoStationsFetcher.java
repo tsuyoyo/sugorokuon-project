@@ -12,10 +12,11 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
-import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.StationLogoDownloader;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-public class RadikoStationsFetcher implements IRadikoStationFetcher {
+public class RadikoStationsFetcher implements IStationFetcher {
 
     public static final String RADIKO_STATION_TYPE = "radiko";
 

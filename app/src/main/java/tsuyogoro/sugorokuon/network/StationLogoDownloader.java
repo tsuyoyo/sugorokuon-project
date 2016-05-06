@@ -2,7 +2,7 @@
  * Copyright (c)
  * 2013 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.network.radikoapi;
+package tsuyogoro.sugorokuon.network;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -21,7 +21,7 @@ import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.utils.FileHandleUtil;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
-class StationLogoDownloader {
+public class StationLogoDownloader {
 
     // Logoファイルのcacheを置くディレクトリのパス。
     // 隠しフォルダに作成して、media scannerに引っ掛からないようにする。

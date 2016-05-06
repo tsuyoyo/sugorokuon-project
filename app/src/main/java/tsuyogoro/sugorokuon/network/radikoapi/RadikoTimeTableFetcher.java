@@ -10,8 +10,8 @@ import java.util.List;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
-import tsuyogoro.sugorokuon.network.IRadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -21,7 +21,7 @@ import tsuyogoro.sugorokuon.utils.SugorokuonLog;
  * @author Tsuyoyo
  *
  */
-public class RadikoTimeTableFetcher implements IRadikoTimeTableFetcher {
+public class RadikoTimeTableFetcher implements ITimeTableFetcher {
 
     private final static String API_WEEKLY_PROGRAM = "weekly";
 
@@ -38,17 +38,22 @@ public class RadikoTimeTableFetcher implements IRadikoTimeTableFetcher {
 
     @Override
     public List<OnedayTimetable> fetchWeeklyTable(
-            List<Station> stations, IRadikoTimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
+            List<Station> stations, ITimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
         ArrayList<OnedayTimetable> programs = new ArrayList<OnedayTimetable>();
         ArrayList<Station> fetchedStations = new ArrayList<Station>();
 
         for (Station station : stations) {
+
+            if (!station.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+                continue;
+            }
+
             programs.addAll(fetchWeeklyTable(station.id));
 
             if (null != progressListener) {
                 fetchedStations.add(station);
-                progressListener.onProgress(fetchedStations, stations);
+                progressListener.onProgress(fetchedStations.size(), stations.size());
             }
         }
         return programs;
@@ -78,6 +83,11 @@ public class RadikoTimeTableFetcher implements IRadikoTimeTableFetcher {
         List<OnedayTimetable> tables = new ArrayList<OnedayTimetable>();
 
         for (Station station : stations) {
+
+            if (!station.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+                continue;
+            }
+
             OnedayTimetable timeTable = fetchTodaysTable(station);
             if (null != timeTable) {
                 tables.add(timeTable);

@@ -24,7 +24,7 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.IRadikoStationFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
 
 public class UOnAirSongsServiceTest extends AndroidTestCase {
@@ -54,7 +54,7 @@ public class UOnAirSongsServiceTest extends AndroidTestCase {
             }
         }
 
-        IRadikoStationFetcher stationFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.SMALL,
                 getLogoCacheDirName());
 

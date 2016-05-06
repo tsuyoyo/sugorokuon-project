@@ -7,6 +7,7 @@ import junit.framework.Assert;
 
 import java.util.List;
 
+import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
 
 public class UNhkStationsFetcherTest extends AndroidTestCase {
@@ -27,7 +28,7 @@ public class UNhkStationsFetcherTest extends AndroidTestCase {
     @MediumTest
     public void testDownloadStationList() throws Exception {
 
-        List<Station> stations = target.fetch();
+        List<Station> stations = target.fetch("130", StationLogoSize.LARGE, "test");
 
         Assert.assertTrue(stations != null);
         Assert.assertTrue(stations.size() > 0);
