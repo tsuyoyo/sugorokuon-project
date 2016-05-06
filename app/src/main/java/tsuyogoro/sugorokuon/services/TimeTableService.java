@@ -33,6 +33,7 @@ import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AreaSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
+import tsuyogoro.sugorokuon.models.prefs.NhkAreaSettingsPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
@@ -305,20 +306,6 @@ public class TimeTableService extends Service {
         if (null != nhkStations) {
             stations.addAll(nhkStations);
         }
-        // test test --------------------
-
-//        // TODO : NHKのstationを取得してstationsへadd
-//
-//        NhkStationsFetcher nhkStationsFetcher = new NhkStationsFetcher();
-//        List<Station> nhkStations = nhkStationsFetcher.fetch();
-//
-//        if (nhkStations != null && nhkStations.size() > 0) {
-//            NhkTimeTableFetcher nhkTimeTableFetcher = new NhkTimeTableFetcher();
-//            OnedayTimetable onedayTimetable = nhkTimeTableFetcher.fetch(Calendar.getInstance(),
-//                    NhkTimeTableFetcher.FETCH_TODAY, "130", nhkStations.get(0).id);
-//        }
-        // test test ---------------------
-
 
         mStationApi.clear();
         mStationApi.insert(stations);
@@ -342,13 +329,13 @@ public class TimeTableService extends Service {
         }
 
         List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(
-                radikoStations, progressListener);
+                allStations, progressListener);
 
         boolean isSuccess = (timeTable.size() > 0);
 
-        // NhkTimetableFetcherでも進捗通知が出来るように、このようなことをする (もっと良いやり方があれば...)
-        // TODO : 130は東京のID。可変にできるように考える。
-        timeTable.addAll(nhkTimeTableFetcher.fetchThisWeek("130",
+
+        String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
+        timeTable.addAll(nhkTimeTableFetcher.fetchThisWeek(area,
                 allStations, radikoStations.size(), progressListener));
 
         if (isSuccess) {
@@ -378,8 +365,8 @@ public class TimeTableService extends Service {
 
         boolean isSuccess = (timeTables.size() == stations.size());
 
-        // TODO : 130は東京のID。可変にできるように考える。
-        timeTables.addAll(nhkTimeTableFetcher.fetchToday("130", stations));
+        String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
+        timeTables.addAll(nhkTimeTableFetcher.fetchToday(area, stations));
 
         if (isSuccess) {
             mTimeTableApi.update(timeTables);

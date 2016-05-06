@@ -1,10 +1,16 @@
 package tsuyogoro.sugorokuon.network.nhk;
 
-class NhkConfigs {
+import com.google.android.gms.tagmanager.Container;
+
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
+import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
+
+public class NhkConfigs {
 
     public static String getServerUrl() {
-        // TODO : TagManagerから取得
         return "http://192.168.0.12:8080";
+//        Container container = ContainerHolderSingleton.getContainerHolder().getContainer();
+//        return SugorokuonTagManagerWrapper.getDistributionServerUrl(container);
     }
 
 }

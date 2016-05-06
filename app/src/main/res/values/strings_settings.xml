@@ -75,4 +75,7 @@
     <string name="settings_auto_update_on">ON</string>
     <string name="settings_auto_update_off">OFF</string>
 
+    <string name="settings_nhk_area_title">NHKの受信エリアを1つ選択して下さい</string>
+    <string name="settings_nhk_failed_to_fetch_area">NHKエリア情報取得失敗</string>
+
 </resources>

@@ -17,6 +17,7 @@ import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.fragments.settings.SettingsListFragment;
 import tsuyogoro.sugorokuon.models.prefs.AreaSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
+import tsuyogoro.sugorokuon.models.prefs.NhkAreaSettingsPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindBehaviorPreference;
 import tsuyogoro.sugorokuon.services.OnAirSongsService;
@@ -112,6 +113,10 @@ public class SugorokuonSettingActivity extends Activity
             Intent songInfoFetchIntent = new Intent(OnAirSongsService.ACTION_SET_ON_AIR_SONGS_TIMER);
             songInfoFetchIntent.setPackage(getPackageName());
             startService(songInfoFetchIntent);
+        }
+        // NHKのエリアが変わった
+        else if(key.contains(NhkAreaSettingsPreference.PREF_KEY_NHK_AREA)) {
+            setResult(RESULT_AREA_SETTINGS_UPDATED);
         }
     }
 

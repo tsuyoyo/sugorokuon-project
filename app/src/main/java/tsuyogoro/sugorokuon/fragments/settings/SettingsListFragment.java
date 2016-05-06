@@ -10,20 +10,27 @@ import android.widget.SimpleAdapter;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.tagmanager.Container;
+import com.google.android.gms.tagmanager.ContainerHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.SugorokuonApplication;
+import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
+import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
 
 public class SettingsListFragment extends ListFragment {
 
     public SettingsListFragment() {
         super();
     }
+
+    private boolean mIsDistributionServerAvailable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,28 +40,37 @@ public class SettingsListFragment extends ListFragment {
         Tracker t = ((SugorokuonApplication) getActivity().getApplication()).getTracker();
         t.setScreenName(getClass().getSimpleName());
         t.send(new HitBuilders.AppViewBuilder().build());
+
+        Container container = ContainerHolderSingleton.getContainerHolder().getContainer();
+        mIsDistributionServerAvailable =
+                SugorokuonTagManagerWrapper.getDistributionServerAvailable(container);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        final String[] titles = new String [] {
+        List<String> titles = new ArrayList<>();
+        String[] titlesStr = new String[] {
                 getString(R.string.settings_header_area_title),
                 getString(R.string.settings_auto_update),
                 getString(R.string.settings_header_keyword_title),
                 getString(R.string.settings_header_remindtiming_title)
-//                ,
-//                getString(R.string.settings_browser_cache_settings_title)
         };
+        titles.addAll(Arrays.asList(titlesStr));
 
-        final String[] summaries = new String [] {
+        List<String> summaries = new ArrayList<>();
+        String[] summariesStr = new String [] {
                 getString(R.string.settings_header_area_summary),
                 getString(R.string.settings_auto_update_summary),
                 getString(R.string.settings_header_keyword_summary),
                 getString(R.string.settings_header_remindtiming_summary)
-//                ,
-//                getString(R.string.settings_browser_cache_settings_summary)
         };
+        summaries.addAll(Arrays.asList(summariesStr));
+
+        if (mIsDistributionServerAvailable) {
+            titles.add("NHK設定");
+            summaries.add("NHKラジオ局の地域設定を行います");
+        }
 
         super.onViewCreated(view, savedInstanceState);
 
@@ -63,10 +79,10 @@ public class SettingsListFragment extends ListFragment {
         final String keyTitle = "title";
         final String keySummary = "summary";
 
-        for (int i=0; i < titles.length; i++) {
+        for (int i=0; i < titles.size(); i++) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put(keyTitle, titles[i]);
-            map.put(keySummary, summaries[i]);
+            map.put(keyTitle, titles.get(i));
+            map.put(keySummary, summaries.get(i));
             options.add(map);
         }
 
@@ -103,10 +119,10 @@ public class SettingsListFragment extends ListFragment {
                 f = new ReminderSettingFragment();
                 fragmentTag = "ReminderSettings";
                 break;
-//            case 4:
-//                f = new BrowserCacheSettingsPreferenceFragment();
-//                fragmentTag = "BrowseCacheSettings";
-//                break;
+            // NHKの設定がenableの時のみlistに表示されて選択可能
+            case 4:
+                f = new NhkAreaSettingsFragment();
+                fragmentTag = "NHKAreaSettings";
         }
 
         if (null != f) {
