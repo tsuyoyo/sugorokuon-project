@@ -46,12 +46,15 @@ public class Station {
 
     private boolean mIsOnAirSongsAvailable = false;
 
+    public boolean isToListAd = false;
+
     public Station() {
 
     }
 
     private Station(String type, String id, String name, String ascii_name,
-                    String siteUrl, String logoUrl, String bannerUrl, String logoCachePath) {
+                    String siteUrl, String logoUrl, String bannerUrl, String logoCachePath,
+                    boolean isToListAd) {
         this.type = type;
         this.id = id;
         this.name = name;
@@ -60,6 +63,7 @@ public class Station {
         this.logoUrl = logoUrl;
         this.bannerUrl = bannerUrl;
         this.mLogoCachePath = logoCachePath;
+        this.isToListAd = isToListAd;
     }
 
     public static class Builder {
@@ -72,10 +76,11 @@ public class Station {
         public String bannerUrl;
         public String logoCache;
         public String logoCachePath;
+        public boolean isToListAd;
 
         public Station create() {
             return new Station(type, id, name, ascii_name, siteUrl,
-                    logoUrl, bannerUrl, logoCachePath);
+                    logoUrl, bannerUrl, logoCachePath, isToListAd);
         }
     }
 

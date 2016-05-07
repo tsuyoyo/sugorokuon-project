@@ -8,6 +8,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -50,6 +54,8 @@ public class TimeTableListFragment extends Fragment
     public static String PARAM_KEY_DATE_DATE = "key_date_date";
 
     public static String PARAM_KEY_STATION_ID = "key_station_id";
+
+    public static String PARAM_KEY_IS_TO_LIST_AD = "key_is_to_list_ad";
 
     private RecyclerView mRecyclerView;
 
@@ -140,7 +146,7 @@ public class TimeTableListFragment extends Fragment
                     SugorokuonUtils.launchChromeTab(getActivity(), Uri.parse(program.url));
                 }
             }
-        }, getActivity());
+        }, getActivity(), getArguments().getBoolean(PARAM_KEY_IS_TO_LIST_AD, false));
 
         if (0 < mAdapter.getItemCount()) {
             mRecyclerView.setAdapter(mAdapter);
@@ -172,7 +178,12 @@ public class TimeTableListFragment extends Fragment
     public static class TimeTableListAdapter
             extends RecyclerView.Adapter<TimeTableListAdapter.ViewHolder> {
 
+        // Adが出てくる番組表の場合 (PARAM_KEY_IS_TO_LIST_ADがtrue)、いくつのlineにつき1つのAdが出てくるか
+        private static final int AD_FREQUECY = 5;
+
         private List<Program> mPrograms;
+
+        private final boolean mIsToListAd;
 
         private static SimpleDateFormat sFormatStartTime;
 
@@ -232,10 +243,12 @@ public class TimeTableListFragment extends Fragment
             }
         }
 
-        public TimeTableListAdapter(List<Program> programs, ItemClickListener listener, Context context) {
+        public TimeTableListAdapter(List<Program> programs, ItemClickListener listener,
+                                    Context context, boolean isToListAd) {
             mPrograms = programs;
             mListener = listener;
             mContext = context;
+            mIsToListAd = isToListAd;
 
             if (null == sFormatStartTime || null == sFormatEndTime) {
                 sFormatStartTime = new SimpleDateFormat(
@@ -258,7 +271,22 @@ public class TimeTableListFragment extends Fragment
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            final Program program = mPrograms.get(position);
+
+            if (mIsToListAd) {
+                if (position % (AD_FREQUECY + 1) == AD_FREQUECY) {
+                    holder.getBinding().setIsAdEntry(true);
+
+                    final AdView adView = holder.getBinding().adView;
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    adView.loadAd(adRequest);
+
+                    return;
+                }
+            }
+            holder.getBinding().setIsAdEntry(false);
+
+            int p = mIsToListAd ? position - (position / (AD_FREQUECY + 1)) : position;
+            final Program program = mPrograms.get(p);
 
             holder.program = program;
             holder.getBinding().setProgram(program);
@@ -292,7 +320,12 @@ public class TimeTableListFragment extends Fragment
 
         @Override
         public int getItemCount() {
-            return mPrograms.size();
+
+            if (mIsToListAd) {
+                return mPrograms.size() + (mPrograms.size() / AD_FREQUECY);
+            } else {
+                return mPrograms.size();
+            }
         }
     }
 

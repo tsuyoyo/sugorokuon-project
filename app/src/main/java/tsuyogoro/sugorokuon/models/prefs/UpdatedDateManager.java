@@ -109,8 +109,6 @@ public class UpdatedDateManager {
 
         Calendar c = (Calendar) baseTime.clone();
 
-        Random random = new Random();
-
         // 今が月曜日で6時より前ならば、その直後の5時10分〜50分のどこかが更新タイム。
         // 今が月曜じゃない、もしくは、月曜6時以降であれば、翌週の月曜早朝が更新タイム。
         if((Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK)) || (6 < c.get(Calendar.HOUR_OF_DAY))) {
@@ -119,10 +117,7 @@ public class UpdatedDateManager {
             } while(Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK));
         }
 
-        // サーバへのアクセスを散らすために、5時10分0秒〜5時59分59秒の間にランダムでセット
-        c.set(Calendar.HOUR_OF_DAY, 5);
-        c.set(Calendar.MINUTE, 10 + random.nextInt(50));
-        c.set(Calendar.SECOND, random.nextInt(60));
+        fixUpdateTime(c);
 
         return c.getTimeInMillis();
     }
@@ -162,12 +157,20 @@ public class UpdatedDateManager {
             c.add(Calendar.DATE, 1);
         }
 
-        c.set(Calendar.HOUR_OF_DAY, 6);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
+        fixUpdateTime(c);
 
         return c.getTimeInMillis();
+    }
+
+    private void fixUpdateTime(Calendar target) {
+
+        Random random = new Random();
+
+        // サーバへのアクセスを散らすために、5時10分0秒〜5時59分59秒の間にランダムでセット
+        target.set(Calendar.HOUR_OF_DAY, 5);
+        target.set(Calendar.MINUTE, 10 + random.nextInt(50));
+        target.set(Calendar.SECOND, random.nextInt(60));
+        target.set(Calendar.MILLISECOND, 0);
     }
 
 }

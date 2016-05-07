@@ -53,6 +53,7 @@ public class NhkStationsFetcher implements IStationFetcher {
 
             for (Station station : stations) {
                 station.type = STATION_TYPE_NHK;
+                station.isToListAd = true;
             }
 
         } catch (IOException e) {

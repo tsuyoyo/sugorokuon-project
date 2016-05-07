@@ -102,7 +102,7 @@
     <string name="date_mmddeee">MM月 dd日 (EEE)</string>
     <string name="date_mmddeeehhmm">MM月 dd日 (EEE) HH:mm</string>
     <string name="date_mm_sl_dd_eehhmm">MM/dd(EEE) HH:mm</string>
-    <string name="date_yyyymmddhhmmss">yyyy/MM/HH:mm:ss</string>
+    <string name="date_yyyymmddhhmmss">yyyy/MM/dd/HH:mm:ss</string>
     <string name="date_hhmm">HH:mm</string>
     <string name="date_switcher_recommend_begin">MM月 dd日 (EEE) から</string>
     <string name="date_switcher_recommend_end">MM月 dd日 (EEE) のオススメ</string>

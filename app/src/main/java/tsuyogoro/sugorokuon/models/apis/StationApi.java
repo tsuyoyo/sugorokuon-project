@@ -191,6 +191,7 @@ public class StationApi {
         cv.put(StationTableDefiner.StationTableColumn.SITE_URL.columnName(), station.siteUrl);
         cv.put(StationTableDefiner.StationTableColumn.LOGO_URL.columnName(), station.logoUrl);
         cv.put(StationTableDefiner.StationTableColumn.BANNER_URL.columnName(), station.bannerUrl);
+        cv.put(StationTableDefiner.StationTableColumn.IS_LIST_AD.columnName(), station.isToListAd);
 
         if (null == station.getLogoCachePath()) {
             cv.put(StationTableDefiner.StationTableColumn.LOGO_CACHE.columnName(), "");
