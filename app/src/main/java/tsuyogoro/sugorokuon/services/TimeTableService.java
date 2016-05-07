@@ -13,6 +13,9 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +42,7 @@ import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
 import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
+import tsuyogoro.sugorokuon.network.googleanalytics.GATrackingUtil;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
 import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
@@ -99,7 +103,6 @@ public class TimeTableService extends Service {
 
     /**
      * trueにすると、進捗をnotificationで出すようになる
-     *
      */
     public static final String EXTRA_NOTIFY_PROGRESS = "extra_notify_progress";
 
@@ -133,7 +136,6 @@ public class TimeTableService extends Service {
 
     /**
      * Updateの進捗通知に使うnotificationのID
-     *
      */
     public static final int NOTIFICATION_ID_FOR_UPDATE_PROGRESS = 100;
 
@@ -409,7 +411,7 @@ public class TimeTableService extends Service {
     }
 
     private PendingIntent pendingIntentForWeeklyUpdate() {
-        return SugorokuonServiceUtil.pendingIntentForTimer(ACTION_UPDATE_WEEKLY_TIME_TABLE, this);
+        return SugorokuonServiceUtil.pendingIntentForTimer(ACTION_UPDATE_STATION_AND_TIME_TABLE, this);
     }
 
     private PendingIntent pendingIntentForTodaysUpdate() {
@@ -510,7 +512,7 @@ public class TimeTableService extends Service {
                 if (!toUpdateStation || result) {
                     result = updateWeeklyTimeTable(new ITimeTableFetcher.IWeeklyFetchProgressListener() {
                         @Override
-                        public void onProgress(int fetched,int requested) {
+                        public void onProgress(int fetched, int requested) {
                             publishProgress(fetched, requested);
                         }
                     });
@@ -519,6 +521,14 @@ public class TimeTableService extends Service {
                         broadcastUpdateError("Failed to update weekly timeTable list");
                     }
                 }
+
+                // 週間番組表の更新分布を観たいので、EventをGAへ送信
+                ((SugorokuonApplication) getApplication()).getTracker().send(
+                        new HitBuilders.EventBuilder()
+                                .setCategory(getString(R.string.ga_event_category_program_update))
+                                .setAction(getString(R.string.ga_event_action_weekly_update))
+                                .setLabel(GATrackingUtil.getCurrentTime(TimeTableService.this))
+                                .build());
 
                 return result;
             }

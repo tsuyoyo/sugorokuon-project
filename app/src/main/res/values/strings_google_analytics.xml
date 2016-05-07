@@ -18,12 +18,11 @@
     <string name="ga_event_action_welcome_cancel">Cancel to launch</string>
     
     <!-- Updateに関するEvent -->
-    <string name="ga_event_category_program_update">Update programs</string>
+    <string name="ga_event_category_program_update">UpdatePrograms</string>
     <string name="ga_event_action_program_update_completed">Completed</string>
     <string name="ga_event_action_program_update_Failed">Failed</string>
-    <string name="ga_event_action_download_from_web">Donwload from web</string>    
-    
-    <!-- Main画面に関するEvent -->
+    <string name="ga_event_action_download_from_web">Download from web</string>
+
     <string name="ga_event_category_main_screen_operation">Main screen operation</string>
     <string name="ga_event_action_tap_previous_day">Tapped previous day</string>
     <string name="ga_event_action_tap_next_day">Tapped next day</string>
@@ -40,6 +39,8 @@
     <string name="ga_event_action_tap_close">Tapped close viewer button</string>
     <string name="ga_event_action_flick_nextday">Change date to next by flick</string>
     <string name="ga_event_action_flick_previousday">Change date to previous by flick</string>
+    <string name="ga_event_action_weekly_update">Weekly</string>
+
         
     <!-- リマインダに関するEvent -->
     <string name="ga_event_category_program_reminder">Program reminder</string>
