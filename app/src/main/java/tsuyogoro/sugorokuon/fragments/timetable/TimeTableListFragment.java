@@ -179,7 +179,7 @@ public class TimeTableListFragment extends Fragment
             extends RecyclerView.Adapter<TimeTableListAdapter.ViewHolder> {
 
         // Adが出てくる番組表の場合 (PARAM_KEY_IS_TO_LIST_ADがtrue)、いくつのlineにつき1つのAdが出てくるか
-        private static final int AD_FREQUECY = 5;
+        private static final int AD_FREQUECY = 10;
 
         private List<Program> mPrograms;
 
@@ -215,9 +215,9 @@ public class TimeTableListFragment extends Fragment
 
             public ViewHolder(View view, ItemClickListener listener) {
                 super(view);
-                view.setOnClickListener(this);
 
                 mBinding = DataBindingUtil.bind(view);
+                mBinding.programListItemCardView.setOnClickListener(this);
 
                 mBinding.programListItemOpenBrowser.setOnClickListener(new View.OnClickListener() {
                     @Override

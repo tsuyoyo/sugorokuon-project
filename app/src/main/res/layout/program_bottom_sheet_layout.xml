@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:layout_weight="1"
-                android:visibility="@{ program.url == null ? View.GONE : View.VISIBLE }"
+                android:visibility="@{ program.url == null || program.url.isEmpty() ? View.GONE : View.VISIBLE }"
                 android:id="@+id/program_bottom_sheet_button_open_browser"
                 android:src="@drawable/ic_public_black_24dp"
                 android:background="@drawable/button_background"
