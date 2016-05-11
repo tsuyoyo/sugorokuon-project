@@ -41,8 +41,8 @@ class StationTableDefiner extends BaseTableDefiner {
         // FeedがonAirされた曲情報を提供しているかどうか (1:true, 0:false)
         ON_AIR_SONGS_AVALIABLE("on_air_songs", "INTEGER"),
 
-        // タイムテーブルに広告を混ぜるかどうか
-        IS_LIST_AD("is_list_ad", "INTEGER")
+        // タイムテーブルどのくらい広告を表示するか
+        FREQUENCY_LIST_AD("frequency_list_ad", "INTEGER")
         ;
 
         public String name;
@@ -106,7 +106,7 @@ class StationTableDefiner extends BaseTableDefiner {
         builder.logoUrl = c.getString(c.getColumnIndex(StationTableColumn.LOGO_URL.name));
         builder.bannerUrl = c.getString(c.getColumnIndex(StationTableColumn.BANNER_URL.name));
         builder.logoCachePath = c.getString(c.getColumnIndex(StationTableColumn.LOGO_CACHE.name));
-        builder.isToListAd = c.getInt(c.getColumnIndex(StationTableColumn.IS_LIST_AD.name)) > 0;
+        builder.frequencyToListAd = c.getInt(c.getColumnIndex(StationTableColumn.FREQUENCY_LIST_AD.name));
 
         return builder.create();
     }

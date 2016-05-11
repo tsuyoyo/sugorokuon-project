@@ -8,9 +8,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -21,11 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
@@ -55,7 +52,9 @@ public class TimeTableListFragment extends Fragment
 
     public static String PARAM_KEY_STATION_ID = "key_station_id";
 
-    public static String PARAM_KEY_IS_TO_LIST_AD = "key_is_to_list_ad";
+    public static String PARAM_KEY_FREQUENCY_LIST_AD = "key_frequency_list_ad";
+
+    public static final int MIN_VALUE_FREQUENCY = 5;
 
     private RecyclerView mRecyclerView;
 
@@ -146,7 +145,7 @@ public class TimeTableListFragment extends Fragment
                     SugorokuonUtils.launchChromeTab(getActivity(), Uri.parse(program.url));
                 }
             }
-        }, getActivity(), getArguments().getBoolean(PARAM_KEY_IS_TO_LIST_AD, false));
+        }, getActivity(), getArguments().getInt(PARAM_KEY_FREQUENCY_LIST_AD));
 
         if (0 < mAdapter.getItemCount()) {
             mRecyclerView.setAdapter(mAdapter);
@@ -178,12 +177,9 @@ public class TimeTableListFragment extends Fragment
     public static class TimeTableListAdapter
             extends RecyclerView.Adapter<TimeTableListAdapter.ViewHolder> {
 
-        // Adが出てくる番組表の場合 (PARAM_KEY_IS_TO_LIST_ADがtrue)、いくつのlineにつき1つのAdが出てくるか
-        private static final int AD_FREQUECY = 10;
-
         private List<Program> mPrograms;
 
-        private final boolean mIsToListAd;
+        private final int mFrequencyListAd;
 
         private static SimpleDateFormat sFormatStartTime;
 
@@ -244,11 +240,16 @@ public class TimeTableListFragment extends Fragment
         }
 
         public TimeTableListAdapter(List<Program> programs, ItemClickListener listener,
-                                    Context context, boolean isToListAd) {
+                                    Context context, int frequencyListAd) {
             mPrograms = programs;
             mListener = listener;
             mContext = context;
-            mIsToListAd = isToListAd;
+
+            if (frequencyListAd < MIN_VALUE_FREQUENCY) {
+                mFrequencyListAd = MIN_VALUE_FREQUENCY;
+            } else {
+                mFrequencyListAd = frequencyListAd;
+            }
 
             if (null == sFormatStartTime || null == sFormatEndTime) {
                 sFormatStartTime = new SimpleDateFormat(
@@ -270,29 +271,39 @@ public class TimeTableListFragment extends Fragment
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
 
-            if (mIsToListAd) {
-                if (position % (AD_FREQUECY + 1) == AD_FREQUECY) {
-                    holder.getBinding().setIsAdEntry(true);
+            if (mFrequencyListAd > 0 && position % (mFrequencyListAd + 1) == mFrequencyListAd) {
+                holder.getBinding().setIsAdEntry(true);
 
-                    final AdView adView = holder.getBinding().adView;
-                    AdRequest adRequest = new AdRequest.Builder().build();
-                    adView.loadAd(adRequest);
+                int whichAdToDisplay = (new Random()).nextInt() % 2;
+                holder.getBinding().setWhichAdToDisplay(whichAdToDisplay);
 
-                    return;
+                if (whichAdToDisplay == 0) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AdView adView = holder.getBinding().adView;
+                            AdRequest adRequest = new AdRequest.Builder().build();
+                            adView.loadAd(adRequest);
+                        }
+                    }).run();
                 }
+                return;
             }
+
             holder.getBinding().setIsAdEntry(false);
 
-            int p = mIsToListAd ? position - (position / (AD_FREQUECY + 1)) : position;
+            int p = (mFrequencyListAd > 0) ? position - (position / (mFrequencyListAd + 1)) : position;
             final Program program = mPrograms.get(p);
 
             holder.program = program;
             holder.getBinding().setProgram(program);
 
             String iconPath = program.getSymbolIconPath(mContext);
-            if (iconPath != null) {
+            if (iconPath != null)
+
+            {
                 if (iconPath.startsWith("http")) {
                     Picasso.with(mContext).load(iconPath)
                             .transform(new CropCircleTransformation())
@@ -304,25 +315,32 @@ public class TimeTableListFragment extends Fragment
             }
 
             holder.getBinding().programListItemOpenBrowser.setOnClickListener(
-                    new View.OnClickListener() {
+                    new View.OnClickListener()
+
+                    {
                         @Override
                         public void onClick(View v) {
                             mListener.onBrowserOpenClicked(program);
                         }
-                    });
+                    }
+
+            );
 
             String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
-            holder.getBinding().setStarttime(start);
+            holder.getBinding().
+
+                    setStarttime(start);
 
             String end = sFormatEndTime.format(new Date(program.endTime.getTimeInMillis()));
-            holder.getBinding().setEndtime(end);
+            holder.getBinding().
+
+                    setEndtime(end);
         }
 
         @Override
         public int getItemCount() {
-
-            if (mIsToListAd) {
-                return mPrograms.size() + (mPrograms.size() / AD_FREQUECY);
+            if (mFrequencyListAd > 0) {
+                return mPrograms.size() + (mPrograms.size() / mFrequencyListAd);
             } else {
                 return mPrograms.size();
             }

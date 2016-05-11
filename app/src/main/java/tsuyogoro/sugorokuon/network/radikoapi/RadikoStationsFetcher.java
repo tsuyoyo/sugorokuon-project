@@ -14,6 +14,7 @@ import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
 import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.StationLogoDownloader;
+import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class RadikoStationsFetcher implements IStationFetcher {
@@ -71,6 +72,7 @@ public class RadikoStationsFetcher implements IStationFetcher {
         builder.logoUrl = responseData.logo_large;
         builder.siteUrl = responseData.href;
         builder.name = responseData.name;
+        builder.frequencyToListAd = SugorokuonTagManagerWrapper.getRadikoTimetableAdFrequency();
         return builder.create();
     }
 

@@ -15,6 +15,7 @@ import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.StationLogoDownloader;
+import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class NhkStationsFetcher implements IStationFetcher {
@@ -53,7 +54,7 @@ public class NhkStationsFetcher implements IStationFetcher {
 
             for (Station station : stations) {
                 station.type = STATION_TYPE_NHK;
-                station.isToListAd = true;
+                station.frequencyToListAd = SugorokuonTagManagerWrapper.getNhkTimetableAdFrequency();
             }
 
         } catch (IOException e) {

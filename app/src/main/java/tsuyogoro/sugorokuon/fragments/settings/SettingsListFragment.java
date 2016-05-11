@@ -41,9 +41,8 @@ public class SettingsListFragment extends ListFragment {
         t.setScreenName(getClass().getSimpleName());
         t.send(new HitBuilders.AppViewBuilder().build());
 
-        Container container = ContainerHolderSingleton.getContainerHolder().getContainer();
         mIsDistributionServerAvailable =
-                SugorokuonTagManagerWrapper.getDistributionServerAvailable(container);
+                SugorokuonTagManagerWrapper.getDistributionServerAvailable();
     }
 
     @Override

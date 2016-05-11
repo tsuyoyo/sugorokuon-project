@@ -8,6 +8,7 @@
         <variable name="endtime" type="String" />
         <import type="android.view.View" />
         <variable name="isAdEntry" type="Boolean" />
+        <variable name="whichAdToDisplay" type="int" />
     </data>
 
     <FrameLayout
@@ -26,9 +27,21 @@
                 android:id="@+id/adView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ads:adSize="LARGE_BANNER"
-                ads:adUnitId="@string/adUnitId" />
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/adUnitId"
+                android:visibility="@{whichAdToDisplay == 0 ? View.VISIBLE : View.GONE}"/>
+
+            <!-- NendAdjustSizeにtrueを指定します -->
+            <net.nend.android.NendAdView
+                android:id="@+id/nend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                NendApiKey="@string/nend_banner_api_key"
+                NendSpotId="@integer/nend_banner_spot_id"
+                NendAdjustSize="true"
+                android:visibility="@{whichAdToDisplay == 1 ? View.VISIBLE : View.GONE}"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/card_view"

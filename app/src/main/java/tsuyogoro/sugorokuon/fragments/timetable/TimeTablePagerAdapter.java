@@ -56,7 +56,7 @@ class TimeTablePagerAdapter extends FragmentPagerAdapter {
 
         Station station = mStations.get(position);
         bundle.putString(TimeTableListFragment.PARAM_KEY_STATION_ID, station.id);
-        bundle.putBoolean(TimeTableListFragment.PARAM_KEY_IS_TO_LIST_AD, station.isToListAd);
+        bundle.putInt(TimeTableListFragment.PARAM_KEY_FREQUENCY_LIST_AD, station.frequencyToListAd);
 
         Fragment fragment = new TimeTableListFragment();
         fragment.setArguments(bundle);
