@@ -159,3 +159,6 @@
 # nend SDK
 -keep class net.nend.android.** { *; }
 -keep public class com.google.ads.mediation.* { public *; }
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
