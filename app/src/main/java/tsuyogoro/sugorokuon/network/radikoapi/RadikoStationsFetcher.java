@@ -9,6 +9,7 @@ import java.util.List;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.entities.Feed;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.OkHttpWrapper;
@@ -18,8 +19,6 @@ import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class RadikoStationsFetcher implements IStationFetcher {
-
-    public static final String RADIKO_STATION_TYPE = "radiko";
 
     private RadikoFeedFetcher mFeedFetcher;
 
@@ -89,7 +88,7 @@ public class RadikoStationsFetcher implements IStationFetcher {
             // 局のlogoファイルを落としてしまっておく
             s.setLogoCachePath(StationLogoDownloader.download(s, logoCacheDir));
 
-            s.type = RADIKO_STATION_TYPE;
+            s.type = StationType.RADIKO.value;
         }
     }
 

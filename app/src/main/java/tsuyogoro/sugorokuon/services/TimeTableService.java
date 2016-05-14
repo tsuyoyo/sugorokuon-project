@@ -28,6 +28,7 @@ import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
@@ -325,7 +326,7 @@ public class TimeTableService extends Service {
 
         List<Station> radikoStations = new ArrayList<>();
         for (Station s : allStations) {
-            if (s.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+            if (s.type.equals(StationType.RADIKO.value)) {
                 radikoStations.add(s);
             }
         }

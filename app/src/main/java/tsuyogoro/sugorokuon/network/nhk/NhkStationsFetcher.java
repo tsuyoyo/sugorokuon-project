@@ -12,6 +12,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.StationLogoDownloader;
@@ -19,8 +20,6 @@ import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class NhkStationsFetcher implements IStationFetcher {
-
-    public static final String STATION_TYPE_NHK = "NHK";
 
     @Override
     public List<Station> fetch(Area[] areas, StationLogoSize logoSize, String logoCacheDir) {
@@ -53,7 +52,7 @@ public class NhkStationsFetcher implements IStationFetcher {
                     new TypeToken<List<Station>>() {}.getType());
 
             for (Station station : stations) {
-                station.type = STATION_TYPE_NHK;
+                station.type = StationType.NHK.value;
                 station.frequencyToListAd = SugorokuonTagManagerWrapper.getNhkTimetableAdFrequency();
             }
 
@@ -74,7 +73,6 @@ public class NhkStationsFetcher implements IStationFetcher {
         for (Station s : stations) {
             s.setOnAirSongsAvailable(false);
             s.setLogoCachePath(StationLogoDownloader.download(s, logoCacheDir));
-            s.type = STATION_TYPE_NHK;
         }
     }
 

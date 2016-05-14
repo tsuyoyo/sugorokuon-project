@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="66dp"
             android:gravity="center"
             android:background="@android:color/transparent"
             android:orientation="vertical"
@@ -27,9 +27,11 @@
                 android:id="@+id/adView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
                 ads:adSize="BANNER"
                 ads:adUnitId="@string/adUnitId"
-                android:visibility="@{whichAdToDisplay == 0 ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{whichAdToDisplay == 0 ? View.VISIBLE : View.GONE}" />
 
             <!-- NendAdjustSizeにtrueを指定します -->
             <net.nend.android.NendAdView

@@ -14,6 +14,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
@@ -32,7 +33,7 @@ public class NhkTimeTableFetcher {
         List<OnedayTimetable> timetables = new ArrayList<>();
 
         for (Station station : stations) {
-            if (!station.type.equals(NhkStationsFetcher.STATION_TYPE_NHK)) {
+            if (!station.type.equals(StationType.NHK.value)) {
                 continue;
             }
 
@@ -64,7 +65,7 @@ public class NhkTimeTableFetcher {
 
         int fetchedInThisMethod = 0;
         for (Station station : targetStations) {
-            if (!station.type.equals(NhkStationsFetcher.STATION_TYPE_NHK)) {
+            if (!station.type.equals(StationType.NHK.value)) {
                 continue;
             }
 

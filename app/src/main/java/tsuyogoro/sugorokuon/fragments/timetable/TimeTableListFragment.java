@@ -66,7 +66,7 @@ public class TimeTableListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.program_list, null);
+        final View rootView = inflater.inflate(R.layout.program_list, null);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.program_list);
 
@@ -245,7 +245,7 @@ public class TimeTableListFragment extends Fragment
             mListener = listener;
             mContext = context;
 
-            if (frequencyListAd < MIN_VALUE_FREQUENCY) {
+            if (frequencyListAd > 0 && frequencyListAd < MIN_VALUE_FREQUENCY) {
                 mFrequencyListAd = MIN_VALUE_FREQUENCY;
             } else {
                 mFrequencyListAd = frequencyListAd;
@@ -301,9 +301,7 @@ public class TimeTableListFragment extends Fragment
             holder.getBinding().setProgram(program);
 
             String iconPath = program.getSymbolIconPath(mContext);
-            if (iconPath != null)
-
-            {
+            if (iconPath != null) {
                 if (iconPath.startsWith("http")) {
                     Picasso.with(mContext).load(iconPath)
                             .transform(new CropCircleTransformation())

@@ -7,6 +7,7 @@ package tsuyogoro.sugorokuon.network.radikoapi;
 import java.util.ArrayList;
 import java.util.List;
 
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
@@ -45,7 +46,7 @@ public class RadikoTimeTableFetcher implements ITimeTableFetcher {
 
         for (Station station : stations) {
 
-            if (!station.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+            if (!station.type.equals(StationType.RADIKO.value)) {
                 continue;
             }
 
@@ -84,7 +85,7 @@ public class RadikoTimeTableFetcher implements ITimeTableFetcher {
 
         for (Station station : stations) {
 
-            if (!station.type.equals(RadikoStationsFetcher.RADIKO_STATION_TYPE)) {
+            if (!station.type.equals(StationType.RADIKO.value)) {
                 continue;
             }
 
