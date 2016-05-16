@@ -21,8 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -31,7 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
@@ -266,8 +263,7 @@ public class TimeTableListFragment extends Fragment
             View v = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.program_list_item_card, parent, false);
 
-            ViewHolder vh = new ViewHolder(v, mListener);
-            return vh;
+            return new ViewHolder(v, mListener);
         }
 
         @Override
@@ -275,20 +271,6 @@ public class TimeTableListFragment extends Fragment
 
             if (mFrequencyListAd > 0 && position % (mFrequencyListAd + 1) == mFrequencyListAd) {
                 holder.getBinding().setIsAdEntry(true);
-
-                int whichAdToDisplay = (new Random()).nextInt() % 2;
-                holder.getBinding().setWhichAdToDisplay(whichAdToDisplay);
-
-                if (whichAdToDisplay == 0) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AdView adView = holder.getBinding().adView;
-                            AdRequest adRequest = new AdRequest.Builder().build();
-                            adView.loadAd(adRequest);
-                        }
-                    }).run();
-                }
                 return;
             }
 
@@ -313,26 +295,13 @@ public class TimeTableListFragment extends Fragment
             }
 
             holder.getBinding().programListItemOpenBrowser.setOnClickListener(
-                    new View.OnClickListener()
-
-                    {
-                        @Override
-                        public void onClick(View v) {
-                            mListener.onBrowserOpenClicked(program);
-                        }
-                    }
-
-            );
+                    v -> mListener.onBrowserOpenClicked(program));
 
             String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
-            holder.getBinding().
-
-                    setStarttime(start);
+            holder.getBinding().setStarttime(start);
 
             String end = sFormatEndTime.format(new Date(program.endTime.getTimeInMillis()));
-            holder.getBinding().
-
-                    setEndtime(end);
+            holder.getBinding().setEndtime(end);
         }
 
         @Override

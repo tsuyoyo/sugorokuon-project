@@ -111,7 +111,7 @@ public class UpdatedDateManager {
 
         // 今が月曜日で6時より前ならば、その直後の5時10分〜50分のどこかが更新タイム。
         // 今が月曜じゃない、もしくは、月曜6時以降であれば、翌週の月曜早朝が更新タイム。
-        if((Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK)) || (6 < c.get(Calendar.HOUR_OF_DAY))) {
+        if((Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK)) || (5 < c.get(Calendar.HOUR_OF_DAY))) {
             do {
                 c.add(Calendar.DATE, 1);
             } while(Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK));
@@ -153,7 +153,7 @@ public class UpdatedDateManager {
 
         // 6時以降であれば、次の日の朝6時
         // (当日6時より前だったら、その日の朝6時)
-        if (c.get(Calendar.HOUR_OF_DAY) >= 6) {
+        if (c.get(Calendar.HOUR_OF_DAY) >= 5) {
             c.add(Calendar.DATE, 1);
         }
 

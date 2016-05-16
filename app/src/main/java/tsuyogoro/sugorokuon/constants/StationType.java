@@ -6,7 +6,7 @@ public enum StationType {
 
     RADIKO("radiko"),
 
-    NHK("nhk")
+    NHK("NHK")
 
     ;
 

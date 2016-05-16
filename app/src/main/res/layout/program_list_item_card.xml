@@ -8,7 +8,6 @@
         <variable name="endtime" type="String" />
         <import type="android.view.View" />
         <variable name="isAdEntry" type="Boolean" />
-        <variable name="whichAdToDisplay" type="int" />
     </data>
 
     <FrameLayout
@@ -23,15 +22,6 @@
             android:orientation="vertical"
             android:padding="@dimen/margin_small"
             android:visibility="@{isAdEntry ? View.VISIBLE : View.GONE}">
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_small"
-                android:paddingBottom="@dimen/margin_small"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/adUnitId"
-                android:visibility="@{whichAdToDisplay == 0 ? View.VISIBLE : View.GONE}" />
 
             <!-- NendAdjustSizeにtrueを指定します -->
             <net.nend.android.NendAdView
@@ -40,8 +30,7 @@
                 android:layout_height="wrap_content"
                 NendApiKey="@string/nend_banner_api_key"
                 NendSpotId="@integer/nend_banner_spot_id"
-                NendAdjustSize="true"
-                android:visibility="@{whichAdToDisplay == 1 ? View.VISIBLE : View.GONE}"/>
+                NendAdjustSize="true" />
         </LinearLayout>
 
 
