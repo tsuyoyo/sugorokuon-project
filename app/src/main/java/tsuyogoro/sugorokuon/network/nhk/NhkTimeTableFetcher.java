@@ -140,7 +140,8 @@ public class NhkTimeTableFetcher {
             SugorokuonLog.e("JSONException at parsing programs data : " + e.getMessage());
         }
 
-        OnedayTimetable timetable = new OnedayTimetable(date, stationId);
+        OnedayTimetable timetable = new OnedayTimetable(date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH) + 1, date.get(Calendar.DATE), stationId);
         timetable.programs = programs;
         timetable.isShowAd = true; // サーバ代かかってるし、NHKは広告たくさん出す
 

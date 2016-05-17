@@ -242,7 +242,9 @@ public class TimeTableListFragment extends Fragment
             mListener = listener;
             mContext = context;
 
-            if (frequencyListAd > 0 && frequencyListAd < MIN_VALUE_FREQUENCY) {
+            if (frequencyListAd > mPrograms.size()) {
+                mFrequencyListAd = 0;
+            } else if (frequencyListAd > 0 && frequencyListAd < MIN_VALUE_FREQUENCY) {
                 mFrequencyListAd = MIN_VALUE_FREQUENCY;
             } else {
                 mFrequencyListAd = frequencyListAd;
