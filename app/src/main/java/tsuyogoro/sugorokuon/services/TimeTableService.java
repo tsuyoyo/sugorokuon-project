@@ -366,10 +366,10 @@ public class TimeTableService extends Service {
 
         List<OnedayTimetable> timeTables = timeTableFetcher.fetchTodaysTable(stations);
 
-        boolean isSuccess = (timeTables.size() == stations.size());
-
         String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
         timeTables.addAll(nhkTimeTableFetcher.fetchToday(area, stations));
+
+        boolean isSuccess = (timeTables.size() == stations.size());
 
         if (isSuccess) {
             mTimeTableApi.update(timeTables);

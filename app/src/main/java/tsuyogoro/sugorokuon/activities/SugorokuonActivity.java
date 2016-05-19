@@ -558,6 +558,16 @@ public class SugorokuonActivity extends DrawableActivity
 //        switchFragments(f, enableReturnByBack, null);
 //    }
 
+    private void showTimeTableFetchAlert(boolean updateStation, boolean updateToday) {
+        Bundle params = new Bundle();
+        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_STATION, updateStation);
+        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_TODAY, updateToday);
+
+        TimeTableFetchAlertDialog dialog = new TimeTableFetchAlertDialog();
+        dialog.setArguments(params);
+        dialog.show(getSupportFragmentManager(), TAG_SHOULD_LOAD_DIALOG);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // メモ : FragmentのonOprionsItemSelectedから呼ばれるようにした
@@ -575,25 +585,7 @@ public class SugorokuonActivity extends DrawableActivity
             }
             break;
             case R.id.menu_fetch_latest_program: {
-                if (UpdatedDateManager.shouldUpdate(this)) {
-                    showTimeTableFetchAlert(false, true);
-                } else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(
-                            getString(R.string.date_mm_sl_dd_eehhmm), Locale.JAPANESE);
-
-                    String lastUpdate = dateFormat.format(
-                            new Date(UpdatedDateManager.getLastUpdateTime(this)));
-
-                    Bundle params = new Bundle();
-                    params.putString(MessageDialogFragment.KEY_MESSAGE,
-                            getString(R.string.no_update_message, lastUpdate));
-                    params.putString(MessageDialogFragment.KEY_TITLE,
-                            getString(R.string.no_update_title));
-
-                    MessageDialogFragment messageDialog = new MessageDialogFragment();
-                    messageDialog.setArguments(params);
-                    messageDialog.show(getSupportFragmentManager(), "AlreadyLatestTimeTable");
-                }
+                showTimeTableFetchAlert(false, true);
                 consumed = true;
             }
             break;
@@ -692,16 +684,6 @@ public class SugorokuonActivity extends DrawableActivity
         }
     }
 
-    private void showTimeTableFetchAlert(boolean updateStation, boolean updateToday) {
-        Bundle params = new Bundle();
-        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_STATION, updateStation);
-        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_TODAY, updateToday);
-
-        TimeTableFetchAlertDialog dialog = new TimeTableFetchAlertDialog();
-        dialog.setArguments(params);
-        dialog.show(getSupportFragmentManager(), TAG_SHOULD_LOAD_DIALOG);
-    }
-
     @Override
     public void onTimeTableFetchSelected(
             boolean startUpdate, boolean updateStation, boolean updateToday) {
@@ -759,22 +741,15 @@ public class SugorokuonActivity extends DrawableActivity
 
     @Override
     public void onStartV2app(boolean positive) {
+
         if (positive) {
-            // 週間番組表の取得と、
-            startFetchTimeTable(TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE);
-
-            // OnAir曲の取得
-            Intent intent = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
-            intent.setPackage(getPackageName());
-            startService(intent);
-
-            Intent intentForOnAirSongUpdate = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
-            intentForOnAirSongUpdate.setClass(this, OnAirSongsService.class);
-            intent.putExtra(OnAirSongsService.EXTRA_CLEAR_OLD_DATA, true);
-
-            startService(intentForOnAirSongUpdate);
-
             LaunchedCheckPreference.setLaunchedV2(this);
+
+            if (null == mStatusCheckerTask) {
+                mStatusCheckerTask = new StatusCheckerTask();
+                mStatusCheckerTask.execute();
+            }
+
         } else {
             finish();
         }
