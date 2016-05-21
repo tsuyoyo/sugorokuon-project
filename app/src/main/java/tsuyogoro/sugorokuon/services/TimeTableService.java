@@ -366,8 +366,9 @@ public class TimeTableService extends Service {
 
         List<OnedayTimetable> timeTables = timeTableFetcher.fetchTodaysTable(stations);
 
+        // NHKは毎日2日分更新するので、2日分取るようにする
         String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
-        timeTables.addAll(nhkTimeTableFetcher.fetchToday(area, stations));
+        timeTables.addAll(nhkTimeTableFetcher.fetchThisWeek(area, stations, 0, null));
 
         boolean isSuccess = (timeTables.size() == stations.size());
 

@@ -81,9 +81,11 @@ public class NhkTimeTableFetcher {
             timetables.add(fetch(today, FETCH_TOMORROW, areaId, station.id));
 
             // 進捗を送る
-            fetchedInThisMethod++;
-            progressListener.onProgress(
-                    fetchedStationsNum + fetchedInThisMethod, targetStations.size());
+            if (progressListener != null) {
+                fetchedInThisMethod++;
+                progressListener.onProgress(
+                        fetchedStationsNum + fetchedInThisMethod, targetStations.size());
+            }
         }
 
         return timetables;
