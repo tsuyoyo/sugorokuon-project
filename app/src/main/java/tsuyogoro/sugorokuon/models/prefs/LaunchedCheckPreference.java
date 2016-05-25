@@ -80,18 +80,9 @@ public class LaunchedCheckPreference {
         editor.apply();
     }
 
-private static int i=0;
     public static boolean hasV23Launched(Context context) {
-//        return PreferenceManager.getDefaultSharedPreferences(context)
-//                .getBoolean(PREF_KEY_WORDS_V2_3, false);
-//
-        if (i==0) {
-            i++;
-            return false;
-        } else {
-            return true;
-        }
-//        return false;
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_KEY_WORDS_V2_3, false);
     }
 
     public static void setLaunchedV23(Context context) {
