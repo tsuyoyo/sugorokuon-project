@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -25,6 +26,8 @@ public class SugorokuonApplication extends Application {
     private Tracker mTracker;
 
     private RefWatcher mRefWatcher;
+
+    public static FirebaseAnalytics firebaseAnalytics;
 
     synchronized public Tracker getTracker() {
         // https://developers.google.com/analytics/devguides/collection/android/v4/?hl=ja
@@ -58,6 +61,8 @@ public class SugorokuonApplication extends Application {
                 SugorokuonLog.d("New container is loaded : version = " + containerVersion);
             }
         });
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     public NetworkApiComponent component() {

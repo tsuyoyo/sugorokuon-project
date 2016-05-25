@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -32,6 +33,7 @@ import java.util.Locale;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import tsuyogoro.sugorokuon.R;
+import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.databinding.ProgramListItemCardBinding;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
 import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
@@ -231,6 +233,12 @@ public class TimeTableListFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (null != program) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, program.title);
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, program.stationId);
+                    SugorokuonApplication.firebaseAnalytics.logEvent(
+                            FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                     mListener.onItemClicked(program);
                 }
             }

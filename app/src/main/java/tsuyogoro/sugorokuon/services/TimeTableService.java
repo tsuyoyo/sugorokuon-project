@@ -370,7 +370,7 @@ public class TimeTableService extends Service {
         String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
         timeTables.addAll(nhkTimeTableFetcher.fetchThisWeek(area, stations, 0, null));
 
-        boolean isSuccess = (timeTables.size() == stations.size());
+        boolean isSuccess = (timeTables.size() > 0);
 
         if (isSuccess) {
             mTimeTableApi.update(timeTables);

@@ -22,6 +22,8 @@ public class LaunchedCheckPreference {
 
     private static final String PREF_KEY_WORDS_V2_2 = "pref_key_launched_ver2_2";
 
+    private static final String PREF_KEY_WORDS_V2_3 = "pref_key_launched_ver2_3";
+
     /**
      * このアプリを起動したことがあるかどうか？
      *
@@ -78,4 +80,23 @@ public class LaunchedCheckPreference {
         editor.apply();
     }
 
+private static int i=0;
+    public static boolean hasV23Launched(Context context) {
+//        return PreferenceManager.getDefaultSharedPreferences(context)
+//                .getBoolean(PREF_KEY_WORDS_V2_3, false);
+//
+        if (i==0) {
+            i++;
+            return false;
+        } else {
+            return true;
+        }
+//        return false;
+    }
+
+    public static void setLaunchedV23(Context context) {
+        Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putBoolean(PREF_KEY_WORDS_V2_3, true);
+        editor.apply();
+    }
 }
