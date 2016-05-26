@@ -42,7 +42,7 @@ android {
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // ここに書いてあるTest用のadUnitId
