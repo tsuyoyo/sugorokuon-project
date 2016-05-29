@@ -75,6 +75,7 @@ public class SugorokuonActivity extends DrawableActivity
     // DialogFragmentのtag
     private static final String TAG_PROGRESS_DIALOG = "progress_dialog";
     private static final String TAG_SHOULD_LOAD_DIALOG = "should_load_dialog";
+    private static final String TAG_UPDATE_DIALOG = "update_dialog";
     private static final String TAG_WELCOME_DIALOG = "welcome_dialog";
     private static final String TAG_NO_AREA_DIALOG = "no_area_dialog";
     private static final String TAG_HELLO_V2_DIALOG = "hello_v2_dialog";
@@ -94,7 +95,7 @@ public class SugorokuonActivity extends DrawableActivity
         private static final int SHOULD_LAUNCH_SETTINGS = 3;
         private static final int SHOULD_SHOW_WELCOME = 4;
         private static final int SHOULD_SHOW_PROGRESS = 5;
-//        private static final int SHOULD_SHOW_HELLO_V2 = 6;
+        //        private static final int SHOULD_SHOW_HELLO_V2 = 6;
 //        private static final int SHOULD_SHOW_HELLO_V2_2 = 7;
         private static final int SHOULD_SHOW_HELLO_V2_3 = 8;
     }
@@ -416,8 +417,6 @@ public class SugorokuonActivity extends DrawableActivity
         }
     }
 
-    ;
-
     private void setupSwitchDateTabs() {
         mDateTabAdapter = new DatePagerAdapter(getSupportFragmentManager());
 
@@ -570,7 +569,8 @@ public class SugorokuonActivity extends DrawableActivity
             }
             break;
             case R.id.menu_fetch_latest_program: {
-                showTimeTableFetchAlert(false, true);
+                TimeTableFetchAlertDialog.createWithUpdateOptions().show(
+                        getSupportFragmentManager(), TAG_UPDATE_DIALOG);
                 consumed = true;
             }
             break;
@@ -670,25 +670,22 @@ public class SugorokuonActivity extends DrawableActivity
     }
 
     @Override
-    public void onTimeTableFetchSelected(
-            boolean startUpdate, boolean updateStation, boolean updateToday) {
-        if (startUpdate) {
-            String action;
+    public void onTimeTableFetchSelected(boolean updateStation, boolean updateToday) {
+        String action;
 
-            if (updateStation) {
-                action = TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE;
-            } else if (updateToday) {
-                action = TimeTableService.ACTION_UPDATE_TODAYS_TIME_TABLE;
-            } else {
-                action = TimeTableService.ACTION_UPDATE_WEEKLY_TIME_TABLE;
-            }
-
-            if (updateStation) {
-                TimeTableFragment.resetCurrentPageIndex(SugorokuonActivity.this);
-            }
-
-            startFetchTimeTable(action);
+        if (updateStation) {
+            action = TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE;
+        } else if (updateToday) {
+            action = TimeTableService.ACTION_UPDATE_TODAYS_TIME_TABLE;
+        } else {
+            action = TimeTableService.ACTION_UPDATE_WEEKLY_TIME_TABLE;
         }
+
+        if (updateStation) {
+            TimeTableFragment.resetCurrentPageIndex(SugorokuonActivity.this);
+        }
+
+        startFetchTimeTable(action);
     }
 
     private void startFetchTimeTable(String action) {
@@ -724,7 +721,8 @@ public class SugorokuonActivity extends DrawableActivity
 
         if (positive) {
             LaunchedCheckPreference.setLaunchedV2(this);
-            startFetchTimeTable(TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE);
+            TimeTableFetchAlertDialog.createToAskWeeklyUpdate().show(
+                    getSupportFragmentManager(), TAG_UPDATE_DIALOG);
         } else {
             finish();
         }

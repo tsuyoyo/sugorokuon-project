@@ -57,6 +57,9 @@
 
     <string name="ask_if_to_update_data_title">番組データの取得</string>
     <string name="ask_if_to_update_data_message">最新の番組表の取得を行います</string>
+    <string name="ask_if_to_update_weekly_message">一週間分全て更新</string>
+    <string name="ask_if_to_update_today_message">今日の分だけ更新</string>
+
     <string name="notify_load_continue_background">番組データ取得は、アプリを閉じてもバックグラウンドで行われます</string>
     <string name="notify_settings_changed_title">設定が変更されました</string>
     <string name="notify_settings_changed_message">
