@@ -13,9 +13,6 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,13 +40,10 @@ import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
 import tsuyogoro.sugorokuon.network.IStationFetcher;
 import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
-import tsuyogoro.sugorokuon.network.googleanalytics.GATrackingUtil;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
 import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
 import tsuyogoro.sugorokuon.network.nhk.NhkTimeTableFetcher;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -525,12 +519,13 @@ public class TimeTableService extends Service {
                 }
 
                 // 週間番組表の更新分布を観たいので、EventをGAへ送信
-                ((SugorokuonApplication) getApplication()).getTracker().send(
-                        new HitBuilders.EventBuilder()
-                                .setCategory(getString(R.string.ga_event_category_program_update))
-                                .setAction(getString(R.string.ga_event_action_weekly_update))
-                                .setLabel(GATrackingUtil.getCurrentTime(TimeTableService.this))
-                                .build());
+                // v2.3.1 : アプリが再起動しなくて怪しいので消した
+//                ((SugorokuonApplication) getApplication()).getTracker().send(
+//                        new HitBuilders.EventBuilder()
+//                                .setCategory(getString(R.string.ga_event_category_program_update))
+//                                .setAction(getString(R.string.ga_event_action_weekly_update))
+//                                .setLabel(GATrackingUtil.getCurrentTime(TimeTableService.this))
+//                                .build());
 
                 return result;
             }

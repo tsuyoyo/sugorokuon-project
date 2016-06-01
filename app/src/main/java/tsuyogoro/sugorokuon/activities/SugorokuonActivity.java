@@ -22,6 +22,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -200,6 +201,8 @@ public class SugorokuonActivity extends DrawableActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SugorokuonLog.d("SugorokuonActivity : onCreate()");
+
         // Main Activityのコンテンツ
         LayoutInflater inflater = LayoutInflater.from(this);
         inflater.inflate(R.layout.main_activity_content_layout, getContentRoot(), true);
@@ -323,7 +326,8 @@ public class SugorokuonActivity extends DrawableActivity
                     }
                 }
 
-                SugorokuonApplication.firebaseAnalytics.logEvent("OpenStationList", null);
+                // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
+//                SugorokuonApplication.firebaseAnalytics.logEvent("OpenStationList", null);
             });
             AsyncTask<Void, Void, List<Station>> stationLoaderTask =
                     new AsyncTask<Void, Void, List<Station>>() {
@@ -519,6 +523,7 @@ public class SugorokuonActivity extends DrawableActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SugorokuonLog.d("SugorokuonActivity : onDestroy()");
         unbindService(mServiceConnection);
     }
 

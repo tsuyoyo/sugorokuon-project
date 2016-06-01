@@ -6,7 +6,7 @@ buildscript {
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-        classpath "com.google.gms:google-services:${project.googleServiceVersion}"
+//        classpath "com.google.gms:google-services:${project.googleServiceVersion}"
     }
 }
 
@@ -21,7 +21,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion project.compileSdkVersion.toInteger()
@@ -31,8 +31,8 @@ android {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         applicationId "tsuyogoro.sugorokuon"
-        versionCode 230
-        versionName "2.3.0"
+        versionCode 232
+        versionName "2.3.2"
     }
     buildTypes {
         release {
@@ -108,8 +108,8 @@ dependencies {
     compile 'io.github.yavski:fab-speed-dial:1.0.3'
 
     // Firebase
-    compile "com.google.firebase:firebase-core:${project.firebaseVersion}"
-    compile "com.google.firebase:firebase-crash:${project.firebaseVersion}"
+//    compile "com.google.firebase:firebase-core:${project.firebaseVersion}"
+//    compile "com.google.firebase:firebase-crash:${project.firebaseVersion}"
 
     // For Robolectric
 //    testCompile 'junit:junit:4.10'
