@@ -14,6 +14,7 @@ import android.os.Binder;
 import android.os.IBinder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +25,7 @@ import tsuyogoro.sugorokuon.R;
 import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;
@@ -32,15 +34,16 @@ import tsuyogoro.sugorokuon.models.entities.Program;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AreaSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.AutoUpdateSettingPreference;
+import tsuyogoro.sugorokuon.models.prefs.NhkAreaSettingsPreference;
 import tsuyogoro.sugorokuon.models.prefs.RecommendWordPreference;
 import tsuyogoro.sugorokuon.models.prefs.RemindTimePreference;
 import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
-import tsuyogoro.sugorokuon.network.StationFetcher;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
-import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkTimeTableFetcher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 /**
@@ -95,7 +98,6 @@ public class TimeTableService extends Service {
 
     /**
      * trueにすると、進捗をnotificationで出すようになる
-     *
      */
     public static final String EXTRA_NOTIFY_PROGRESS = "extra_notify_progress";
 
@@ -129,7 +131,6 @@ public class TimeTableService extends Service {
 
     /**
      * Updateの進捗通知に使うnotificationのID
-     *
      */
     public static final int NOTIFICATION_ID_FOR_UPDATE_PROGRESS = 100;
 
@@ -140,14 +141,20 @@ public class TimeTableService extends Service {
     private StationApi mStationApi;
 
     @Inject
-    TimeTableFetcher timeTableFetcher;
+    ITimeTableFetcher timeTableFetcher;
 
     @Inject
-    StationFetcher stationsFetcher;
+    IStationFetcher stationsFetcher;
+
+    @Inject
+    NhkStationsFetcher nhkStationsFetcher;
+
+    @Inject
+    NhkTimeTableFetcher nhkTimeTableFetcher;
 
     private TimeTableApi mTimeTableApi;
 
-    private AsyncTask<Void, List<Station>, Boolean> mWeeklyUpdateTask;
+    private AsyncTask<Void, Integer, Boolean> mWeeklyUpdateTask;
 
     private AsyncTask<Void, Void, Boolean> mTodaysUpdateTask;
 
@@ -292,6 +299,11 @@ public class TimeTableService extends Service {
             return false;
         }
 
+        List<Station> nhkStations = nhkStationsFetcher.fetch(areas, LOGO_SIZE, logoCachedDir);
+        if (null != nhkStations) {
+            stations.addAll(nhkStations);
+        }
+
         mStationApi.clear();
         mStationApi.insert(stations);
 
@@ -302,14 +314,27 @@ public class TimeTableService extends Service {
     // 見た感じweeklyを取っても、todayの分はupdateされているっぽい
     // weeklyを取った後にあえてtodayの取得に行ったほうが良いかと思ったが、そうでもなさそう
     private boolean updateWeeklyTimeTable(
-            TimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
+            ITimeTableFetcher.IWeeklyFetchProgressListener progressListener) {
 
-        List<Station> stations = mStationApi.load();
+        List<Station> allStations = mStationApi.load();
+
+        List<Station> radikoStations = new ArrayList<>();
+        for (Station s : allStations) {
+            if (s.type.equals(StationType.RADIKO.value)) {
+                radikoStations.add(s);
+            }
+        }
 
         List<OnedayTimetable> timeTable = timeTableFetcher.fetchWeeklyTable(
-                stations, progressListener);
+                allStations, progressListener);
 
-        boolean isSuccess = (timeTable.size() == stations.size() * 7);
+        boolean isSuccess = (timeTable.size() > 0);
+
+
+        String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
+        timeTable.addAll(nhkTimeTableFetcher.fetchThisWeek(area,
+                allStations, radikoStations.size(), progressListener));
+
         if (isSuccess) {
             mTimeTableApi.clear();
             mTimeTableApi.insert(timeTable);
@@ -320,7 +345,7 @@ public class TimeTableService extends Service {
             updateOnAirSoonTimer();
         } else {
             SugorokuonLog.w("Number of weekly timetable is shorter than expected : " +
-                    Integer.toString(stations.size() * 7) + " but " + timeTable.size());
+                    Integer.toString(allStations.size() * 7) + " but " + timeTable.size());
         }
 
         updateWeeklyTimer();
@@ -335,7 +360,12 @@ public class TimeTableService extends Service {
 
         List<OnedayTimetable> timeTables = timeTableFetcher.fetchTodaysTable(stations);
 
-        boolean isSuccess = (timeTables.size() == stations.size());
+        // NHKは毎日2日分更新するので、2日分取るようにする
+        String area = NhkAreaSettingsPreference.getNhkAreaCode(this);
+        timeTables.addAll(nhkTimeTableFetcher.fetchThisWeek(area, stations, 0, null));
+
+        boolean isSuccess = (timeTables.size() > 0);
+
         if (isSuccess) {
             mTimeTableApi.update(timeTables);
 
@@ -377,7 +407,7 @@ public class TimeTableService extends Service {
     }
 
     private PendingIntent pendingIntentForWeeklyUpdate() {
-        return SugorokuonServiceUtil.pendingIntentForTimer(ACTION_UPDATE_WEEKLY_TIME_TABLE, this);
+        return SugorokuonServiceUtil.pendingIntentForTimer(ACTION_UPDATE_STATION_AND_TIME_TABLE, this);
     }
 
     private PendingIntent pendingIntentForTodaysUpdate() {
@@ -445,10 +475,10 @@ public class TimeTableService extends Service {
         sendBroadcast(notification);
     }
 
-    private AsyncTask<Void, List<Station>, Boolean> generateWeeklyUpdateTask(
+    private AsyncTask<Void, Integer, Boolean> generateWeeklyUpdateTask(
             final boolean toUpdateStation, final boolean notifyProgress) {
 
-        return new AsyncTask<Void, List<Station>, Boolean>() {
+        return new AsyncTask<Void, Integer, Boolean>() {
 
             private UpdateProgressSubmitter mNotificationSubmitter;
 
@@ -476,9 +506,9 @@ public class TimeTableService extends Service {
                 }
 
                 if (!toUpdateStation || result) {
-                    result = updateWeeklyTimeTable(new TimeTableFetcher.IWeeklyFetchProgressListener() {
+                    result = updateWeeklyTimeTable(new ITimeTableFetcher.IWeeklyFetchProgressListener() {
                         @Override
-                        public void onProgress(List<Station> fetched, List<Station> requested) {
+                        public void onProgress(int fetched, int requested) {
                             publishProgress(fetched, requested);
                         }
                     });
@@ -488,24 +518,33 @@ public class TimeTableService extends Service {
                     }
                 }
 
+                // 週間番組表の更新分布を観たいので、EventをGAへ送信
+                // v2.3.1 : アプリが再起動しなくて怪しいので消した
+//                ((SugorokuonApplication) getApplication()).getTracker().send(
+//                        new HitBuilders.EventBuilder()
+//                                .setCategory(getString(R.string.ga_event_category_program_update))
+//                                .setAction(getString(R.string.ga_event_action_weekly_update))
+//                                .setLabel(GATrackingUtil.getCurrentTime(TimeTableService.this))
+//                                .build());
+
                 return result;
             }
 
             @Override
-            protected void onProgressUpdate(List<Station>... values) {
+            protected void onProgressUpdate(Integer... values) {
                 super.onProgressUpdate(values);
 
-                List<Station> fetched = values[0];
-                List<Station> requested = values[1];
+                int fetched = values[0];
+                int requested = values[1];
 
                 Intent progress = new Intent(NotifyAction.ACTION_NOTIFY_WEEKLY_FETCH_PROGRESS);
-                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_TOTAL, requested.size());
-                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_FETCHED, fetched.size());
+                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_TOTAL, requested);
+                progress.putExtra(NotifyAction.EXTRA_WEEKLY_FETCH_PROGRESS_FETCHED, fetched);
                 sendBroadcast(progress);
 
                 if (notifyProgress && null != mNotificationSubmitter) {
                     mNotificationSubmitter.notifyProgress(
-                            TimeTableService.this, requested.size(), fetched.size());
+                            TimeTableService.this, requested, fetched);
                 }
             }
 

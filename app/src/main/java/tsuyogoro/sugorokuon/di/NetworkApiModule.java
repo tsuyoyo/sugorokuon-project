@@ -6,9 +6,11 @@ package tsuyogoro.sugorokuon.di;
 
 import dagger.Module;
 import dagger.Provides;
-import tsuyogoro.sugorokuon.network.FeedFetcher;
-import tsuyogoro.sugorokuon.network.StationFetcher;
-import tsuyogoro.sugorokuon.network.TimeTableFetcher;
+import tsuyogoro.sugorokuon.network.IRadikoFeedFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
+import tsuyogoro.sugorokuon.network.ITimeTableFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
+import tsuyogoro.sugorokuon.network.nhk.NhkTimeTableFetcher;
 import tsuyogoro.sugorokuon.network.radikoapi.RadikoFeedFetcher;
 import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
 import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
@@ -17,18 +19,28 @@ import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
 public class NetworkApiModule {
 
     @Provides
-    public StationFetcher provideStationFetcher() {
+    public IStationFetcher provideStationFetcher() {
         return new RadikoStationsFetcher();
     }
 
     @Provides
-    public TimeTableFetcher provideTimeTableFetcher() {
+    public ITimeTableFetcher provideTimeTableFetcher() {
         return new RadikoTimeTableFetcher();
     }
 
     @Provides
-    public FeedFetcher provideFeedFetcher() {
+    public IRadikoFeedFetcher provideFeedFetcher() {
         return new RadikoFeedFetcher();
+    }
+
+    @Provides
+    public NhkStationsFetcher provideNhkStationsFetcher() {
+        return new NhkStationsFetcher();
+    }
+
+    @Provides
+    public NhkTimeTableFetcher provideNhkTimeTableFetcher() {
+        return new NhkTimeTableFetcher();
     }
 
 }

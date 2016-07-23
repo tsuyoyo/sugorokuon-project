@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,12 +26,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +43,7 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import tsuyogoro.sugorokuon.BuildTypeVariables;
 import tsuyogoro.sugorokuon.R;
-import tsuyogoro.sugorokuon.fragments.dialogs.HelloV22DialogFragment;
+import tsuyogoro.sugorokuon.SugorokuonApplication;
 import tsuyogoro.sugorokuon.fragments.dialogs.HelloV2DialogFragment;
 import tsuyogoro.sugorokuon.fragments.dialogs.MessageDialogFragment;
 import tsuyogoro.sugorokuon.fragments.timetable.SettingsChangedAlertDialog;
@@ -62,8 +57,6 @@ import tsuyogoro.sugorokuon.models.entities.OnedayTimetable;
 import tsuyogoro.sugorokuon.models.entities.Station;
 import tsuyogoro.sugorokuon.models.prefs.AreaSettingPreference;
 import tsuyogoro.sugorokuon.models.prefs.LaunchedCheckPreference;
-import tsuyogoro.sugorokuon.models.prefs.UpdatedDateManager;
-import tsuyogoro.sugorokuon.services.OnAirSongsService;
 import tsuyogoro.sugorokuon.services.TimeTableService;
 import tsuyogoro.sugorokuon.utils.RadikoLauncher;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
@@ -83,6 +76,7 @@ public class SugorokuonActivity extends DrawableActivity
     // DialogFragmentのtag
     private static final String TAG_PROGRESS_DIALOG = "progress_dialog";
     private static final String TAG_SHOULD_LOAD_DIALOG = "should_load_dialog";
+    private static final String TAG_UPDATE_DIALOG = "update_dialog";
     private static final String TAG_WELCOME_DIALOG = "welcome_dialog";
     private static final String TAG_NO_AREA_DIALOG = "no_area_dialog";
     private static final String TAG_HELLO_V2_DIALOG = "hello_v2_dialog";
@@ -102,8 +96,9 @@ public class SugorokuonActivity extends DrawableActivity
         private static final int SHOULD_LAUNCH_SETTINGS = 3;
         private static final int SHOULD_SHOW_WELCOME = 4;
         private static final int SHOULD_SHOW_PROGRESS = 5;
-        private static final int SHOULD_SHOW_HELLO_V2 = 6;
-        private static final int SHOULD_SHOW_HELLO_V2_2 = 7;
+        //        private static final int SHOULD_SHOW_HELLO_V2 = 6;
+//        private static final int SHOULD_SHOW_HELLO_V2_2 = 7;
+        private static final int SHOULD_SHOW_HELLO_V2_3 = 8;
     }
 
     // アプリの状態 (番組表は落とし済みか...etc) をチェックして振る舞いを決めるtask
@@ -126,12 +121,8 @@ public class SugorokuonActivity extends DrawableActivity
                 return DataCheckResult.SHOULD_SHOW_WELCOME;
             }
 
-            if (!LaunchedCheckPreference.hasV22Launched(SugorokuonActivity.this)) {
-                return DataCheckResult.SHOULD_SHOW_HELLO_V2_2;
-            }
-
-            if (!LaunchedCheckPreference.hasV2Launched(SugorokuonActivity.this)) {
-                return DataCheckResult.SHOULD_SHOW_HELLO_V2;
+            if (!LaunchedCheckPreference.hasV23Launched(SugorokuonActivity.this)) {
+                return DataCheckResult.SHOULD_SHOW_HELLO_V2_3;
             }
 
             if (0 == AreaSettingPreference.getTargetAreas(SugorokuonActivity.this).length) {
@@ -181,11 +172,8 @@ public class SugorokuonActivity extends DrawableActivity
                 case DataCheckResult.SHOULD_FETCH_WEEKLY_PROGRAM:
                     showTimeTableFetchAlert(false, false);
                     break;
-                case DataCheckResult.SHOULD_SHOW_HELLO_V2:
-                    showHelloV2Dialog();
-                    break;
-                case DataCheckResult.SHOULD_SHOW_HELLO_V2_2:
-                    showHelloV2_2Dialog();
+                case DataCheckResult.SHOULD_SHOW_HELLO_V2_3:
+                    showHelloV2_3Dialog();
                     break;
             }
 
@@ -212,6 +200,8 @@ public class SugorokuonActivity extends DrawableActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SugorokuonLog.d("SugorokuonActivity : onCreate()");
 
         // Main Activityのコンテンツ
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -316,28 +306,28 @@ public class SugorokuonActivity extends DrawableActivity
     private void setupStationListBottomSheet() {
         View titleBar = findViewById(R.id.main_actiity_stationlist_title);
         if (titleBar != null) {
-            titleBar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    View bottomSheet = findViewById(R.id.main_activity_stationlist_bottom_sheet);
-                    BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+            titleBar.setOnClickListener(v -> {
+                View bottomSheet = findViewById(R.id.main_activity_stationlist_bottom_sheet);
+                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
 
-                    TextView titleText = (TextView) findViewById(
-                            R.id.main_actiity_stationlist_title_text);
+                TextView titleText = (TextView) findViewById(
+                        R.id.main_actiity_stationlist_title_text);
 
-                    if (titleText != null) {
-                        // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
-                        if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                            titleText.setText(getString(R.string.station_list_dialog_description));
-                        }
-                        // 一番大きくなっている状態 (layout_heightの高さで表示されている)
-                        else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                            titleText.setText(getString(R.string.station_list_dialog_title));
-                        }
+                if (titleText != null) {
+                    // 初期状態の設定で表示されている (behavior_peekHeightで設定した高さ)
+                    if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        titleText.setText(getString(R.string.station_list_dialog_description));
+                    }
+                    // 一番大きくなっている状態 (layout_heightの高さで表示されている)
+                    else if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        titleText.setText(getString(R.string.station_list_dialog_title));
                     }
                 }
+
+                // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
+//                SugorokuonApplication.firebaseAnalytics.logEvent("OpenStationList", null);
             });
             AsyncTask<Void, Void, List<Station>> stationLoaderTask =
                     new AsyncTask<Void, Void, List<Station>>() {
@@ -430,8 +420,6 @@ public class SugorokuonActivity extends DrawableActivity
             }
         }
     }
-
-    ;
 
     private void setupSwitchDateTabs() {
         mDateTabAdapter = new DatePagerAdapter(getSupportFragmentManager());
@@ -535,6 +523,7 @@ public class SugorokuonActivity extends DrawableActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SugorokuonLog.d("SugorokuonActivity : onDestroy()");
         unbindService(mServiceConnection);
     }
 
@@ -558,6 +547,16 @@ public class SugorokuonActivity extends DrawableActivity
 //        switchFragments(f, enableReturnByBack, null);
 //    }
 
+    private void showTimeTableFetchAlert(boolean updateStation, boolean updateToday) {
+        Bundle params = new Bundle();
+        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_STATION, updateStation);
+        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_TODAY, updateToday);
+
+        TimeTableFetchAlertDialog dialog = new TimeTableFetchAlertDialog();
+        dialog.setArguments(params);
+        dialog.show(getSupportFragmentManager(), TAG_SHOULD_LOAD_DIALOG);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // メモ : FragmentのonOprionsItemSelectedから呼ばれるようにした
@@ -575,25 +574,8 @@ public class SugorokuonActivity extends DrawableActivity
             }
             break;
             case R.id.menu_fetch_latest_program: {
-                if (UpdatedDateManager.shouldUpdate(this)) {
-                    showTimeTableFetchAlert(false, true);
-                } else {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(
-                            getString(R.string.date_mm_sl_dd_eehhmm), Locale.JAPANESE);
-
-                    String lastUpdate = dateFormat.format(
-                            new Date(UpdatedDateManager.getLastUpdateTime(this)));
-
-                    Bundle params = new Bundle();
-                    params.putString(MessageDialogFragment.KEY_MESSAGE,
-                            getString(R.string.no_update_message, lastUpdate));
-                    params.putString(MessageDialogFragment.KEY_TITLE,
-                            getString(R.string.no_update_title));
-
-                    MessageDialogFragment messageDialog = new MessageDialogFragment();
-                    messageDialog.setArguments(params);
-                    messageDialog.show(getSupportFragmentManager(), "AlreadyLatestTimeTable");
-                }
+                TimeTableFetchAlertDialog.createWithUpdateOptions().show(
+                        getSupportFragmentManager(), TAG_UPDATE_DIALOG);
                 consumed = true;
             }
             break;
@@ -692,36 +674,23 @@ public class SugorokuonActivity extends DrawableActivity
         }
     }
 
-    private void showTimeTableFetchAlert(boolean updateStation, boolean updateToday) {
-        Bundle params = new Bundle();
-        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_STATION, updateStation);
-        params.putBoolean(TimeTableFetchAlertDialog.KEY_UPDATE_TODAY, updateToday);
-
-        TimeTableFetchAlertDialog dialog = new TimeTableFetchAlertDialog();
-        dialog.setArguments(params);
-        dialog.show(getSupportFragmentManager(), TAG_SHOULD_LOAD_DIALOG);
-    }
-
     @Override
-    public void onTimeTableFetchSelected(
-            boolean startUpdate, boolean updateStation, boolean updateToday) {
-        if (startUpdate) {
-            String action;
+    public void onTimeTableFetchSelected(boolean updateStation, boolean updateToday) {
+        String action;
 
-            if (updateStation) {
-                action = TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE;
-            } else if (updateToday) {
-                action = TimeTableService.ACTION_UPDATE_TODAYS_TIME_TABLE;
-            } else {
-                action = TimeTableService.ACTION_UPDATE_WEEKLY_TIME_TABLE;
-            }
-
-            if (updateStation) {
-                TimeTableFragment.resetCurrentPageIndex(SugorokuonActivity.this);
-            }
-
-            startFetchTimeTable(action);
+        if (updateStation) {
+            action = TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE;
+        } else if (updateToday) {
+            action = TimeTableService.ACTION_UPDATE_TODAYS_TIME_TABLE;
+        } else {
+            action = TimeTableService.ACTION_UPDATE_WEEKLY_TIME_TABLE;
         }
+
+        if (updateStation) {
+            TimeTableFragment.resetCurrentPageIndex(SugorokuonActivity.this);
+        }
+
+        startFetchTimeTable(action);
     }
 
     private void startFetchTimeTable(String action) {
@@ -740,17 +709,12 @@ public class SugorokuonActivity extends DrawableActivity
         }
     }
 
-    private void showHelloV2Dialog() {
+    private void showHelloV2_3Dialog() {
         if (null == getSupportFragmentManager().findFragmentByTag(TAG_HELLO_V2_DIALOG)) {
             HelloV2DialogFragment dialog = new HelloV2DialogFragment();
             dialog.show(getSupportFragmentManager(), TAG_HELLO_V2_DIALOG);
-        }
-    }
 
-    private void showHelloV2_2Dialog() {
-        if (null == getSupportFragmentManager().findFragmentByTag(TAG_HELLO_V2_2_DIALOG)) {
-            HelloV22DialogFragment dialog = new HelloV22DialogFragment();
-            dialog.show(getSupportFragmentManager(), TAG_HELLO_V2_2_DIALOG);
+            LaunchedCheckPreference.setLaunchedV23(this);
             LaunchedCheckPreference.setLaunchedV22(this);
             LaunchedCheckPreference.setLaunchedV2(this);
             LaunchedCheckPreference.setLaunched(this);
@@ -759,22 +723,11 @@ public class SugorokuonActivity extends DrawableActivity
 
     @Override
     public void onStartV2app(boolean positive) {
+
         if (positive) {
-            // 週間番組表の取得と、
-            startFetchTimeTable(TimeTableService.ACTION_UPDATE_STATION_AND_TIME_TABLE);
-
-            // OnAir曲の取得
-            Intent intent = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
-            intent.setPackage(getPackageName());
-            startService(intent);
-
-            Intent intentForOnAirSongUpdate = new Intent(OnAirSongsService.ACTION_FETCH_ON_AIR_SONGS);
-            intentForOnAirSongUpdate.setClass(this, OnAirSongsService.class);
-            intent.putExtra(OnAirSongsService.EXTRA_CLEAR_OLD_DATA, true);
-
-            startService(intentForOnAirSongUpdate);
-
             LaunchedCheckPreference.setLaunchedV2(this);
+            TimeTableFetchAlertDialog.createToAskWeeklyUpdate().show(
+                    getSupportFragmentManager(), TAG_UPDATE_DIALOG);
         } else {
             finish();
         }

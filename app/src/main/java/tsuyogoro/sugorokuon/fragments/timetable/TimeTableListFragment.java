@@ -9,7 +9,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -20,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -51,6 +49,10 @@ public class TimeTableListFragment extends Fragment
 
     public static String PARAM_KEY_STATION_ID = "key_station_id";
 
+    public static String PARAM_KEY_FREQUENCY_LIST_AD = "key_frequency_list_ad";
+
+    public static final int MIN_VALUE_FREQUENCY = 5;
+
     private RecyclerView mRecyclerView;
 
     private RecyclerView.Adapter mAdapter;
@@ -61,7 +63,7 @@ public class TimeTableListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.program_list, null);
+        final View rootView = inflater.inflate(R.layout.program_list, null);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.program_list);
 
@@ -140,7 +142,7 @@ public class TimeTableListFragment extends Fragment
                     SugorokuonUtils.launchChromeTab(getActivity(), Uri.parse(program.url));
                 }
             }
-        }, getActivity());
+        }, getActivity(), getArguments().getInt(PARAM_KEY_FREQUENCY_LIST_AD));
 
         if (0 < mAdapter.getItemCount()) {
             mRecyclerView.setAdapter(mAdapter);
@@ -174,6 +176,8 @@ public class TimeTableListFragment extends Fragment
 
         private List<Program> mPrograms;
 
+        private final int mFrequencyListAd;
+
         private static SimpleDateFormat sFormatStartTime;
 
         private static SimpleDateFormat sFormatEndTime;
@@ -204,9 +208,9 @@ public class TimeTableListFragment extends Fragment
 
             public ViewHolder(View view, ItemClickListener listener) {
                 super(view);
-                view.setOnClickListener(this);
 
                 mBinding = DataBindingUtil.bind(view);
+                mBinding.programListItemCardView.setOnClickListener(this);
 
                 mBinding.programListItemOpenBrowser.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -227,15 +231,31 @@ public class TimeTableListFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (null != program) {
+                    // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, program.title);
+//                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, program.stationId);
+//                    SugorokuonApplication.firebaseAnalytics.logEvent(
+//                            FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
                     mListener.onItemClicked(program);
                 }
             }
         }
 
-        public TimeTableListAdapter(List<Program> programs, ItemClickListener listener, Context context) {
+        public TimeTableListAdapter(List<Program> programs, ItemClickListener listener,
+                                    Context context, int frequencyListAd) {
             mPrograms = programs;
             mListener = listener;
             mContext = context;
+
+            if (frequencyListAd > mPrograms.size()) {
+                mFrequencyListAd = 0;
+            } else if (frequencyListAd > 0 && frequencyListAd < MIN_VALUE_FREQUENCY) {
+                mFrequencyListAd = MIN_VALUE_FREQUENCY;
+            } else {
+                mFrequencyListAd = frequencyListAd;
+            }
 
             if (null == sFormatStartTime || null == sFormatEndTime) {
                 sFormatStartTime = new SimpleDateFormat(
@@ -252,13 +272,21 @@ public class TimeTableListFragment extends Fragment
             View v = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.program_list_item_card, parent, false);
 
-            ViewHolder vh = new ViewHolder(v, mListener);
-            return vh;
+            return new ViewHolder(v, mListener);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            final Program program = mPrograms.get(position);
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+
+            if (mFrequencyListAd > 0 && position % (mFrequencyListAd + 1) == mFrequencyListAd) {
+                holder.getBinding().setIsAdEntry(true);
+                return;
+            }
+
+            holder.getBinding().setIsAdEntry(false);
+
+            int p = (mFrequencyListAd > 0) ? position - (position / (mFrequencyListAd + 1)) : position;
+            final Program program = mPrograms.get(p);
 
             holder.program = program;
             holder.getBinding().setProgram(program);
@@ -276,12 +304,7 @@ public class TimeTableListFragment extends Fragment
             }
 
             holder.getBinding().programListItemOpenBrowser.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mListener.onBrowserOpenClicked(program);
-                        }
-                    });
+                    v -> mListener.onBrowserOpenClicked(program));
 
             String start = sFormatStartTime.format(new Date(program.startTime.getTimeInMillis()));
             holder.getBinding().setStarttime(start);
@@ -292,7 +315,11 @@ public class TimeTableListFragment extends Fragment
 
         @Override
         public int getItemCount() {
-            return mPrograms.size();
+            if (mFrequencyListAd > 0) {
+                return mPrograms.size() + (mPrograms.size() / mFrequencyListAd);
+            } else {
+                return mPrograms.size();
+            }
         }
     }
 

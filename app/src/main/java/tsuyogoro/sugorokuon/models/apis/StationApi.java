@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,19 +80,24 @@ public class StationApi {
 
         Cursor c;
 
-        c = readableDb.query(StationTableDefiner.TABLE_NAME,
-                StationTableDefiner.allColumnNames(),
-                where, whereArgs, null, null, null);
+        try {
+            c = readableDb.query(StationTableDefiner.TABLE_NAME,
+                    StationTableDefiner.allColumnNames(),
+                    where, whereArgs, null, null, null);
 
-        c.moveToFirst();
+            c.moveToFirst();
 
-        for (int i = 0; i < c.getCount(); i++) {
-            stations.add(StationTableDefiner.createData(c));
-            c.moveToNext();
+            for (int i = 0; i < c.getCount(); i++) {
+                stations.add(StationTableDefiner.createData(c));
+                c.moveToNext();
+            }
+
+            c.close();
+            readableDb.close();
+
+        } catch (SQLiteException e) {
+            SugorokuonLog.w(e.getMessage());
         }
-
-        c.close();
-        readableDb.close();
 
         return stations;
     }
@@ -179,11 +185,13 @@ public class StationApi {
         ContentValues cv = new ContentValues();
 
         cv.put(StationTableDefiner.StationTableColumn.ID.columnName(), station.id);
+        cv.put(StationTableDefiner.StationTableColumn.TYPE.columnName(), station.type);
         cv.put(StationTableDefiner.StationTableColumn.NAME.columnName(), station.name);
         cv.put(StationTableDefiner.StationTableColumn.ASCII_NAME.columnName(), station.ascii_name);
         cv.put(StationTableDefiner.StationTableColumn.SITE_URL.columnName(), station.siteUrl);
         cv.put(StationTableDefiner.StationTableColumn.LOGO_URL.columnName(), station.logoUrl);
         cv.put(StationTableDefiner.StationTableColumn.BANNER_URL.columnName(), station.bannerUrl);
+        cv.put(StationTableDefiner.StationTableColumn.FREQUENCY_LIST_AD.columnName(), station.frequencyToListAd);
 
         if (null == station.getLogoCachePath()) {
             cv.put(StationTableDefiner.StationTableColumn.LOGO_CACHE.columnName(), "");

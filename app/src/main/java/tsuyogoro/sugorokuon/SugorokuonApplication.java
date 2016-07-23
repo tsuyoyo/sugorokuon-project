@@ -17,7 +17,6 @@ import tsuyogoro.sugorokuon.di.DaggerNetworkApiComponent;
 import tsuyogoro.sugorokuon.di.NetworkApiComponent;
 import tsuyogoro.sugorokuon.di.NetworkApiModule;
 import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
-import tsuyogoro.sugorokuon.network.gtm.ContainerHolderSingleton;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class SugorokuonApplication extends Application {
@@ -25,6 +24,9 @@ public class SugorokuonApplication extends Application {
     private Tracker mTracker;
 
     private RefWatcher mRefWatcher;
+
+    // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
+//    public static FirebaseAnalytics firebaseAnalytics;
 
     synchronized public Tracker getTracker() {
         // https://developers.google.com/analytics/devguides/collection/android/v4/?hl=ja
@@ -40,7 +42,7 @@ public class SugorokuonApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        SugorokuonLog.d("SugorokuonApplication : onCreate()");
         StethoWrapper.setup(this);
         mRefWatcher = LeakCanary.install(this);
         mAppComponent = DaggerNetworkApiComponent.builder()
@@ -58,6 +60,15 @@ public class SugorokuonApplication extends Application {
                 SugorokuonLog.d("New container is loaded : version = " + containerVersion);
             }
         });
+
+        // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
+//        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        SugorokuonLog.d("SugorokuonApplication : onTerminate()");
     }
 
     public NetworkApiComponent component() {

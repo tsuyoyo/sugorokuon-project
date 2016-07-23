@@ -16,8 +16,8 @@ import tsuyogoro.sugorokuon.R;
 
 public class HelloV2DialogFragment extends DialogFragment {
 
-    public static interface IHelloV2DialogListener {
-        public void onStartV2app(boolean positive);
+    public interface IHelloV2DialogListener {
+        void onStartV2app(boolean positive);
     }
 
     public HelloV2DialogFragment() {

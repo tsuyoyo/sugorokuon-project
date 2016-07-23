@@ -143,7 +143,13 @@ public class Program {
         } else {
             // 番組のアイコンが無ければ、局のアイコンを代わりに使う
             StationApi stationApi = new StationApi(context);
-            return stationApi.load(stationId).getLogoCachePath();
+            Station station = stationApi.load(stationId);
+            if (station != null) {
+                return station.getLogoCachePath();
+            } else {
+                return null;
+            }
+
         }
     }
 

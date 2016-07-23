@@ -17,6 +17,9 @@ class StationTableDefiner extends BaseTableDefiner {
         // Station ID
         ID("id", "TEXT PRIMARY KEY"),
 
+        // Station Type (e.g. "radiko", "NHK"...etc)
+        TYPE("type", "TEXT"),
+
         // Station name(例：文化放送)
         NAME("name", "TEXT"),
 
@@ -37,6 +40,9 @@ class StationTableDefiner extends BaseTableDefiner {
 
         // FeedがonAirされた曲情報を提供しているかどうか (1:true, 0:false)
         ON_AIR_SONGS_AVALIABLE("on_air_songs", "INTEGER"),
+
+        // タイムテーブルどのくらい広告を表示するか
+        FREQUENCY_LIST_AD("frequency_list_ad", "INTEGER")
         ;
 
         public String name;
@@ -93,12 +99,14 @@ class StationTableDefiner extends BaseTableDefiner {
         Station.Builder builder = new Station.Builder();
 
         builder.id = c.getString(c.getColumnIndex(StationTableColumn.ID.name));
+        builder.type = c.getString(c.getColumnIndex(StationTableColumn.TYPE.name));
         builder.name = c.getString(c.getColumnIndex(StationTableColumn.NAME.name));
         builder.ascii_name = c.getString(c.getColumnIndex(StationTableColumn.ASCII_NAME.name));
         builder.siteUrl = c.getString(c.getColumnIndex(StationTableColumn.SITE_URL.name));
         builder.logoUrl = c.getString(c.getColumnIndex(StationTableColumn.LOGO_URL.name));
         builder.bannerUrl = c.getString(c.getColumnIndex(StationTableColumn.BANNER_URL.name));
         builder.logoCachePath = c.getString(c.getColumnIndex(StationTableColumn.LOGO_CACHE.name));
+        builder.frequencyToListAd = c.getInt(c.getColumnIndex(StationTableColumn.FREQUENCY_LIST_AD.name));
 
         return builder.create();
     }

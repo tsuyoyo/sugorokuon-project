@@ -6,6 +6,7 @@ package tsuyogoro.sugorokuon.models.prefs;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Random;
 
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.Region;
@@ -21,7 +22,6 @@ import android.preference.PreferenceManager;
  * @author Tsuyoyo
  */
 public class UpdatedDateManager {
-//        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static UpdatedDateManager sInstance;
 
@@ -35,10 +35,6 @@ public class UpdatedDateManager {
 
     private UpdatedDateManager(Context context) {
         mContext = context;
-
-//        // 設定値変更の通知を受け取るためにregister
-//        PreferenceManager.getDefaultSharedPreferences(mContext)
-//                .registerOnSharedPreferenceChangeListener(this);
     }
 
     public static boolean shouldUpdate(Context context) {
@@ -74,25 +70,6 @@ public class UpdatedDateManager {
         editor.apply();
     }
 
-//    @Override
-//    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-//                                          String key) {
-//        // TODO : Area設定＞Areaを空にする＞settings＞Areaを入れる＞updateがかからない
-//        // というバグがあったので要注意。再現するなら直す。
-//
-//        // Area設定の変更だったら最終更新日時をクリア。次にMainに戻ったときにupdateを促す。
-//        for(Area a : Area.values()) {
-//            if(key.equals(AreaSettingPreference.getAreaPreferenceKey(a))) {
-//                clearPreferences();
-//            }
-//        }
-//        for(Region r : Region.values()) {
-//            if(key.equals(AreaSettingPreference.getRegionPreferenceKey(r))) {
-//                clearPreferences();
-//            }
-//        }
-//    }
-
     /**
      * UpdatedDataManagerインスタンスを取得。
      * インスタンス生成の際、Preferenceの変更を受け取るためのlistener登録が走る。
@@ -107,88 +84,12 @@ public class UpdatedDateManager {
         return sInstance;
     }
 
-//    public void updateLastUpdatedTimeWeekly() {
-//        Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-//        editor.putLong(PREF_KEY_WEEKLY_UPDATE, Calendar.getInstance(Locale.JAPAN).getTimeInMillis());
-//        editor.commit();
-//    }
-//
-//    public void updateLastUpdatedTimeDaily() {
-//        Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-//        editor.putLong(PREF_KEY_DAILY_UPDATE, Calendar.getInstance(Locale.JAPAN).getTimeInMillis());
-//        editor.commit();
-//    }
-
     private void clearPreferences() {
         Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
         editor.putLong(PREF_KEY_WEEKLY_UPDATE, -1);
         editor.putLong(PREF_KEY_DAILY_UPDATE, -1);
         editor.commit();
     }
-
-    /**
-     * 今update（webからデータをdownload）すべきかどうかを調べる。
-     * 前回updateした時刻がpreferenceに格納されているので、現在時刻と比較して判定。
-     *
-     * @return
-     */
-//    public boolean shouldUpdateWeeklyTable() {
-//
-//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
-//        long lastUpdated = pref.getLong(PREF_KEY_WEEKLY_UPDATE, -1);
-//
-//        // -1になるということは、まだ一度もサーバからデータを取得していない。
-//        if(-1 > lastUpdated) {
-//            return true;
-//        }
-//
-//        // 前回updateした時間から、次にupdateをかけるべき時刻を計算し、
-//        // 現在時刻がそれよりも先だったら、updateをかける。
-//        long currentTime = Calendar.getInstance(Locale.JAPAN).getTimeInMillis();
-//        if(currentTime > nextWeeklyUpdateTime(lastUpdated)) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
-
-//    /**
-//     * 今update（webからデータをdownload）すべきかどうかを調べる。
-//     * 前回updateした時刻がpreferenceに格納されているので、現在時刻と比較して判定。
-//     *
-//     * @return
-//     */
-//    public boolean shouldUpdateTodaysTable() {
-//
-//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
-//        long lastUpdated = pref.getLong(PREF_KEY_DAILY_UPDATE, -1);
-//
-//        // -1になるということは、まだ一度もサーバからデータを取得していない。
-//        if(-1 > lastUpdated) {
-//            return true;
-//        }
-//
-//        // 前回updateした時間から、次にupdateをかけるべき時刻を計算し、
-//        // 現在時刻がそれよりも先だったら、updateをかける。
-//        long currentTime = Calendar.getInstance(Locale.JAPAN).getTimeInMillis();
-//        if(currentTime > nextDailyUpdateTime(lastUpdated)) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
-
-//    /**
-//     * baseTimeを基準に、次に番組表を更新すべき時間を計算する。
-//     *
-//     * @return
-//     */
-//    public long nextWeeklyUpdateTime(long baseTimeInMillis) {
-//        Calendar c = Calendar.getInstance(Locale.JAPAN);
-//        c.setTimeInMillis(baseTimeInMillis);
-//
-//        return nextWeeklyUpdateTime(c);
-//    }
 
     /**
      * 現在時刻を基準に、次に番組表を更新すべき時間を計算する。
@@ -208,24 +109,15 @@ public class UpdatedDateManager {
 
         Calendar c = (Calendar) baseTime.clone();
 
-        // 今が月曜日で、
-        if((Calendar.MONDAY == c.get(Calendar.DAY_OF_WEEK))
-            // 5時10分より前ならば、その直後の5時10分が更新タイム。
-                && (4 > c.get(Calendar.HOUR_OF_DAY) ||
-                   (4 == c.get(Calendar.HOUR_OF_DAY) && 50 < c.get(Calendar.MINUTE)))) {
-
-                c.set(Calendar.HOUR_OF_DAY, 5);
-                c.set(Calendar.MINUTE, 10);
-        }
-        // 上記に当てはまらなかったら、次の月曜の早朝5時10分
-        else {
+        // 今が月曜日で6時より前ならば、その直後の5時10分〜50分のどこかが更新タイム。
+        // 今が月曜じゃない、もしくは、月曜6時以降であれば、翌週の月曜早朝が更新タイム。
+        if((Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK)) || (5 < c.get(Calendar.HOUR_OF_DAY))) {
             do {
                 c.add(Calendar.DATE, 1);
             } while(Calendar.MONDAY != c.get(Calendar.DAY_OF_WEEK));
-
-            c.set(Calendar.HOUR_OF_DAY, 5);
-            c.set(Calendar.MINUTE, 10);
         }
+
+        fixUpdateTime(c);
 
         return c.getTimeInMillis();
     }
@@ -261,16 +153,24 @@ public class UpdatedDateManager {
 
         // 6時以降であれば、次の日の朝6時
         // (当日6時より前だったら、その日の朝6時)
-        if (c.get(Calendar.HOUR_OF_DAY) >= 6) {
+        if (c.get(Calendar.HOUR_OF_DAY) >= 5) {
             c.add(Calendar.DATE, 1);
         }
 
-        c.set(Calendar.HOUR_OF_DAY, 6);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
+        fixUpdateTime(c);
 
         return c.getTimeInMillis();
+    }
+
+    private void fixUpdateTime(Calendar target) {
+
+        Random random = new Random();
+
+        // サーバへのアクセスを散らすために、5時10分0秒〜5時59分59秒の間にランダムでセット
+        target.set(Calendar.HOUR_OF_DAY, 5);
+        target.set(Calendar.MINUTE, 10 + random.nextInt(50));
+        target.set(Calendar.SECOND, random.nextInt(60));
+        target.set(Calendar.MILLISECOND, 0);
     }
 
 }

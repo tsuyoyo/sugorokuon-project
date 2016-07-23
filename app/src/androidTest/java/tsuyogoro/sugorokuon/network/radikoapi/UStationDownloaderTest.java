@@ -19,7 +19,7 @@ import java.util.List;
 import tsuyogoro.sugorokuon.constants.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.entities.Station;
-import tsuyogoro.sugorokuon.network.StationFetcher;
+import tsuyogoro.sugorokuon.network.IStationFetcher;
 
 public class UStationDownloaderTest extends AndroidTestCase {
 
@@ -64,7 +64,7 @@ public class UStationDownloaderTest extends AndroidTestCase {
 //            Assert.assertTrue(false);
 //        }
 
-        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationFetcher.fetch(Area.CHIBA.id, StationLogoSize.LARGE,
                 getLogoCacheDirName());
 
@@ -80,7 +80,7 @@ public class UStationDownloaderTest extends AndroidTestCase {
 
         long start = Calendar.getInstance().getTimeInMillis();
 
-        StationFetcher stationFetcher = new RadikoStationsFetcher();
+        IStationFetcher stationFetcher = new RadikoStationsFetcher();
         List<Station> stations = stationFetcher.fetch(Area.values(), StationLogoSize.LARGE,
                 getLogoCacheDirName());
 

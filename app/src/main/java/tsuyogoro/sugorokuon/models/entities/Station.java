@@ -27,6 +27,9 @@ import org.simpleframework.xml.Root;
 
 public class Station {
 
+    // "radiko"、"NHK"など、局の種別
+    public String type;
+
     public String id;
 
     public String name;
@@ -43,12 +46,16 @@ public class Station {
 
     private boolean mIsOnAirSongsAvailable = false;
 
+    public int frequencyToListAd = -1;
+
     public Station() {
 
     }
 
-    private Station(String id, String name, String ascii_name,
-                    String siteUrl, String logoUrl, String bannerUrl, String logoCachePath) {
+    private Station(String type, String id, String name, String ascii_name,
+                    String siteUrl, String logoUrl, String bannerUrl, String logoCachePath,
+                    int frequencyToListAd) {
+        this.type = type;
         this.id = id;
         this.name = name;
         this.ascii_name = ascii_name;
@@ -56,9 +63,11 @@ public class Station {
         this.logoUrl = logoUrl;
         this.bannerUrl = bannerUrl;
         this.mLogoCachePath = logoCachePath;
+        this.frequencyToListAd = frequencyToListAd;
     }
 
     public static class Builder {
+        public String type;
         public String id;
         public String name;
         public String ascii_name;
@@ -67,10 +76,11 @@ public class Station {
         public String bannerUrl;
         public String logoCache;
         public String logoCachePath;
+        public int frequencyToListAd;
 
         public Station create() {
-            return new Station(id, name, ascii_name, siteUrl,
-                    logoUrl, bannerUrl, logoCachePath);
+            return new Station(type, id, name, ascii_name, siteUrl,
+                    logoUrl, bannerUrl, logoCachePath, frequencyToListAd);
         }
     }
 

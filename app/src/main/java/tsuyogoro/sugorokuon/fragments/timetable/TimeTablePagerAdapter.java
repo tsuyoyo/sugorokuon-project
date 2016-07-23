@@ -13,8 +13,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.sql.Time;
 import java.util.List;
 
+import tsuyogoro.sugorokuon.constants.StationType;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.entities.Station;
+import tsuyogoro.sugorokuon.network.gtm.SugorokuonTagManagerWrapper;
+import tsuyogoro.sugorokuon.network.nhk.NhkStationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoStationsFetcher;
+import tsuyogoro.sugorokuon.network.radikoapi.RadikoTimeTableFetcher;
 
 class TimeTablePagerAdapter extends FragmentPagerAdapter {
 
@@ -53,7 +58,13 @@ class TimeTablePagerAdapter extends FragmentPagerAdapter {
         bundle.putInt(TimeTableListFragment.PARAM_KEY_DATE_YEAR, mYear);
         bundle.putInt(TimeTableListFragment.PARAM_KEY_DATE_MONTH, mMonth);
         bundle.putInt(TimeTableListFragment.PARAM_KEY_DATE_DATE, mDate);
-        bundle.putString(TimeTableListFragment.PARAM_KEY_STATION_ID, mStations.get(position).id);
+
+        Station station = mStations.get(position);
+        bundle.putString(TimeTableListFragment.PARAM_KEY_STATION_ID, station.id);
+
+        StationType stationType = StationType.getType(station.type);
+        bundle.putInt(TimeTableListFragment.PARAM_KEY_FREQUENCY_LIST_AD,
+                (stationType != null) ? stationType.getAdFrequency() : 0);
 
         Fragment fragment = new TimeTableListFragment();
         fragment.setArguments(bundle);

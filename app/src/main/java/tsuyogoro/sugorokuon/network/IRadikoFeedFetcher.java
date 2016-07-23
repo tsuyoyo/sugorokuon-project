@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.network;
 
 import tsuyogoro.sugorokuon.models.entities.Feed;
 
-public interface FeedFetcher {
+public interface IRadikoFeedFetcher {
 
     /**
      * Feedをdownloadする。

@@ -41,12 +41,12 @@ public class GATrackingUtil {
     }
 
     /**
-     * 現在時間を、02月15日（水） 14:47  といったフォーマットで取得。
+     * 現在時間を、2012/02/15/14:47:30  といったフォーマットで取得。
      * @param context
      * @return
      */
     static public String getCurrentTime(Context context) {
-        String strTo = context.getString(R.string.date_mmddeeehhmm);
+        String strTo = context.getString(R.string.date_yyyymmddhhmmss);
         SimpleDateFormat sdfTo = new SimpleDateFormat(strTo, Locale.JAPANESE);
         Calendar now = Calendar.getInstance(Locale.JAPAN);
 

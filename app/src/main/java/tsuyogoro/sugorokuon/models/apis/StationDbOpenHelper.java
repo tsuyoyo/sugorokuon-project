@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 class StationDbOpenHelper extends BaseDbOpenHelper {
 
 	private static final String DB_NAME = "stationinfo";
 
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 3;
 
     private List<BaseTableDefiner> mTableDefiners = new ArrayList<BaseTableDefiner>();
 
@@ -31,5 +32,10 @@ class StationDbOpenHelper extends BaseDbOpenHelper {
     @Override
     List<BaseTableDefiner> getTableDefiners() {
         return mTableDefiners;
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onUpgrade(db, oldVersion, newVersion);
     }
 }
