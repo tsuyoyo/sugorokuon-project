@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.1'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
 //        classpath "com.google.gms:google-services:${project.googleServiceVersion}"
@@ -74,7 +74,7 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
 
     // nendメディエーション用アダプター
-    compile 'net.nend.android:nend-adapter:1.2.4'
+    compile 'net.nend.android:nend-adapter:1.2.7'
 
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
