@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/program_table"
+        android:icon="@drawable/ic_home_grey_600_36dp"
+        android:title="@string/bottom_navigation_program" />
+
+    <item
+        android:id="@+id/on_air_songs"
+        android:icon="@drawable/ic_audiotrack_grey_600_36dp"
+        android:title="@string/bottom_navigation_on_air_songs" />
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings_grey_600_36dp"
+        android:title="@string/bottom_navigation_settings" />
+</menu>

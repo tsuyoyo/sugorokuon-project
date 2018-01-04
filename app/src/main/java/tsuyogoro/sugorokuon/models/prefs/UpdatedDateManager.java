@@ -8,9 +8,6 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
-import tsuyogoro.sugorokuon.constants.Area;
-import tsuyogoro.sugorokuon.constants.Region;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -44,11 +41,7 @@ public class UpdatedDateManager {
         long now = Calendar.getInstance(Locale.JAPAN).getTimeInMillis();
 
         long oneDay = 24 * 60 * 60 * 1000;
-        if ((now - lastUpdated) > oneDay) {
-            return true;
-        } else {
-            return false;
-        }
+        return (now - lastUpdated) > oneDay;
     }
 
     public static long getLastUpdateTime(Context context) {

@@ -55,11 +55,7 @@ public class BrowserCacheSettingPreference {
             val = getDefaultValue();
         }
 
-        if(CACHE_ENABLE == val) {
-            return true;
-        } else {
-            return false;
-        }
+        return CACHE_ENABLE == val;
     }
 
     // GingerBreadでは、初期値はcache無効。

@@ -49,11 +49,7 @@ public class KeepStationFocusPreference {
     public static boolean getKeepStationFocusSettings(Context context) {
         SharedPreferences defPref = PreferenceManager.getDefaultSharedPreferences(context);
         int settings = defPref.getInt(PREF_KEY_KEEP_STATION_FOCUS, KEEP_FOCUS);
-        if(KEEP_FOCUS == settings) {
-            return true;
-        } else {
-            return false;
-        }
+        return KEEP_FOCUS == settings;
     }
 
     private static class RadioBoxPreference extends Preference {

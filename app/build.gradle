@@ -1,12 +1,7 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
     dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-//        classpath "com.google.gms:google-services:${project.googleServiceVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlinVersion}"
     }
 }
 
@@ -18,10 +13,11 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'android-apt'
-apply plugin: 'me.tatarka.retrolambda'
-//apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion project.compileSdkVersion.toInteger()
@@ -31,8 +27,9 @@ android {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         applicationId "tsuyogoro.sugorokuon"
-        versionCode 232
-        versionName "2.3.2"
+        versionCode 300
+        versionName "3.0.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -50,6 +47,8 @@ android {
             resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
         }
     }
+
+    // メモ : XMLの中にdatabindingsのコードがあるけど、全部消して、このconfigurationも消す
     dataBinding {
         enabled = true
     }
@@ -60,61 +59,101 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion project.buildToolsVersion
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
-    compile "com.android.support:customtabs:${project.supportLibVersion}"
-    compile "com.android.support:design:${project.supportLibVersion}"
-    compile "com.android.support:cardview-v7:${project.supportLibVersion}"
-    compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
-    compile "com.google.android.gms:play-services:${project.playServiceVersion}"
-    compile "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
+    //noinspection GradleCompatible
+    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    implementation "com.android.support:customtabs:${project.supportLibVersion}"
+    implementation "com.android.support:design:${project.supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${project.supportLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${project.supportLibVersion}"
+    implementation "com.google.android.gms:play-services:${project.playServiceVersion}"
+    implementation "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
 
     // nendメディエーション用アダプター
-    compile 'net.nend.android:nend-adapter:1.2.7'
+    implementation('net.nend.android:nend-adapter:1.2.7') {
+        exclude module: "com.android.support:recyclerview-v7"
+        exclude module: "com.google.android.gms:play-services-basement"
+        exclude module: "com.android.support:cardview-v7"
+        exclude module: "com.android.support:percent"
+        exclude module: "com.android.support:support-compat"
+        exclude module: "com.android.support:support-core-utils"
+    }
 
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'jp.wasabeef:picasso-transformations:1.3.1'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile "io.reactivex:rxjava:1.1.5"
+    implementation "com.squareup.okhttp3:okhttp:${project.okHttpVersion}"
+    implementation "com.squareup.picasso:picasso:${project.picassoVersion}"
+    implementation "jp.wasabeef:picasso-transformations:${project.picassoTransformationVersion}"
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${project.glideVersion}"
+
+    implementation "com.jakewharton:butterknife:${project.butterKnifeVersion}"
+    kapt "com.jakewharton:butterknife-compiler:${project.butterKnifeVersion}"
+
+    implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
+    implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
+    implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
 
     // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
-    compile("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
+    implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
         exclude module: 'stax'
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
-    compile "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${project.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${project.retrofitVersion}"
 
     // Dagger2 : http://google.github.io/dagger/
-    compile "com.google.dagger:dagger:${project.daggerVersion}"
-    apt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
-    provided 'javax.annotation:jsr250-api:1.0'
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
     // Stetho : http://facebook.github.io/stetho/
-    debugCompile "com.facebook.stetho:stetho:${project.stethoVersion}"
-    debugCompile "com.facebook.stetho:stetho-okhttp3:${project.stethoVersion}"
+    debugImplementation "com.facebook.stetho:stetho:${project.stethoVersion}"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:${project.stethoVersion}"
 
     // Leakcanary : https://github.com/square/leakcanary
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${project.leakcanaryVersion}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${project.leakcanaryVersion}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
     // fab-speed-dial
-    compile 'io.github.yavski:fab-speed-dial:1.0.3'
+    implementation('io.github.yavski:fab-speed-dial:1.0.3') {
+        exclude module: "com.android.support:support-v4"
+        exclude module: "com.android.support:appcompat-v7"
+        exclude module: "com.android.support:design"
+        exclude module: "com.android.support:cardview-v7"
+    }
+
+    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
+    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
+
+    // Architecture component
+    implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.lifecycle:reactivestreams:1.0.0"
+    testImplementation 'android.arch.core:core-testing:1.0.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${project.kotlinVersion}"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:2.13.0"
+//    testImplementation "org.mockito:mockito-inline:2.13.0"
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 
     // Firebase
-//    compile "com.google.firebase:firebase-core:${project.firebaseVersion}"
-//    compile "com.google.firebase:firebase-crash:${project.firebaseVersion}"
+//    implementation "com.google.firebase:firebase-core:${project.firebaseVersion}"
+//    implementation "com.google.firebase:firebase-crash:${project.firebaseVersion}"
 
     // For Robolectric
-//    testCompile 'junit:junit:4.10'
-//    testCompile 'org.assertj:assertj-core:1.7.0'
-//    testCompile "org.robolectric:robolectric:${robolectricVersion}"
+//    testimplementation 'junit:junit:4.10'
+//    testimplementation 'org.assertj:assertj-core:1.7.0'
+//    testimplementation "org.robolectric:robolectric:${robolectricVersion}"
 }
 
 

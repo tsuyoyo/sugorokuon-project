@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_small"
+    android:paddingLeft="@dimen/margin_standard"
+    android:paddingRight="@dimen/margin_standard"
+    android:paddingTop="@dimen/margin_small">
+
+    <ImageView
+        android:id="@+id/song_thumbnail"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_music_note_grey_600_48dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/song_thumbnail"
+        android:layout_toStartOf="@+id/search_on_library"
+        android:orientation="vertical"
+        tools:background="@android:color/holo_green_light">
+
+        <TextView
+            android:id="@+id/onair_date"
+            style="@style/onair_song_date"
+            tools:text="17:00" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/onair_song_title"
+            tools:text="ロマンス" />
+
+        <TextView
+            android:id="@+id/artist"
+            style="@style/onair_song_artist"
+            tools:text="PENICILLIN" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/search_on_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:drawableStart="@drawable/ic_search_grey_600_18dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:text="@string/on_air_song_search_library"
+        android:textSize="@dimen/textsize_small" />
+
+</RelativeLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="112dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        tools:background="@android:color/holo_red_light"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:paddingTop="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:textColor="@android:color/white"
+        android:background="@color/semiTransparentBackground"
+        android:ellipsize="end"
+        tools:text="とんカツワイド"/>
+
+    <RelativeLayout
+        android:id="@+id/on_air_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/thumbnail"
+        android:layout_marginStart="4dp">
+
+        <TextView
+            android:id="@+id/on_air_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@color/app_accent"
+            android:textStyle="bold"
+            tools:text="21:30"/>
+
+        <TextView
+            android:id="@+id/on_air_time_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/on_air_time_start"
+            android:layout_centerVertical="true"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:textSize="@dimen/textsize_large"
+            android:textColor="@color/app_accent"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/on_air_time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/on_air_time_separator"
+            android:textSize="@dimen/textsize_standard"
+            android:textColor="@color/app_accent"
+            tools:text="24:00"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/personalities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_small"
+        android:layout_below="@+id/on_air_time"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:lines="2"
+        tools:text="Kazumi Saito"/>
+
+</RelativeLayout>

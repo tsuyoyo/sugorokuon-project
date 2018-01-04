@@ -18,7 +18,7 @@ import junit.framework.Assert;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import tsuyogoro.sugorokuon.constants.Area;
+import tsuyogoro.sugorokuon.v3.constant.Area;
 import tsuyogoro.sugorokuon.models.apis.OnAirSongsApi;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
 import tsuyogoro.sugorokuon.models.apis.TimeTableApi;

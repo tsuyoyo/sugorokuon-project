@@ -6,24 +6,26 @@ package tsuyogoro.sugorokuon;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import tsuyogoro.sugorokuon.di.DaggerNetworkApiComponent;
-import tsuyogoro.sugorokuon.di.NetworkApiComponent;
-import tsuyogoro.sugorokuon.di.NetworkApiModule;
-import tsuyogoro.sugorokuon.network.gtm.ContainerHolderLoader;
+import tsuyogoro.sugorokuon.v3.api.RadikoApiModule;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
+import tsuyogoro.sugorokuon.v3.di.DaggerSugorokuonAppComponent;
+import tsuyogoro.sugorokuon.v3.di.RepositoryModule;
+import tsuyogoro.sugorokuon.v3.di.SugorokuonAppComponent;
+import tsuyogoro.sugorokuon.v3.di.SugorokuonAppModule;
 
 public class SugorokuonApplication extends Application {
 
     private Tracker mTracker;
 
     private RefWatcher mRefWatcher;
+
+    private SugorokuonAppComponent appComponent;
 
     // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
 //    public static FirebaseAnalytics firebaseAnalytics;
@@ -37,45 +39,32 @@ public class SugorokuonApplication extends Application {
         return mTracker;
     }
 
-    private NetworkApiComponent mAppComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
         SugorokuonLog.d("SugorokuonApplication : onCreate()");
         StethoWrapper.setup(this);
         mRefWatcher = LeakCanary.install(this);
-        mAppComponent = DaggerNetworkApiComponent.builder()
-                .networkApiModule(new NetworkApiModule())
+
+        appComponent = DaggerSugorokuonAppComponent.builder()
+                .sugorokuonAppModule(new SugorokuonAppModule(this))
+                .radikoApiModule(new RadikoApiModule())
+                .repositoryModule(new RepositoryModule())
                 .build();
-
-        ContainerHolderLoader.load(this, new ContainerHolderLoader.OnLoadListener() {
-            @Override
-            public void onContainerHolderAvailable() {
-                SugorokuonLog.d("ContainerHolader is loaded");
-            }
-
-            @Override
-            public void onLatestContainerAvailable(String containerVersion) {
-                SugorokuonLog.d("New container is loaded : version = " + containerVersion);
-            }
-        });
 
         // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
 //        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        SugorokuonLog.d("SugorokuonApplication : onTerminate()");
-    }
-
-    public NetworkApiComponent component() {
-        return mAppComponent;
-    }
-
     public static RefWatcher getRefWatcher(Context context) {
         return ((SugorokuonApplication) context.getApplicationContext()).mRefWatcher;
+    }
+
+    public static SugorokuonApplication application(Context context) {
+        return (SugorokuonApplication) context.getApplicationContext();
+    }
+
+    public SugorokuonAppComponent appComponent() {
+        return appComponent;
     }
 }

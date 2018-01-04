@@ -5,7 +5,7 @@
 package tsuyogoro.sugorokuon.models.prefs;
 
 import tsuyogoro.sugorokuon.R;
-import tsuyogoro.sugorokuon.constants.NotifyTiming;
+import tsuyogoro.sugorokuon.v3.constant.NotifyTiming;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.Preference;

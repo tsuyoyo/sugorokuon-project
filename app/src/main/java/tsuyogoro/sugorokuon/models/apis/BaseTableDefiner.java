@@ -6,11 +6,11 @@ package tsuyogoro.sugorokuon.models.apis;
 
 abstract class BaseTableDefiner {
 
-    protected static interface ColumnEnumBase {
+    protected interface ColumnEnumBase {
 
-        public String columnName();
+        String columnName();
 
-        public String columnType();
+        String columnType();
 
     }
 

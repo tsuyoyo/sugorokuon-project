@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 import tsuyogoro.sugorokuon.R;
-import tsuyogoro.sugorokuon.constants.Area;
-import tsuyogoro.sugorokuon.constants.Region;
+import tsuyogoro.sugorokuon.v3.constant.Area;
+import tsuyogoro.sugorokuon.v3.constant.Region;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.CheckBoxPreference;

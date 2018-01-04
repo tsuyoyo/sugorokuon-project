@@ -66,7 +66,7 @@ public class UStationApiTest extends AndroidTestCase {
 
         Assert.assertEquals(mTarget.load().size(), 3);
 
-        mTarget.clear();;
+        mTarget.clear();
         Assert.assertEquals(mTarget.load().size(), 0);
     }
 

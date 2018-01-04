@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import tsuyogoro.sugorokuon.constants.Area;
+import tsuyogoro.sugorokuon.v3.constant.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;

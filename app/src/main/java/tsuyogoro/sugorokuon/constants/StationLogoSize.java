@@ -16,6 +16,6 @@ public enum StationLogoSize {
 
     MEDIUM, // 123 x 50
 
-    LARGE;  // 216 x 54
+    LARGE  // 216 x 54
 
 }
