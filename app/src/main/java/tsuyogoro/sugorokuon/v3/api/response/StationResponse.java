@@ -6,6 +6,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Root(strict = false)
@@ -22,6 +23,7 @@ public class StationResponse {
 
     @Root(name = "station", strict = false)
     public static class Station {
+
         @Element(name = "id")
         public String id;
 

@@ -1,6 +1,9 @@
 package tsuyogoro.sugorokuon.v3.timetable
 
+import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -8,6 +11,9 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.request.target.DrawableImageViewTarget
+import com.bumptech.glide.request.target.Target
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
 import java.text.SimpleDateFormat
@@ -69,9 +75,22 @@ class TimeTableAdapter(
         }
 
         fun setProgram(program: TimeTableResponse.Program) {
-            itemView.setOnClickListener { listener.onProgramClicked(program) }
+            itemView.setOnClickListener {
+                //
+                val tappedPosition = IntArray(2).apply {
+                    itemView.getLocationOnScreen(this)
+                }
+                listener.onProgramClicked(program,
+                        Point(
+                                tappedPosition[0] + itemView.width / 2,
+                                tappedPosition[1]
+                        )
+                )
+            }
 
-            Glide.with(thumbnail).load(program.image).into(thumbnail)
+            Glide.with(thumbnail)
+                    .load(program.image)
+                    .into(thumbnail)
 
             title.text = program.title
             personalities.text = program.perfonality

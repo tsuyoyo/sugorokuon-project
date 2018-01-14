@@ -90,6 +90,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
+    implementation "com.github.bumptech.glide:annotations:${project.glideVersion}"
     kapt "com.github.bumptech.glide:compiler:${project.glideVersion}"
 
     implementation "com.jakewharton:butterknife:${project.butterKnifeVersion}"

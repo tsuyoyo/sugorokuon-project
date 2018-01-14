@@ -19,20 +19,20 @@ import java.util.*
 
 class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private lateinit var onAirSongsData: OnAirSongsData
+    private var onAirSongs: List<FeedResponse.Song> = emptyList()
 
-    fun setOnAirSongsData(onAirSongsData: OnAirSongsData) {
-        this.onAirSongsData = onAirSongsData
+    fun setOnAirSongsData(onAirSongs: List<FeedResponse.Song>) {
+        this.onAirSongs = onAirSongs
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        (holder as? OnAirSongsViewHolder)?.setSong(onAirSongsData.songs[position])
+        (holder as? OnAirSongsViewHolder)?.setSong(onAirSongs[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
             OnAirSongsViewHolder(parent)
 
-    override fun getItemCount(): Int = onAirSongsData.songs.size
+    override fun getItemCount(): Int = onAirSongs.size
 
     class OnAirSongsViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
             LayoutInflater

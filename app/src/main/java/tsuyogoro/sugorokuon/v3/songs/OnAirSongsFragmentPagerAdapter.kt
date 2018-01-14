@@ -10,16 +10,17 @@ class OnAirSongsFragmentPagerAdapter(fragmentManager: FragmentManager)
     private var onAirSongsDataList = mutableListOf<OnAirSongsData>()
 
     fun setOnAirSongsAvailableStations(onAirSongsDataList: List<OnAirSongsData>) {
+        this.onAirSongsDataList.clear()
         this.onAirSongsDataList.addAll(onAirSongsDataList)
     }
 
     override fun getItem(position: Int): Fragment =
-            OnAirSongsFragment().apply {
-                setOnAirSongsData(onAirSongsDataList[position])
-            }
+            OnAirSongsFragment.createInstance(onAirSongsDataList[position].station.id)
 
     override fun getCount(): Int = onAirSongsDataList.size
 
     override fun getPageTitle(position: Int): CharSequence =
             onAirSongsDataList[position].station.name
+
+
 }

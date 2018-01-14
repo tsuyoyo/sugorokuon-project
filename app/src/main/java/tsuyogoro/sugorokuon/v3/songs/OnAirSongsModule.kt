@@ -7,12 +7,12 @@ import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 
 @Module
 class OnAirSongsModule(
-        private val onAirSongsData: OnAirSongsData
+        private val stationId: String
 ) {
 
     @Provides
     fun provideOnAirSongsViewModelFactory(feedRepository: FeedRepository,
                                           schedulerProvider: SchedulerProvider) =
-            OnAirSongsViewModel.Factory(onAirSongsData, feedRepository, schedulerProvider)
+            OnAirSongsViewModel.Factory(stationId, feedRepository, schedulerProvider)
 
 }

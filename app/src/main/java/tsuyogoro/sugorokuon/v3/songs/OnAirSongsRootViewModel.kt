@@ -4,9 +4,11 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
+import tsuyogoro.sugorokuon.v3.constant.Area
 import tsuyogoro.sugorokuon.v3.repository.FeedRepository
 import tsuyogoro.sugorokuon.v3.repository.SettingsRepository
 import tsuyogoro.sugorokuon.v3.repository.StationRepository
@@ -21,6 +23,8 @@ class OnAirSongsRootViewModel(
 ) : ViewModel() {
 
     private val onAirSongsDataList = MutableLiveData<List<OnAirSongsData>>()
+
+    private val isLoading = MutableLiveData<Boolean>()
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
@@ -51,32 +55,46 @@ class OnAirSongsRootViewModel(
 
     fun observeFeedAvailableStations(): LiveData<List<OnAirSongsData>> = onAirSongsDataList
 
+    fun observeIsLoading(): LiveData<Boolean> = isLoading
+
     private fun fetchFeedAvailableStations(): Completable {
-        val fetchedOnAirSongs: MutableList<OnAirSongsData> = mutableListOf()
         return settingsRepository
                 .observeAreaSettings()
+                .doOnSubscribe { onAirSongsDataList.postValue(emptyList()) }
                 .firstElement()
-                .flatMapPublisher { Flowable.fromIterable(it) }
+                .doOnSuccess { isLoading.postValue(true) }
+                .flatMapPublisher { areas ->
+                    Flowable.create<Area>({ source ->
+                        areas.forEach(source::onNext)
+                        source.onComplete()
+                    }, BackpressureStrategy.LATEST)
+                }
                 .flatMapMaybe { area -> stationRepository.fetchStations(area) }
                 .flatMap { stationsForArea -> Flowable.fromIterable(stationsForArea) }
                 .flatMapCompletable { station ->
                     feedRepository
-                            .fetchFeed(station.id)
+                            .fetchFeed(station.id, update = true)
                             .filter {
-                                fetchedOnAirSongs.find { it.station.id == station.id } == null
+                                onAirSongsDataList.value
+                                        ?.find { it.station.id == station.id } == null
                             }
                             .doOnSuccess {
-                                fetchedOnAirSongs.add(OnAirSongsData(station, it.songs))
+                                onAirSongsDataList.postValue(
+                                        onAirSongsDataList.value?.toMutableList()?.apply {
+                                            add(
+                                                    OnAirSongsData(station, it.songs)
+                                            )
+                                        }
+                                )
                             }
                             .ignoreElement()
                             // when the station has no feed, skip it.
                             .onErrorResumeNext { Completable.complete() }
                 }
+                .doOnComplete { isLoading.postValue(false) }
+                .doOnError { isLoading.postValue(false) }
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.mainThread())
-                .doOnComplete {
-                    this.onAirSongsDataList.value = fetchedOnAirSongs
-                }
     }
 
 }

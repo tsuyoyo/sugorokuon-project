@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.PagerTabStrip
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.ContentLoadingProgressBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,9 @@ class OnAirSongsRootFragment : Fragment() {
     @BindView(R.id.pager_tab_strip)
     lateinit var pagerTabStrip: PagerTabStrip
 
+    @BindView(R.id.loading)
+    lateinit var loading: ContentLoadingProgressBar
+
     @Inject
     lateinit var viewModelFactory: OnAirSongsRootViewModel.Factory
 
@@ -41,7 +45,8 @@ class OnAirSongsRootFragment : Fragment() {
                 .of(this, viewModelFactory)
                 .get(OnAirSongsRootViewModel::class.java)
 
-        fragmentPagerAdapter = OnAirSongsFragmentPagerAdapter(fragmentManager)
+        // Ref : http://wasnot.hatenablog.com/entry/2013/04/20/220534
+        fragmentPagerAdapter = OnAirSongsFragmentPagerAdapter(childFragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater?,
@@ -58,6 +63,13 @@ class OnAirSongsRootFragment : Fragment() {
 
         viewModel.observeFeedAvailableStations()
                 .observe(this, onAvailableStationsFetched())
+
+        viewModel.observeIsLoading()
+                .observe(this, Observer {
+                    if (it != null) {
+                        loading.visibility = if (it) { View.VISIBLE } else { View.GONE }
+                    }
+                })
     }
 
     private fun onAvailableStationsFetched() = Observer<List<OnAirSongsData>> {

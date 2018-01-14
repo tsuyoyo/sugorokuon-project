@@ -4,28 +4,29 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.util.Log
+import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.v3.api.response.FeedResponse
 import tsuyogoro.sugorokuon.v3.api.response.StationResponse
 import tsuyogoro.sugorokuon.v3.repository.FeedRepository
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 
 class OnAirSongsViewModel(
-        private val station: StationResponse.Station,
-        private val songs: List<FeedResponse.Song>,
+        private val stationId: String,
         private val feedRepository: FeedRepository,
-        private val schedulerProvider: SchedulerProvider
+        private val schedulerProvider: SchedulerProvider,
+        private val disposables: CompositeDisposable = CompositeDisposable()
 ) : ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-            private val onAirSongsData: OnAirSongsData,
+            private val stationId: String,
             private val feedRepository: FeedRepository,
             private val schedulerProvider: SchedulerProvider
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =
             OnAirSongsViewModel(
-                    onAirSongsData.station,
-                    onAirSongsData.songs,
+                    stationId,
                     feedRepository,
                     schedulerProvider
             ) as T
@@ -34,12 +35,19 @@ class OnAirSongsViewModel(
     private val onAirSongs = MutableLiveData<List<FeedResponse.Song>>()
 
     init {
-        onAirSongs.value = songs
+        disposables.add(
+                feedRepository.fetchFeed(stationId)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.mainThread())
+                        .doOnSuccess { onAirSongs.value = it.songs }
+                        .subscribe()
+        )
     }
 
     fun observeOnAirSongs(): LiveData<List<FeedResponse.Song>> = onAirSongs
 
     override fun onCleared() {
         super.onCleared()
+        disposables.dispose()
     }
 }

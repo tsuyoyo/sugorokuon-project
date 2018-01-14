@@ -1,5 +1,6 @@
 package tsuyogoro.sugorokuon.v3.songs
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -26,20 +27,29 @@ class OnAirSongsFragment : Fragment() {
 
     private lateinit var viewModel: OnAirSongsViewModel
 
-    private lateinit var onAirSongsData: OnAirSongsData
+    companion object {
+        val KEY_STATION_ID: String = "key_station_id"
 
-
-    // TODO : コレダメ。回転した時にonAirSongDataが入ってないからクラッシュする
-    fun setOnAirSongsData(onAirSongsData: OnAirSongsData) {
-        this.onAirSongsData = onAirSongsData
+        fun createInstance(stationId: String) : OnAirSongsFragment {
+            return OnAirSongsFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_STATION_ID, stationId)
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         SugorokuonApplication.application(context)
                 .appComponent()
-                .onAirSongsSubComponent(OnAirSongsModule(onAirSongsData))
+                .onAirSongsSubComponent(OnAirSongsModule(arguments.getString(KEY_STATION_ID)))
                 .inject(this)
+
+        viewModel = ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(OnAirSongsViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -51,20 +61,23 @@ class OnAirSongsFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ButterKnife.bind(this, view!!)
-
-        viewModel = ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(OnAirSongsViewModel::class.java)
-
-        onAirSongsAdapter = OnAirSongsAdapter().apply {
-            setOnAirSongsData(onAirSongsData)
-        }
+        onAirSongsAdapter = OnAirSongsAdapter()
 
         songsList.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = onAirSongsAdapter
-            adapter.notifyDataSetChanged()
+            layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false)
         }
+
+        viewModel.observeOnAirSongs()
+                .observe(this, Observer {
+                    if (it != null) {
+                        onAirSongsAdapter.setOnAirSongsData(it)
+                        onAirSongsAdapter.notifyDataSetChanged()
+                    }
+                })
     }
 
 }

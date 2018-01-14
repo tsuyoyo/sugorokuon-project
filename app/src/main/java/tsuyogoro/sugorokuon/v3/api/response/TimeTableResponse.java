@@ -5,6 +5,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,9 +23,6 @@ public class TimeTableResponse {
         @Element(name = "name")
         public String name;
 
-//        @ElementList(name = "progs", type = Program.class)
-//        public List<Program> programs;
-
         @Element(name = "progs")
         public TimeTable timeTable;
     }
@@ -37,7 +35,13 @@ public class TimeTableResponse {
     }
 
     @Root(name = "prog", strict = false)
-    public static class Program {
+    public static class Program implements Serializable {
+
+        private static final long serialVersionUID = 1943336659877524833L;
+
+        @Attribute(name = "id")
+        public String id;
+
         // Formatted yyyyMMddHHmmss
         @Attribute(name = "ft", required = false)
         public Calendar start;
@@ -68,7 +72,10 @@ public class TimeTableResponse {
     }
 
     @Root(name = "meta", strict = false)
-    public static class Meta {
+    public static class Meta implements Serializable {
+
+        private static final long serialVersionUID = 8811402950904741120L;
+
         @Attribute
         public String name;
 

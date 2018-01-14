@@ -1,5 +1,6 @@
 package tsuyogoro.sugorokuon.v3.timetable
 
+import android.graphics.Point
 import android.graphics.Rect
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,31 +18,33 @@ import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
 
 class ProgramTableAdapter(
         private val listener: ProgramTableAdapterListener
-) : RecyclerView.Adapter<ProgramTableAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface ProgramTableAdapterListener {
         fun onStationSiteClicked(station: StationResponse.Station)
 
-        fun onProgramClicked(program: TimeTableResponse.Program)
+        fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point)
     }
 
-    private var timeTables : List<OneDayTimeTable> = emptyList()
+    private var timeTables: List<OneDayTimeTable> = emptyList()
 
     fun setTimeTables(timeTables: List<OneDayTimeTable>) {
         this.timeTables = timeTables
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.setStation(timeTables[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        if (holder is TimeTableViewHolder) {
+            holder.setStation(timeTables[position])
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder =
-            ViewHolder(parent, listener)
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
+            TimeTableViewHolder(parent, listener)
 
     override fun getItemCount(): Int = timeTables.size
 
-    class ViewHolder(parent: ViewGroup?,
-                     private val listener: ProgramTableAdapterListener
+    class TimeTableViewHolder(parent: ViewGroup?,
+                              private val listener: ProgramTableAdapterListener
     ) : RecyclerView.ViewHolder(
             LayoutInflater.from(parent!!.context)
                     .inflate(R.layout.item_program_one_station, parent, false)
@@ -92,7 +95,7 @@ class ProgramTableAdapter(
         }
     }
 
-    class ProgramListItemDecoration: RecyclerView.ItemDecoration() {
+    class ProgramListItemDecoration : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(outRect: Rect?,
                                     view: View?,
@@ -100,8 +103,11 @@ class ProgramTableAdapter(
                                     state: RecyclerView.State?) {
             super.getItemOffsets(outRect, view, parent, state)
             if (view != null) {
-                outRect?.left = (view.context.resources.displayMetrics.density * 4).toInt()
-                outRect?.right = (view.context.resources.displayMetrics.density * 4).toInt()
+                val resources = view.context.resources
+                val density = resources.displayMetrics.density
+
+                outRect?.left = (density * 4).toInt()
+                outRect?.right = (density * 4).toInt()
             }
         }
     }

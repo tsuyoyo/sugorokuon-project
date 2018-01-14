@@ -148,7 +148,14 @@
     <string name="date_selector_day_in_week">(%1$s)</string>
     <string name="station_home_page">Web site</string>
 
+    <string name="date_label">yyyy/MM/dd(EEE)</string>
+    <string name="date_select">他の日を選択</string>
+
     <!-- OnAirSongs -->
     <string name="on_air_song_search_library">検索</string>
+
+    <string name="button_open_web_site">番組のサイトを開く</string>
+    <string name="button_back_to_timetable">番組表へ戻る</string>
+    <string name="button_close">閉じる</string>
 
 </resources>

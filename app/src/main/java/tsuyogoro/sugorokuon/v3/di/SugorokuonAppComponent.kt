@@ -8,8 +8,7 @@ import tsuyogoro.sugorokuon.v3.songs.OnAirSongsModule
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsRootModule
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsRootSubModule
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsSubModule
-import tsuyogoro.sugorokuon.v3.timetable.ProgramTableModule
-import tsuyogoro.sugorokuon.v3.timetable.ProgramTableSubComponent
+import tsuyogoro.sugorokuon.v3.timetable.*
 import javax.inject.Singleton
 
 @Singleton
@@ -25,6 +24,9 @@ interface SugorokuonAppComponent {
 
     fun programTableSubComponent(programTableModule: ProgramTableModule)
             : ProgramTableSubComponent
+
+    fun programInfoSubComponent(programInfoFragment: ProgramInfoModule)
+            : ProgramInfoSubComponent
 
     fun onAirSongsSubComponent(onAirSongsModule: OnAirSongsModule)
             : OnAirSongsSubModule

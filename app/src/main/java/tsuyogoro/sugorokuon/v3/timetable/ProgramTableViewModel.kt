@@ -47,27 +47,33 @@ class ProgramTableViewModel(
 
     private val selectedDate: MutableLiveData<Calendar> = MutableLiveData()
     private val timeTablesData: MutableLiveData<List<OneDayTimeTable>> = MutableLiveData()
-
+    private val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         disposable.addAll(
                 observeTriggerToFetchTimeTable()
+                        .doOnNext { isLoading.postValue(true) }
                         .flatMapCompletable { (selectedDate: Calendar, selectedAreas: Set<Area>) ->
                             return@flatMapCompletable fetchTimeTables(selectedDate, selectedAreas)
                                     .subscribeOn(schedulerProvider.io())
+                                    .doOnComplete {
+                                        timeTablesData.postValue(timeTables)
+                                        isLoading.postValue(false)
+                                    }
+                                    .doOnError { isLoading.postValue(false) }
                                     .observeOn(schedulerProvider.mainThread())
-                                    .doOnComplete { timeTablesData.value = timeTables }
                         }
                         .onErrorResumeNext { e ->
                             Log.d("TestTestTest", "API error : ${e.message}")
                             Completable.complete()
                         }
+                        .subscribeOn(schedulerProvider.io())
                         .subscribe()
                 ,
                 observeSelectedDateAndNormalize()
+                        .doOnNext { selectedDate.postValue(it) }
                         .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.mainThread())
-                        .subscribe { selectedDate.value = it }
+                        .subscribe()
         )
     }
 
@@ -142,6 +148,8 @@ class ProgramTableViewModel(
     fun observeSelectedDate(): LiveData<Calendar> = selectedDate
 
     fun observeTimeTable() : LiveData<List<OneDayTimeTable>> = timeTablesData
+
+    fun observeIsLoading(): LiveData<Boolean> = isLoading
 
     fun selectDate(date: Calendar) {
         timeTableRepository.selectDate(date)
