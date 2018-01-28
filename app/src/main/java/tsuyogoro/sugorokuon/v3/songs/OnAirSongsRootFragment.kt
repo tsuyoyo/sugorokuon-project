@@ -72,7 +72,7 @@ class OnAirSongsRootFragment : Fragment() {
                 })
     }
 
-    private fun onAvailableStationsFetched() = Observer<List<OnAirSongsData>> {
+    private fun onAvailableStationsFetched() = Observer<List<StationResponse.Station>> {
         if (it != null) {
             fragmentPagerAdapter.apply {
                 setOnAirSongsAvailableStations(it)

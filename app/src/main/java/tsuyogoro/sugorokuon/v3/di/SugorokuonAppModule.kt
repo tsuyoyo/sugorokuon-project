@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.v3.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import tsuyogoro.sugorokuon.v3.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProviderForApp
 import javax.inject.Singleton
@@ -24,4 +25,9 @@ class SugorokuonAppModule(
     @Singleton
     @Provides
     fun provideSchedulerProvider(): SchedulerProvider = SchedulerProviderForApp()
+
+    @Singleton
+    @Provides
+    fun provideSugorokuonAppState() : SugorokuonAppState = SugorokuonAppState()
+
 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -70,13 +71,15 @@ class TimeTableAdapter(
         @BindView(R.id.personalities)
         lateinit var personalities: TextView
 
+        @BindView(R.id.tap_area)
+        lateinit var tapArea: View
+
         init {
             ButterKnife.bind(this, itemView)
         }
 
         fun setProgram(program: TimeTableResponse.Program) {
-            itemView.setOnClickListener {
-                //
+            tapArea.setOnClickListener {
                 val tappedPosition = IntArray(2).apply {
                     itemView.getLocationOnScreen(this)
                 }

@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.v3.timetable
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
@@ -12,7 +13,6 @@ import android.support.v4.widget.ContentLoadingProgressBar
 import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,7 @@ import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
-import tsuyogoro.sugorokuon.v3.SugorokuonActivity
+import tsuyogoro.sugorokuon.v3.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.v3.api.response.StationResponse
 import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
 import java.text.SimpleDateFormat
@@ -54,6 +54,19 @@ class ProgramTableFragment : Fragment(),
 
     private lateinit var viewModel: ProgramTableViewModel
     private lateinit var programTableAdapter: ProgramTableAdapter
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,11 +131,12 @@ class ProgramTableFragment : Fragment(),
     }
 
     override fun onProgramClicked(program: TimeTableResponse.Program, tappedPosition: Point) {
-        (activity as? SugorokuonActivity)?.pushFragment(
+        (activity as? SugorokuonTopActivity)?.pushFragment(
                 ProgramInfoFragment.createInstance(
                         program,
                         ProgramInfoFragment.TransitionParameters(
-                                tappedPosition,
+                                tappedPosition.x,
+                                tappedPosition.y,
                                 Math.max(view?.width ?: 0, view?.height ?: 0)
                         )
                 ),

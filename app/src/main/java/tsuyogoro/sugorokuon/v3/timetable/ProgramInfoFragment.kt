@@ -1,17 +1,19 @@
 package tsuyogoro.sugorokuon.v3.timetable
 
 import android.animation.Animator
-import android.graphics.Point
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.view.*
 import android.webkit.WebView
+import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.R
@@ -23,8 +25,9 @@ import java.util.*
 
 class ProgramInfoFragment : Fragment() {
 
-    class TransitionParameters(
-            val tappedPosition: Point,
+    data class TransitionParameters(
+            val tappedPositionX: Int,
+            val tappedPositionY: Int,
             val rippleRadius: Int
     ) : Serializable
 
@@ -44,6 +47,9 @@ class ProgramInfoFragment : Fragment() {
                 }
     }
 
+    @BindView(R.id.thumbnail)
+    lateinit var thumbnail: ImageView
+
     @BindView(R.id.title)
     lateinit var title: TextView
 
@@ -59,6 +65,9 @@ class ProgramInfoFragment : Fragment() {
     @BindView(R.id.open_web_site)
     lateinit var buttonOpenSite: TextView
 
+    @BindView(R.id.share_program)
+    lateinit var buttonShare: TextView
+
     @BindView(R.id.content)
     lateinit var contentWebView: WebView
 
@@ -68,6 +77,15 @@ class ProgramInfoFragment : Fragment() {
     @BindView(R.id.ad_view)
     lateinit var adView: AdView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
@@ -75,6 +93,7 @@ class ProgramInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ButterKnife.bind(this, view)
 
         if (view.isAttachedToWindow) {
@@ -82,6 +101,8 @@ class ProgramInfoFragment : Fragment() {
         }
 
         (arguments.get(KEY_PROGRAM) as TimeTableResponse.Program).let {
+            Glide.with(thumbnail).load(it.image).into(thumbnail)
+
             title.text = it.title
             personalities.text = it.perfonality
 
@@ -89,14 +110,28 @@ class ProgramInfoFragment : Fragment() {
             setupOnAirTime(it)
 
             if (it.url == null) {
-                buttonOpenSite.visibility = View.GONE
+                buttonOpenSite.isEnabled = false
+                buttonOpenSite.isFocusableInTouchMode = false
             } else {
                 buttonOpenSite.apply {
-                    visibility = View.VISIBLE
+                    isEnabled = true
                     setOnClickListener { _ ->
                         SugorokuonUtils.launchChromeTab(activity, Uri.parse(it.url))
                     }
                 }
+            }
+
+            buttonShare.setOnClickListener { v ->
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+
+                val startTime = SimpleDateFormat(
+                        resources.getString(R.string.date_hhmm),
+                        Locale.JAPAN).format(Date(it.start.timeInMillis))
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                        "${it.title} ${startTime} よりonAir : ${it.url ?: ""}"
+                )
+                startActivity(shareIntent)
             }
         }
 
@@ -121,7 +156,7 @@ class ProgramInfoFragment : Fragment() {
         adArea.visibility = View.GONE
     }
 
-    @OnClick(R.id.close)
+//    @OnClick(R.id.close)
     fun dismiss() {
         makeExitAnimator()
                 ?.apply {
@@ -147,11 +182,12 @@ class ProgramInfoFragment : Fragment() {
                     ?.let {
                         ViewAnimationUtils.createCircularReveal(
                                 view,
-                                it.tappedPosition.x,
-                                it.tappedPosition.y,
+                                it.tappedPositionX,
+                                it.tappedPositionY,
                                 0f,
                                 it.rippleRadius.toFloat()
                         )
+
                     }
 
     private fun makeExitAnimator(): Animator? =
@@ -159,8 +195,8 @@ class ProgramInfoFragment : Fragment() {
                     ?.let {
                         ViewAnimationUtils.createCircularReveal(
                                 view,
-                                it.tappedPosition.x,
-                                it.tappedPosition.y,
+                                it.tappedPositionX,
+                                it.tappedPositionY,
                                 it.rippleRadius.toFloat(),
                                 0f
                         )

@@ -12,7 +12,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.v3.SugorokuonActivity
+import tsuyogoro.sugorokuon.v3.SugorokuonTopActivity
 import javax.inject.Inject
 
 class SettingsTopFragment : Fragment() {
@@ -53,7 +53,7 @@ class SettingsTopFragment : Fragment() {
                 .observe(this, Observer(selectedAreas::setText))
 
         areaSettings.setOnClickListener {
-            (activity as? SugorokuonActivity)
+            (activity as? SugorokuonTopActivity)
                     ?.pushFragment(AreaSettingsFragment(), SubFragmentTags.AREA_SETTINGS)
         }
     }

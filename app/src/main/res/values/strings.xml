@@ -154,7 +154,8 @@
     <!-- OnAirSongs -->
     <string name="on_air_song_search_library">検索</string>
 
-    <string name="button_open_web_site">番組のサイトを開く</string>
+    <string name="button_open_web_site">番組サイトを開く</string>
+    <string name="button_share_program">番組情報をシェア</string>
     <string name="button_back_to_timetable">番組表へ戻る</string>
     <string name="button_close">閉じる</string>
 

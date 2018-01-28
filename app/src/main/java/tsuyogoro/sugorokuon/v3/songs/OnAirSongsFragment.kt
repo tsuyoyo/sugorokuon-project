@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -22,6 +23,9 @@ class OnAirSongsFragment : Fragment() {
 
     @BindView(R.id.songs_list)
     lateinit var songsList: RecyclerView
+
+    @BindView(R.id.swipe_refresh_layout)
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private lateinit var onAirSongsAdapter: OnAirSongsAdapter
 
@@ -63,6 +67,10 @@ class OnAirSongsFragment : Fragment() {
         ButterKnife.bind(this, view!!)
         onAirSongsAdapter = OnAirSongsAdapter()
 
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.fetchOnAirSongs(arguments.getString(KEY_STATION_ID))
+        }
+
         songsList.apply {
             adapter = onAirSongsAdapter
             layoutManager = LinearLayoutManager(
@@ -77,6 +85,7 @@ class OnAirSongsFragment : Fragment() {
                         onAirSongsAdapter.setOnAirSongsData(it)
                         onAirSongsAdapter.notifyDataSetChanged()
                     }
+                    swipeRefreshLayout.isRefreshing = false
                 })
     }
 
