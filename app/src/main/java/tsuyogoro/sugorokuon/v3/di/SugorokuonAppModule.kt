@@ -1,8 +1,10 @@
 package tsuyogoro.sugorokuon.v3.di
 
 import android.content.Context
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import tsuyogoro.sugorokuon.v3.api.SearchUuidGenerator
 import tsuyogoro.sugorokuon.v3.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProviderForApp
@@ -15,12 +17,12 @@ class SugorokuonAppModule(
 
     @Singleton
     @Provides
-    fun provideApplicationContext() : Context = appContext
+    fun provideApplicationContext(): Context = appContext
 
 
     @Singleton
     @Provides
-    fun provideResources() = appContext.resources
+    fun provideResources(): Resources = appContext.resources
 
     @Singleton
     @Provides
@@ -28,6 +30,9 @@ class SugorokuonAppModule(
 
     @Singleton
     @Provides
-    fun provideSugorokuonAppState() : SugorokuonAppState = SugorokuonAppState()
+    fun provideSugorokuonAppState(): SugorokuonAppState = SugorokuonAppState()
 
+    @Singleton
+    @Provides
+    fun provideSearchUuidGenerator(): SearchUuidGenerator = SearchUuidGenerator()
 }

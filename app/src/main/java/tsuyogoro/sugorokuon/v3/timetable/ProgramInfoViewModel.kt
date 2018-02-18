@@ -6,23 +6,27 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.v3.service.TimeTableService
 
 class ProgramInfoViewModel(
         timeTableService: TimeTableService,
         programId: String,
+        schedulerProvider: SchedulerProvider,
         private val disposable: CompositeDisposable = CompositeDisposable()
 ) : ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
             private val timeTableService: TimeTableService,
-            private val programId: String
+            private val programId: String,
+            private val schedulerProvider: SchedulerProvider
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return ProgramInfoViewModel(
                     timeTableService,
-                    programId
+                    programId,
+                    schedulerProvider
             ) as T
         }
     }
@@ -34,6 +38,7 @@ class ProgramInfoViewModel(
                 timeTableService
                         .getProgram(programId)
                         .doOnSuccess(program::postValue)
+                        .subscribeOn(schedulerProvider.io())
                         .subscribe()
         )
     }

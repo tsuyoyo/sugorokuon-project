@@ -1,5 +1,6 @@
 package tsuyogoro.sugorokuon.v3
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
@@ -59,6 +60,8 @@ class SugorokuonTopViewModel(
                         .doOnNext {
                             if (it.isEmpty()) {
                                 signalNoArea.postValue(true)
+                            } else {
+                                signalNoArea.postValue(false)
                             }
                         }
                         .subscribe(),
@@ -105,7 +108,7 @@ class SugorokuonTopViewModel(
                         .observeStations()
                         .flatMapCompletable {
                             feedService
-                                    .fetchFeeds(it)
+                                    .fetchFeeds(it.mapNotNull { s -> s.id })
                                     .subscribeOn(schedulerProvider.io())
                                     .retry(Constants.RETRY_TIME)
                         }
@@ -123,4 +126,6 @@ class SugorokuonTopViewModel(
         super.onCleared()
         disposables.dispose()
     }
+
+    fun observeRequestToSetArea(): LiveData<Boolean> = signalNoArea
 }

@@ -10,3 +10,6 @@
 .idea/
 **/*.iml
 gradle.properties
+keys/
+app/src/debug/google-services.json
+app/src/release/google-services.json

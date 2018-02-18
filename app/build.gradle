@@ -41,6 +41,7 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".debug"
 
             // ここに書いてあるTest用のadUnitId
             // https://developers.google.com/admob/android/quick-start?hl=ja#give_your_app_an_ad_unit_id
@@ -73,6 +74,8 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${project.supportLibVersion}"
     implementation "com.google.android.gms:play-services:${project.playServiceVersion}"
     implementation "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
+    implementation "com.google.firebase:firebase-core:${project.playServiceVersion}"
+    implementation "com.google.firebase:firebase-messaging:${project.playServiceVersion}"
 
     // nendメディエーション用アダプター
     implementation('net.nend.android:nend-adapter:1.2.7') {
@@ -85,6 +88,7 @@ dependencies {
     }
 
     implementation "com.squareup.okhttp3:okhttp:${project.okHttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${project.okHttpVersion}"
     implementation "com.squareup.picasso:picasso:${project.picassoVersion}"
     implementation "jp.wasabeef:picasso-transformations:${project.picassoTransformationVersion}"
     implementation 'com.google.code.gson:gson:2.8.2'
@@ -99,6 +103,7 @@ dependencies {
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding:2.1.1"
 
     // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
     implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
@@ -144,17 +149,13 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:2.13.0"
-//    testImplementation "org.mockito:mockito-inline:2.13.0"
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
-
-    // Firebase
-//    implementation "com.google.firebase:firebase-core:${project.firebaseVersion}"
-//    implementation "com.google.firebase:firebase-crash:${project.firebaseVersion}"
 
     // For Robolectric
 //    testimplementation 'junit:junit:4.10'
 //    testimplementation 'org.assertj:assertj-core:1.7.0'
 //    testimplementation "org.robolectric:robolectric:${robolectricVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 
-
+apply plugin: 'com.google.gms.google-services'

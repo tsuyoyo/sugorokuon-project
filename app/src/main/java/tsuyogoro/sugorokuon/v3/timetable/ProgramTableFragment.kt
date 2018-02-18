@@ -3,7 +3,6 @@ package tsuyogoro.sugorokuon.v3.timetable
 import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
@@ -55,19 +54,6 @@ class ProgramTableFragment : Fragment(),
     private lateinit var viewModel: ProgramTableViewModel
     private lateinit var programTableAdapter: ProgramTableAdapter
 
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SugorokuonApplication.application(context)
@@ -83,7 +69,9 @@ class ProgramTableFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ButterKnife.bind(this, view)
+
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
                 .get(ProgramTableViewModel::class.java)
@@ -131,7 +119,7 @@ class ProgramTableFragment : Fragment(),
     }
 
     override fun onProgramClicked(program: TimeTableResponse.Program, tappedPosition: Point) {
-        (activity as? SugorokuonTopActivity)?.pushFragment(
+        (activity as? SugorokuonTopActivity)?.switchFragment(
                 ProgramInfoFragment.createInstance(
                         program,
                         ProgramInfoFragment.TransitionParameters(
@@ -148,7 +136,7 @@ class ProgramTableFragment : Fragment(),
         val today = Calendar.getInstance()
 
         val datePickerDialog = DatePickerDialog(context,
-                DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                DatePickerDialog.OnDateSetListener { _, year, month, day ->
                     viewModel.selectDate(Calendar.getInstance().apply {
                         set(Calendar.YEAR, year)
                         set(Calendar.MONTH, month)

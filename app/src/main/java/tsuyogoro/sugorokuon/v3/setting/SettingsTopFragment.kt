@@ -54,7 +54,7 @@ class SettingsTopFragment : Fragment() {
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)
-                    ?.pushFragment(AreaSettingsFragment(), SubFragmentTags.AREA_SETTINGS)
+                    ?.switchFragment(AreaSettingsFragment(), SubFragmentTags.AREA_SETTINGS)
         }
     }
 

@@ -8,21 +8,21 @@ import android.content.res.Resources
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.v3.constant.Area
-import tsuyogoro.sugorokuon.v3.repository.SettingsRepository
+import tsuyogoro.sugorokuon.v3.service.SettingsService
 
 class AreaSettingsViewModel(
-        private val settingsRepository: SettingsRepository,
+        private val settingsService: SettingsService,
         private val resources: Resources,
         private val disposable: CompositeDisposable = CompositeDisposable()
 ) : ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-            private val settingsRepository: SettingsRepository,
+            private val settingsService: SettingsService,
             private val resources: Resources
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                AreaSettingsViewModel(settingsRepository, resources) as T
+                AreaSettingsViewModel(settingsService, resources) as T
     }
 
     private val allAreas = MutableLiveData<List<Area>>()
@@ -31,7 +31,7 @@ class AreaSettingsViewModel(
 
     init {
         disposable.addAll(
-                settingsRepository.observeAreaSettings()
+                settingsService.observeAreas()
                         .subscribe {
                             selectedAreas.value = it
                             selectedAreasLabel.value = resources.getString(
@@ -53,23 +53,13 @@ class AreaSettingsViewModel(
     fun observeSelectedAreasLabel(): LiveData<String> = selectedAreasLabel
 
     fun selectArea(area: Area) {
-        settingsRepository.setAreaSettings(
-                settingsRepository
-                        .observeAreaSettings()
-                        .value
-                        .toMutableSet()
-                        .apply { add(area) }
-        )
+        settingsService.selectArea(area)
     }
 
     fun deselectArea(area: Area) {
-        settingsRepository.setAreaSettings(
-                settingsRepository
-                        .observeAreaSettings()
-                        .value
-                        .toMutableSet()
-                        .apply { remove(area) }
-        )
+        settingsService.deselectArea(area)
+
+        // TODO : 選択項目が0になってしまった時にアラートを出す
     }
 
     override fun onCleared() {

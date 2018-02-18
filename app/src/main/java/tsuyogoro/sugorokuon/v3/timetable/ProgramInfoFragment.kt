@@ -4,8 +4,9 @@ import android.animation.Animator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.Nullable
+import android.provider.CalendarContract
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.*
 import android.webkit.WebView
 import android.widget.ImageView
@@ -16,8 +17,10 @@ import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.jakewharton.rxbinding2.view.RxView
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
+import tsuyogoro.sugorokuon.v3.api.response.SearchResponse
 import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -38,10 +41,32 @@ class ProgramInfoFragment : Fragment() {
         val FRAGMENT_TAG = "programInfo"
 
         fun createInstance(program: TimeTableResponse.Program,
-                           @Nullable transitionParams: TransitionParameters) =
+                           transitionParams: TransitionParameters?) =
                 ProgramInfoFragment().apply {
                     arguments = Bundle().apply {
                         putSerializable(KEY_PROGRAM, program)
+                        putSerializable(KEY_TRANSITION_PARAMS, transitionParams)
+                    }
+                }
+
+        fun createInstance(program: SearchResponse.Program,
+                           transitionParams: TransitionParameters? = null) =
+                ProgramInfoFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable(KEY_PROGRAM, TimeTableResponse.Program().apply {
+                            start = Calendar.getInstance().apply {
+                                timeInMillis = program.start.time
+                            }
+                            end = Calendar.getInstance().apply {
+                                timeInMillis = program.end.time
+                            }
+                            title = program.title
+                            url = program.url
+                            description = program.description
+                            info = program.info
+                            perfonality = program.personality
+                            image = program.image
+                        })
                         putSerializable(KEY_TRANSITION_PARAMS, transitionParams)
                     }
                 }
@@ -63,10 +88,10 @@ class ProgramInfoFragment : Fragment() {
     lateinit var onAirEnd: TextView
 
     @BindView(R.id.open_web_site)
-    lateinit var buttonOpenSite: TextView
+    lateinit var buttonOpenSite: View
 
-    @BindView(R.id.share_program)
-    lateinit var buttonShare: TextView
+    @BindView(R.id.register_calendar)
+    lateinit var buttonRegisterCalendar: View
 
     @BindView(R.id.content)
     lateinit var contentWebView: WebView
@@ -121,23 +146,17 @@ class ProgramInfoFragment : Fragment() {
                 }
             }
 
-            buttonShare.setOnClickListener { v ->
-                val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "text/plain"
-
-                val startTime = SimpleDateFormat(
-                        resources.getString(R.string.date_hhmm),
-                        Locale.JAPAN).format(Date(it.start.timeInMillis))
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        "${it.title} ${startTime} よりonAir : ${it.url ?: ""}"
-                )
-                startActivity(shareIntent)
+            buttonRegisterCalendar.setOnClickListener { _ ->
+                showRegisterCalendarDialog(it)
             }
         }
 
         // Handle back key to make animation
         view.setOnKeyListener { _, keyCode, keyEvent ->
-            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.action == KeyEvent.ACTION_DOWN) {
+            val isTop = fragmentManager.getBackStackEntryAt(
+                    fragmentManager.backStackEntryCount - 1).name == FRAGMENT_TAG
+
+            if (isTop && keyCode == KeyEvent.KEYCODE_BACK && keyEvent.action == KeyEvent.ACTION_DOWN) {
                 dismiss()
                 true
             } else {
@@ -156,8 +175,31 @@ class ProgramInfoFragment : Fragment() {
         adArea.visibility = View.GONE
     }
 
-//    @OnClick(R.id.close)
-    fun dismiss() {
+    private fun showRegisterCalendarDialog(program: TimeTableResponse.Program) {
+        AlertDialog.Builder(context)
+                .setMessage(getString(R.string.register_calendar_confirm))
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    val beginTime = Calendar.getInstance()
+                    beginTime.time = Date().apply { time = program.start.timeInMillis }
+
+                    val endTime = Calendar.getInstance()
+                    endTime.time = Date().apply { time = program.end.timeInMillis }
+
+                    val intent = Intent(Intent.ACTION_INSERT)
+                            .setData(CalendarContract.Events.CONTENT_URI)
+                            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.timeInMillis)
+                            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
+                            .putExtra(CalendarContract.Events.TITLE, program.title)
+                            .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
+                    startActivity(intent)
+                }
+                .setNegativeButton(android.R.string.no, null)
+                .create()
+                .show()
+    }
+
+    private fun dismiss() {
         makeExitAnimator()
                 ?.apply {
                     addListener(

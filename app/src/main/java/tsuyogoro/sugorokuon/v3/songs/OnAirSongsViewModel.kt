@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.v3.api.response.FeedResponse
+import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.v3.service.FeedService
 import tsuyogoro.sugorokuon.v3.service.StationService
 
@@ -13,6 +14,7 @@ class OnAirSongsViewModel(
         private val stationId: String,
         private val stationService: StationService,
         private val feedService: FeedService,
+        private val schedulerProvider: SchedulerProvider,
         private val disposables: CompositeDisposable = CompositeDisposable()
 ) : ViewModel() {
 
@@ -20,10 +22,11 @@ class OnAirSongsViewModel(
     class Factory(
             private val stationId: String,
             private val stationService: StationService,
-            private val feedService: FeedService
+            private val feedService: FeedService,
+            private val schedulerProvider: SchedulerProvider
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-            OnAirSongsViewModel(stationId, stationService, feedService) as T
+            OnAirSongsViewModel(stationId, stationService, feedService, schedulerProvider) as T
     }
 
     private val onAirSongs = MutableLiveData<List<FeedResponse.Song>>()
@@ -43,6 +46,7 @@ class OnAirSongsViewModel(
         disposables.add(
                 feedService
                         .fetchFeed(stationId)
+                        .subscribeOn(schedulerProvider.io())
                         .subscribe( { }, { _ -> signalFetchOnAirSongError.postValue(true) })
         )
     }

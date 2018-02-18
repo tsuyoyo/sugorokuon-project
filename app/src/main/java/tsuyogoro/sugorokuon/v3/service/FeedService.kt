@@ -3,8 +3,8 @@ package tsuyogoro.sugorokuon.v3.service
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.v3.api.FeedApi
 import tsuyogoro.sugorokuon.v3.api.response.FeedResponse
 import tsuyogoro.sugorokuon.v3.api.response.StationResponse
@@ -17,39 +17,31 @@ class FeedService(
         private val feedRepository: FeedRepository,
         private val appState: SugorokuonAppState
 ) {
-
-    fun fetchFeeds(stations: List<StationResponse.Station>): Completable = Flowable
-            .create<StationResponse.Station>({ emitter ->
-                stations.forEach(emitter::onNext)
+    fun fetchFeeds(stationIds: List<String>): Completable = Flowable
+            .create<String>({ emitter ->
+                stationIds.forEach(emitter::onNext)
                 emitter.onComplete()
             }, BackpressureStrategy.LATEST)
             .doOnSubscribe {
                 appState.setIsLoadingFeed(true)
                 feedRepository.clear()
             }
-            .flatMapCompletable {
-                feedApi.getFeed(it.id)
-                        .doOnSuccess { res -> feedRepository.set(it, res) }
-                        .subscribeOn(Schedulers.io())
-                        .ignoreElement()
-                        .onErrorResumeNext { Completable.complete() }
-            }
+            .flatMapCompletable(this::callFeedApi)
             .doOnComplete { appState.setIsLoadingFeed(false) }
             .doOnError { appState.setIsLoadingFeed(false) }
 
     fun fetchFeed(stationId: String): Completable =
-            stationService.observeStations().firstElement()
-                    .filter { it.find { s -> s.id == stationId } != null }
-                    .map { it.find { s -> s.id == stationId } }
-                    .flatMapCompletable {
-                        feedApi.getFeed(it.id)
-                                .doOnSuccess { res -> feedRepository.set(it, res) }
-                                .subscribeOn(Schedulers.io())
-                                .ignoreElement()
-                                .onErrorResumeNext { Completable.complete() }
-                    }
+            Maybe.just(stationId)
+                    .flatMapCompletable(this::callFeedApi)
+                    .doOnSubscribe { appState.setIsLoadingFeed(true) }
                     .doOnComplete { appState.setIsLoadingFeed(false) }
-                    .doOnError { appState.setIsLoadingFeed(false) }
+
+
+    private fun callFeedApi(stationId: String): Completable =
+            feedApi.getFeed(stationId)
+                    .doOnSuccess { res -> feedRepository.set(stationId, res) }
+                    .ignoreElement()
+                    .onErrorResumeNext { Completable.complete() }
 
     fun observeFeedAvailableStations(): Flowable<List<StationResponse.Station>> =
             Flowable.combineLatest(

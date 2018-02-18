@@ -4,15 +4,16 @@ import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.v3.repository.SettingsRepository
+import tsuyogoro.sugorokuon.v3.service.SettingsService
 
 @Module
 class SettingsModule {
 
     @Provides
     fun provideAreaSettingViewModelFactory(
-            settingsRepository: SettingsRepository,
+            settingsService: SettingsService,
             resources: Resources
-    ) = AreaSettingsViewModel.Factory(settingsRepository, resources)
+    ) = AreaSettingsViewModel.Factory(settingsService, resources)
 
     @Provides
     fun provideSettingsTopViewModelFactory(

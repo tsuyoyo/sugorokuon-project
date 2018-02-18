@@ -4,11 +4,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://maven.google.com" }
+        maven { url "https://dl.bintray.com/android/android-tools" }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
+        classpath 'com.google.gms:google-services:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -23,6 +26,8 @@ subprojects {
 
     repositories {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://maven.google.com" }
+        maven { url "https://dl.bintray.com/android/android-tools" }
         jcenter()
         mavenLocal()
         mavenCentral()
@@ -37,7 +42,7 @@ ext {
     targetSdkVersion = '26'
     supportLibVersion = "26.1.0"
     minSdkVersion = "21"
-    playServiceVersion = "11.6.0"
+    playServiceVersion = "11.8.0"//"11.6.2"
     retrofitVersion = "2.3.0"
     robolectricVersion = "3.0-rc2"
     daggerVersion = "2.9"

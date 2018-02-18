@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.simpleframework.xml.Serializer
 import org.simpleframework.xml.core.Persister
 import org.simpleframework.xml.transform.RegistryMatcher
@@ -14,6 +15,8 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
+
+
 
 @Module
 open class RadikoApiModule {
@@ -43,7 +46,13 @@ open class RadikoApiModule {
     fun provideSearchApi(apiConfig: ApiConfig): SearchApi =
             Retrofit.Builder()
                     .baseUrl(apiConfig.API_ROOT)
-                    .client(OkHttpClient())
+                    .client(OkHttpClient.Builder().apply {
+
+                        val logging = HttpLoggingInterceptor()
+                        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+                        addInterceptor(logging)
+
+                    }.build())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(
                             GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()

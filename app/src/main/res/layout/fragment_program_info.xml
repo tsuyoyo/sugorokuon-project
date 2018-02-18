@@ -53,7 +53,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/app_accent"
-                                android:textSize="@dimen/textsize_large"
+                                android:textSize="20sp"
                                 android:textStyle="bold"
                                 tools:text="21:30" />
 
@@ -76,7 +76,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toEndOf="@+id/on_air_time_separator"
                                 android:textColor="@color/app_accent"
-                                android:textSize="@dimen/textsize_standard"
+                                android:textSize="@dimen/textsize_large"
                                 tools:text="24:00" />
 
                         </RelativeLayout>
@@ -88,6 +88,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/on_air_time"
                             android:textStyle="bold"
+                            android:textSize="18sp"
                             tools:text="とんカツワイド" />
 
                         <TextView
@@ -96,78 +97,84 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
                             android:layout_below="@+id/title"
+                            android:textSize="@dimen/textsize_large"
                             tools:text="Kazumi saito" />
 
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:id="@+id/ad_area"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/content_area"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginStart="16dp">
-
-                        <!-- サイズ (320 x 50 は、下記サイトを参考にした)
-                        https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
-                        @string/adUnitId
-                        build.gradleの中にStringを定義した
-                        resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
-                        -->
-                        <com.google.android.gms.ads.AdView
-                            android:id="@+id/ad_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            ads:adSize="BANNER"
-                            ads:adUnitId="@string/adUnitId" />
-
-                        <Button
-                            android:id="@+id/close_ad"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_toEndOf="@+id/ad_view"
-                            android:background="@drawable/ic_close_grey_600_18dp" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:id="@+id/operation_area"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/ad_area"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:layout_marginBottom="@dimen/margin_standard"
+                        android:layout_below="@+id/content_area"
                         android:layout_centerHorizontal="true"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <Button
                             android:id="@+id/open_web_site"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:text="@string/button_open_web_site"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:minHeight="0dp"
+                            android:background="@drawable/background_rounded_button"
+                            android:drawablePadding="4dp"
                             android:drawableStart="@drawable/ic_web_grey_600_24dp"
-                            android:drawablePadding="8dp"
-                            android:layout_alignParentStart="true"
-                            />
-
-                        <TextView
-                            android:id="@+id/share_program"
-                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:text="@string/button_share_program"
-                            android:drawableStart="@drawable/ic_share_grey_600_24dp"
-                            android:drawablePadding="8dp"
-                            android:layout_alignParentEnd="true"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingStart="8dp"
+                            android:text="@string/button_open_web_site"
+                            android:textColor="@color/app_accent"
+                            android:textSize="@dimen/textsize_small"/>
+
+                        <Button
+                            android:id="@+id/register_calendar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:minHeight="0dp"
+                            android:gravity="center"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:paddingEnd="8dp"
+                            android:paddingStart="8dp"
+                            android:background="@drawable/background_rounded_button"
+                            android:text="@string/button_register_calendar"
+                            android:textColor="@color/app_accent"
+                            android:textSize="@dimen/textsize_small"
+                            android:drawableStart="@drawable/ic_schedule_accent_24dp"
+                            android:drawablePadding="4dp"
+
                             />
 
-                    </RelativeLayout>
+
+                        <!--<Button-->
+                            <!--android:id="@+id/share_program"-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:layout_marginStart="8dp"-->
+                            <!--android:layout_marginEnd="8dp"-->
+                            <!--android:gravity="center"-->
+                            <!--android:paddingEnd="8dp"-->
+                            <!--android:paddingStart="8dp"-->
+                            <!--android:background="@drawable/background_rounded_button"-->
+                            <!--android:text="@string/button_share_program"-->
+                            <!--android:drawableStart="@drawable/ic_share_grey_600_24dp"-->
+                            <!--android:drawablePadding="4dp"-->
+                            <!--android:textColor="@color/app_accent"-->
+                            <!--/>-->
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -184,6 +191,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </android.support.v4.widget.NestedScrollView>
+
+
+
+            <RelativeLayout
+                android:id="@+id/ad_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_area"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp">
+
+                <!-- サイズ (320 x 50 は、下記サイトを参考にした)
+                https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
+                @string/adUnitId
+                build.gradleの中にStringを定義した
+                resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
+                -->
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/ad_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="@string/adUnitId" />
+
+                <Button
+                    android:id="@+id/close_ad"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_toEndOf="@+id/ad_view"
+                    android:background="@drawable/ic_close_grey_600_18dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 

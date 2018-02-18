@@ -2,24 +2,29 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/menu_fetch_latest_program"
-        android:icon="@drawable/ic_cached_white_24dp"
-        android:orderInCategory="1"
-        myapp:showAsAction="always"
-        android:title="@string/option_update_now" />
+    <group android:id="@+id/common_menu">
+        <!--<item-->
+            <!--android:id="@+id/search"-->
+            <!--android:icon="@drawable/ic_search_white_24dp"-->
+            <!--android:orderInCategory="1"-->
+            <!--myapp:showAsAction="ifRoom"-->
+            <!--android:title="@string/option_search_program" />-->
 
-    <item
-        android:id="@+id/menu_launch_radiko"
-        android:icon="@drawable/ic_radio_white_24dp"
-        android:orderInCategory="2"
-        myapp:showAsAction="always"
-        android:title="@string/option_launch_radio_app" />
+        <item
+            android:id="@+id/menu_search_view"
+            android:icon="@null"
+            android:orderInCategory="1"
+            myapp:showAsAction="always"
+            android:title="@string/option_search_program"
+            myapp:actionViewClass="android.support.v7.widget.SearchView"/>
 
-    <item
-        android:id="@+id/menu_launch_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:orderInCategory="3"
-        myapp:showAsAction="always"
-        android:title="@string/option_search_program" />
+        <item
+            android:id="@+id/launch_radiko"
+            android:icon="@drawable/ic_radio_white_24dp"
+            android:orderInCategory="2"
+            myapp:showAsAction="always"
+            android:title="@string/option_launch_radio_app" />
+    </group>
+
+
 </menu>

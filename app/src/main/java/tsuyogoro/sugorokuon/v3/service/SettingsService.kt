@@ -26,8 +26,24 @@ class SettingsService(
 
     fun observeDate(): Flowable<Calendar> = settingsRepository.observeDate()
 
-    fun setAreas(areas: Set<Area>) {
-        settingsRepository.setAreaSettings(areas)
+    fun selectArea(area: Area) {
+        settingsRepository.setAreaSettings(
+                settingsRepository
+                        .observeAreaSettings()
+                        .value
+                        .toMutableSet()
+                        .apply { add(area) }
+        )
+    }
+
+    fun deselectArea(area: Area) {
+        settingsRepository.setAreaSettings(
+                settingsRepository
+                        .observeAreaSettings()
+                        .value
+                        .toMutableSet()
+                        .apply { remove(area) }
+        )
     }
 
     fun observeAreas(): Flowable<Set<Area>> = settingsRepository.observeAreaSettings()

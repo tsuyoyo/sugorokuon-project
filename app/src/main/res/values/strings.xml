@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ラジコンシェルジュ</string>
-
     <!-- Main画面 -->
     <string name="title_recommends">今週のおすすめ</string>
     <string name="launching_app">起動中です&#8230;</string>
@@ -154,9 +152,22 @@
     <!-- OnAirSongs -->
     <string name="on_air_song_search_library">検索</string>
 
-    <string name="button_open_web_site">番組サイトを開く</string>
-    <string name="button_share_program">番組情報をシェア</string>
+    <string name="button_open_web_site">番組サイト</string>
+    <string name="button_share_program">シェア</string>
+    <string name="button_register_calendar">カレンダーに登録</string>
+    <string name="register_calendar_confirm">この番組をスマホのカレンダーに登録しますか?</string>
     <string name="button_back_to_timetable">番組表へ戻る</string>
     <string name="button_close">閉じる</string>
+
+    <!-- Search -->
+    <string name="error_search">検索できませんでした。通信環境の良いところで再度お試しください。(%1$s)</string>
+    <string name="search_hint">ラジオ番組を検索</string>
+    <string name="search_condition">%1$s の検索結果</string>
+
+    <!-- OnBoarding -->
+    <string name="tutorial_next">Next</string>
+    <string name="onboarding_done">ラジ番を始める!!</string>
+
+    <string name="ad">広告</string>
 
 </resources>

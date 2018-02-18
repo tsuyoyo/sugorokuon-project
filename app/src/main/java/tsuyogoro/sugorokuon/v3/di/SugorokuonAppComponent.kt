@@ -4,6 +4,10 @@ import dagger.Component
 import tsuyogoro.sugorokuon.v3.SugorokuonTopModule
 import tsuyogoro.sugorokuon.v3.SugorokuonTopSubComponent
 import tsuyogoro.sugorokuon.v3.api.RadikoApiModule
+import tsuyogoro.sugorokuon.v3.onboarding.OnboardingComponent
+import tsuyogoro.sugorokuon.v3.onboarding.OnboardingModule
+import tsuyogoro.sugorokuon.v3.search.SearchModule
+import tsuyogoro.sugorokuon.v3.search.SearchSubComponent
 import tsuyogoro.sugorokuon.v3.setting.SettingsModule
 import tsuyogoro.sugorokuon.v3.setting.SettingsSubComonent
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsModule
@@ -42,4 +46,11 @@ interface SugorokuonAppComponent {
 
     fun sugorokuonTopSubComponent(sugorokuonTopModule: SugorokuonTopModule)
             : SugorokuonTopSubComponent
+
+    fun searchSubComponent(searchModule: SearchModule)
+            : SearchSubComponent
+
+    fun onBoardingSubComponent(onboardingModule: OnboardingModule)
+            : OnboardingComponent
+
 }

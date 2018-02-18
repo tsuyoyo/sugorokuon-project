@@ -43,10 +43,12 @@ class ProgramTableAdapter(
 
     override fun getItemCount(): Int = timeTables.size
 
-    class TimeTableViewHolder(parent: ViewGroup?,
-                              private val listener: ProgramTableAdapterListener
-    ) : RecyclerView.ViewHolder(
-            LayoutInflater.from(parent!!.context)
+    class TimeTableViewHolder(
+            parent: ViewGroup?,
+            private val listener: ProgramTableAdapterListener) : RecyclerView.ViewHolder(
+
+            LayoutInflater
+                    .from(parent!!.context)
                     .inflate(R.layout.item_program_one_station, parent, false)
     ) {
 

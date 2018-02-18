@@ -3,8 +3,6 @@ package tsuyogoro.sugorokuon.v3.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.v3.api.FeedApi
-import tsuyogoro.sugorokuon.v3.api.TimeTableApi
 import tsuyogoro.sugorokuon.v3.preference.AreaPrefs
 import tsuyogoro.sugorokuon.v3.repository.FeedRepository
 import tsuyogoro.sugorokuon.v3.repository.SettingsRepository
@@ -21,8 +19,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideTimeTableRepository(timeTableApi: TimeTableApi) : TimeTableRepository =
-            TimeTableRepository()
+    fun provideTimeTableRepository() : TimeTableRepository = TimeTableRepository()
 
     @Singleton
     @Provides
@@ -31,7 +28,6 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideFeedRepository(feedApi: FeedApi) : FeedRepository =
-            FeedRepository()
+    fun provideFeedRepository() : FeedRepository = FeedRepository()
 
 }
