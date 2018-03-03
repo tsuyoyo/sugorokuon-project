@@ -14,6 +14,12 @@
     <dimen name="textsize_standard">14sp</dimen>
     <dimen name="textsize_large">16sp</dimen>
     <dimen name="textsize_ex_large">18sp</dimen>
+    <dimen name="textsize_ex_large_20">20sp</dimen>
+    <dimen name="textsize_ex_large_22">22sp</dimen>
+    <dimen name="textsize_ex_large_24">24sp</dimen>
+    <dimen name="textsize_ex_large_26">26sp</dimen>
+    <dimen name="textsize_ex_large_28">28sp</dimen>
+    <dimen name="textsize_ex_large_30">30sp</dimen>
 
     <dimen name="cardview_elevation_normal">4dp</dimen>
 

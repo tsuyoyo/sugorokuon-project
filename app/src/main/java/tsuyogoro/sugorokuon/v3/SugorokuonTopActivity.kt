@@ -7,10 +7,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.BottomNavigationView
+import android.support.transition.Slide
+import android.support.transition.Transition
+import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
@@ -193,20 +197,26 @@ class SugorokuonTopActivity : AppCompatActivity() {
     }
 
     private fun openProgramTable() {
+        appBarLayout.setExpanded(true, true)
         switchFragment(ProgramTableFragment(), FragmentTags.PROGRAM_TABLE)
     }
 
     private fun openOnAirSongs() {
+        appBarLayout.setExpanded(true, true)
         switchFragment(OnAirSongsRootFragment(), FragmentTags.ON_AIR_SONGS)
     }
 
     private fun openSettings() {
+        appBarLayout.setExpanded(true, true)
         switchFragment(SettingsTopFragment(), FragmentTags.SETTINGS)
     }
 
-    fun switchFragment(fragment: Fragment, tag: String) {
+    fun switchFragment(fragment: Fragment, tag: String, transition: Transition? = null) {
         val fm = supportFragmentManager
         if (fm.findFragmentByTag(tag) == null) {
+            if (transition != null) {
+                fragment.enterTransition = TransitionSet().addTransition(transition)
+            }
             fm.beginTransaction()
                     .add(R.id.fragment_area, fragment, tag)
                     .addToBackStack(tag)

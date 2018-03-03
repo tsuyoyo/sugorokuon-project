@@ -140,6 +140,7 @@
     <string name="bottom_navigation_settings">設定</string>
 
     <!-- Settings -->
+    <string name="settings_area_not_selected">番組表を見たいエリアを選択してください</string>
     <string name="settings_area_selected">選択中のエリア : %1$s</string>
 
     <!-- Timetable -->

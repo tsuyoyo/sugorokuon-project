@@ -34,13 +34,17 @@ class AreaSettingsViewModel(
                 settingsService.observeAreas()
                         .subscribe {
                             selectedAreas.value = it
-                            selectedAreasLabel.value = resources.getString(
-                                    R.string.settings_area_selected,
-                                    it.joinToString(
-                                            separator = "、",
-                                            transform = { area -> resources.getString(area.strId) }
-                                    )
-                            )
+                            selectedAreasLabel.value = if (it.isEmpty()) {
+                                resources.getString(R.string.settings_area_not_selected)
+                            } else {
+                                resources.getString(
+                                        R.string.settings_area_selected,
+                                        it.joinToString(
+                                                separator = "、",
+                                                transform = { area -> resources.getString(area.strId) }
+                                        )
+                                )
+                            }
                         }
         )
         allAreas.value = Area.values().sortedBy { it.ordinal }

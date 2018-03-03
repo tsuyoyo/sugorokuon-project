@@ -6,11 +6,10 @@ package tsuyogoro.sugorokuon.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 public class RadikoLauncher {
-
-    private static final String LAUNCH_URL = "radiko://radiko.jp";
 
     private static final String GOOGLE_PLAY_URL = "market://details?id=jp.radiko.Player";
 
@@ -21,10 +20,8 @@ public class RadikoLauncher {
      * @param context
      */
     public static void launch(Context context) {
-        // アプリの起動を試みる。
-        Uri uri = Uri.parse(LAUNCH_URL);
-        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PackageManager pm = context.getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage("jp.radiko.Player");
         try {
             context.startActivity(intent);
         } catch(Exception e) {

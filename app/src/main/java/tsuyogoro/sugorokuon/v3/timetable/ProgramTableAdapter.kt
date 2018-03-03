@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.graphics.Rect
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,8 @@ class ProgramTableAdapter(
         @BindView(R.id.program_list)
         lateinit var programList: RecyclerView
 
+        private lateinit var layoutManager: LinearLayoutManager
+
         init {
             ButterKnife.bind(this, itemView)
             programList.addItemDecoration(ProgramListItemDecoration())
@@ -81,15 +84,32 @@ class ProgramTableAdapter(
             val programsAdapter = TimeTableAdapter(listener).apply {
                 setPrograms(timeTable.programs)
             }
+            layoutManager = LinearLayoutManager(
+                    itemView.context, LinearLayoutManager.HORIZONTAL, false)
             programList.apply {
                 adapter = programsAdapter
-                layoutManager = LinearLayoutManager(
-                        itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = this@TimeTableViewHolder.layoutManager
             }
             programsAdapter.notifyDataSetChanged()
 
             // Focus the position of now.
             programList.scrollToPosition(programsAdapter.getCurrentTimePosition())
+
+
+
+
+            programList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    Log.d("TestTestTest", "${timeTable.station.name} : ${layoutManager.findLastVisibleItemPosition()} / ${timeTable.programs.size}")
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                }
+            })
+
 
             stationSiteButton.setOnClickListener {
                 listener.onStationSiteClicked(timeTable.station)

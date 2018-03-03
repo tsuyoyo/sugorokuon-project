@@ -3,7 +3,9 @@ package tsuyogoro.sugorokuon.v3.setting
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.transition.Slide
 import android.support.v4.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,8 +55,11 @@ class SettingsTopFragment : Fragment() {
                 .observe(this, Observer(selectedAreas::setText))
 
         areaSettings.setOnClickListener {
-            (activity as? SugorokuonTopActivity)
-                    ?.switchFragment(AreaSettingsFragment(), SubFragmentTags.AREA_SETTINGS)
+            (activity as? SugorokuonTopActivity)?.switchFragment(
+                    AreaSettingsFragment(),
+                    SubFragmentTags.AREA_SETTINGS,
+                    Slide(Gravity.LEFT)
+            )
         }
     }
 

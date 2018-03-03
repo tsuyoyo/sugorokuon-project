@@ -20,13 +20,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_ex_large_20"
             android:text="@string/settings_header_area_title"/>
 
         <TextView
             android:id="@+id/selected_areas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
+            android:textSize="@dimen/textsize_standard"
             tools:text="千葉 東京"/>
     </LinearLayout>
 

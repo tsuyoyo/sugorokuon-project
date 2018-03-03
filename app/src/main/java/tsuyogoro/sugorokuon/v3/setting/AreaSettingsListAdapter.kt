@@ -57,7 +57,7 @@ class AreaSettingsListAdapter(
         fun setData(area: Area, isChecked: Boolean) {
             name.text = itemView.resources.getString(area.strId)
             checkBox.isChecked = isChecked
-            checkBox.setOnClickListener { _ ->
+            itemView.setOnClickListener { _ ->
                 if (isChecked) {
                     listener.onAreaDeselected(area)
                 } else {
