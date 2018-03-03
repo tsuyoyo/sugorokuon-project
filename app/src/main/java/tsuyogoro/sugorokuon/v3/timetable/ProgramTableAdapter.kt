@@ -32,13 +32,13 @@ class ProgramTableAdapter(
         this.timeTables = timeTables
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is TimeTableViewHolder) {
             holder.setStation(timeTables[position])
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             TimeTableViewHolder(parent, listener)
 
     override fun getItemCount(): Int = timeTables.size

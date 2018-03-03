@@ -49,14 +49,14 @@ class OnAirSongsRootFragment : Fragment() {
         fragmentPagerAdapter = OnAirSongsFragmentPagerAdapter(childFragmentManager)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?,
+    override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_on_air_songs_root, container, false)
+            inflater.inflate(R.layout.fragment_on_air_songs_root, container, false)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view!!)
+        ButterKnife.bind(this, view)
 
         viewPager.adapter = fragmentPagerAdapter
         pagerTabStrip.setTabIndicatorColorResource(R.color.app_primary)

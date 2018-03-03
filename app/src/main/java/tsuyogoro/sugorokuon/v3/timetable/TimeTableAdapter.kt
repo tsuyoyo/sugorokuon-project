@@ -1,9 +1,7 @@
 package tsuyogoro.sugorokuon.v3.timetable
 
 import android.graphics.Point
-import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +10,6 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.request.target.DrawableImageViewTarget
-import com.bumptech.glide.request.target.Target
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.v3.api.response.TimeTableResponse
 import java.text.SimpleDateFormat
@@ -26,13 +21,13 @@ class TimeTableAdapter(
 
     private lateinit var programs: List<TimeTableResponse.Program>
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as? ProgramViewHolder)?.setProgram(programs[position])
     }
 
     override fun getItemCount(): Int = programs.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             ProgramViewHolder(parent, listener)
 
     fun setPrograms(programs: List<TimeTableResponse.Program>) {

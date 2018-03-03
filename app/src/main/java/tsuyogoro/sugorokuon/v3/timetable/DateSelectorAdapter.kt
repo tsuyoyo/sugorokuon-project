@@ -42,19 +42,19 @@ class DateSelectorAdapter(
         fun onDateSelected(date: Calendar)
     }
 
-    override fun onBindViewHolder(holder: DateSelectorViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: DateSelectorViewHolder, position: Int) {
         val date = selectableDates[position]
         val isSelected = date.get(Calendar.YEAR) == selectedDate?.get(Calendar.YEAR) &&
                 date.get(Calendar.MONTH) == selectedDate?.get(Calendar.MONTH) &&
                 date.get(Calendar.DAY_OF_MONTH) == selectedDate?.get(Calendar.DAY_OF_MONTH)
 
-        holder?.setDate(date, isSelected)
+        holder.setDate(date, isSelected)
     }
 
     override fun getItemCount(): Int = selectableDates.size
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DateSelectorViewHolder =
-            DateSelectorViewHolder(parent!!, listener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateSelectorViewHolder =
+            DateSelectorViewHolder(parent, listener)
 
     fun setSelectedDate(date: Calendar) {
         selectedDate = date

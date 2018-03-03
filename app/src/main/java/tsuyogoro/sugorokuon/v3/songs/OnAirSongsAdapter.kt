@@ -25,11 +25,11 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.onAirSongs = onAirSongs
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as? OnAirSongsViewHolder)?.setSong(onAirSongs[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             OnAirSongsViewHolder(parent)
 
     override fun getItemCount(): Int = onAirSongs.size

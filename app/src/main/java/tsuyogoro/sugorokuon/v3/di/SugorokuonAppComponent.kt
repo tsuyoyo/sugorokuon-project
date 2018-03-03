@@ -9,7 +9,7 @@ import tsuyogoro.sugorokuon.v3.onboarding.OnboardingModule
 import tsuyogoro.sugorokuon.v3.search.SearchModule
 import tsuyogoro.sugorokuon.v3.search.SearchSubComponent
 import tsuyogoro.sugorokuon.v3.setting.SettingsModule
-import tsuyogoro.sugorokuon.v3.setting.SettingsSubComonent
+import tsuyogoro.sugorokuon.v3.setting.SettingsSubComponent
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsModule
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsRootModule
 import tsuyogoro.sugorokuon.v3.songs.OnAirSongsRootSubModule
@@ -30,7 +30,7 @@ import javax.inject.Singleton
 interface SugorokuonAppComponent {
 
     fun settingSubComponent(settingsModule: SettingsModule)
-            : SettingsSubComonent
+            : SettingsSubComponent
 
     fun programTableSubComponent(programTableModule: ProgramTableModule)
             : ProgramTableSubComponent

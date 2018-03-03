@@ -107,14 +107,10 @@ class ProgramInfoFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?,
+    override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_program_info, container, false)
+            inflater.inflate(R.layout.fragment_program_info, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -125,7 +121,7 @@ class ProgramInfoFragment : Fragment() {
             makeEnterAnimation()?.start()
         }
 
-        (arguments.get(KEY_PROGRAM) as TimeTableResponse.Program).let {
+        (arguments?.get(KEY_PROGRAM) as? TimeTableResponse.Program)?.let {
             Glide.with(thumbnail).load(it.image).into(thumbnail)
 
             title.text = it.title
@@ -153,8 +149,10 @@ class ProgramInfoFragment : Fragment() {
 
         // Handle back key to make animation
         view.setOnKeyListener { _, keyCode, keyEvent ->
-            val isTop = fragmentManager.getBackStackEntryAt(
-                    fragmentManager.backStackEntryCount - 1).name == FRAGMENT_TAG
+            val fm = fragmentManager ?: return@setOnKeyListener false
+
+            val isTop = fm.getBackStackEntryAt(
+                    fm.backStackEntryCount - 1)?.name == FRAGMENT_TAG
 
             if (isTop && keyCode == KeyEvent.KEYCODE_BACK && keyEvent.action == KeyEvent.ACTION_DOWN) {
                 dismiss()
@@ -176,7 +174,7 @@ class ProgramInfoFragment : Fragment() {
     }
 
     private fun showRegisterCalendarDialog(program: TimeTableResponse.Program) {
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(context ?: return)
                 .setMessage(getString(R.string.register_calendar_confirm))
                 .setCancelable(true)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
@@ -206,7 +204,7 @@ class ProgramInfoFragment : Fragment() {
                             object : Animator.AnimatorListener {
                                 override fun onAnimationEnd(p0: Animator?) {
                                     view?.visibility = View.GONE
-                                    fragmentManager.popBackStack()
+                                    fragmentManager?.popBackStack()
                                 }
 
                                 override fun onAnimationRepeat(p0: Animator?) {}
@@ -216,11 +214,11 @@ class ProgramInfoFragment : Fragment() {
                     )
                 }
                 ?.start()
-                ?: fragmentManager.popBackStack()
+                ?: fragmentManager?.popBackStack()
     }
 
     private fun makeEnterAnimation(): Animator? =
-            (arguments.getSerializable(KEY_TRANSITION_PARAMS) as? TransitionParameters)
+            (arguments?.getSerializable(KEY_TRANSITION_PARAMS) as? TransitionParameters)
                     ?.let {
                         ViewAnimationUtils.createCircularReveal(
                                 view,
@@ -233,7 +231,7 @@ class ProgramInfoFragment : Fragment() {
                     }
 
     private fun makeExitAnimator(): Animator? =
-            (arguments.getSerializable(KEY_TRANSITION_PARAMS) as? TransitionParameters)
+            (arguments?.getSerializable(KEY_TRANSITION_PARAMS) as? TransitionParameters)
                     ?.let {
                         ViewAnimationUtils.createCircularReveal(
                                 view,

@@ -22,7 +22,7 @@ class SearchResultListAdapter(
         this.searchResults = searchResults
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             when (viewType) {
                 Type.AD -> AdBannerViewHolder(parent)
                 else -> SearchResultViewHolder(parent, listener)
@@ -37,7 +37,7 @@ class SearchResultListAdapter(
                 Type.PROGRAM
             }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position > 0) {
             // Ad is on first index.
             (holder as SearchResultViewHolder).setSearchResult(searchResults[position - 1])

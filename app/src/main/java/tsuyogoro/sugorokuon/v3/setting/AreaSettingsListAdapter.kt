@@ -27,9 +27,9 @@ class AreaSettingsListAdapter(
         this.selectedAreas.addAll(selectedAreas)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         areas[position].let {
-            holder?.setData(it, selectedAreas.contains(it))
+            holder.setData(it, selectedAreas.contains(it))
         }
     }
 

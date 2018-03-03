@@ -21,10 +21,10 @@ class TutorialFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?,
+    override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? = inflater?.inflate(
-            selectLayout(arguments.getInt(BUNDLE_KEY_INDEX)), container, false)
+                              savedInstanceState: Bundle?): View? = inflater.inflate(
+            selectLayout(arguments?.getInt(BUNDLE_KEY_INDEX) ?: 0), container, false)
 
     private fun selectLayout(index: Int) =
             when (index) {

@@ -5,7 +5,7 @@ import dagger.Subcomponent
 @Subcomponent(modules = [
     SettingsModule::class
 ])
-interface SettingsSubComonent {
+interface SettingsSubComponent {
 
     fun inject(settingsFragment: SettingsTopFragment)
 

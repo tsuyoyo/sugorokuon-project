@@ -58,14 +58,14 @@ class SearchFragment : Fragment(),
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?,
+    override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_search_result, null)
+            inflater.inflate(R.layout.fragment_search_result, null)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view!!)
+        ButterKnife.bind(this, view)
 
         // Not to allow swipe to refresh on search result list
         swipeRefreshLayout.isEnabled = false
@@ -137,7 +137,7 @@ class SearchFragment : Fragment(),
     private fun setupHandleBackKey(view: View?) {
         view?.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.action == KeyEvent.ACTION_DOWN) {
-                fragmentManager.popBackStack()
+                fragmentManager?.popBackStack()
                 true
             } else {
                 false
@@ -148,7 +148,7 @@ class SearchFragment : Fragment(),
     }
 
     override fun onSearchResultClicked(searchResult: SearchViewModel.SearchResultData) {
-        (activity as? SugorokuonTopActivity)?.switchFragment(
+        (activity as? SugorokuonTopActivity)?.pushFragment(
                 ProgramInfoFragment.createInstance(searchResult.program),
                 ProgramInfoFragment.FRAGMENT_TAG
         )

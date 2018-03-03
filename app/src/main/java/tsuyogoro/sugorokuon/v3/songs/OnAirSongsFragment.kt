@@ -14,6 +14,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
+import tsuyogoro.sugorokuon.utils.SugorokuonLog
 import javax.inject.Inject
 
 class OnAirSongsFragment : Fragment() {
@@ -46,9 +47,12 @@ class OnAirSongsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val stationId = arguments?.getString(KEY_STATION_ID) ?: ""
+        assert(stationId.isNotBlank(), { SugorokuonLog.e("Station id is null")})
+
         SugorokuonApplication.application(context)
                 .appComponent()
-                .onAirSongsSubComponent(OnAirSongsModule(arguments.getString(KEY_STATION_ID)))
+                .onAirSongsSubComponent(OnAirSongsModule(stationId))
                 .inject(this)
 
         viewModel = ViewModelProviders
@@ -62,13 +66,15 @@ class OnAirSongsFragment : Fragment() {
             inflater.inflate(R.layout.fragment_on_air_songs, container, false)
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view!!)
+        ButterKnife.bind(this, view)
         onAirSongsAdapter = OnAirSongsAdapter()
 
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.fetchOnAirSongs(arguments.getString(KEY_STATION_ID))
+            val stationId = arguments?.getString(KEY_STATION_ID) ?: ""
+            assert(stationId.isNotBlank(), { SugorokuonLog.e("Station id is null")})
+            viewModel.fetchOnAirSongs(stationId)
         }
 
         songsList.apply {

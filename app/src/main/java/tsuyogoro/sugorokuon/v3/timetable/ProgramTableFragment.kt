@@ -119,7 +119,7 @@ class ProgramTableFragment : Fragment(),
     }
 
     override fun onProgramClicked(program: TimeTableResponse.Program, tappedPosition: Point) {
-        (activity as? SugorokuonTopActivity)?.switchFragment(
+        (activity as? SugorokuonTopActivity)?.pushFragment(
                 ProgramInfoFragment.createInstance(
                         program,
                         ProgramInfoFragment.TransitionParameters(

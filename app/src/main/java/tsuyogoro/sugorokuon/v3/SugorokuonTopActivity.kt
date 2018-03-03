@@ -218,6 +218,18 @@ class SugorokuonTopActivity : AppCompatActivity() {
         }
     }
 
+    fun pushFragment(fragment: Fragment, tag: String) {
+        val fm = supportFragmentManager
+        val topIndex = fm.backStackEntryCount - 1
+        if (topIndex >= 0
+                && fm.getBackStackEntryAt(topIndex).name != tag) {
+            fm.beginTransaction()
+                    .add(R.id.fragment_area, fragment, tag)
+                    .addToBackStack(tag)
+                    .commit()
+        }
+    }
+
     fun setFocusOnSearchForm() {
         searchForm.requestFocusFromTouch()
     }
