@@ -142,6 +142,7 @@
     <!-- Settings -->
     <string name="settings_area_not_selected">番組表を見たいエリアを選択してください</string>
     <string name="settings_area_selected">選択中のエリア : %1$s</string>
+    <string name="license">OSS License</string>
 
     <!-- Timetable -->
     <string name="date_selector_day_in_week">(%1$s)</string>
@@ -166,8 +167,17 @@
     <string name="search_condition">%1$s の検索結果</string>
 
     <!-- OnBoarding -->
+    <string name="tutorial_page_0_title">はじめまして、\"ラジ番\" です</string>
+    <string name="tutorial_page_0_message">番組情報やホームページにも手軽にアクセス\nラジオをより楽しむためのアプリです</string>
+    <string name="tutorial_page_1_title">今、流れた音楽を調べよう</string>
+    <string name="tutorial_page_1_message">今かかった曲が気になったらラジ番で調べましょう\n他のアプリを使って曲を探すことも出来ます</string>
+    <string name="tutorial_page_2_title">好きな番組は、絶対聴こう</string>
+    <string name="tutorial_page_2_message">気になった番組はスマホのカレンダーに登録しましょう\nラジ番から簡単に登録できます</string>
+
     <string name="tutorial_next">Next</string>
     <string name="onboarding_done">ラジ番を始める!!</string>
+
+
 
     <string name="ad">広告</string>
 

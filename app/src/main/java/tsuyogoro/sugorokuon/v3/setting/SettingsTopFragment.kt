@@ -2,6 +2,7 @@ package tsuyogoro.sugorokuon.v3.setting
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.v3.SugorokuonTopActivity
@@ -61,6 +64,13 @@ class SettingsTopFragment : Fragment() {
                     Slide(Gravity.LEFT)
             )
         }
+    }
+
+    @OnClick(R.id.license)
+    fun onLicenseClicked() {
+        val intent = Intent(context, OssLicensesMenuActivity::class.java)
+        intent.putExtra("title", getString(R.string.license))
+        startActivity(intent)
     }
 
 }

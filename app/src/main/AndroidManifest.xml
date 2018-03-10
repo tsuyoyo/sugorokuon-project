@@ -13,6 +13,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/Theme.SugorokuonTheme">
 
         <!--
@@ -35,7 +36,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="tsuyogoro.sugorokuon.action_open_timetable" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -59,6 +59,14 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <!-- Referred : https://qiita.com/sho5nn/items/f63ebd7ccc0c86d98e4b -->
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/Theme.AppCompat.Light" />
 
 
         <!-- Set custom default icon.

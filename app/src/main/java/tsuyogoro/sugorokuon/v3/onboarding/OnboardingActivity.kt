@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.transition.Slide
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import butterknife.BindView
@@ -17,6 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
+import tsuyogoro.sugorokuon.v3.constant.Area
 import tsuyogoro.sugorokuon.v3.setting.AreaSettingsFragment
 import javax.inject.Inject
 
@@ -57,7 +60,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_area, TutorialFragment.create(0))
+                    .add(R.id.fragment_area, createTutorialFragment(0))
                     .addToBackStack(null)
                     .commit()
         }
@@ -92,11 +95,11 @@ class OnboardingActivity : AppCompatActivity() {
     fun onNextClicked() {
         when (supportFragmentManager.backStackEntryCount) {
             1 -> supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_area, TutorialFragment.create(1))
+                    .add(R.id.fragment_area, createTutorialFragment(1))
                     .addToBackStack(null)
                     .commit()
             2 -> supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_area, TutorialFragment.create(2))
+                    .add(R.id.fragment_area, createTutorialFragment(2))
                     .addToBackStack(null)
                     .commit()
             3 ->
@@ -105,7 +108,7 @@ class OnboardingActivity : AppCompatActivity() {
                         .observeOn(AndroidSchedulers.mainThread())
                         .andThen(Completable.fromAction {
                             supportFragmentManager.beginTransaction()
-                                    .add(R.id.fragment_area, AreaSettingsFragment())
+                                    .add(R.id.fragment_area, createAreaSettingsFragment())
                                     .addToBackStack(null)
                                     .commit()
                         })
@@ -113,6 +116,19 @@ class OnboardingActivity : AppCompatActivity() {
                 )
         }
     }
+
+    private fun createTutorialFragment(index: Int) = TutorialFragment
+            .create(index)
+            .apply {
+                enterTransition = Slide(Gravity.RIGHT)
+                exitTransition = Slide(Gravity.LEFT)
+            }
+
+    private fun createAreaSettingsFragment() = AreaSettingsFragment()
+            .apply {
+                enterTransition = Slide(Gravity.RIGHT)
+                exitTransition = Slide(Gravity.LEFT)
+            }
 
     @OnClick(R.id.done_onboarding)
     fun onDoneClicked() {

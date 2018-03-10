@@ -32,4 +32,24 @@
             tools:text="千葉 東京"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/license"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingStart="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_ex_large_20"
+            android:text="@string/license"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

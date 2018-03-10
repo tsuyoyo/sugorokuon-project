@@ -8,9 +8,9 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
-
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 android {
     // signingConfigs
@@ -58,6 +58,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "com.google.android.gms:play-services-oss-licenses:${project.playServiceVersion}"
 
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
