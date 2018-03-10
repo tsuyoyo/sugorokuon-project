@@ -118,13 +118,13 @@ class ProgramTableFragment : Fragment(),
         SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.webSite))
     }
 
-    override fun onProgramClicked(program: TimeTableResponse.Program, tappedPosition: Point) {
+    override fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point) {
         (activity as? SugorokuonTopActivity)?.pushFragment(
                 ProgramInfoFragment.createInstance(
                         program,
                         ProgramInfoFragment.TransitionParameters(
-                                tappedPosition.x,
-                                tappedPosition.y,
+                                clickedPosition.x,
+                                clickedPosition.y,
                                 Math.max(view?.width ?: 0, view?.height ?: 0)
                         )
                 ),

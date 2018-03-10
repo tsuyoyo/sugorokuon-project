@@ -12,6 +12,9 @@ import android.widget.Button
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.v3.setting.AreaSettingsFragment
@@ -27,6 +30,8 @@ class OnboardingActivity : AppCompatActivity() {
 
     @Inject
     lateinit var onBoardingViewModelFactory: OnboardingViewModel.Factory
+
+    private val disposable = CompositeDisposable()
 
     private lateinit var viewModel: OnboardingViewModel
 
@@ -78,6 +83,11 @@ class OnboardingActivity : AppCompatActivity() {
                 })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.dispose()
+    }
+
     @OnClick(R.id.next)
     fun onNextClicked() {
         when (supportFragmentManager.backStackEntryCount) {
@@ -89,10 +99,18 @@ class OnboardingActivity : AppCompatActivity() {
                     .add(R.id.fragment_area, TutorialFragment.create(2))
                     .addToBackStack(null)
                     .commit()
-            3 -> supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_area, AreaSettingsFragment())
-                    .addToBackStack(null)
-                    .commit()
+            3 ->
+                disposable.add(viewModel
+                        .completeTutorial()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .andThen(Completable.fromAction {
+                            supportFragmentManager.beginTransaction()
+                                    .add(R.id.fragment_area, AreaSettingsFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                        })
+                        .subscribe()
+                )
         }
     }
 

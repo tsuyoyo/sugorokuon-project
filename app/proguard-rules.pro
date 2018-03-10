@@ -24,59 +24,62 @@
 -keep class tsuyogoro.sugorokuon.** { *; }
 -keepnames class ** { *; }
 
-# Google Player Services
--keep class * extends java.util.ListResourceBundle {
-    protected Object[][] getContents();
-}
-
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-    public static final *** NULL;
-}
-
--keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-    @com.google.android.gms.common.annotation.KeepName *;
-}
-
--keepnames class * implements android.os.Parcelable {
-    public static final ** CREATOR;
-}
-
-# Android Support Library
--dontwarn android.support.**
--keep class android.support.** { *; }
-
-# Android Design Support Library
--dontwarn android.support.design.**
--keep class android.support.design.** { *; }
--keep interface android.support.design.** { *; }
--keep public class android.support.design.R$* { *; }
-
+#------------------------------------------------------------
 # OkHttp3
--keepattributes Signature
--keepattributes *Annotation*
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
 -dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+#------------------------------------------------------------
 
-# Picasso
--dontwarn com.squareup.picasso.**
 
-# Picasso Transformations
--dontwarn jp.co.cyberagent.android.gpuimage.**
+#------------------------------------------------------------
+# Gson (https://github.com/google/gson/blob/master/examples/android-proguard-example/proguard.cfg)
+#
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
 
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.google.gson.examples.android.model.** { *; }
+
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Retrofit2
 # Okio
 -keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
 
-# Retrofit2
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+# Retain generic type information for use by reflection by converters and adapters.
 -keepattributes Signature
+# Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+#------------------------------------------------------------
 
+
+#------------------------------------------------------------
 # Simple XML
 -dontwarn com.bea.xml.stream.**
 -dontwarn org.simpleframework.xml.stream.**
@@ -85,6 +88,7 @@
     @org.simpleframework.xml.* <fields>;
     @org.simpleframework.xml.* <init>(...);
 }
+#------------------------------------------------------------
 
 # Stetho
 # it's necessary according to https://github.com/facebook/stetho/issues/42
@@ -98,88 +102,32 @@
 -keep class com.squareup.haha.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
 
-# Marshmallow removed Notification.setLatestEventInfo()
--dontwarn android.app.Notification
 
-# ----------------------------------------
-# Android and Java
-# ----------------------------------------
--optimizationpasses 5
--dontusemixedcaseclassnames
--dontskipnonpubliclibraryclasses
--dontskipnonpubliclibraryclassmembers
--dontpreverify
--verbose
-#-dump class_files.txt
-#-printseeds seeds.txt
-#-printusage unused.txt
-#-printmapping mapping.txt
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-
--allowaccessmodification
--keepattributes *Annotation*
--renamesourcefileattribute SourceFile
--keepattributes SourceFile,LineNumberTable
--repackageclasses ''
-
--keep public class * extends android.app.Activity
--keep public class * extends android.app.Application
--keep public class * extends android.app.Service
--keep public class * extends android.content.BroadcastReceiver
--keep public class * extends android.content.ContentProvider
--keep public class * extends android.app.backup.BackupAgentHelper
--keep public class * extends android.preference.Preference
-
--keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    private static final java.io.ObjectStreamField[] serialPersistentFields;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
-}
-
--keepclasseswithmembernames class * {
-    public <init>(android.content.Context, android.util.AttributeSet);
-}
-
--keepclasseswithmembernames class * {
-    public <init>(android.content.Context, android.util.AttributeSet, int);
-}
-
--keepclassmembers class **.R$* {
-  public static <fields>;
-}
-
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-
-# nend SDK
--keep class net.nend.android.** { *; }
--keep public class com.google.ads.mediation.* { public *; }
-
-# Retrolambda
--dontwarn java.lang.invoke.*
-
-# rxjava
-# Referred : https://github.com/artem-zinnatullin/RxJavaProGuardRules/blob/master/rxjava-proguard-rules/proguard-rules.txt
--dontwarn sun.misc.**
-
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-   long producerIndex;
-   long consumerIndex;
-}
-
-#Glide
+#------------------------------------------------------------
+# Glide (https://github.com/bumptech/glide)
+#
+-keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
-
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
 }
 
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
+# for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#------------------------------------------------------------
+
+
+# ButterKnife
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+
+
+# Dagger2
+-dontwarn com.google.errorprone.annotations.*

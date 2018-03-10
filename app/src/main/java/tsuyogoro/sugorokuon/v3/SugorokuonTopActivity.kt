@@ -7,14 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.BottomNavigationView
-import android.support.transition.Slide
 import android.support.transition.Transition
 import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
-import android.view.Gravity
 import android.view.KeyEvent
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
@@ -41,6 +38,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
         val ON_AIR_SONGS = "on_air_songs"
         val SEARCH = "search"
         val SETTINGS = "settings"
+        val AREA_SETTINGS = "area_settings"
     }
 
     private object REQUEST_CODE {
@@ -67,7 +65,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SugorokuonTopViewModel
 
-    private val noAreaSignalObserver = Observer<Boolean> {
+    private val showTutorialSignalObserver = Observer<Boolean> {
         if (it != null && it) {
             startActivityForResult(
                     OnboardingActivity.createIntent(this),
@@ -123,13 +121,13 @@ class SugorokuonTopActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.observeRequestToSetArea()
-                .observe(this, noAreaSignalObserver)
+        viewModel.observeRequestToShowTutorial()
+                .observe(this, showTutorialSignalObserver)
     }
 
     override fun onPause() {
-        viewModel.observeRequestToSetArea()
-                .removeObserver(noAreaSignalObserver)
+        viewModel.observeRequestToShowTutorial()
+                .removeObserver(showTutorialSignalObserver)
         super.onPause()
     }
 
@@ -228,11 +226,14 @@ class SugorokuonTopActivity : AppCompatActivity() {
         }
     }
 
-    fun pushFragment(fragment: Fragment, tag: String) {
+    fun pushFragment(fragment: Fragment, tag: String, transition: Transition? = null) {
         val fm = supportFragmentManager
         val topIndex = fm.backStackEntryCount - 1
         if (topIndex >= 0
                 && fm.getBackStackEntryAt(topIndex).name != tag) {
+            if (transition != null) {
+                fragment.enterTransition = TransitionSet().addTransition(transition)
+            }
             fm.beginTransaction()
                     .add(R.id.fragment_area, fragment, tag)
                     .addToBackStack(tag)

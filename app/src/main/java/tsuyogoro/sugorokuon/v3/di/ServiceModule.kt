@@ -6,14 +6,8 @@ import tsuyogoro.sugorokuon.v3.api.FeedApi
 import tsuyogoro.sugorokuon.v3.api.StationApi
 import tsuyogoro.sugorokuon.v3.api.TimeTableApi
 import tsuyogoro.sugorokuon.v3.model.SugorokuonAppState
-import tsuyogoro.sugorokuon.v3.repository.FeedRepository
-import tsuyogoro.sugorokuon.v3.repository.SettingsRepository
-import tsuyogoro.sugorokuon.v3.repository.StationRepository
-import tsuyogoro.sugorokuon.v3.repository.TimeTableRepository
-import tsuyogoro.sugorokuon.v3.service.FeedService
-import tsuyogoro.sugorokuon.v3.service.SettingsService
-import tsuyogoro.sugorokuon.v3.service.StationService
-import tsuyogoro.sugorokuon.v3.service.TimeTableService
+import tsuyogoro.sugorokuon.v3.repository.*
+import tsuyogoro.sugorokuon.v3.service.*
 
 @Module
 class ServiceModule {
@@ -39,5 +33,9 @@ class ServiceModule {
                                 stationService: StationService,
                                 timeTableRepository: TimeTableRepository) =
             TimeTableService(timeTableApi, stationService, timeTableRepository)
+
+    @Provides
+    fun provideTutorialService(appPrefRepository: AppPrefRepository) =
+            TutorialService(appPrefRepository)
 
 }

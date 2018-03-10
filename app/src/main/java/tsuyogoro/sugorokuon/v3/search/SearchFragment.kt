@@ -4,15 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.transition.Slide
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import butterknife.BindView
@@ -150,7 +148,8 @@ class SearchFragment : Fragment(),
     override fun onSearchResultClicked(searchResult: SearchViewModel.SearchResultData) {
         (activity as? SugorokuonTopActivity)?.pushFragment(
                 ProgramInfoFragment.createInstance(searchResult.program),
-                ProgramInfoFragment.FRAGMENT_TAG
+                ProgramInfoFragment.FRAGMENT_TAG,
+                Slide(Gravity.LEFT)
         )
     }
 

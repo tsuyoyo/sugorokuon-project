@@ -5,13 +5,6 @@ buildscript {
     }
 }
 
-repositories {
-    maven {
-        // nendSDK
-        url 'http://fan-adn.github.io/nendSDK-Android-lib/library'
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.getkeepsafe.dexcount'
@@ -20,9 +13,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion project.compileSdkVersion.toInteger()
-    buildToolsVersion project.buildToolsVersion
+    // signingConfigs
+    apply from: 'signature/debug.gradle', to: android
+    apply from: 'signature/release.gradle', to: android
 
+    compileSdkVersion 27
+    buildToolsVersion project.buildToolsVersion
     defaultConfig {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
@@ -37,21 +33,18 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
+            proguardFile '/Users/tsuyoyo/myDevWork/Android/sugorokuon-project/app/proguard-rules.pro'
+            signingConfig signingConfigs.releaseSignature
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".debug"
-
             // ここに書いてあるTest用のadUnitId
             // https://developers.google.com/admob/android/quick-start?hl=ja#give_your_app_an_ad_unit_id
             resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
+            signingConfig signingConfigs.debug
         }
-    }
-
-    // メモ : XMLの中にdatabindingsのコードがあるけど、全部消して、このconfigurationも消す
-    dataBinding {
-        enabled = true
     }
     lintOptions {
         warning 'InvalidPackage'
@@ -64,7 +57,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
@@ -72,26 +65,16 @@ dependencies {
     implementation "com.android.support:design:${project.supportLibVersion}"
     implementation "com.android.support:cardview-v7:${project.supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${project.supportLibVersion}"
-    implementation "com.google.android.gms:play-services:${project.playServiceVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${project.constraintLayoutVersion}"
+    implementation "com.google.android.gms:play-services-analytics:${project.playServiceVersion}"
     implementation "com.google.android.gms:play-services-ads:${project.playServiceVersion}"
     implementation "com.google.firebase:firebase-core:${project.playServiceVersion}"
     implementation "com.google.firebase:firebase-messaging:${project.playServiceVersion}"
 
-    // nendメディエーション用アダプター
-//    implementation('net.nend.android:nend-adapter:1.2.7') {
-//        exclude module: "com.android.support:recyclerview-v7"
-//        exclude module: "com.google.android.gms:play-services-basement"
-//        exclude module: "com.android.support:cardview-v7"
-//        exclude module: "com.android.support:percent"
-//        exclude module: "com.android.support:support-compat"
-//        exclude module: "com.android.support:support-core-utils"
-//    }
-
     implementation "com.squareup.okhttp3:okhttp:${project.okHttpVersion}"
     implementation "com.squareup.okhttp3:logging-interceptor:${project.okHttpVersion}"
-    implementation "com.squareup.picasso:picasso:${project.picassoVersion}"
-    implementation "jp.wasabeef:picasso-transformations:${project.picassoTransformationVersion}"
-    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation "com.google.code.gson:gson:${project.gsonVersion}"
 
     implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
     implementation "com.github.bumptech.glide:annotations:${project.glideVersion}"
@@ -103,7 +86,7 @@ dependencies {
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
-    implementation "com.jakewharton.rxbinding2:rxbinding:2.1.1"
+    implementation "com.jakewharton.rxbinding2:rxbinding:${project.rxBindingVersion}"
 
     // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
     implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
@@ -129,33 +112,19 @@ dependencies {
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
-    // fab-speed-dial
-    implementation('io.github.yavski:fab-speed-dial:1.0.3') {
-        exclude module: "com.android.support:support-v4"
-        exclude module: "com.android.support:appcompat-v7"
-        exclude module: "com.android.support:design"
-        exclude module: "com.android.support:cardview-v7"
-    }
-
+    // KvsSchema
     kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
 
     // Architecture component
-    implementation "android.arch.lifecycle:extensions:1.0.0"
-    implementation "android.arch.lifecycle:reactivestreams:1.0.0"
-    testImplementation 'android.arch.core:core-testing:1.0.0'
+    implementation "android.arch.lifecycle:extensions:${project.androidArchitectureComponent}"
+    testImplementation "android.arch.core:core-testing:${project.androidArchitectureComponent}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${project.kotlinVersion}"
 
     testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:2.13.0"
-    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
-
-    // For Robolectric
-//    testimplementation 'junit:junit:4.10'
-//    testimplementation 'org.assertj:assertj-core:1.7.0'
-//    testimplementation "org.robolectric:robolectric:${robolectricVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

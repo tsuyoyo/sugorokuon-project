@@ -10,10 +10,7 @@ import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.utils.SugorokuonLog
 import tsuyogoro.sugorokuon.v3.constant.Area
 import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
-import tsuyogoro.sugorokuon.v3.service.FeedService
-import tsuyogoro.sugorokuon.v3.service.SettingsService
-import tsuyogoro.sugorokuon.v3.service.StationService
-import tsuyogoro.sugorokuon.v3.service.TimeTableService
+import tsuyogoro.sugorokuon.v3.service.*
 import java.util.*
 
 class SugorokuonTopViewModel(
@@ -21,6 +18,7 @@ class SugorokuonTopViewModel(
         private val timeTableService: TimeTableService,
         private val stationService: StationService,
         private val feedService: FeedService,
+        private val tutorialService: TutorialService,
         private val schedulerProvider: SchedulerProvider,
         private val disposables: CompositeDisposable = CompositeDisposable()
 ): ViewModel() {
@@ -35,6 +33,7 @@ class SugorokuonTopViewModel(
             private val timeTableService: TimeTableService,
             private val stationService: StationService,
             private val feedService: FeedService,
+            private val tutorialService: TutorialService,
             private val schedulerProvider: SchedulerProvider
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -43,27 +42,29 @@ class SugorokuonTopViewModel(
                     timeTableService,
                     stationService,
                     feedService,
+                    tutorialService,
                     schedulerProvider
             ) as T
         }
     }
 
-    private val signalNoArea: MutableLiveData<Boolean> = MutableLiveData()
+    private val signalShowTutorial: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchTimeTable: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchStation: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchFeeds: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         disposables.addAll(
-                settingsService
-                        .observeAreas()
-                        .doOnNext {
-                            if (it.isEmpty()) {
-                                signalNoArea.postValue(true)
+                Flowable.combineLatest(
+                        settingsService.observeAreas(),
+                        tutorialService.observeDoneTutorialV3(),
+                        BiFunction { areas: Set<Area>, doneTutorialV3: Boolean ->
+                            if (!doneTutorialV3 && areas.isEmpty()) {
+                                signalShowTutorial.postValue(true)
                             } else {
-                                signalNoArea.postValue(false)
+                                signalShowTutorial.postValue(false)
                             }
-                        }
+                        })
                         .subscribe(),
 
                 Flowable.combineLatest(
@@ -127,5 +128,6 @@ class SugorokuonTopViewModel(
         disposables.dispose()
     }
 
-    fun observeRequestToSetArea(): LiveData<Boolean> = signalNoArea
+    fun observeRequestToShowTutorial(): LiveData<Boolean> = signalShowTutorial
+
 }

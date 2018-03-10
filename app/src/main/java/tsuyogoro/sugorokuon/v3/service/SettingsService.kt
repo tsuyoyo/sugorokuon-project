@@ -8,7 +8,6 @@ import java.util.*
 class SettingsService(
         private val settingsRepository: SettingsRepository
 ) {
-
     init {
         val now = Calendar.getInstance()
         settingsRepository.setData(
