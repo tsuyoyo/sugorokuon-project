@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_ex_large_20"
+            android:textSize="@dimen/textsize_large"
             android:text="@string/settings_header_area_title"/>
 
         <TextView
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_ex_large_20"
+            android:textSize="@dimen/textsize_large"
             android:text="@string/license"/>
 
     </LinearLayout>

@@ -59,7 +59,10 @@ class SugorokuonTopViewModel(
                         settingsService.observeAreas(),
                         tutorialService.observeDoneTutorialV3(),
                         BiFunction { areas: Set<Area>, doneTutorialV3: Boolean ->
-                            if (!doneTutorialV3 && areas.isEmpty()) {
+                            // TODO : tutorialV3done だったらdialogだす、とかかな?
+                            // !doneTutorialV3 &&
+                            SugorokuonLog.d("Tutorial v3 done - $doneTutorialV3")
+                            if (areas.isEmpty()) {
                                 signalShowTutorial.postValue(true)
                             } else {
                                 signalShowTutorial.postValue(false)
