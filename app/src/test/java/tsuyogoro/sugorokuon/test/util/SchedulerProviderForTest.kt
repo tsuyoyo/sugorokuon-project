@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.test.util
 
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
-import tsuyogoro.sugorokuon.v3.rx.SchedulerProvider
+import tsuyogoro.sugorokuon.rx.SchedulerProvider
 
 class SchedulerProviderForTest : SchedulerProvider {
 

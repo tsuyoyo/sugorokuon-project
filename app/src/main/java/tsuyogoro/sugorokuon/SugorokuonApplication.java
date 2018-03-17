@@ -12,12 +12,12 @@ import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import tsuyogoro.sugorokuon.v3.api.RadikoApiModule;
+import tsuyogoro.sugorokuon.api.RadikoApiModule;
 import tsuyogoro.sugorokuon.utils.SugorokuonLog;
-import tsuyogoro.sugorokuon.v3.di.DaggerSugorokuonAppComponent;
-import tsuyogoro.sugorokuon.v3.di.RepositoryModule;
-import tsuyogoro.sugorokuon.v3.di.SugorokuonAppComponent;
-import tsuyogoro.sugorokuon.v3.di.SugorokuonAppModule;
+import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
+import tsuyogoro.sugorokuon.di.RepositoryModule;
+import tsuyogoro.sugorokuon.di.SugorokuonAppComponent;
+import tsuyogoro.sugorokuon.di.SugorokuonAppModule;
 
 public class SugorokuonApplication extends Application {
 

@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
-import tsuyogoro.sugorokuon.v3.constant.Area;
+import tsuyogoro.sugorokuon.constant.Area;
 import tsuyogoro.sugorokuon.constants.StationLogoSize;
 import tsuyogoro.sugorokuon.models.apis.ProgramSearchKeywordFilter;
 import tsuyogoro.sugorokuon.models.apis.StationApi;
