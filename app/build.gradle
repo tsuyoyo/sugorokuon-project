@@ -24,8 +24,8 @@ android {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         applicationId "tsuyogoro.sugorokuon"
-        versionCode 301
-        versionName "3.0.1"
+        versionCode 302
+        versionName "3.0.2"
         multiDexEnabled true
     }
     buildTypes {
