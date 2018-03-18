@@ -24,8 +24,8 @@ android {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         applicationId "tsuyogoro.sugorokuon"
-        versionCode 302
-        versionName "3.0.2"
+        versionCode 303
+        versionName "3.0.3"
         multiDexEnabled true
     }
     buildTypes {
@@ -34,6 +34,8 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
+            resValue "string", "radibangBannerAppId", "${AD_MOB_APP_ID_RADIBANG_BANNER}"
+            resValue "string", "radibangBannerUnitId", "${AD_MOB_UNIT_ID_RADIBAND_BANNER}"
             proguardFile '/Users/tsuyoyo/myDevWork/Android/sugorokuon-project/app/proguard-rules.pro'
             signingConfig signingConfigs.releaseSignature
         }
@@ -44,6 +46,10 @@ android {
             // ここに書いてあるTest用のadUnitId
             // https://developers.google.com/admob/android/quick-start?hl=ja#give_your_app_an_ad_unit_id
             resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
+
+            // Referred : https://developers.google.com/admob/android/quick-start?hl=ja#import_the_mobile_ads_sdk
+            resValue "string", "radibangBannerAppId", "ca-app-pub-3940256099942544~3347511713"
+            resValue "string", "radibangBannerUnitId", "ca-app-pub-3940256099942544/6300978111"
             signingConfig signingConfigs.debug
         }
     }
