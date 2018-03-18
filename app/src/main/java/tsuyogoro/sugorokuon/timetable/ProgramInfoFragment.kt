@@ -18,9 +18,9 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.R
-import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import tsuyogoro.sugorokuon.api.response.SearchResponse
 import tsuyogoro.sugorokuon.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -164,7 +164,7 @@ class ProgramInfoFragment : Fragment() {
         view.requestFocus()
 
         // For AdMob
-        Runnable { adView.loadAd(AdRequest.Builder().build()) }.run()
+        adView.loadAd(AdRequest.Builder().build())
     }
 
     @OnClick(R.id.close_ad)

@@ -19,14 +19,15 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.gms.ads.MobileAds
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
-import tsuyogoro.sugorokuon.utils.RadikoLauncher
 import tsuyogoro.sugorokuon.onboarding.OnboardingActivity
 import tsuyogoro.sugorokuon.search.SearchFragment
 import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.songs.OnAirSongsRootFragment
 import tsuyogoro.sugorokuon.timetable.ProgramTableFragment
+import tsuyogoro.sugorokuon.utils.RadikoLauncher
 import javax.inject.Inject
 
 class SugorokuonTopActivity : AppCompatActivity() {
@@ -115,6 +116,8 @@ class SugorokuonTopActivity : AppCompatActivity() {
                 bottomNavigationView.selectedItemId = bottomMenuIdForTopFragment
             }
         }
+
+        MobileAds.initialize(this, getString(R.string.radibangBannerAppId))
     }
 
     override fun onResume() {

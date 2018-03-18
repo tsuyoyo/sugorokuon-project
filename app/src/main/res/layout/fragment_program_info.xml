@@ -24,12 +24,41 @@
                     android:layout_height="wrap_content"
                     android:background="@color/app_accent_background">
 
+                    <RelativeLayout
+                        android:id="@+id/ad_area"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="16dp">
+
+                        <!-- サイズ (320 x 50 は、下記サイトを参考にした)
+                        https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
+                        @string/radibangBannerUnitId
+                        build.gradleの中にStringを定義した
+                        -->
+                        <com.google.android.gms.ads.AdView
+                            android:id="@+id/ad_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            ads:adSize="BANNER"
+                            ads:adUnitId="@string/radibangBannerUnitId" />
+
+                        <Button
+                            android:id="@+id/close_ad"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_toEndOf="@+id/ad_view"
+                            android:background="@drawable/ic_close_grey_600_18dp" />
+
+                    </RelativeLayout>
+
                     <ImageView
                         android:id="@+id/thumbnail"
                         android:layout_width="320dp"
                         android:layout_height="180dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_below="@+id/ad_area"
                         tools:background="@android:color/holo_green_light"/>
 
                     <RelativeLayout
@@ -189,40 +218,9 @@
                 <WebView
                     android:id="@+id/content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:paddingBottom="32dp"/>
             </android.support.v4.widget.NestedScrollView>
-
-
-
-            <RelativeLayout
-                android:id="@+id/ad_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/content_area"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp">
-
-                <!-- サイズ (320 x 50 は、下記サイトを参考にした)
-                https://developers.google.com/mobile-ads-sdk/docs/admob/intermediate?hl=ja#play
-                @string/adUnitId
-                build.gradleの中にStringを定義した
-                resValue "string", "adUnitId", "ca-app-pub-3940256099942544/6300978111"
-                -->
-                <com.google.android.gms.ads.AdView
-                    android:id="@+id/ad_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    ads:adSize="BANNER"
-                    ads:adUnitId="@string/adUnitId" />
-
-                <Button
-                    android:id="@+id/close_ad"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_toEndOf="@+id/ad_view"
-                    android:background="@drawable/ic_close_grey_600_18dp" />
-
-            </RelativeLayout>
 
         </LinearLayout>
 

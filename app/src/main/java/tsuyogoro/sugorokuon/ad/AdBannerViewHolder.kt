@@ -19,6 +19,6 @@ class AdBannerViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
 
     init {
         ButterKnife.bind(this, itemView)
-        Runnable { adView.loadAd(AdRequest.Builder().build()) }.run()
+        adView.loadAd(AdRequest.Builder().build())
     }
 }

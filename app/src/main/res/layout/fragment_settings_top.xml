@@ -51,5 +51,26 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/app_version"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingStart="16dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/app_version_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_large"
+            android:focusable="false"
+            android:clickable="false"
+            tools:text="Version 3.0.0"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>
