@@ -143,6 +143,7 @@
     <string name="settings_area_not_selected">番組表を見たいエリアを選択してください</string>
     <string name="settings_area_selected">選択中のエリア : %1$s</string>
     <string name="license">OSS License</string>
+    <string name="app_version">Version</string>
 
     <!-- Timetable -->
     <string name="date_selector_day_in_week">(%1$s)</string>
@@ -176,8 +177,6 @@
 
     <string name="tutorial_next">Next</string>
     <string name="onboarding_done">ラジ番を始める!!</string>
-
-
 
     <string name="ad">広告</string>
 

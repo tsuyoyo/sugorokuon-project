@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.setting
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -19,6 +20,10 @@ import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import javax.inject.Inject
+import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
+
+
 
 class SettingsTopFragment : Fragment() {
 
@@ -34,6 +39,9 @@ class SettingsTopFragment : Fragment() {
 
     @BindView(R.id.area_settings)
     lateinit var areaSettings: View
+
+    @BindView(R.id.app_version_text)
+    lateinit var appVersion: TextView
 
     private lateinit var viewModel: SettingsTopViewModel
 
@@ -63,6 +71,15 @@ class SettingsTopFragment : Fragment() {
                     SubFragmentTags.AREA_SETTINGS,
                     Slide(Gravity.LEFT)
             )
+        }
+
+        context?.let {
+            it.packageManager
+                    ?.getPackageInfo(it.packageName, PackageManager.GET_META_DATA)
+                    ?.let { packageInfo ->
+                        appVersion.text =
+                                "${getString(R.string.app_version)} ${packageInfo.versionName}"
+                    }
         }
     }
 
