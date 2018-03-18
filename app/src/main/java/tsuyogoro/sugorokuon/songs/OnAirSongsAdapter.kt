@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.songs
 import android.app.SearchManager
 import android.content.Intent
 import android.provider.MediaStore
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.item_search_result.view.*
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.api.response.FeedResponse
 import java.text.SimpleDateFormat
@@ -62,6 +64,11 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun setSong(song: FeedResponse.Song) {
             if (song.image != null && song.image.isNotBlank()) {
                 Glide.with(itemView).load(song.image).into(thumbnail)
+            } else {
+                thumbnail.setImageDrawable(
+                        itemView.resources
+                                .getDrawable(R.drawable.ic_music_note_grey_600_48dp, null)
+                )
             }
             onAirDate.text =
                     SimpleDateFormat(
