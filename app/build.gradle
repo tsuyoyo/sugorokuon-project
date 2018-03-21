@@ -36,6 +36,7 @@ android {
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
             resValue "string", "radibangBannerAppId", "${AD_MOB_APP_ID_RADIBANG_BANNER}"
             resValue "string", "radibangBannerUnitId", "${AD_MOB_UNIT_ID_RADIBAND_BANNER}"
+            resValue "string", "radibangOnAirSongsBannerUnitId", "${AD_MOB_UNIT_ID_ONAIR_SONGS_BANNER}"
             proguardFile '/Users/tsuyoyo/myDevWork/Android/sugorokuon-project/app/proguard-rules.pro'
             signingConfig signingConfigs.releaseSignature
         }
@@ -50,6 +51,7 @@ android {
             // Referred : https://developers.google.com/admob/android/quick-start?hl=ja#import_the_mobile_ads_sdk
             resValue "string", "radibangBannerAppId", "ca-app-pub-3940256099942544~3347511713"
             resValue "string", "radibangBannerUnitId", "ca-app-pub-3940256099942544/6300978111"
+            resValue "string", "radibangOnAirSongsBannerUnitId", "ca-app-pub-3940256099942544/6300978111"
             signingConfig signingConfigs.debug
         }
     }

@@ -3,7 +3,6 @@ package tsuyogoro.sugorokuon.songs
 import android.app.SearchManager
 import android.content.Intent
 import android.provider.MediaStore
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +12,8 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_search_result.view.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.api.response.FeedResponse
 import java.text.SimpleDateFormat
@@ -23,18 +23,48 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var onAirSongs: List<FeedResponse.Song> = emptyList()
 
+    companion object {
+        private const val TYPE_SONG = 1
+        private const val TYPE_AD = 2
+    }
+
     fun setOnAirSongsData(onAirSongs: List<FeedResponse.Song>) {
         this.onAirSongs = onAirSongs
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? OnAirSongsViewHolder)?.setSong(onAirSongs[position])
-    }
+    override fun getItemViewType(position: Int): Int =
+            if (position > onAirSongs.size - 1) {
+                TYPE_AD
+            } else {
+                TYPE_SONG
+            }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            OnAirSongsViewHolder(parent)
+            when (viewType) {
+                TYPE_AD -> OnAirSongsAdViewHolder(parent)
+                else -> OnAirSongsViewHolder(parent)
+            }
 
-    override fun getItemCount(): Int = onAirSongs.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (position < onAirSongs.size) {
+            (holder as? OnAirSongsViewHolder)?.setSong(onAirSongs[position])
+        }
+    }
+
+    override fun getItemCount(): Int = onAirSongs.size + 1
+
+    class OnAirSongsAdViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+            LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_on_air_song_ad, parent, false)
+    ) {
+        @BindView(R.id.ad_view)
+        lateinit var adView: AdView
+
+        init {
+            ButterKnife.bind(this, itemView)
+            adView.loadAd(AdRequest.Builder().build())
+        }
+    }
 
     class OnAirSongsViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
             LayoutInflater
