@@ -142,6 +142,8 @@
     <!-- Settings -->
     <string name="settings_area_not_selected">番組表を見たいエリアを選択してください</string>
     <string name="settings_area_selected">選択中のエリア : %1$s</string>
+    <string name="settings_station_order">ラジオ局の表示順を変更する</string>
+    <string name="settings_station_order_guide">ドラッグ&amp;ドロップで並び順を変更します</string>
     <string name="license">OSS License</string>
     <string name="app_version">Version</string>
 

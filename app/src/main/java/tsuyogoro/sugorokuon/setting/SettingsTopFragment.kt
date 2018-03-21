@@ -23,12 +23,11 @@ import javax.inject.Inject
 import android.content.pm.PackageManager
 import android.content.pm.PackageInfo
 
-
-
 class SettingsTopFragment : Fragment() {
 
     object SubFragmentTags {
         val AREA_SETTINGS = "area"
+        val STATION_ORDER_SETTINGS = "stationOrder"
     }
 
     @Inject
@@ -39,6 +38,9 @@ class SettingsTopFragment : Fragment() {
 
     @BindView(R.id.area_settings)
     lateinit var areaSettings: View
+
+    @BindView(R.id.station_order_settings)
+    lateinit var stationOrder: View
 
     @BindView(R.id.app_version_text)
     lateinit var appVersion: TextView
@@ -69,7 +71,15 @@ class SettingsTopFragment : Fragment() {
             (activity as? SugorokuonTopActivity)?.switchFragment(
                     AreaSettingsFragment(),
                     SubFragmentTags.AREA_SETTINGS,
-                    Slide(Gravity.LEFT)
+                    Slide(Gravity.START)
+            )
+        }
+
+        stationOrder.setOnClickListener {
+            (activity as? SugorokuonTopActivity)?.switchFragment(
+                    StationOrderFragment(),
+                    SubFragmentTags.STATION_ORDER_SETTINGS,
+                    Slide(Gravity.START)
             )
         }
 

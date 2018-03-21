@@ -100,6 +100,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${project.rxBindingVersion}"
 
+    implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar"){
+        transitive=true
+    }
+
     // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
     implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
         exclude module: 'stax'

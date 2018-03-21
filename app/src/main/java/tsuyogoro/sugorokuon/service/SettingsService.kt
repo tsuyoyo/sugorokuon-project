@@ -1,12 +1,15 @@
 package tsuyogoro.sugorokuon.service
 
 import io.reactivex.Flowable
+import io.reactivex.functions.BiFunction
+import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.repository.SettingsRepository
 import java.util.*
 
 class SettingsService(
-        private val settingsRepository: SettingsRepository
+        private val settingsRepository: SettingsRepository,
+        private val stationService: StationService
 ) {
     init {
         val now = Calendar.getInstance()
@@ -28,8 +31,7 @@ class SettingsService(
     fun selectArea(area: Area) {
         settingsRepository.setAreaSettings(
                 settingsRepository
-                        .observeAreaSettings()
-                        .value
+                        .getAreaSettings()
                         .toMutableSet()
                         .apply { add(area) }
         )
@@ -38,13 +40,38 @@ class SettingsService(
     fun deselectArea(area: Area) {
         settingsRepository.setAreaSettings(
                 settingsRepository
-                        .observeAreaSettings()
-                        .value
+                        .getAreaSettings()
                         .toMutableSet()
                         .apply { remove(area) }
         )
     }
 
     fun observeAreas(): Flowable<Set<Area>> = settingsRepository.observeAreaSettings()
+
+    fun observeOrderedStations(): Flowable<List<StationResponse.Station>> =
+            Flowable.combineLatest(
+                    settingsRepository.observeOrderedStationIds(),
+                    stationService.observeStations(),
+                    BiFunction { ids: List<String>, stations: List<StationResponse.Station> ->
+                        if (ids.isEmpty()) {
+                            return@BiFunction stations
+                        } else {
+                            val orderedStations = mutableListOf<StationResponse.Station>()
+                            ids.forEach { id ->
+                                stations.find { it.id == id }
+                                        ?.let(orderedStations::add)
+                            }
+                            return@BiFunction orderedStations
+                        }
+                    }
+            )
+
+    fun updateStationOrder(orderedStations: List<StationResponse.Station>) {
+        settingsRepository.setStationOrder(orderedStations.map { it.id })
+    }
+
+    fun clearStationOrder() {
+        settingsRepository.setStationOrder(emptyList())
+    }
 
 }

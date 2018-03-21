@@ -58,10 +58,12 @@ class AreaSettingsViewModel(
 
     fun selectArea(area: Area) {
         settingsService.selectArea(area)
+        settingsService.clearStationOrder()
     }
 
     fun deselectArea(area: Area) {
         settingsService.deselectArea(area)
+        settingsService.clearStationOrder()
 
         // TODO : 選択項目が0になってしまった時にアラートを出す
     }

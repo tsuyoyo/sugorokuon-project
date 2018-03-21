@@ -25,8 +25,9 @@ class ServiceModule {
             FeedService(stationService, feedApi, feedRepository, appState)
 
     @Provides
-    fun provideSettingSErvice(settingsRepository: SettingsRepository) =
-            SettingsService(settingsRepository)
+    fun provideSettingService(settingsRepository: SettingsRepository,
+                              stationService: StationService) =
+            SettingsService(settingsRepository, stationService)
 
     @Provides
     fun provideTimeTableService(timeTableApi: TimeTableApi,

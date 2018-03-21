@@ -16,24 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="64dp">
 
-        <TextView
-            android:id="@+id/image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:text="@string/ad"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/margin_standard"
-            android:src="@android:color/holo_green_light"
-            />
-
         <com.google.android.gms.ads.AdView
             android:id="@+id/ad_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/image"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             ads:adSize="BANNER"
             ads:adUnitId="@string/radibangBannerUnitId" />
 

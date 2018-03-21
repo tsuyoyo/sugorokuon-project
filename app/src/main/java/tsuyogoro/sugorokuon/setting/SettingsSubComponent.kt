@@ -11,4 +11,6 @@ interface SettingsSubComponent {
 
     fun inject(areaSettingsFragment: AreaSettingsFragment)
 
+    fun inject(stationOrderFragment: StationOrderFragment)
+
 }

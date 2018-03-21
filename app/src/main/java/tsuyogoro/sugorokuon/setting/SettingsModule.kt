@@ -21,4 +21,9 @@ class SettingsModule {
             resources: Resources
     ) = SettingsTopViewModel.Factory(settingsRepository, resources)
 
+    @Provides
+    fun provideStationsOrderSettingViewModelFactory(
+            settingsService: SettingsService
+    ) = StationOrderViewModel.Factory(settingsService)
+
 }

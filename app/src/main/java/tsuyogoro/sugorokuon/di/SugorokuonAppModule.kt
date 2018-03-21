@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.api.SearchUuidGenerator
 import tsuyogoro.sugorokuon.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
@@ -19,6 +20,12 @@ class SugorokuonAppModule(
     @Provides
     fun provideApplicationContext(): Context = appContext
 
+    @Singleton
+    @Provides
+    fun provideAppComponent(appContext: Context): SugorokuonAppComponent =
+            SugorokuonApplication
+                    .application(appContext)
+                    .appComponent()
 
     @Singleton
     @Provides
