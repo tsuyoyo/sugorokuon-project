@@ -17,10 +17,12 @@ class StationService(
             .observeStationResponses()
             .map { responses ->
                 val stations = mutableSetOf<StationResponse.Station>()
-
-                // TODO : これだと重複してしまうので、重複チェックしながらいれるようにする
-                responses.forEach {
-                    stations.addAll(it.stationList)
+                responses.forEach { response ->
+                    response.stationList.forEach { s ->
+                        if (stations.find { it.id == s.id } == null) {
+                            stations.add(s)
+                        }
+                    }
                 }
                 return@map stations.toList()
             }
