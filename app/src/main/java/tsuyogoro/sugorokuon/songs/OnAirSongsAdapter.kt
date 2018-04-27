@@ -1,9 +1,5 @@
 package tsuyogoro.sugorokuon.songs
 
-import android.app.SearchManager
-import android.content.Intent
-import android.provider.MediaStore
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -19,7 +15,12 @@ import tsuyogoro.sugorokuon.api.response.FeedResponse
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemListener)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnAirSongsItemListener {
+        fun onSearchSong(song: FeedResponse.Song)
+    }
 
     private var onAirSongs: List<FeedResponse.Song> = emptyList()
 
@@ -42,7 +43,7 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
             when (viewType) {
                 TYPE_AD -> OnAirSongsAdViewHolder(parent)
-                else -> OnAirSongsViewHolder(parent)
+                else -> OnAirSongsViewHolder(parent, listener)
             }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -66,7 +67,10 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class OnAirSongsViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
+    class OnAirSongsViewHolder(
+            parent: ViewGroup?,
+            private val listener: OnAirSongsItemListener
+    ) : RecyclerView.ViewHolder(
             LayoutInflater
                     .from(parent?.context)
                     .inflate(R.layout.item_on_air_song, parent, false)
@@ -109,15 +113,16 @@ class OnAirSongsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             artist.text = song.artist
 
             searchOnLibraryBtn.setOnClickListener {
-                (itemView.context as? AppCompatActivity)?.let {
-                    it.startActivity(Intent().apply {
-                        action = MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH
-                        putExtra(MediaStore.EXTRA_MEDIA_FOCUS, "vnd.android.cursor.item/*")
-                        putExtra(MediaStore.EXTRA_MEDIA_TITLE, song.title)
-                        putExtra(MediaStore.EXTRA_MEDIA_ARTIST, song.artist)
-                        putExtra(SearchManager.QUERY, song.title)
-                    })
-                }
+                listener.onSearchSong(song)
+//                (itemView.context as? AppCompatActivity)?.let {
+//                    it.startActivity(Intent().apply {
+//                        action = MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH
+//                        putExtra(MediaStore.EXTRA_MEDIA_FOCUS, "vnd.android.cursor.item/*")
+//                        putExtra(MediaStore.EXTRA_MEDIA_TITLE, song.title)
+//                        putExtra(MediaStore.EXTRA_MEDIA_ARTIST, song.artist)
+//                        putExtra(SearchManager.QUERY, song.title)
+//                    })
+//                }
             }
         }
     }

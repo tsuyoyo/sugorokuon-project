@@ -1,9 +1,12 @@
 package tsuyogoro.sugorokuon.api.response;
 
+import android.os.Parcelable;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,7 +17,10 @@ public class FeedResponse {
     public List<Song> songs;
 
     @Root(strict = false)
-    static public class Song {
+    static public class Song implements Serializable {
+
+        private static final long serialVersionUID = -7649991108390884280L;
+
         @Attribute(name = "title", required = false)
         public String title;
 

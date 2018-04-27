@@ -1,9 +1,11 @@
 package tsuyogoro.sugorokuon.service
 
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.constant.SearchSongMethod
 import tsuyogoro.sugorokuon.repository.SettingsRepository
 import java.util.*
 
@@ -73,5 +75,11 @@ class SettingsService(
     fun clearStationOrder() {
         settingsRepository.setStationOrder(emptyList())
     }
+
+    fun observeSelectedSongSearchMethod(): Flowable<SearchSongMethod> =
+            settingsRepository.observeSelectedWaySerachSong()
+
+    fun setSongSearchMethod(searchSongMethod: SearchSongMethod): Completable =
+            Completable.fromAction { settingsRepository.setWaySearchSong(searchSongMethod) }
 
 }

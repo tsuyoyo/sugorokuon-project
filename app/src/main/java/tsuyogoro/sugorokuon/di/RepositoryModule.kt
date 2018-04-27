@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.preference.AppPrefs
 import tsuyogoro.sugorokuon.preference.AreaPrefs
+import tsuyogoro.sugorokuon.preference.SearchMethodPrefs
 import tsuyogoro.sugorokuon.preference.StationPrefs
 import tsuyogoro.sugorokuon.repository.*
 import javax.inject.Singleton
@@ -25,7 +26,8 @@ class RepositoryModule {
     fun provideSettingsRepository(appContext: Context): SettingsRepository =
             SettingsRepository(
                     areaPrefs = AreaPrefs.get(appContext),
-                    stationsPrefs = StationPrefs.get(appContext)
+                    stationsPrefs = StationPrefs.get(appContext),
+                    searchMethodPrefs = SearchMethodPrefs.get(appContext)
             )
 
     @Singleton

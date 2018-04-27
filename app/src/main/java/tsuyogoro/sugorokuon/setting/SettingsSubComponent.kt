@@ -13,4 +13,6 @@ interface SettingsSubComponent {
 
     fun inject(stationOrderFragment: StationOrderFragment)
 
+    fun inject(searchSongMethodFragment: SearchSongMethodFragment)
+
 }

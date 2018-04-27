@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.res.Resources
 import io.reactivex.disposables.CompositeDisposable
+import tsuyogoro.sugorokuon.constant.SearchSongMethod
 import tsuyogoro.sugorokuon.repository.SettingsRepository
 
 class SettingsTopViewModel(
@@ -26,8 +27,10 @@ class SettingsTopViewModel(
 
     private val selectedAreas = MutableLiveData<String>()
 
+    private val searchSongWay = MutableLiveData<SearchSongMethod>()
+
     init {
-        disposable.add(
+        disposable.addAll(
                 settingsRepository
                         .observeAreaSettings()
                         .subscribe { areas ->
@@ -40,11 +43,16 @@ class SettingsTopViewModel(
                             } else {
                                 " - "
                             }
-                        }
+                        },
+                settingsRepository
+                    .observeSelectedWaySerachSong()
+                    .subscribe(searchSongWay::postValue)
         )
     }
 
     fun observeSelectedAreas(): LiveData<String> = selectedAreas
+
+    fun observeSelectedSerachSongWay(): LiveData<SearchSongMethod> = searchSongWay
 
     override fun onCleared() {
         super.onCleared()

@@ -144,6 +144,12 @@
     <string name="settings_area_selected">選択中のエリア : %1$s</string>
     <string name="settings_station_order">番組表の表示順を変更</string>
     <string name="settings_station_order_guide">ドラッグ&amp;ドロップで並び順を変更します</string>
+    <string name="settings_way_to_serach_song">曲の検索方法</string>
+    <string name="search_song_select_every_time">毎回選択する</string>
+    <string name="search_song_by_player">Youtubeなどのplayerで検索</string>
+    <string name="search_song_by_google">Googleで検索する</string>
+    <string name="search_song_by_copy_clip_board">クリップボードにコピー</string>
+
     <string name="license">OSS License</string>
     <string name="app_version">Version</string>
 
@@ -163,6 +169,14 @@
     <string name="register_calendar_confirm">この番組をスマホのカレンダーに登録しますか?</string>
     <string name="button_back_to_timetable">番組表へ戻る</string>
     <string name="button_close">閉じる</string>
+
+    <string name="select_search_way_title">検索方法を選択</string>
+    <string name="select_search_player">音楽プレイヤーで検索</string>
+    <string name="select_search_google">Googleで検索</string>
+    <string name="select_search_clipboard">クリップボードにコピー</string>
+    <string name="select_search_select_every_time">毎回選ぶ</string>
+    <string name="select_search_method_save">この検索方法をデフォルトにする</string>
+    <string name="copy_on_song_title">曲名とアーティスト名を\nクリップボードにコピーしました</string>
 
     <!-- Search -->
     <string name="error_search">検索できませんでした。通信環境の良いところで再度お試しください。(%1$s)</string>

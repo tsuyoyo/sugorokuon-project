@@ -52,6 +52,34 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/way_to_search_song"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingStart="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_large"
+            android:text="@string/settings_way_to_serach_song"/>
+
+        <TextView
+            android:id="@+id/selected_way_to_search_song"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textSize="@dimen/textsize_standard"
+            tools:text="毎回選択する"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/license"
         android:layout_width="match_parent"
         android:layout_height="64dp"

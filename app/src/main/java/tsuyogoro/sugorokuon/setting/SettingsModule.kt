@@ -26,4 +26,9 @@ class SettingsModule {
             settingsService: SettingsService
     ) = StationOrderViewModel.Factory(settingsService)
 
+    @Provides
+    fun provideSearchSongMethodSettingViewModelFactory(
+            settingsService: SettingsService
+    ) = SearchSongMethodViewModel.Factory(settingsService)
+
 }

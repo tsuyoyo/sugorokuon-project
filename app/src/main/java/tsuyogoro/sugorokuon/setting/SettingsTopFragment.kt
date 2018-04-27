@@ -3,7 +3,7 @@ package tsuyogoro.sugorokuon.setting
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.os.Build
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -20,14 +20,13 @@ import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import javax.inject.Inject
-import android.content.pm.PackageManager
-import android.content.pm.PackageInfo
 
 class SettingsTopFragment : Fragment() {
 
     object SubFragmentTags {
         val AREA_SETTINGS = "area"
         val STATION_ORDER_SETTINGS = "stationOrder"
+        val SONG_SEARCH_METHOD_SETTINGS = "songSearchMethod"
     }
 
     @Inject
@@ -38,6 +37,9 @@ class SettingsTopFragment : Fragment() {
 
     @BindView(R.id.area_settings)
     lateinit var areaSettings: View
+
+    @BindView(R.id.selected_way_to_search_song)
+    lateinit var selectedSearchSongWay: TextView
 
     @BindView(R.id.station_order_settings)
     lateinit var stationOrder: View
@@ -66,6 +68,13 @@ class SettingsTopFragment : Fragment() {
 
         viewModel.observeSelectedAreas()
                 .observe(this, Observer(selectedAreas::setText))
+
+        viewModel.observeSelectedSerachSongWay()
+                .observe(this, Observer({ searchSongWay ->
+                    if (searchSongWay != null) {
+                        selectedSearchSongWay.text = searchSongWay.getDisplayName(resources)
+                    }
+                }))
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
@@ -98,6 +107,15 @@ class SettingsTopFragment : Fragment() {
         val intent = Intent(context, OssLicensesMenuActivity::class.java)
         intent.putExtra("title", getString(R.string.license))
         startActivity(intent)
+    }
+
+    @OnClick(R.id.way_to_search_song)
+    fun onWaySearchSongClicked() {
+        (activity as? SugorokuonTopActivity)?.switchFragment(
+                SearchSongMethodFragment(),
+                SubFragmentTags.SONG_SEARCH_METHOD_SETTINGS,
+                Slide(Gravity.START)
+        )
     }
 
 }
