@@ -15,6 +15,7 @@ import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.extension.getFocusedFragment
 import javax.inject.Inject
 
 class OnAirSongsRootFragment : Fragment() {
@@ -46,7 +47,7 @@ class OnAirSongsRootFragment : Fragment() {
                 .get(OnAirSongsRootViewModel::class.java)
 
         // Ref : http://wasnot.hatenablog.com/entry/2013/04/20/220534
-        fragmentPagerAdapter = OnAirSongsFragmentPagerAdapter(childFragmentManager)
+        fragmentPagerAdapter = OnAirSongsFragmentPagerAdapter(childFragmentManager, resources)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -67,9 +68,30 @@ class OnAirSongsRootFragment : Fragment() {
         viewModel.observeIsLoading()
                 .observe(this, Observer {
                     if (it != null) {
-                        loading.visibility = if (it) { View.VISIBLE } else { View.GONE }
+                        loading.visibility = if (it) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
                     }
                 })
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(
+                    position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (position == 0) {
+                    childFragmentManager
+                            .getFocusedFragment<OnAirSongsSearchTutorialFragment>(position, R.id.view_pager)
+                            ?.let { it.showAd() }
+                }
+            }
+        })
     }
 
     private fun onAvailableStationsFetched() = Observer<List<StationResponse.Station>> {
@@ -77,6 +99,9 @@ class OnAirSongsRootFragment : Fragment() {
             fragmentPagerAdapter.apply {
                 setOnAirSongsAvailableStations(it)
                 notifyDataSetChanged()
+            }
+            if (it.isNotEmpty()) {
+                viewPager.setCurrentItem(1, false)
             }
         } else {
             // TODO : nullだったら何かメッセージ出してもいいかもしれん

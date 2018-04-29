@@ -48,7 +48,7 @@ ext {
     minSdkVersion = "21"
 
     constraintLayoutVersion = "1.0.2"
-    playServiceVersion = "11.8.0"
+    playServiceVersion = "15.0.0"
     retrofitVersion = "2.3.0"
     daggerVersion = "2.9"
     leakcanaryVersion = "1.5.4"

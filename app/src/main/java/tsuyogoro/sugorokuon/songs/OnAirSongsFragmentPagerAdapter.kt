@@ -1,12 +1,16 @@
 package tsuyogoro.sugorokuon.songs
 
+import android.content.res.Resources
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.api.response.StationResponse
 
-class OnAirSongsFragmentPagerAdapter(fragmentManager: FragmentManager)
-    : FragmentPagerAdapter(fragmentManager) {
+class OnAirSongsFragmentPagerAdapter(
+        fragmentManager: FragmentManager,
+        private val resources: Resources
+) : FragmentPagerAdapter(fragmentManager) {
 
     private var feedAvailableStations = mutableListOf<StationResponse.Station>()
 
@@ -16,12 +20,25 @@ class OnAirSongsFragmentPagerAdapter(fragmentManager: FragmentManager)
     }
 
     override fun getItem(position: Int): Fragment =
-            OnAirSongsFragment.createInstance(feedAvailableStations[position].id)
+            if (position == 0) {
+                OnAirSongsSearchTutorialFragment()
+            } else {
+                OnAirSongsFragment.createInstance(feedAvailableStations[position - 1].id)
+            }
 
-    override fun getCount(): Int = feedAvailableStations.size
+
+    override fun getCount(): Int =
+        if (feedAvailableStations.isEmpty()) {
+            0
+        } else {
+            feedAvailableStations.size + 1
+        }
 
     override fun getPageTitle(position: Int): CharSequence =
-            feedAvailableStations[position].name
-
+            if (position == 0) {
+                resources.getString(R.string.song_search_tutorial_search)
+            } else {
+                feedAvailableStations[position - 1].name
+            }
 
 }

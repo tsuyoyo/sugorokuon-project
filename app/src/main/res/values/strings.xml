@@ -177,6 +177,12 @@
     <string name="select_search_select_every_time">毎回選ぶ</string>
     <string name="select_search_method_save">この検索方法をデフォルトにする</string>
     <string name="copy_on_song_title">曲名とアーティスト名を\nクリップボードにコピーしました</string>
+    <string name="song_search_tutorial_search">検索の使い方</string>
+    <string name="song_search_tutorial_note_show_ad">まもなく広告が表示されます</string>
+
+    <string name="song_search_player_guide">お使いの端末にインストールされている音楽プレイヤーを使って曲を検索します。Google Play Music のようなストリーミングサービスのアプリをお使いであれば、そのアプリの上で曲が検索されます (アプリによっては検索機能が動かないことがあります) 。</string>
+    <string name="song_search_google_guide">お使いの端末にインストールされているGoogleのアプリを使って曲を検索します。Google検索の結果を行うのと同じ結果が得られます。</string>
+    <string name="song_search_clipboard_guide">曲のタイトルとアーティストをクリップボードにコピーします。上記二つの検索以外の方法が必要な時にお使いください。</string>
 
     <!-- Search -->
     <string name="error_search">検索できませんでした。通信環境の良いところで再度お試しください。(%1$s)</string>
@@ -195,5 +201,6 @@
     <string name="onboarding_done">ラジ番を始める!!</string>
 
     <string name="ad">広告</string>
+    <string name="ad_fragment_label">広告ページ</string>
 
 </resources>
