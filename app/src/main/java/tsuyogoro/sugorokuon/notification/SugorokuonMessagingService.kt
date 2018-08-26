@@ -1,5 +1,6 @@
 package tsuyogoro.sugorokuon.notification
 
+import android.content.Intent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import tsuyogoro.sugorokuon.utils.SugorokuonLog
@@ -17,4 +18,8 @@ class SugorokuonMessagingService : FirebaseMessagingService() {
         SugorokuonLog.d("  from : ${remoteMessage?.from}")
         SugorokuonLog.d("  message : ${remoteMessage?.notification?.body}")
     }
+
+//    override fun zzd(p0: Intent?) {
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//    }
 }

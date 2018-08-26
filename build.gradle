@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.kotlinVersion = '1.2.30'
+    ext.kotlinVersion = '1.2.60'
     repositories {
         maven { url "http://jcenter.bintray.com/" }
         google()
@@ -11,12 +11,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
+        classpath 'com.android.tools.build:gradle:3.2.0-rc02'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
         classpath 'com.google.gms:google-services:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.google.gms:oss-licenses:0.9.1'
-        classpath 'io.fabric.tools:gradle:1.25.2'
+        classpath 'com.google.gms:oss-licenses:0.9.2'
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 
@@ -41,14 +41,14 @@ subprojects {
 
 
 ext {
-    compileSdkVersion = "27"
-    buildToolsVersion = "27.0.3"
-    targetSdkVersion = '27'
-    supportLibVersion = "27.1.0"
+    compileSdkVersion = "28"
+    buildToolsVersion = "28.0.2"
+    targetSdkVersion = '28'
+    supportLibVersion = "27.1.1"
     minSdkVersion = "21"
 
-    constraintLayoutVersion = "1.0.2"
-    playServiceVersion = "15.0.0"
+    constraintLayoutVersion = "1.1.2"
+    playServiceVersion = "16.0.3"
     retrofitVersion = "2.3.0"
     daggerVersion = "2.9"
     leakcanaryVersion = "1.5.4"
