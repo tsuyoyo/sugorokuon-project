@@ -17,8 +17,6 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.android.gms.ads.MobileAds
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
@@ -44,20 +42,20 @@ class SugorokuonTopActivity : AppCompatActivity() {
         val ON_BOARDING = 1
     }
 
-    @BindView(R.id.toolbar)
-    lateinit var toolBar: Toolbar
+    private val toolBar: Toolbar
+        get() = findViewById(R.id.toolbar)
 
-    @BindView(R.id.appbar_layout)
-    lateinit var appBarLayout: AppBarLayout
+    private val appBarLayout: AppBarLayout
+        get() = findViewById(R.id.appbar_layout)
 
-    @BindView(R.id.bottom_navigation)
-    lateinit var bottomNavigationView: BottomNavigationView
+    private val bottomNavigationView: BottomNavigationView
+        get() = findViewById(R.id.bottom_navigation)
 
-    @BindView(R.id.search_form)
-    lateinit var searchForm: EditText
+    private val searchForm: EditText
+        get() = findViewById(R.id.search_form)
 
-    @BindView(R.id.radio_menu)
-    lateinit var radioMenuButton: View
+    private val radioMenuButton: View
+        get() = findViewById(R.id.radio_menu)
 
     @Inject
     lateinit var viewModelFactory: SugorokuonTopViewModel.Factory
@@ -83,7 +81,6 @@ class SugorokuonTopActivity : AppCompatActivity() {
                 .inject(this)
 
         setContentView(R.layout.activity_top)
-        ButterKnife.bind(this)
 
         setupActionBar()
         setupBottomNavigation()

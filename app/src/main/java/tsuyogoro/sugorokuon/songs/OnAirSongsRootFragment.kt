@@ -10,8 +10,6 @@ import android.support.v4.widget.ContentLoadingProgressBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.api.response.StationResponse
@@ -20,14 +18,14 @@ import javax.inject.Inject
 
 class OnAirSongsRootFragment : Fragment() {
 
-    @BindView(R.id.view_pager)
-    lateinit var viewPager: ViewPager
+    private val viewPager: ViewPager
+        get() = view!!.findViewById(R.id.view_pager)
 
-    @BindView(R.id.pager_tab_strip)
-    lateinit var pagerTabStrip: PagerTabStrip
+    private val pagerTabStrip: PagerTabStrip
+        get() = view!!.findViewById(R.id.pager_tab_strip)
 
-    @BindView(R.id.loading)
-    lateinit var loading: ContentLoadingProgressBar
+    private val loading: ContentLoadingProgressBar
+        get() = view!!.findViewById(R.id.loading)
 
     @Inject
     lateinit var viewModelFactory: OnAirSongsRootViewModel.Factory
@@ -57,7 +55,6 @@ class OnAirSongsRootFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
 
         viewPager.adapter = fragmentPagerAdapter
         pagerTabStrip.setTabIndicatorColorResource(R.color.app_primary)

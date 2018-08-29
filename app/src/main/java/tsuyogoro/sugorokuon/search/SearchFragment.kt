@@ -13,8 +13,6 @@ import android.support.v7.widget.SearchView
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.R
@@ -30,14 +28,14 @@ class SearchFragment : Fragment(),
     @Inject
     lateinit var viewModelFactory: SearchViewModel.Factory
 
-    @BindView(R.id.search_condition)
-    lateinit var searchCondition: TextView
+    private val searchCondition: TextView
+        get() = view!!.findViewById(R.id.search_condition)
 
-    @BindView(R.id.search_results)
-    lateinit var searchResults: RecyclerView
+    private val searchResults: RecyclerView
+        get() = view!!.findViewById(R.id.search_results)
 
-    @BindView(R.id.swipe_refresh_layout)
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private val swipeRefreshLayout: SwipeRefreshLayout
+        get() = view!!.findViewById(R.id.swipe_refresh_layout)
 
     lateinit var searchResultListAdapter: SearchResultListAdapter
 
@@ -63,7 +61,6 @@ class SearchFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
 
         // Not to allow swipe to refresh on search result list
         swipeRefreshLayout.isEnabled = false

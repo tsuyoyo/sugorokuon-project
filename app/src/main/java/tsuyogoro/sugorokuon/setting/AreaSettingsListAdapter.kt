@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.constant.Area
 
 class AreaSettingsListAdapter(
-        private val areas: List<Area>,
-        private val listener: OnAreaSelectedListener,
-        private val selectedAreas: MutableList<Area> = mutableListOf()
+    private val areas: List<Area>,
+    private val listener: OnAreaSelectedListener,
+    private val selectedAreas: MutableList<Area> = mutableListOf()
 ) : RecyclerView.Adapter<AreaSettingsListAdapter.ViewHolder>() {
 
     interface OnAreaSelectedListener {
@@ -39,20 +37,15 @@ class AreaSettingsListAdapter(
 
     class ViewHolder(parent: ViewGroup,
                      private val listener: OnAreaSelectedListener) : RecyclerView.ViewHolder(
-            LayoutInflater
-                    .from(parent.context)
-                    .inflate(R.layout.item_area_settings, parent, false)
+        LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.item_area_settings, parent, false)
     ) {
+        private val name: TextView
+            get() = itemView.findViewById(R.id.name)
 
-        @BindView(R.id.name)
-        lateinit var name: TextView
-
-        @BindView(R.id.checkbox)
-        lateinit var checkBox: CheckBox
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        private val checkBox: CheckBox
+            get() = itemView.findViewById(R.id.checkbox)
 
         fun setData(area: Area, isChecked: Boolean) {
             name.text = itemView.resources.getString(area.strId)

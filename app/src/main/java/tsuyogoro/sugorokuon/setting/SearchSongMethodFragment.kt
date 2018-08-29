@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
@@ -19,8 +17,8 @@ import javax.inject.Inject
 class SearchSongMethodFragment: Fragment(),
         SearchSongMethodListAdapter.SearchSongMethodListListener {
 
-    @BindView(R.id.method_list)
-    lateinit var methodList: RecyclerView
+    private val methodList: RecyclerView
+        get() = view!!.findViewById(R.id.method_list)
 
     @Inject
     lateinit var viewModelFactory: SearchSongMethodViewModel.Factory
@@ -43,7 +41,6 @@ class SearchSongMethodFragment: Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
 
         methodListAdapter = SearchSongMethodListAdapter(listener = this)
 

@@ -11,10 +11,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
@@ -32,20 +30,20 @@ class SettingsTopFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: SettingsTopViewModel.Factory
 
-    @BindView(R.id.selected_areas)
-    lateinit var selectedAreas: TextView
+    private val selectedAreas: TextView
+        get() = view!!.findViewById(R.id.selected_areas)
 
-    @BindView(R.id.area_settings)
-    lateinit var areaSettings: View
+    private val areaSettings: View
+        get() = view!!.findViewById(R.id.area_settings)
 
-    @BindView(R.id.selected_way_to_search_song)
-    lateinit var selectedSearchSongWay: TextView
+    private val selectedSearchSongWay: TextView
+        get() = view!!.findViewById(R.id.selected_way_to_search_song)
 
-    @BindView(R.id.station_order_settings)
-    lateinit var stationOrder: View
+    private val stationOrder: View
+        get() = view!!.findViewById(R.id.station_order_settings)
 
-    @BindView(R.id.app_version_text)
-    lateinit var appVersion: TextView
+    private val appVersion: TextView
+        get() = view!!.findViewById(R.id.app_version_text)
 
     private lateinit var viewModel: SettingsTopViewModel
 
@@ -55,12 +53,17 @@ class SettingsTopFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
 
         SugorokuonApplication.application(context)
                 .appComponent()
                 .settingSubComponent(SettingsModule())
                 .inject(this)
+
+        view.findViewById<LinearLayout>(R.id.license)
+            .setOnClickListener { onLicenseClicked() }
+
+        view.findViewById<LinearLayout>(R.id.way_to_search_song)
+            .setOnClickListener { onWaySearchSongClicked() }
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
@@ -102,15 +105,13 @@ class SettingsTopFragment : Fragment() {
         }
     }
 
-    @OnClick(R.id.license)
-    fun onLicenseClicked() {
+    private fun onLicenseClicked() {
         val intent = Intent(context, OssLicensesMenuActivity::class.java)
         intent.putExtra("title", getString(R.string.license))
         startActivity(intent)
     }
 
-    @OnClick(R.id.way_to_search_song)
-    fun onWaySearchSongClicked() {
+    private fun onWaySearchSongClicked() {
         (activity as? SugorokuonTopActivity)?.switchFragment(
                 SearchSongMethodFragment(),
                 SubFragmentTags.SONG_SEARCH_METHOD_SETTINGS,

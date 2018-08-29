@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 
@@ -46,15 +44,11 @@ class SearchSongMethodListAdapter(
                 .from(parent.context)
                 .inflate(R.layout.item_song_search_method, parent, false)
     ) {
-        @BindView(R.id.name)
-        lateinit var name: TextView
+        private val name: TextView
+            get() = itemView.findViewById(R.id.name)
 
-        @BindView(R.id.checkbox)
-        lateinit var checkBox: RadioButton
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        private val checkBox: RadioButton
+            get() = itemView.findViewById(R.id.checkbox)
 
         fun setData(method: SearchSongMethod, isSelected: Boolean) {
             name.text = method.getDisplayName(itemView.resources)

@@ -3,8 +3,6 @@ package tsuyogoro.sugorokuon.ad
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.R
@@ -14,11 +12,10 @@ class AdBannerViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
                 .from(parent!!.context)
                 .inflate(R.layout.item_ad_banner, parent, false)
 ) {
-    @BindView(R.id.ad_view)
-    lateinit var adView: AdView
+    private val adView: AdView
+        get() = itemView.findViewById(R.id.ad_view)
 
     init {
-        ButterKnife.bind(this, itemView)
         adView.loadAd(AdRequest.Builder().build())
     }
 }

@@ -9,11 +9,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.*
 import android.webkit.WebView
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -71,35 +69,35 @@ class ProgramInfoFragment : Fragment() {
                 }
     }
 
-    @BindView(R.id.thumbnail)
-    lateinit var thumbnail: ImageView
+    private val thumbnail: ImageView
+        get() = view!!.findViewById(R.id.thumbnail)
 
-    @BindView(R.id.title)
-    lateinit var title: TextView
+    private val title: TextView
+        get() = view!!.findViewById(R.id.title)
 
-    @BindView(R.id.personalities)
-    lateinit var personalities: TextView
+    private val personalities: TextView
+        get() = view!!.findViewById(R.id.personalities)
 
-    @BindView(R.id.on_air_time_start)
-    lateinit var onAirStart: TextView
+    private val onAirStart: TextView
+        get() = view!!.findViewById(R.id.on_air_time_start)
 
-    @BindView(R.id.on_air_time_end)
-    lateinit var onAirEnd: TextView
+    private val onAirEnd: TextView
+        get() = view!!.findViewById(R.id.on_air_time_end)
 
-    @BindView(R.id.open_web_site)
-    lateinit var buttonOpenSite: View
+    private val buttonOpenSite: View
+        get() = view!!.findViewById(R.id.open_web_site)
 
-    @BindView(R.id.register_calendar)
-    lateinit var buttonRegisterCalendar: View
+    private val buttonRegisterCalendar: View
+        get() = view!!.findViewById(R.id.register_calendar)
 
-    @BindView(R.id.content)
-    lateinit var contentWebView: WebView
+    private val contentWebView: WebView
+        get() = view!!.findViewById(R.id.content)
 
-    @BindView(R.id.ad_area)
-    lateinit var adArea: View
+    private val adArea: View
+        get() = view!!.findViewById(R.id.ad_area)
 
-    @BindView(R.id.ad_view)
-    lateinit var adView: AdView
+    private val adView: AdView
+        get() = view!!.findViewById(R.id.ad_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,8 +111,6 @@ class ProgramInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        ButterKnife.bind(this, view)
 
         if (view.isAttachedToWindow) {
             makeEnterAnimation()?.start()
@@ -165,11 +161,9 @@ class ProgramInfoFragment : Fragment() {
 
         // For AdMob
         adView.loadAd(AdRequest.Builder().build())
-    }
 
-    @OnClick(R.id.close_ad)
-    fun onAdCloseClicked() {
-        adArea.visibility = View.GONE
+        view.findViewById<Button>(R.id.close_ad)
+            .setOnClickListener { adArea.visibility = View.GONE }
     }
 
     private fun showRegisterCalendarDialog(program: TimeTableResponse.Program) {

@@ -10,8 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.api.response.StationResponse
@@ -52,23 +50,21 @@ class ProgramTableAdapter(
                     .from(parent!!.context)
                     .inflate(R.layout.item_program_one_station, parent, false)
     ) {
+        private val stationLogo: ImageView
+            get() = itemView.findViewById(R.id.station_logo)
 
-        @BindView(R.id.station_logo)
-        lateinit var stationLogo: ImageView
+        private val stationName: TextView
+            get() = itemView.findViewById(R.id.station_name)
 
-        @BindView(R.id.station_name)
-        lateinit var stationName: TextView
+        private val stationSiteButton: TextView
+            get() = itemView.findViewById(R.id.station_site_btn)
 
-        @BindView(R.id.station_site_btn)
-        lateinit var stationSiteButton: TextView
-
-        @BindView(R.id.program_list)
-        lateinit var programList: RecyclerView
+        private val programList: RecyclerView
+            get() = itemView.findViewById(R.id.program_list)
 
         private lateinit var layoutManager: LinearLayoutManager
 
         init {
-            ButterKnife.bind(this, itemView)
             programList.addItemDecoration(ProgramListItemDecoration())
         }
 

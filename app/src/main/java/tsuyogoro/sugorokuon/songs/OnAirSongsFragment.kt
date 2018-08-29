@@ -17,8 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import butterknife.BindView
-import butterknife.ButterKnife
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.R
@@ -33,11 +31,11 @@ class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDi
     @Inject
     lateinit var viewModelFactory: OnAirSongsViewModel.Factory
 
-    @BindView(R.id.songs_list)
-    lateinit var songsList: RecyclerView
+    private val songsList: RecyclerView
+        get() = view!!.findViewById(R.id.songs_list)
 
-    @BindView(R.id.swipe_refresh_layout)
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private val swipeRefreshLayout: SwipeRefreshLayout
+        get() = view!!.findViewById(R.id.swipe_refresh_layout)
 
     private val disposables = CompositeDisposable()
 
@@ -83,7 +81,6 @@ class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
         onAirSongsAdapter = OnAirSongsAdapter(object : OnAirSongsAdapter.OnAirSongsItemListener {
             override fun onSearchSong(song: FeedResponse.Song) {
                 viewModel.search(song)

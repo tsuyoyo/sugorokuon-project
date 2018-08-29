@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.ContentLoadingProgressBar
-import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,14 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -36,20 +33,17 @@ class ProgramTableFragment : Fragment(),
     @Inject
     lateinit var viewModelFactory: ProgramTableViewModel.Factory
 
-    @BindView(R.id.program_table)
-    lateinit var programTable: RecyclerView
+    private val programTable: RecyclerView
+        get() = view!!.findViewById(R.id.program_table)
 
-    @BindView(R.id.loading)
-    lateinit var loading: ContentLoadingProgressBar
+    private val loading: ContentLoadingProgressBar
+        get() = view!!.findViewById(R.id.loading)
 
-    @BindView(R.id.date_label)
-    lateinit var dateLabel: CardView
+    private val date: TextView
+        get() = view!!.findViewById(R.id.date)
 
-    @BindView(R.id.date)
-    lateinit var date: TextView
-
-    @BindView(R.id.btn_date_select)
-    lateinit var buttonDateSelect: Button
+    private val buttonDateSelect: Button
+        get() = view!!.findViewById(R.id.btn_date_select)
 
     private lateinit var viewModel: ProgramTableViewModel
     private lateinit var programTableAdapter: ProgramTableAdapter
@@ -69,8 +63,6 @@ class ProgramTableFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        ButterKnife.bind(this, view)
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)

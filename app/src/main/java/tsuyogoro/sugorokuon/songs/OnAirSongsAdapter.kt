@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -34,17 +32,17 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
     }
 
     override fun getItemViewType(position: Int): Int =
-            if (position > onAirSongs.size - 1) {
-                TYPE_AD
-            } else {
-                TYPE_SONG
-            }
+        if (position > onAirSongs.size - 1) {
+            TYPE_AD
+        } else {
+            TYPE_SONG
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            when (viewType) {
-                TYPE_AD -> OnAirSongsAdViewHolder(parent)
-                else -> OnAirSongsViewHolder(parent, listener)
-            }
+        when (viewType) {
+            TYPE_AD -> OnAirSongsAdViewHolder(parent)
+            else -> OnAirSongsViewHolder(parent, listener)
+        }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position < onAirSongs.size) {
@@ -55,60 +53,54 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
     override fun getItemCount(): Int = onAirSongs.size + 1
 
     class OnAirSongsAdViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-            LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_on_air_song_ad, parent, false)
+        LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_on_air_song_ad, parent, false)
     ) {
-        @BindView(R.id.ad_view)
-        lateinit var adView: AdView
+        private val adView: AdView
+            get() = itemView.findViewById(R.id.ad_view)
 
         init {
-            ButterKnife.bind(this, itemView)
             adView.loadAd(AdRequest.Builder().build())
         }
     }
 
     class OnAirSongsViewHolder(
-            parent: ViewGroup?,
-            private val listener: OnAirSongsItemListener
+        parent: ViewGroup?,
+        private val listener: OnAirSongsItemListener
     ) : RecyclerView.ViewHolder(
-            LayoutInflater
-                    .from(parent?.context)
-                    .inflate(R.layout.item_on_air_song, parent, false)
+        LayoutInflater
+            .from(parent?.context)
+            .inflate(R.layout.item_on_air_song, parent, false)
     ) {
+        private val thumbnail: ImageView
+            get() = itemView.findViewById(R.id.song_thumbnail)
 
-        @BindView(R.id.song_thumbnail)
-        lateinit var thumbnail: ImageView
+        private val onAirDate: TextView
+            get() = itemView.findViewById(R.id.onair_date)
 
-        @BindView(R.id.onair_date)
-        lateinit var onAirDate: TextView
+        private val title: TextView
+            get() = itemView.findViewById(R.id.title)
 
-        @BindView(R.id.title)
-        lateinit var title: TextView
+        private val artist: TextView
+            get() = itemView.findViewById(R.id.artist)
 
-        @BindView(R.id.artist)
-        lateinit var artist: TextView
-
-        @BindView(R.id.search_on_library)
-        lateinit var searchOnLibraryBtn: TextView
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        private val searchOnLibraryBtn: TextView
+            get() = itemView.findViewById(R.id.search_on_library)
 
         fun setSong(song: FeedResponse.Song) {
             if (song.image != null && song.image.isNotBlank()) {
                 Glide.with(itemView).load(song.image).into(thumbnail)
             } else {
                 thumbnail.setImageDrawable(
-                        itemView.resources
-                                .getDrawable(R.drawable.ic_music_note_grey_600_48dp, null)
+                    itemView.resources
+                        .getDrawable(R.drawable.ic_music_note_grey_600_48dp, null)
                 )
             }
             onAirDate.text =
-                    SimpleDateFormat(
-                            itemView.resources.getString(R.string.date_hhmm),
-                            Locale.JAPAN
-                    ).format(Date(song.stamp.timeInMillis))
+                SimpleDateFormat(
+                    itemView.resources.getString(R.string.date_hhmm),
+                    Locale.JAPAN
+                ).format(Date(song.stamp.timeInMillis))
             title.text = song.title
             artist.text = song.artist
 

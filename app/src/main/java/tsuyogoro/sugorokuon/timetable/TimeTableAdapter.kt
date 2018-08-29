@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.api.response.TimeTableResponse
@@ -50,28 +48,23 @@ class TimeTableAdapter(
             LayoutInflater.from(parent?.context)
                     .inflate(R.layout.item_program, parent, false)
     ) {
+        private val thumbnail: ImageView
+            get() = itemView.findViewById(R.id.thumbnail)
 
-        @BindView(R.id.thumbnail)
-        lateinit var thumbnail: ImageView
+        private val onAirTimeStart: TextView
+            get() = itemView.findViewById(R.id.on_air_time_start)
 
-        @BindView(R.id.on_air_time_start)
-        lateinit var onAirTimeStart: TextView
+        private val onAirTimeEnd: TextView
+            get() = itemView.findViewById(R.id.on_air_time_end)
 
-        @BindView(R.id.on_air_time_end)
-        lateinit var onAirTimeEnd: TextView
+        private val title: TextView
+            get() = itemView.findViewById(R.id.title)
 
-        @BindView(R.id.title)
-        lateinit var title: TextView
+        private val personalities: TextView
+            get() = itemView.findViewById(R.id.personalities)
 
-        @BindView(R.id.personalities)
-        lateinit var personalities: TextView
-
-        @BindView(R.id.tap_area)
-        lateinit var tapArea: View
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        private val tapArea: View
+            get() = itemView.findViewById(R.id.tap_area)
 
         fun setProgram(program: TimeTableResponse.Program) {
             tapArea.setOnClickListener {

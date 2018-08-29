@@ -64,7 +64,6 @@ ext {
     rxAndroidVersion = "2.0.2"
     rxBindingVersion = "2.1.1"
 
-    butterKnifeVersion = "8.8.1"
     kvsSchemaVersion = "5.0.1"
     androidArchitectureComponent = "1.1.0"
 

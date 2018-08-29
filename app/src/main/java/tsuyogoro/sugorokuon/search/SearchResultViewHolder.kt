@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import tsuyogoro.sugorokuon.R
@@ -23,36 +21,32 @@ class SearchResultViewHolder(
         LayoutInflater.from(parent!!.context)
                 .inflate(R.layout.item_search_result, parent, false)
 ) {
-    @BindView(R.id.click_area)
-    lateinit var clickArea: View
+    private val clickArea: View 
+        get() = itemView.findViewById(R.id.click_area)
 
-    @BindView(R.id.image)
-    lateinit var image: ImageView
+    private val image: ImageView
+        get() = itemView.findViewById(R.id.image)
 
-    @BindView(R.id.date)
-    lateinit var date: TextView
+    private val date: TextView
+    get() = itemView.findViewById(R.id.date)
 
-    @BindView(R.id.start_time)
-    lateinit var startTime: TextView
+    private val startTime: TextView
+        get() = itemView.findViewById(R.id.start_time)
 
-    @BindView(R.id.end_time)
-    lateinit var endTime: TextView
+    private val endTime: TextView
+        get() = itemView.findViewById(R.id.end_time)
 
-    @BindView(R.id.title)
-    lateinit var title: TextView
+    private val title: TextView
+        get() = itemView.findViewById(R.id.title)
 
-    @BindView(R.id.personalities)
-    lateinit var personalities: TextView
+    private val personalities: TextView
+        get() = itemView.findViewById(R.id.personalities)
 
-    @BindView(R.id.station_name)
-    lateinit var stationName: TextView
+    private val stationName: TextView
+        get() = itemView.findViewById(R.id.station_name)
 
-    @BindView(R.id.station_logo)
-    lateinit var stationLogo: ImageView
-
-    init {
-        ButterKnife.bind(this, itemView)
-    }
+    private val stationLogo: ImageView
+        get() = itemView.findViewById(R.id.station_logo)
 
     fun setSearchResult(searchResult: SearchViewModel.SearchResultData) {
         clickArea.setOnClickListener {

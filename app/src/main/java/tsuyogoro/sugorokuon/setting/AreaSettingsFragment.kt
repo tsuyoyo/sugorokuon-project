@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.constant.Area
@@ -19,11 +17,11 @@ import javax.inject.Inject
 
 class AreaSettingsFragment : Fragment(), AreaSettingsListAdapter.OnAreaSelectedListener {
 
-    @BindView(R.id.area_list)
-    lateinit var areaList: RecyclerView
+    private val areaList: RecyclerView
+        get() = view!!.findViewById(R.id.area_list)
 
-    @BindView(R.id.selected_areas)
-    lateinit var selectedAreasLabel: TextView
+    private val selectedAreasLabel: TextView
+        get() = view!!.findViewById(R.id.selected_areas)
 
     @Inject
     lateinit var viewModelFactory: AreaSettingsViewModel.Factory
@@ -46,7 +44,6 @@ class AreaSettingsFragment : Fragment(), AreaSettingsListAdapter.OnAreaSelectedL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)

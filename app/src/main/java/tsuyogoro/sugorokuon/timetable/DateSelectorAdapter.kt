@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
 import tsuyogoro.sugorokuon.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -77,16 +75,11 @@ class DateSelectorAdapter(
             LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_date_selector, parent, false)
     ) {
+        private val date: TextView
+            get() = itemView.findViewById(R.id.date)
 
-        @BindView(R.id.date)
-        lateinit var date: TextView
-
-        @BindView(R.id.day)
-        lateinit var day: TextView
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        private val day: TextView
+            get() = itemView.findViewById(R.id.day)
 
         fun setDate(date: Calendar, isSelected: Boolean) {
             this.date.text = date.get(Calendar.DAY_OF_MONTH).toString()

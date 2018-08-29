@@ -11,9 +11,6 @@ import android.transition.Slide
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,11 +21,11 @@ import javax.inject.Inject
 
 class OnboardingActivity : AppCompatActivity() {
 
-    @BindView(R.id.next)
-    lateinit var nextButton: Button
+    private val nextButton: Button
+        get() = findViewById(R.id.next)
 
-    @BindView(R.id.done_onboarding)
-    lateinit var onBoardingDoneButton: Button
+    private val onBoardingDoneButton: Button
+        get() = findViewById(R.id.done_onboarding)
 
     @Inject
     lateinit var onBoardingViewModelFactory: OnboardingViewModel.Factory
@@ -55,7 +52,9 @@ class OnboardingActivity : AppCompatActivity() {
                 .get(OnboardingViewModel::class.java)
 
         setContentView(R.layout.activity_onboarding)
-        ButterKnife.bind(this)
+
+        nextButton.setOnClickListener { onNextClicked() }
+        onBoardingDoneButton.setOnClickListener { onDoneClicked() }
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -90,8 +89,7 @@ class OnboardingActivity : AppCompatActivity() {
         disposable.dispose()
     }
 
-    @OnClick(R.id.next)
-    fun onNextClicked() {
+    private fun onNextClicked() {
         when (supportFragmentManager.backStackEntryCount) {
             1 -> supportFragmentManager.beginTransaction()
                     .add(R.id.fragment_area, createTutorialFragment(1))
@@ -129,8 +127,7 @@ class OnboardingActivity : AppCompatActivity() {
                 exitTransition = Slide(Gravity.LEFT)
             }
 
-    @OnClick(R.id.done_onboarding)
-    fun onDoneClicked() {
+    private fun onDoneClicked() {
         setResult(Activity.RESULT_OK)
         finish()
     }
