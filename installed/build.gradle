@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+    defaultConfig {
+        applicationId "tsuyogoro.sugorokuon"
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
+        versionCode 306
+        versionName "3.0.6"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
+}
+
+dependencies {
+    implementation project(':base')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+apply plugin: 'com.google.gms.google-services'
