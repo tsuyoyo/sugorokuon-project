@@ -13,7 +13,6 @@ android {
         versionName "3.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -23,12 +22,11 @@ android {
             applicationIdSuffix ".debug"
         }
     }
-
 }
 
 dependencies {
-    implementation project(':base')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation project(':base')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 apply plugin: 'com.google.gms.google-services'
