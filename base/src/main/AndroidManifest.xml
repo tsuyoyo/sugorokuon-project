@@ -40,7 +40,7 @@
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
@@ -51,7 +51,7 @@
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
@@ -59,6 +59,10 @@
                     android:scheme="https"
                     android:pathPrefix="/top" />
             </intent-filter>
+
+            <meta-data
+                android:name="default-url"
+                android:value="https://sugorokuonapp.firebaseapp.com/top" />
         </activity>
 
         <activity android:name="tsuyogoro.sugorokuon.onboarding.OnboardingActivity" />
@@ -102,6 +106,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/app_accent" />
+
     </application>
 
 </manifest>

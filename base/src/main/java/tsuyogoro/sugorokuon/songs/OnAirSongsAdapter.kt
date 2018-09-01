@@ -2,12 +2,14 @@ package tsuyogoro.sugorokuon.songs
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.common.wrappers.InstantApps
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.api.response.FeedResponse
 import java.text.SimpleDateFormat
@@ -104,17 +106,11 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
             title.text = song.title
             artist.text = song.artist
 
+            if (InstantApps.isInstantApp(itemView.context)) {
+                searchOnLibraryBtn.visibility = View.GONE
+            }
             searchOnLibraryBtn.setOnClickListener {
                 listener.onSearchSong(song)
-//                (itemView.context as? AppCompatActivity)?.let {
-//                    it.startActivity(Intent().apply {
-//                        action = MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH
-//                        putExtra(MediaStore.EXTRA_MEDIA_FOCUS, "vnd.android.cursor.item/*")
-//                        putExtra(MediaStore.EXTRA_MEDIA_TITLE, song.title)
-//                        putExtra(MediaStore.EXTRA_MEDIA_ARTIST, song.artist)
-//                        putExtra(SearchManager.QUERY, song.title)
-//                    })
-//                }
             }
         }
     }

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.gms.common.wrappers.InstantApps
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
@@ -63,7 +64,13 @@ class SettingsTopFragment : Fragment() {
             .setOnClickListener { onLicenseClicked() }
 
         view.findViewById<LinearLayout>(R.id.way_to_search_song)
-            .setOnClickListener { onWaySearchSongClicked() }
+            .apply {
+                if (InstantApps.isInstantApp(context)) {
+                    visibility = View.GONE
+                } else {
+                    setOnClickListener { onWaySearchSongClicked() }
+                }
+            }
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
@@ -73,11 +80,11 @@ class SettingsTopFragment : Fragment() {
                 .observe(this, Observer(selectedAreas::setText))
 
         viewModel.observeSelectedSerachSongWay()
-                .observe(this, Observer({ searchSongWay ->
-                    if (searchSongWay != null) {
-                        selectedSearchSongWay.text = searchSongWay.getDisplayName(resources)
+                .observe(this, Observer {
+                    if (it != null) {
+                        selectedSearchSongWay.text = it.getDisplayName(resources)
                     }
-                }))
+                })
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(

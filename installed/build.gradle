@@ -9,8 +9,8 @@ android {
         applicationId "tsuyogoro.sugorokuon"
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
-        versionCode 306
-        versionName "3.0.6"
+        versionCode 310
+        versionName "3.1.0.instant"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
