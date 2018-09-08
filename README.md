@@ -20,7 +20,7 @@ This app is supporting instant app. Please follow below to try/develop it.
 
 ## For release
 
-1. Cherry-pick <TODO> to configure gradle files
+1. Cherry-pick https://github.com/tsuyoyo/sugorokuon-project/commit/fa96c2d486456c860d91df9df28d82928a377853 to configure gradle files
   - without this patch, package will be `tsuyogoro.sugorokuon.base` (not `tsuyogoro.sugorokuon`)
 2. Select "Build > Generate Signed Bundle/Apk" (in case of Android studio 3.2 beta)
   - <img src="./noteimages/how_to_build_instant_app_release_01.png" width="240px">
