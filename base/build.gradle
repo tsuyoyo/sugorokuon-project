@@ -13,31 +13,25 @@ apply plugin: 'kotlin-kapt'
 android {
     baseFeature true
 
-    // signingConfigs
-    apply from: 'signature/debug.gradle', to: android
-    apply from: 'signature/release.gradle', to: android
-
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
     defaultConfig {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         multiDexEnabled true
-//        versionCode 306
-//        versionName "3.0.6"
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
             resValue "string", "radibangBannerAppId", "${AD_MOB_APP_ID_RADIBANG_BANNER}"
             resValue "string", "radibangBannerUnitId", "${AD_MOB_UNIT_ID_RADIBAND_BANNER}"
             resValue "string", "radibangOnAirSongsBannerUnitId", "${AD_MOB_UNIT_ID_ONAIR_SONGS_BANNER}"
             resValue "string", "radibangInterstitialAd01", "${AD_MOB_UNIT_ID_INTERSTITIAL_01}"
-//            proguardFile '/Users/tsuyoyo/myDevWork/Android/sugorokuon-project/app/proguard-rules.pro'
-            signingConfig signingConfigs.releaseSignature
+            proguardFile '/Users/tsuyoyo/myDevWork/Android/sugorokuon-project/app/proguard-rules.pro'
         }
         debug {
             minifyEnabled false
@@ -52,7 +46,6 @@ android {
             resValue "string", "radibangBannerUnitId", "ca-app-pub-3940256099942544/6300978111"
             resValue "string", "radibangOnAirSongsBannerUnitId", "ca-app-pub-3940256099942544/6300978111"
             resValue "string", "radibangInterstitialAd01", "ca-app-pub-3940256099942544/1033173712"
-            signingConfig signingConfigs.debug
         }
     }
     lintOptions {
@@ -66,8 +59,6 @@ android {
 }
 
 dependencies {
-    application project(":installed")
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "com.google.android.gms:play-services-oss-licenses:16.0.0"
@@ -140,4 +131,3 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
 }
-
