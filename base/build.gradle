@@ -59,6 +59,7 @@ android {
 }
 
 dependencies {
+    application project(":installed")
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "com.google.android.gms:play-services-oss-licenses:16.0.0"

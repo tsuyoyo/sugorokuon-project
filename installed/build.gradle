@@ -14,8 +14,8 @@ android {
         applicationId "tsuyogoro.sugorokuon"
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
-        versionCode project.installVersionCode
-        versionName project.installVersionName
+        versionCode project.instantVersionCode
+        versionName project.instantVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-    implementation project(':base')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
