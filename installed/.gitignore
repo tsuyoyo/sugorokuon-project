@@ -1,0 +1,5 @@
+/build
+/src/debug/google-services.json
+/src/release/google-services.json
+/release
+/signature
