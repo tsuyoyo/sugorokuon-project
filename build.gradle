@@ -73,5 +73,7 @@ ext {
     androidArchitectureComponent = "1.1.1"
 
     crashlyticsVersion = "2.7.1"
+
+    debotVersion = "2.0.4"
 }
 

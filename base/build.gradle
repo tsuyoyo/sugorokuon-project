@@ -114,6 +114,14 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
 
+    // debug menu
+    debugImplementation("com.tomoima.debot:debot:${project.debotVersion}") {
+        exclude group: "com.android.support"
+    }
+    releaseImplementation("com.tomoima.debot:debot-no-op:${project.debotVersion}") {
+        exclude group: "com.android.support"
+    }
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
