@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.SearchResponse
-import tsuyogoro.sugorokuon.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
+import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.io.Serializable
 import java.text.SimpleDateFormat

@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.extension
 
-import tsuyogoro.sugorokuon.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 
 fun TimeTableResponse.searchProgram(id: String) : TimeTableResponse.Program? {
     stations.forEach {

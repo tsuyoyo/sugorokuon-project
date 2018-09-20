@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlin_version}"
     }
 }
 
@@ -59,6 +59,8 @@ android {
 }
 
 dependencies {
+    implementation project(":radiko")
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "com.google.android.gms:play-services-oss-licenses:16.0.0"
@@ -75,11 +77,6 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${project.playServiceVersion}"
     implementation "com.google.firebase:firebase-messaging:17.3.0"
 
-    implementation "com.squareup.okhttp3:okhttp:${project.okHttpVersion}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${project.okHttpVersion}"
-
-    implementation "com.google.code.gson:gson:${project.gsonVersion}"
-
     implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
     implementation "com.github.bumptech.glide:annotations:${project.glideVersion}"
     kapt "com.github.bumptech.glide:compiler:${project.glideVersion}"
@@ -92,16 +89,6 @@ dependencies {
     implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar"){
         transitive=true
     }
-
-    // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
-    implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
-        exclude module: 'stax'
-        exclude module: 'stax-api'
-        exclude module: 'xpp3'
-    }
-    implementation "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${project.retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${project.retrofitVersion}"
 
     // Dagger2 : http://google.github.io/dagger/
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
@@ -125,7 +112,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${project.androidArchitectureComponent}"
     testImplementation "android.arch.core:core-testing:${project.androidArchitectureComponent}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'

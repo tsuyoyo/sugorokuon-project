@@ -5,10 +5,10 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.api.TimeTableApi
-import tsuyogoro.sugorokuon.api.response.StationResponse
-import tsuyogoro.sugorokuon.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.radiko.api.TimeTableApi
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.repository.TimeTableRepository
 import tsuyogoro.sugorokuon.timetable.OneDayTimeTable
 import java.util.*

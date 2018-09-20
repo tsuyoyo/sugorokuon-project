@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.RadioButton
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.FeedResponse
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 
 class OnAirSongsSearchDialog : DialogFragment() {
 

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 
 class OnAirSongsFragmentPagerAdapter(
         fragmentManager: FragmentManager,

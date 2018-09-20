@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.extension.getFocusedFragment
 import javax.inject.Inject
 

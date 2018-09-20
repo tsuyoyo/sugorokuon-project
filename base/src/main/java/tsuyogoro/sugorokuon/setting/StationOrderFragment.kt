@@ -11,9 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils
-import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import javax.inject.Inject
 
 class StationOrderFragment : Fragment(), StationOrderAdapter.StationOrderAdapterListener {

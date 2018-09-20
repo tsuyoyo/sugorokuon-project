@@ -2,15 +2,13 @@ package tsuyogoro.sugorokuon.repository
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
-import tsuyogoro.sugorokuon.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 
 class TimeTableRepository(
         private val cachedTimeTableResponse: BehaviorProcessor<Map<String, TimeTableResponse>> =
             BehaviorProcessor.createDefault(emptyMap())
 ) {
-
-
     /**
      * Key of map is areaId, value is TimeTableResponse.
      *

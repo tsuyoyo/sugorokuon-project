@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.repository
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
-import tsuyogoro.sugorokuon.api.response.FeedResponse
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 
 class FeedRepository(
         private val responses: BehaviorProcessor<Map<String, FeedResponse>> =

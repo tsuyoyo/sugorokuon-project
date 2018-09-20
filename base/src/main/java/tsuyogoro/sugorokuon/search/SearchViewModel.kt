@@ -9,12 +9,12 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
-import tsuyogoro.sugorokuon.api.response.SearchResponse
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.StationService
+import tsuyogoro.sugorokuon.utils.SugorokuonLog
 
 class SearchViewModel(
         private val searchService: SearchService,

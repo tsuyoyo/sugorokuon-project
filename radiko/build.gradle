@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.google.code.gson:gson:${project.gsonVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${project.okHttpVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${project.okHttpVersion}"
+
+    // Referred : https://futurestud.io/blog/retrofit-how-to-integrate-xml-converter
+    implementation("com.squareup.retrofit2:converter-simplexml:${project.retrofitVersion}") {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
+    implementation "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${project.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${project.retrofitVersion}"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}

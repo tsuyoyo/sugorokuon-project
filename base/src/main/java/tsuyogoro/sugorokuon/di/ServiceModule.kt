@@ -2,9 +2,9 @@ package tsuyogoro.sugorokuon.di
 
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.api.FeedApi
-import tsuyogoro.sugorokuon.api.StationApi
-import tsuyogoro.sugorokuon.api.TimeTableApi
+import tsuyogoro.sugorokuon.radiko.api.FeedApi
+import tsuyogoro.sugorokuon.radiko.api.StationApi
+import tsuyogoro.sugorokuon.radiko.api.TimeTableApi
 import tsuyogoro.sugorokuon.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.repository.*
 import tsuyogoro.sugorokuon.service.*

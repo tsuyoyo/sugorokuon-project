@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.service.SettingsService
 
 class StationOrderViewModel(

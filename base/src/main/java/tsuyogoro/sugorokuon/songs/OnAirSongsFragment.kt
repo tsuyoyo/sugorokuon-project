@@ -19,10 +19,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.api.response.FeedResponse
+import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 import tsuyogoro.sugorokuon.utils.SugorokuonLog
 import javax.inject.Inject
 

@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 
 class StationOrderAdapter(private val listener: StationOrderAdapterListener) :
         RecyclerView.Adapter<StationOrderViewHolder>(),

@@ -12,7 +12,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import tsuyogoro.sugorokuon.api.RadikoApiModule;
+import tsuyogoro.sugorokuon.di.RadikoApiModule;
 import tsuyogoro.sugorokuon.base.R;
 import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
 import tsuyogoro.sugorokuon.di.RepositoryModule;

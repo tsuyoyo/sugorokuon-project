@@ -3,16 +3,15 @@ package tsuyogoro.sugorokuon.search
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import tsuyogoro.sugorokuon.api.SearchApi
-import tsuyogoro.sugorokuon.api.SearchUuidGenerator
-import tsuyogoro.sugorokuon.api.response.SearchResponse
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.radiko.api.SearchApi
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 import java.net.URLEncoder
 
 class SearchService(
-        private val searchApi: SearchApi,
-        private val searchUuidGenerator: SearchUuidGenerator,
-        private val searchResponseRepository: SearchResponseRepository
+    private val searchApi: SearchApi,
+    private val searchUuidGenerator: SearchUuidGenerator,
+    private val searchResponseRepository: SearchResponseRepository
 ) {
 
     /**

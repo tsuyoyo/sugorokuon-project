@@ -7,8 +7,8 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
-import tsuyogoro.sugorokuon.api.response.FeedResponse
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.FeedService
 import tsuyogoro.sugorokuon.service.SettingsService

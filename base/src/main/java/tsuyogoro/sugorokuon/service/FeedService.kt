@@ -5,10 +5,10 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.api.FeedApi
-import tsuyogoro.sugorokuon.api.response.FeedResponse
-import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.model.SugorokuonAppState
+import tsuyogoro.sugorokuon.radiko.api.FeedApi
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.repository.FeedRepository
 
 class FeedService(

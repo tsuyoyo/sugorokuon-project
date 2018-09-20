@@ -1,9 +1,9 @@
-package tsuyogoro.sugorokuon.api
+package tsuyogoro.sugorokuon.radiko.api
 
 import io.reactivex.Maybe
 import retrofit2.http.GET
 import retrofit2.http.Query
-import tsuyogoro.sugorokuon.api.response.SearchResponse
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 
 interface SearchApi {
 

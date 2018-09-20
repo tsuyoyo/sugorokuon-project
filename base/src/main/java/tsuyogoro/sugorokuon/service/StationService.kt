@@ -3,9 +3,9 @@ package tsuyogoro.sugorokuon.service
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
-import tsuyogoro.sugorokuon.api.StationApi
-import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.radiko.api.StationApi
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.repository.StationRepository
 
 class StationService(

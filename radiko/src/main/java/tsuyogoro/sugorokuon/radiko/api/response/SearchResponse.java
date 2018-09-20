@@ -1,4 +1,8 @@
-package tsuyogoro.sugorokuon.api.response;
+/**
+ * Copyright (c)
+ * 2018 Tsuyoyo. All Rights Reserved.
+ */
+package tsuyogoro.sugorokuon.radiko.api.response;
 
 import com.google.gson.annotations.SerializedName;
 

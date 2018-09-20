@@ -1,9 +1,13 @@
-package tsuyogoro.sugorokuon.api
+/**
+ * Copyright (c)
+ * 2018 Tsuyoyo. All Rights Reserved.
+ */
+package tsuyogoro.sugorokuon.radiko.api
 
 import io.reactivex.Maybe
 import retrofit2.http.GET
 import retrofit2.http.Path
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 
 interface StationApi {
 

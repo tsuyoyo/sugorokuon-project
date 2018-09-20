@@ -3,8 +3,7 @@ package tsuyogoro.sugorokuon.search
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.api.SearchApi
-import tsuyogoro.sugorokuon.api.SearchUuidGenerator
+import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.StationService

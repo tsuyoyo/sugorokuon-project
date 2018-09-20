@@ -12,8 +12,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.StationResponse
-import tsuyogoro.sugorokuon.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 
 class ProgramTableAdapter(
         private val listener: ProgramTableAdapterListener

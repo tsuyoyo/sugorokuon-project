@@ -9,8 +9,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.SearchResponse
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import java.text.SimpleDateFormat
 import java.util.*
 

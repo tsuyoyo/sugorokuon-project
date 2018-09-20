@@ -3,9 +3,9 @@ package tsuyogoro.sugorokuon.service
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.api.response.StationResponse
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.repository.SettingsRepository
 import java.util.*
 

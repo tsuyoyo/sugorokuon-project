@@ -2,7 +2,7 @@
  * Copyright (c)
  * 2016 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.api
+package tsuyogoro.sugorokuon.radiko.api
 
 import org.simpleframework.xml.transform.Transform
 
@@ -12,7 +12,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class ApiDateConverter : Transform<Calendar> {
+internal class ApiDateConverter : Transform<Calendar> {
 
     private fun decideFormatPatten(dateStr: String): String? {
         return if (dateStr.length == FORMAT_yyyyMMdd.length) {

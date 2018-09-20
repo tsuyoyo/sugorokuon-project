@@ -1,4 +1,8 @@
-package tsuyogoro.sugorokuon.api
+/**
+ * Copyright (c)
+ * 2018 Tsuyoyo. All Rights Reserved.
+ */
+package tsuyogoro.sugorokuon.search
 
 import java.util.*
 

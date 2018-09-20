@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.wrappers.InstantApps
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.FeedResponse
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 import java.text.SimpleDateFormat
 import java.util.*
 

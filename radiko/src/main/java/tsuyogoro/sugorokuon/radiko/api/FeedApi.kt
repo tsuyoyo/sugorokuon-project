@@ -1,9 +1,9 @@
-package tsuyogoro.sugorokuon.api
+package tsuyogoro.sugorokuon.radiko.api
 
 import io.reactivex.Maybe
 import retrofit2.http.GET
 import retrofit2.http.Path
-import tsuyogoro.sugorokuon.api.response.FeedResponse
+import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 
 interface FeedApi {
 

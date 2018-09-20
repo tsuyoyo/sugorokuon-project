@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.api.response.StationResponse
+import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 
 class StationOrderViewHolder(parent: ViewGroup) : AbstractDraggableItemViewHolder(
         LayoutInflater.from(parent.context)
