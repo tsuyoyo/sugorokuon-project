@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/reminder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reminder test"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/reminder_message_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reminder_title"
+                android:layout_marginTop="16dp"
+                android:text="Submit reminder after" />
+
+            <EditText
+                android:id="@+id/reminder_time_input"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/reminder_message_1"
+                android:layout_toEndOf="@+id/reminder_message_1"
+                android:gravity="center"
+                android:hint="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/reminder_message_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/reminder_message_1"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/reminder_time_input"
+                android:text="seconds" />
+
+            <Button
+                android:id="@+id/reminder_set_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="set\nreminder" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/search_recommend_debug_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search recommend search debug"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/search_recommend_debug_title">
+                <Button
+                    android:id="@+id/open_settings"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Go to settings\nto register keyword" />
+
+                <Button
+                    android:id="@+id/get_recommend_now"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get recommend\n and store DB" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/background_search_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Background search test"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/background_search_message_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/background_search_title"
+                android:layout_marginTop="16dp"
+                android:text="Update reccomend after" />
+
+            <EditText
+                android:id="@+id/background_search_time_input"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/background_search_message_1"
+                android:layout_toEndOf="@+id/background_search_message_1"
+                android:gravity="center"
+                android:hint="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/background_search_message_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/background_search_message_1"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@+id/background_search_time_input"
+                android:text="seconds" />
+
+            <Button
+                android:id="@+id/background_search_set_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="set\ntimer" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/db_debug_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recommend database debug"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/db_debug_title">
+                <Button
+                    android:id="@+id/db_debug_dump"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dump" />
+
+                <Button
+                    android:id="@+id/db_debug_clear"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Clear" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/notification_debug_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recommend notification title"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/notification_debug_title">
+                <Button
+                    android:id="@+id/submit_notification_now"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Submit notification for recommend" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>
