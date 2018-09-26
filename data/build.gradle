@@ -3,18 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
-
-
-
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
     }
 
     buildTypes {
@@ -23,13 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
@@ -37,6 +29,13 @@ dependencies {
     // KvsSchema
     kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
+
+    // Dagger2 : http://google.github.io/dagger/
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

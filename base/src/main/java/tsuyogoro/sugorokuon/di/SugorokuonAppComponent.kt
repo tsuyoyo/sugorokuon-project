@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.di
 import dagger.Component
 import tsuyogoro.sugorokuon.SugorokuonTopModule
 import tsuyogoro.sugorokuon.SugorokuonTopSubComponent
+import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.onboarding.OnboardingComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingModule
 import tsuyogoro.sugorokuon.search.SearchModule
@@ -24,7 +25,8 @@ import javax.inject.Singleton
     SugorokuonAppModule::class,
     RadikoApiModule::class,
     ServiceModule::class,
-    RepositoryModule::class
+    RepositoryModule::class,
+    DataModule::class
 ])
 interface SugorokuonAppComponent {
 

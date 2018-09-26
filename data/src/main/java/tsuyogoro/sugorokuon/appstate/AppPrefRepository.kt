@@ -1,4 +1,4 @@
-package tsuyogoro.sugorokuon.repository
+package tsuyogoro.sugorokuon.appstate
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
