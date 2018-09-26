@@ -6,6 +6,7 @@ import tsuyogoro.sugorokuon.SugorokuonTopSubComponent
 import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.onboarding.OnboardingComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingModule
+import tsuyogoro.sugorokuon.radiko.RadikoApiModule
 import tsuyogoro.sugorokuon.search.SearchModule
 import tsuyogoro.sugorokuon.search.SearchSubComponent
 import tsuyogoro.sugorokuon.setting.SettingsModule

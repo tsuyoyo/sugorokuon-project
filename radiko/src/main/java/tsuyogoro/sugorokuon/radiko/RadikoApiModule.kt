@@ -1,10 +1,8 @@
-/**
- * Copyright (c)
- * 2018 Tsuyoyo. All Rights Reserved.
- */
-package tsuyogoro.sugorokuon.radiko.api
+package tsuyogoro.sugorokuon.radiko
 
 import com.google.gson.GsonBuilder
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.simpleframework.xml.Serializer
@@ -14,28 +12,34 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import tsuyogoro.sugorokuon.radiko.api.*
 import java.util.*
 
-object RadikoApiProvider {
+@Module
+class RadikoApiModule {
 
+    @Provides
     fun provideStationApi(): StationApi = retrofitBuilderForXmlResponseApi()
-            .build()
-            .create(StationApi::class.java)
+        .build()
+        .create(StationApi::class.java)
 
+    @Provides
     fun provideSearchApi(): SearchApi = retrofitBuilderWithCommonSettings()
-            .addConverterFactory(GsonConverterFactory.create(
-                GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
-            ))
-            .build()
-            .create(SearchApi::class.java)
+        .addConverterFactory(GsonConverterFactory.create(
+            GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
+        ))
+        .build()
+        .create(SearchApi::class.java)
 
-    fun provideTimeTableApi(): TimeTableApi = retrofitBuilderForXmlResponseApi()
-            .build()
-            .create(TimeTableApi::class.java)
+    @Provides
+    fun provideTimeTableApi() : TimeTableApi = retrofitBuilderForXmlResponseApi()
+        .build()
+        .create(TimeTableApi::class.java)
 
-    fun provideFeedApi(): FeedApi = retrofitBuilderForXmlResponseApi()
-            .build()
-            .create(FeedApi::class.java)
+    @Provides
+    fun provideFeedApi() : FeedApi = retrofitBuilderForXmlResponseApi()
+        .build()
+        .create(FeedApi::class.java)
 
     private val apiConfig = ApiConfig()
 

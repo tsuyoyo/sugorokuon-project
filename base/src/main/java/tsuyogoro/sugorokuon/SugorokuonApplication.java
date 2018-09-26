@@ -17,7 +17,7 @@ import com.tomoima.debot.DebotStrategyBuilder;
 import tsuyogoro.sugorokuon.base.R;
 import tsuyogoro.sugorokuon.debug.DebugMenuStrategy;
 import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
-import tsuyogoro.sugorokuon.di.RadikoApiModule;
+import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 import tsuyogoro.sugorokuon.di.RepositoryModule;
 import tsuyogoro.sugorokuon.di.SugorokuonAppComponent;
 import tsuyogoro.sugorokuon.di.SugorokuonAppModule;

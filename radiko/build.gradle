@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -35,6 +36,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${project.retrofitVersion}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${project.retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${project.retrofitVersion}"
+
+    // Dagger2 : http://google.github.io/dagger/
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
