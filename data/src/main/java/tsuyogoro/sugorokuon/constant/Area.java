@@ -4,7 +4,7 @@
  */
 package tsuyogoro.sugorokuon.constant;
 
-import tsuyogoro.sugorokuon.base.R;
+import tsuyogoro.sugorokuon.data.R;
 
 /**
  * 受信エリアのenumクラス。全47都道府県。

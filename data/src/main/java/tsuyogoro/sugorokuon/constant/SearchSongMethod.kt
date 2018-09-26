@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.constant
 
 import android.content.res.Resources
 import android.support.annotation.StringRes
-import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.data.R
 
 enum class SearchSongMethod(@StringRes private val nameText: Int) {
 

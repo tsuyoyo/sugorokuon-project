@@ -7,7 +7,7 @@ package tsuyogoro.sugorokuon.constant;
 import java.util.ArrayList;
 import java.util.List;
 
-import tsuyogoro.sugorokuon.base.R;
+import tsuyogoro.sugorokuon.data.R;
 
 /**
  * 県をまとめて設定するときに使う、地域。
@@ -48,7 +48,7 @@ public enum Region {
 			Area.OITA, Area.MIYAZAKI, Area.KAGOSHIMA, Area.OKINAWA },
 			R.string.region_kyushuokinawa),
 	;
-	
+
 	public List<Area> areas;
 	
 	public int strId;

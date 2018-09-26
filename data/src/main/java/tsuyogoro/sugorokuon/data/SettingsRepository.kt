@@ -1,4 +1,4 @@
-package tsuyogoro.sugorokuon.repository
+package tsuyogoro.sugorokuon.data
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
@@ -10,13 +10,13 @@ import tsuyogoro.sugorokuon.preference.StationPrefs
 import java.util.*
 
 class SettingsRepository(
-        private val areaPrefs: AreaPrefs,
-        private val stationsPrefs: StationPrefs,
-        private val searchMethodPrefs: SearchMethodPrefs,
-        private val areaSettings: BehaviorProcessor<Set<Area>> = BehaviorProcessor.create(),
-        private val selectedDate: BehaviorProcessor<Calendar> = BehaviorProcessor.create(),
-        private val orderedStationIds: BehaviorProcessor<List<String>> = BehaviorProcessor.create(),
-        private val waySearchSong: BehaviorProcessor<SearchSongMethod> =
+    private val areaPrefs: AreaPrefs,
+    private val stationsPrefs: StationPrefs,
+    private val searchMethodPrefs: SearchMethodPrefs,
+    private val areaSettings: BehaviorProcessor<Set<Area>> = BehaviorProcessor.create(),
+    private val selectedDate: BehaviorProcessor<Calendar> = BehaviorProcessor.create(),
+    private val orderedStationIds: BehaviorProcessor<List<String>> = BehaviorProcessor.create(),
+    private val waySearchSong: BehaviorProcessor<SearchSongMethod> =
             BehaviorProcessor.createDefault(SearchSongMethod.EVERY_TIME_SELECT)
 ) {
 

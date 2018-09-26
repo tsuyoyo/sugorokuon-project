@@ -2,11 +2,11 @@ package tsuyogoro.sugorokuon.repository
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
-import tsuyogoro.sugorokuon.preference.AppPrefs
+import tsuyogoro.sugorokuon.appstate.AppPrefs
 
 class AppPrefRepository(
-        private val appPrefs: AppPrefs,
-        private val doneTutorialV3: BehaviorProcessor<Boolean> = BehaviorProcessor.create()
+    private val appPrefs: AppPrefs,
+    private val doneTutorialV3: BehaviorProcessor<Boolean> = BehaviorProcessor.create()
 ) {
 
     init {

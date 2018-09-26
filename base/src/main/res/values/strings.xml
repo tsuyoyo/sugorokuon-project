@@ -145,10 +145,6 @@
     <string name="settings_station_order">番組表の表示順を変更</string>
     <string name="settings_station_order_guide">ドラッグ&amp;ドロップで並び順を変更します</string>
     <string name="settings_way_to_serach_song">曲の検索方法</string>
-    <string name="search_song_select_every_time">毎回選択する</string>
-    <string name="search_song_by_player">Youtubeなどのplayerで検索</string>
-    <string name="search_song_by_google">Googleで検索する</string>
-    <string name="search_song_by_copy_clip_board">クリップボードにコピー</string>
 
     <string name="license">OSS License</string>
     <string name="app_version">Version</string>

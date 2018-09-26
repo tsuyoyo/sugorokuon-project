@@ -3,6 +3,7 @@ package tsuyogoro.sugorokuon.search
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
+import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.SettingsService
@@ -17,9 +18,9 @@ class SearchModule {
 
     @Provides
     fun provideSearchService(
-            searchApi: SearchApi,
-            searchUuidGenerator: SearchUuidGenerator,
-            searchResponseRepository: SearchResponseRepository): SearchService =
+        searchApi: SearchApi,
+        searchUuidGenerator: SearchUuidGenerator,
+        searchResponseRepository: SearchResponseRepository): SearchService =
             SearchService(
                     searchApi,
                     searchUuidGenerator,

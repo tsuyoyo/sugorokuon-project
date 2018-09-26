@@ -1,4 +1,5 @@
-package tsuyogoro.sugorokuon.preference;
+package tsuyogoro.sugorokuon.appstate;
+
 
 import com.rejasupotaro.android.kvs.annotations.Key;
 import com.rejasupotaro.android.kvs.annotations.Table;

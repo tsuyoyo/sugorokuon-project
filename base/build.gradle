@@ -60,6 +60,7 @@ android {
 
 dependencies {
     implementation project(":radiko")
+    implementation project(":data")
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -104,8 +105,8 @@ dependencies {
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
-    // KvsSchema
-    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
+//    // KvsSchema
+//    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
 
     // Architecture component

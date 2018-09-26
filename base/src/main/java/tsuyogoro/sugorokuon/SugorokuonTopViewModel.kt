@@ -7,8 +7,8 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
 import tsuyogoro.sugorokuon.constant.Area
+import tsuyogoro.sugorokuon.utils.SugorokuonLog
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.*
 import java.util.*

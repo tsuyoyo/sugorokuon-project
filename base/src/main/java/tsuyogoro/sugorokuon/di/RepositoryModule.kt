@@ -3,11 +3,15 @@ package tsuyogoro.sugorokuon.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.preference.AppPrefs
+import tsuyogoro.sugorokuon.appstate.AppPrefs
+import tsuyogoro.sugorokuon.data.SettingsRepository
 import tsuyogoro.sugorokuon.preference.AreaPrefs
 import tsuyogoro.sugorokuon.preference.SearchMethodPrefs
 import tsuyogoro.sugorokuon.preference.StationPrefs
-import tsuyogoro.sugorokuon.repository.*
+import tsuyogoro.sugorokuon.repository.AppPrefRepository
+import tsuyogoro.sugorokuon.repository.FeedRepository
+import tsuyogoro.sugorokuon.repository.StationRepository
+import tsuyogoro.sugorokuon.repository.TimeTableRepository
 import javax.inject.Singleton
 
 @Module

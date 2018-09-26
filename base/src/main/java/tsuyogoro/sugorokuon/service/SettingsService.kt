@@ -5,13 +5,13 @@ import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
+import tsuyogoro.sugorokuon.data.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
-import tsuyogoro.sugorokuon.repository.SettingsRepository
 import java.util.*
 
 class SettingsService(
-        private val settingsRepository: SettingsRepository,
-        private val stationService: StationService
+    private val settingsRepository: SettingsRepository,
+    private val stationService: StationService
 ) {
     init {
         val now = Calendar.getInstance()
