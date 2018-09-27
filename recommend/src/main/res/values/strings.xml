@@ -2,4 +2,8 @@
     <string name="settings_keyword_unset">未登録</string>
     <string name="settings_keyword_slot">キーワード %d</string>
     <string name="title_recommend_keyword">お気に入り番組のキーワード</string>
+    <string name="settings_remind_behavior_title">お知らせの際の動作を選んでください</string>
+    <string name="settings_remind_behavior_light">ランプ点滅</string>
+    <string name="settings_remind_behavior_sound">通知音</string>
+    <string name="settings_remind_behavior_vibration">バイブレーション</string>
 </resources>

@@ -16,10 +16,6 @@
     <string name="settings_remindtiming_one_hour_before">1時間前</string>
     <string name="settings_remindtiming_two_hour_before">2時間前</string>
     <string name="settings_remindtiming_five_hour_before">5時間前</string>
-    <string name="settings_remind_behavior_settings">お知らせの際の動作を選んでください。</string>
-    <string name="settings_remind_behavior_light">ランプ点滅</string>
-    <string name="settings_remind_behavior_sound">通知音</string>
-    <string name="settings_remind_behavior_vibration">バイブレーション</string>
     <string name="settings_keyword_unset">未登録</string>
     <string name="settings_keyword_slot">キーワード %d</string>
     <string name="settings_search_target_settings_title">onAir曲の検索設定</string>
