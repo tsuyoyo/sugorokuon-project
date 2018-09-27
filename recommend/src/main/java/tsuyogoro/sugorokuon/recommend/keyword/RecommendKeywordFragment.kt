@@ -13,7 +13,8 @@ import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.View
 import tsuyogoro.sugorokuon.recommend.R
 
-class RecommendKeywordFragment : PreferenceFragmentCompat() {
+class RecommendKeywordFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         // Note :
@@ -25,12 +26,17 @@ class RecommendKeywordFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.keyword_settings, rootKey)
         setupViews()
-        registerPreferenceChangeListener()
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundColor(ResourcesCompat.getColor(resources, android.R.color.white, null))
+    }
+
+    override fun onDestroy() {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
     }
 
     private fun setupViews() {
@@ -70,14 +76,12 @@ class RecommendKeywordFragment : PreferenceFragmentCompat() {
         keyword
     }
 
-    private fun registerPreferenceChangeListener() {
-        preferenceManager.sharedPreferences
-            .registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-                context?.let {
-                    if (RecommendKeywordPreferenceKeys.getAll(it).contains(key)) {
-                        updateEditTextPreferenceTitle(sharedPreferences, key)
-                    }
-                }
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences,
+                                           key: String) {
+        context?.let {
+            if (RecommendKeywordPreferenceKeys.getAll(it).contains(key)) {
+                updateEditTextPreferenceTitle(sharedPreferences, key)
             }
+        }
     }
 }
