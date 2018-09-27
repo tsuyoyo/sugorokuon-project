@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">recommend</string>
+    <string name="settings_keyword_unset">未登録</string>
+    <string name="settings_keyword_slot">キーワード %d</string>
+    <string name="title_recommend_keyword">お気に入り番組のキーワード</string>
 </resources>

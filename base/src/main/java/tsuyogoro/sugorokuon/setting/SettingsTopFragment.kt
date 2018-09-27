@@ -15,9 +15,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.common.wrappers.InstantApps
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
+import tsuyogoro.sugorokuon.base.R
 import javax.inject.Inject
 
 class SettingsTopFragment : Fragment() {

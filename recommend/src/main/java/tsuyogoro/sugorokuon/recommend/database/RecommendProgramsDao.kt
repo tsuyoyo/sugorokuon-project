@@ -1,3 +1,7 @@
+/**
+ * Copyright (c)
+ * 2018 tsuyoyo. All Rights Reserved.
+ */
 package tsuyogoro.sugorokuon.recommend.database
 
 import android.arch.persistence.room.Dao

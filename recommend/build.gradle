@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -7,12 +8,9 @@ android {
     defaultConfig {
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
-
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -21,14 +19,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":radiko")
+    implementation project(":data")
 
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    implementation "com.android.support:preference-v14:${project.supportLibVersion}"
 
     implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
     annotationProcessor "android.arch.persistence.room:compiler:${project.roomVersion}"
@@ -36,7 +35,10 @@ dependencies {
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
 
-
+    // Dagger2 : http://google.github.io/dagger/
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

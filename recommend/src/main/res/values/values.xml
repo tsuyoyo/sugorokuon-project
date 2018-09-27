@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_key_keyword_01">keyword01</string>
+    <string name="pref_key_keyword_02">keyword02</string>
+    <string name="pref_key_keyword_03">keyword03</string>
+    <string name="pref_key_keyword_04">keyword04</string>
+    <string name="pref_key_keyword_05">keyword05</string>
+    <string name="pref_key_keyword_06">keyword06</string>
+    <string name="pref_key_keyword_07">keyword07</string>
+    <string name="pref_key_keyword_08">keyword08</string>
+    <string name="pref_key_keyword_09">keyword09</string>
+    <string name="pref_key_keyword_10">keyword10</string>
+</resources>

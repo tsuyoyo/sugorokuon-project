@@ -24,6 +24,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
 
     // KvsSchema

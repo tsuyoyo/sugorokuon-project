@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/title_recommend_keyword">
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_01"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_02"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_03"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_04"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_05"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_06"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_07"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_08"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_09"
+            android:summary=""
+            android:title="" />
+
+        <EditTextPreference
+            android:key="@string/pref_key_keyword_10"
+            android:summary=""
+            android:title="" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
