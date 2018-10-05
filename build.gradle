@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-rc02'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
         classpath 'com.google.gms:google-services:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -40,8 +40,8 @@ subprojects {
 }
 
 ext {
-    installVersionCode = 320
-    installVersionName = "3.2.0"
+    installVersionCode = 323
+    installVersionName = "3.2.3"
 
     instantVersionCode = 310
     instantVersionName = "3.1.0.instant"
