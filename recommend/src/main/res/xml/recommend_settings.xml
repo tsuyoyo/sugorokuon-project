@@ -13,4 +13,10 @@
             android:key="@string/pref_key_reminder_vibration"
             android:title="@string/settings_remind_behavior_vibration" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="zzzzzzzzzzzzzzzzzzzzz">
+        <tsuyogoro.sugorokuon.recommend.reminder.ReminderTimingRadioBoxPreference
+            android:title="title"
+            />
+    </PreferenceCategory>
 </PreferenceScreen>

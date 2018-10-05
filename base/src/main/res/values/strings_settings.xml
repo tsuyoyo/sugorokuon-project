@@ -9,13 +9,7 @@
     <string name="settings_header_keyword_summary">オススメ番組を検索するためのキーワードを設定します。</string>
     <string name="settings_header_remindtiming_title">リマインド設定</string>
     <string name="settings_header_remindtiming_summary">オススメ番組のリマインダーの設定をします。</string>
-    <string name="settings_remindtiming_title">onAirのどのくらい前にお知らせしますか？</string>
-    <string name="settings_remindtiming_not_set">お知らせ不要</string>
-    <string name="settings_remindtiming_ten_min_before">10分前</string>
-    <string name="settings_remindtiming_thirty_min_before">30分前</string>
-    <string name="settings_remindtiming_one_hour_before">1時間前</string>
-    <string name="settings_remindtiming_two_hour_before">2時間前</string>
-    <string name="settings_remindtiming_five_hour_before">5時間前</string>
+
     <string name="settings_keyword_unset">未登録</string>
     <string name="settings_keyword_slot">キーワード %d</string>
     <string name="settings_search_target_settings_title">onAir曲の検索設定</string>
