@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" >
+
+        <RadioButton
+            android:id="@+id/no_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_not_set"
+            />
+
+        <RadioButton
+            android:id="@+id/before_10_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_ten_min_before" />
+
+        <RadioButton
+            android:id="@+id/before_30_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_thirty_min_before" />
+
+        <RadioButton
+            android:id="@+id/before_1_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_one_hour_before" />
+
+        <RadioButton
+            android:id="@+id/before_2_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_two_hour_before"
+            tools:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/before_5_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/setting_checkbox_height"
+            android:paddingStart="@dimen/setting_checkout_margin_check_and_text"
+            android:text="@string/settings_remindtiming_five_hour_before" />
+    </RadioGroup>
+
+</LinearLayout>
+

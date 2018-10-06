@@ -19,6 +19,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsFragment
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
 
@@ -98,7 +99,8 @@ class SettingsTopFragment : Fragment() {
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
-                    AreaSettingsFragment(),
+//                    AreaSettingsFragment(),
+                ReminderSettingsFragment.createInstance(),
                     SubFragmentTags.AREA_SETTINGS,
                     Slide(Gravity.START)
             )

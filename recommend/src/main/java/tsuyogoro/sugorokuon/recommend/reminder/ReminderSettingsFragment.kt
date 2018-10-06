@@ -26,6 +26,6 @@ class ReminderSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.recommend_settings, rootKey)
+        setPreferencesFromResource(R.xml.reminder_settings, rootKey)
     }
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="setting_checkbox_height">36dp</dimen>
+    <dimen name="setting_checkout_margin_check_and_text">24dp</dimen>
+</resources>

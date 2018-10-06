@@ -27,6 +27,7 @@ dependencies {
     implementation project(":data")
 
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    implementation "com.android.support:design:${project.supportLibVersion}"
     implementation "com.android.support:preference-v14:${project.supportLibVersion}"
 
     implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
