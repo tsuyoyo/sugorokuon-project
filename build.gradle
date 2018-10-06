@@ -43,8 +43,8 @@ ext {
     installVersionCode = 323
     installVersionName = "3.2.3"
 
-    instantVersionCode = 310
-    instantVersionName = "3.1.0.instant"
+    instantVersionCode = 311
+    instantVersionName = "3.1.1.instant"
 
     compileSdkVersion = 28
     buildToolsVersion = "28.0.2"
