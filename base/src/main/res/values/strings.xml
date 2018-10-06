@@ -199,4 +199,6 @@
     <string name="ad">広告</string>
     <string name="ad_fragment_label">広告ページ</string>
 
+    <string name="privacy_policy">プライバシーポリシー</string>
+
 </resources>

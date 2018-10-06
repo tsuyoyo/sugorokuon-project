@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -18,6 +19,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
 
 class SettingsTopFragment : Fragment() {
@@ -46,6 +48,9 @@ class SettingsTopFragment : Fragment() {
     private val appVersion: TextView
         get() = view!!.findViewById(R.id.app_version_text)
 
+    private val privacyPolicy: View
+        get() = view!!.findViewById(R.id.privacy_policy)
+
     private lateinit var viewModel: SettingsTopViewModel
 
     override fun onCreateView(
@@ -71,6 +76,11 @@ class SettingsTopFragment : Fragment() {
                     setOnClickListener { onWaySearchSongClicked() }
                 }
             }
+
+        privacyPolicy.setOnClickListener {
+            SugorokuonUtils.launchChromeTab(activity, Uri.parse(
+                "https://sugorokuonapp.firebaseapp.com/policy/privacy_policy.html"))
+        }
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
