@@ -1,2 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tsuyogoro.sugorokuon.recommend" />
+    package="tsuyogoro.sugorokuon.recommend" >
+
+    <application>
+        <activity android:name="tsuyogoro.sugorokuon.recommend.tsuyogoro.sugorokuon.debug.RecommendDebugActivity"/>
+    </application>
+
+</manifest>

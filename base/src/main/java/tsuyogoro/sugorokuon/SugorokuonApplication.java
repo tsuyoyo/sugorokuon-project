@@ -16,6 +16,7 @@ import com.tomoima.debot.DebotStrategyBuilder;
 
 import tsuyogoro.sugorokuon.base.R;
 import tsuyogoro.sugorokuon.debug.DebugMenuStrategy;
+import tsuyogoro.sugorokuon.debug.RecommendDebugStrategy;
 import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 import tsuyogoro.sugorokuon.di.RepositoryModule;
@@ -72,7 +73,10 @@ public class SugorokuonApplication extends Application {
         // Debot (Debug menu which is displayed by shaking device)
         DebotConfigurator.configureWithCustomizedMenu(
                 new DebotStrategyBuilder.Builder()
-                        .registerMenu("Debug menu", new DebugMenuStrategy())
+                        .registerMenu("Debug menu",
+                                new DebugMenuStrategy())
+                        .registerMenu("Recommend debug menu",
+                                new RecommendDebugStrategy())
                         .build()
                         .getStrategyList()
         );

@@ -19,6 +19,7 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsFragment
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
@@ -99,8 +100,7 @@ class SettingsTopFragment : Fragment() {
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
-//                    AreaSettingsFragment(),
-                ReminderSettingsFragment.createInstance(),
+                    AreaSettingsFragment(),
                     SubFragmentTags.AREA_SETTINGS,
                     Slide(Gravity.START)
             )
@@ -108,7 +108,8 @@ class SettingsTopFragment : Fragment() {
 
         stationOrder.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
-                    StationOrderFragment(),
+//                    StationOrderFragment(),
+                RecommendKeywordFragment.createInstance(),
                     SubFragmentTags.STATION_ORDER_SETTINGS,
                     Slide(Gravity.START)
             )

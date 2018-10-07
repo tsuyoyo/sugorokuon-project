@@ -107,6 +107,9 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/app_accent" />
 
+        <!-- For debug -->
+        <activity android:name="tsuyogoro.sugorokuon.debug.RecommendDebugActivity"/>
+
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@ import android.support.annotation.StringRes
 import tsuyogoro.sugorokuon.recommend.R
 import java.util.*
 
-enum class NotifyTiming (@StringRes var optionStrId: Int) {
+enum class ReminderTiming (@StringRes var optionStrId: Int) {
     /** 通知しない  */
     NOT_SET(R.string.settings_remindtiming_not_set),
     /** 10分前  */

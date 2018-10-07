@@ -11,7 +11,7 @@ class ReminderSettingsPreference : Preference {
 
     companion object {
         const val PREFERENCE_KEY = "reminder_settings"
-        const val DEFAULT_VALUE = 1
+        fun defaultValue() = ReminderTiming.BEFORE_10_MIN
     }
 
     private val checkBoxViewIds = arrayListOf(
@@ -34,7 +34,7 @@ class ReminderSettingsPreference : Preference {
         super.onBindViewHolder(holder)
 
         val currentSettings = preferenceManager.sharedPreferences
-            .getInt(PREFERENCE_KEY, DEFAULT_VALUE)
+            .getInt(PREFERENCE_KEY, defaultValue().ordinal)
 
         checkBoxViewIds.forEachIndexed { index, id ->
             (holder?.itemView?.findViewById(id) as? RadioButton)

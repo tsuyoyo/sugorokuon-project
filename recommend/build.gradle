@@ -31,7 +31,8 @@ dependencies {
     implementation "com.android.support:preference-v14:${project.supportLibVersion}"
 
     implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
-    annotationProcessor "android.arch.persistence.room:compiler:${project.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+//    annotationProcessor "android.arch.persistence.room:compiler:${project.roomVersion}"
 
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"

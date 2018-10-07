@@ -64,13 +64,13 @@ public enum Area {
 
 	public String id;
 
-	public String name;
+	public String code;
 
 	public int strId;
 
 	Area(String _id, String _name, int _strId) {
 		id = _id;
-		name = _name;
+		code = _name;
 		strId = _strId;
 	}
 	

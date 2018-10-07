@@ -97,8 +97,6 @@ class ProgramTableAdapter(
             programList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-
-                    Log.d("TestTestTest", "${timeTable.station.name} : ${layoutManager.findLastVisibleItemPosition()} / ${timeTable.programs.size}")
                 }
 
                 override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
