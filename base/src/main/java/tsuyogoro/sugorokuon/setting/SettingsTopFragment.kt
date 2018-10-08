@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -18,9 +19,10 @@ import com.google.android.gms.common.wrappers.InstantApps
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
+import tsuyogoro.sugorokuon.base.BuildConfig
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.debug.RecommendDebugActivity
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
-import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsFragment
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
 
@@ -53,19 +55,22 @@ class SettingsTopFragment : Fragment() {
     private val privacyPolicy: View
         get() = view!!.findViewById(R.id.privacy_policy)
 
+    private val debugRecommendFeature: View
+        get() = view!!.findViewById(R.id.recommend_debug)
+
     private lateinit var viewModel: SettingsTopViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_settings_top, null)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_settings_top, null)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         SugorokuonApplication.application(context)
-                .appComponent()
-                .settingSubComponent(SettingsModule())
-                .inject(this)
+            .appComponent()
+            .settingSubComponent(SettingsModule())
+            .inject(this)
 
         view.findViewById<LinearLayout>(R.id.license)
             .setOnClickListener { onLicenseClicked() }
@@ -85,24 +90,24 @@ class SettingsTopFragment : Fragment() {
         }
 
         viewModel = ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(SettingsTopViewModel::class.java)
+            .of(this, viewModelFactory)
+            .get(SettingsTopViewModel::class.java)
 
         viewModel.observeSelectedAreas()
-                .observe(this, Observer(selectedAreas::setText))
+            .observe(this, Observer(selectedAreas::setText))
 
         viewModel.observeSelectedSerachSongWay()
-                .observe(this, Observer {
-                    if (it != null) {
-                        selectedSearchSongWay.text = it.getDisplayName(resources)
-                    }
-                })
+            .observe(this, Observer {
+                if (it != null) {
+                    selectedSearchSongWay.text = it.getDisplayName(resources)
+                }
+            })
 
         areaSettings.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
-                    AreaSettingsFragment(),
-                    SubFragmentTags.AREA_SETTINGS,
-                    Slide(Gravity.START)
+                AreaSettingsFragment(),
+                SubFragmentTags.AREA_SETTINGS,
+                Slide(Gravity.START)
             )
         }
 
@@ -110,18 +115,22 @@ class SettingsTopFragment : Fragment() {
             (activity as? SugorokuonTopActivity)?.switchFragment(
 //                    StationOrderFragment(),
                 RecommendKeywordFragment.createInstance(),
-                    SubFragmentTags.STATION_ORDER_SETTINGS,
-                    Slide(Gravity.START)
+                SubFragmentTags.STATION_ORDER_SETTINGS,
+                Slide(Gravity.START)
             )
         }
 
         context?.let {
             it.packageManager
-                    ?.getPackageInfo(it.packageName, PackageManager.GET_META_DATA)
-                    ?.let { packageInfo ->
-                        appVersion.text =
-                                "${getString(R.string.app_version)} ${packageInfo.versionName}"
-                    }
+                ?.getPackageInfo(it.packageName, PackageManager.GET_META_DATA)
+                ?.let { packageInfo ->
+                    appVersion.text =
+                        "${getString(R.string.app_version)} ${packageInfo.versionName}"
+                }
+        }
+
+        if (BuildConfig.DEBUG) {
+            setupDebugMenu()
         }
     }
 
@@ -133,10 +142,17 @@ class SettingsTopFragment : Fragment() {
 
     private fun onWaySearchSongClicked() {
         (activity as? SugorokuonTopActivity)?.switchFragment(
-                SearchSongMethodFragment(),
-                SubFragmentTags.SONG_SEARCH_METHOD_SETTINGS,
-                Slide(Gravity.START)
+            SearchSongMethodFragment(),
+            SubFragmentTags.SONG_SEARCH_METHOD_SETTINGS,
+            Slide(Gravity.START)
         )
+    }
+
+    private fun setupDebugMenu() {
+        debugRecommendFeature.visibility = View.VISIBLE
+        debugRecommendFeature.setOnClickListener {
+            startActivity(Intent(activity, RecommendDebugActivity::class.java))
+        }
     }
 
 }

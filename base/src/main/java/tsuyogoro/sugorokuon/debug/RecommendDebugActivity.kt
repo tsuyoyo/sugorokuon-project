@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonApplication
+import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.R
 import tsuyogoro.sugorokuon.recommend.RecommendModule
 import tsuyogoro.sugorokuon.recommend.RecommendSearchService
@@ -21,6 +22,9 @@ class RecommendDebugActivity : AppCompatActivity() {
 
     @Inject
     lateinit var recommendProgramsDao: RecommendProgramsDao
+
+    @Inject
+    lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,5 +58,19 @@ class RecommendDebugActivity : AppCompatActivity() {
             Toast.makeText(this@RecommendDebugActivity, "Cleaned DB", Toast.LENGTH_SHORT)
                 .show()
         }
+
+        findViewById<View>(R.id.notify_reminder).setOnClickListener {
+            val programs = recommendProgramsDao.getAll()
+            if (programs.isEmpty()) {
+                Toast.makeText(this@RecommendDebugActivity, "No program is in DB", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                recommendRemindNotifier.notifyReminder(this@RecommendDebugActivity, programs[0])
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe()
+            }
+        }
+
     }
 }

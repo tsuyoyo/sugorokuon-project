@@ -5,8 +5,8 @@ import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.model.SugorokuonAppState
+import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.rx.SchedulerProviderForApp
 import javax.inject.Singleton
@@ -42,4 +42,5 @@ class SugorokuonAppModule(
     @Singleton
     @Provides
     fun provideSearchUuidGenerator(): SearchUuidGenerator = SearchUuidGenerator()
+
 }

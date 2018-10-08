@@ -14,4 +14,7 @@
     <string name="settings_remindtiming_one_hour_before">1時間前</string>
     <string name="settings_remindtiming_two_hour_before">2時間前</string>
     <string name="settings_remindtiming_five_hour_before">5時間前</string>
+
+    <string name="recommend_reminder_ticker">まもなくオススメのラジオ番組が始まります</string>
+    <string name="recommend_reminder_text">%s からonAir</string>
 </resources>

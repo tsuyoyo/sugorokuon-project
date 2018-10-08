@@ -94,8 +94,7 @@
     <string name="progress_notification_text_complete">ラジコンシェルジュの番組表更新完了</string>
     <string name="progress_notification_ticker_failed">ラジコンシェルジュが番組表更新に失敗しました</string>
     <string name="progress_notification_text_failed">ラジコンシェルジュが番組表更新に失敗しました</string>
-    <string name="recommend_reminder_ticker">まもなくオススメのラジオ番組が始まります</string>
-    <string name="recommend_reminder_text">%s からonAir</string>
+
     <string name="recommend_reminder_more">他 %d件</string>
 
     <!-- 日付・時刻系 -->

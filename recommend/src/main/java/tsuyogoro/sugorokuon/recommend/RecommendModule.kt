@@ -13,6 +13,7 @@ import tsuyogoro.sugorokuon.data.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDao
 import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDatabase
+import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 
 @Module
@@ -47,6 +48,14 @@ class RecommendModule {
         recommendProgramsDao = recommendProgramsDao,
         recommendSettingsRepository = recommendSettingsRepository,
         settingsRepository = settingsRepository
+    )
+
+    @Provides
+    fun provideRecommendRemindNotifier(
+        context: Context,
+        recommendSettingsRepository: RecommendSettingsRepository
+    ): RecommendRemindNotifier = RecommendRemindNotifier(
+        context, recommendSettingsRepository
     )
 
 }

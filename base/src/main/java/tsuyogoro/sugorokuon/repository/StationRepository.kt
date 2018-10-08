@@ -17,4 +17,6 @@ class StationRepository(
     }
 
     fun observeStationResponses() : Flowable<List<StationResponse>> = stationResponses
+
+    fun getStationResponses(): List<StationResponse> = stationResponses.value
 }

@@ -141,4 +141,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/recommend_debug"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingStart="16dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/recommend_debug_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_large"
+            android:focusable="false"
+            android:clickable="false"
+            android:text="Debug - recommend feature" />
+
+    </LinearLayout>
+
+
 </LinearLayout>
