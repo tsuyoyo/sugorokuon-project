@@ -1,15 +1,17 @@
 package tsuyogoro.sugorokuon.recommend
 
-import android.util.Log
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.data.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
+import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 import tsuyogoro.sugorokuon.recommend.database.RecommendProgram
 import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDao
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import java.net.URLEncoder
+import java.util.*
 
 class RecommendSearchService(
     private val searchUuidGenerator: SearchUuidGenerator = SearchUuidGenerator(),
@@ -19,47 +21,34 @@ class RecommendSearchService(
     private val settingsRepository: SettingsRepository
 ) {
 
-    fun fetchRecommendPrograms() : Completable =
-        Flowable
-            .fromIterable(recommendSettingsRepository.getRecommentKeywords())
-            .filter { it.keyword.isNotBlank() }
-            .flatMapCompletable { recommendKey ->
-                Log.d("TestTestTest", "Start - ${recommendKey.keyword}")
-                Flowable
-                    .fromIterable(settingsRepository.getAreaSettings())
-                    .flatMapCompletable { area ->
-                        Log.d("TestTestTest", "Area - ${area.code}")
-
-                        return@flatMapCompletable searchApi.search(
-                            encodedWord = URLEncoder.encode(recommendKey.keyword, "UTF-8"),
-                            areaId = area.id,
-                            culAreaId = area.id,
-                            uid = searchUuidGenerator.generateSearchUuid()
-                        ).doOnSuccess {
-                            it.programs
-                                .map { RecommendProgram.create(it) }
-                                .forEach(recommendProgramsDao::insert)
-//
-//                            Log.d("TestTestTest", "Result (${area.code}, ${recommendKey.keyword}")
-//                            it.programs.forEach {
-//                                Log.d("TestTestTest", " - ${it.title}")
-//                            }
-//                            // store DB
-                        }.doOnError {
-                            Log.d("TestTestTest", "Error (${area.code}, ${recommendKey.keyword} (${it.message}")
-                        }
-                            .ignoreElement()
-
-
-                    }
+    fun fetchRecommendPrograms(): Completable =
+        recommendKeywordsStream().flatMapCompletable { recommendKey ->
+            areasStream().flatMapCompletable { area ->
+                fetchRecommendsAndStoreDb(recommendKey.keyword, area)
             }
+        }
 
+    private fun recommendKeywordsStream() = Flowable
+        .fromIterable(recommendSettingsRepository.getRecommentKeywords())
+        .filter { it.keyword.isNotBlank() }
 
+    private fun areasStream() = Flowable
+        .fromIterable(settingsRepository.getAreaSettings())
 
-    // TODO :
-    // area情報が必要になってくるので、dataモジュールにpreference、databaseの機能を移す
-    // dataモジュールはrepositoryという形で情報を公開するようにしよう
-    // - app settingsのrepository
-    // - recommend dataのrepository
+    private fun fetchRecommendsAndStoreDb(keyword: String, area: Area) = searchApi
+        .search(
+            encodedWord = URLEncoder.encode(keyword, "UTF-8"),
+            areaId = area.id,
+            culAreaId = area.id,
+            uid = searchUuidGenerator.generateSearchUuid())
+        .doOnSuccess(this::storeRecommendToDb)
+        .ignoreElement()
+
+    private fun storeRecommendToDb(searchResponse: SearchResponse) {
+        searchResponse.programs
+            .filter { it.start.time > Calendar.getInstance().timeInMillis }
+            .map { RecommendProgram.create(it) }
+            .forEach(recommendProgramsDao::insert)
+    }
 
 }

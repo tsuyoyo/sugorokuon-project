@@ -4,10 +4,7 @@
  */
 package tsuyogoro.sugorokuon.recommend.database
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 
 @Dao
 interface RecommendProgramsDao {
@@ -20,6 +17,9 @@ interface RecommendProgramsDao {
 
     @Query("SELECT * ,MIN(start) FROM recommend_programs GROUP BY start")
     fun getOnAirSoon(): List<RecommendProgram>
+
+    @Delete
+    fun delete(recommendProgram: RecommendProgram)
 
     @Query("DELETE From recommend_programs")
     fun clearTable()
