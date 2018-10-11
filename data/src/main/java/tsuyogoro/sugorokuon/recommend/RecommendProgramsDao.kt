@@ -2,7 +2,7 @@
  * Copyright (c)
  * 2018 tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.recommend.database
+package tsuyogoro.sugorokuon.recommend
 
 import android.arch.persistence.room.*
 

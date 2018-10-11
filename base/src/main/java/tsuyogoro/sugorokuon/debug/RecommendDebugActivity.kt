@@ -5,14 +5,17 @@ import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindNotifier
+import tsuyogoro.sugorokuon.notification.RecommendRemindTimerSubmitter
 import tsuyogoro.sugorokuon.recommend.R
 import tsuyogoro.sugorokuon.recommend.RecommendModule
 import tsuyogoro.sugorokuon.recommend.RecommendSearchService
-import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
+import java.util.*
 import javax.inject.Inject
 
 class RecommendDebugActivity : AppCompatActivity() {
@@ -25,6 +28,9 @@ class RecommendDebugActivity : AppCompatActivity() {
 
     @Inject
     lateinit var recommendRemindNotifier: RecommendRemindNotifier
+
+    @Inject
+    lateinit var remindTimerSubmitter: RecommendRemindTimerSubmitter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,5 +78,32 @@ class RecommendDebugActivity : AppCompatActivity() {
             }
         }
 
+
+        setupNotifyTimerDebug()
+    }
+
+    private fun setupNotifyTimerDebug() {
+        findViewById<View>(R.id.notify_set).setOnClickListener {
+            val secInput = findViewById<EditText>(R.id.notify_after_sec)
+            try {
+                val sec = Integer.parseInt(secInput.text.toString())
+                val setTime = Calendar.getInstance().timeInMillis + sec * 1000
+
+                remindTimerSubmitter.setTimer(setTime)
+
+                Toast.makeText(
+                    this@RecommendDebugActivity,
+                    "Set timer after $sec seconds",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@RecommendDebugActivity,
+                    "enter seconds (e.g. 100)",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

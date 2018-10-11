@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.content.res.Resources
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
-import tsuyogoro.sugorokuon.data.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 
 class SettingsTopViewModel(
     settingsRepository: SettingsRepository,
@@ -17,8 +17,8 @@ class SettingsTopViewModel(
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-            private val settingsRepository: SettingsRepository,
-            private val resources: Resources
+        private val settingsRepository: SettingsRepository,
+        private val resources: Resources
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return SettingsTopViewModel(settingsRepository, resources) as T

@@ -1,4 +1,4 @@
-package tsuyogoro.sugorokuon.data
+package tsuyogoro.sugorokuon.settings
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor

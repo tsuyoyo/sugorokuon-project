@@ -63,5 +63,4 @@ public class StationResponse {
         @Element
         public String banner;
     }
-
 }

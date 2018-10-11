@@ -14,6 +14,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.station.Station
 import javax.inject.Inject
 
 class StationOrderFragment : Fragment(), StationOrderAdapter.StationOrderAdapterListener {
@@ -92,7 +93,7 @@ class StationOrderFragment : Fragment(), StationOrderAdapter.StationOrderAdapter
         super.onDestroyView()
     }
 
-    override fun onStationOrderChanged(stations: List<StationResponse.Station>) {
+    override fun onStationOrderChanged(stations: List<Station>) {
         viewModel.updateStationOrder(stations)
     }
 }

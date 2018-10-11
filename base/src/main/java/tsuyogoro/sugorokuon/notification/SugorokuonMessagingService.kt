@@ -1,9 +1,8 @@
 package tsuyogoro.sugorokuon.notification
 
-import android.content.Intent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
+import tsuyogoro.sugorokuon.SugorokuonLog
 
 /**
  * Note : This service to receive message when app is in foreground.

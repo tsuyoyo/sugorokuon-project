@@ -9,12 +9,11 @@ import android.content.Context
 import android.support.v7.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.data.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
-import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDao
-import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDatabase
-import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindNotifier
+import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
+import tsuyogoro.sugorokuon.station.StationRepository
 
 @Module
 class RecommendModule {
@@ -53,9 +52,9 @@ class RecommendModule {
     @Provides
     fun provideRecommendRemindNotifier(
         context: Context,
-        recommendSettingsRepository: RecommendSettingsRepository
+        recommendSettingsRepository: RecommendSettingsRepository,
+        stationRepository: StationRepository
     ): RecommendRemindNotifier = RecommendRemindNotifier(
-        context, recommendSettingsRepository
+        context, recommendSettingsRepository, stationRepository
     )
-
 }

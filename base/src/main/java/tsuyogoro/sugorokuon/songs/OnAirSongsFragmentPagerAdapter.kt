@@ -5,16 +5,16 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.station.Station
 
 class OnAirSongsFragmentPagerAdapter(
         fragmentManager: FragmentManager,
         private val resources: Resources
 ) : FragmentPagerAdapter(fragmentManager) {
 
-    private var feedAvailableStations = mutableListOf<StationResponse.Station>()
+    private var feedAvailableStations = mutableListOf<Station>()
 
-    fun setOnAirSongsAvailableStations(stations: List<StationResponse.Station>) {
+    fun setOnAirSongsAvailableStations(stations: List<Station>) {
         this.feedAvailableStations.clear()
         this.feedAvailableStations.addAll(stations)
     }

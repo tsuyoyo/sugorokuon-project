@@ -21,6 +21,7 @@ android {
 }
 
 dependencies {
+    implementation project(":data")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.google.code.gson:gson:${project.gsonVersion}"

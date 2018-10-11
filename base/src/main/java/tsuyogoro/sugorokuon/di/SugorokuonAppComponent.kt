@@ -5,6 +5,8 @@ import tsuyogoro.sugorokuon.SugorokuonTopModule
 import tsuyogoro.sugorokuon.SugorokuonTopSubComponent
 import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.debug.DebugComponent
+import tsuyogoro.sugorokuon.notification.TimerComponent
+import tsuyogoro.sugorokuon.notification.TimerModule
 import tsuyogoro.sugorokuon.onboarding.OnboardingComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingModule
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule
@@ -56,6 +58,9 @@ interface SugorokuonAppComponent {
 
     fun onBoardingSubComponent(onboardingModule: OnboardingModule)
             : OnboardingComponent
+
+    fun timerComponent(timerModule: TimerModule)
+        : TimerComponent
 
     fun debugSubComponent(recommendModule: RecommendModule) : DebugComponent
 }

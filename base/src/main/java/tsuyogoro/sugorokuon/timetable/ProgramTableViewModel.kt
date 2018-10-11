@@ -7,9 +7,9 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.TimeTableService
+import tsuyogoro.sugorokuon.station.Station
 import java.util.*
 
 class ProgramTableViewModel(
@@ -39,7 +39,7 @@ class ProgramTableViewModel(
                         timeTableService.observeOneDayTimeTables(),
                         settingsService.observeOrderedStations(),
                         BiFunction { timeTables: List<OneDayTimeTable>,
-                                     orderedStations: List<StationResponse.Station> ->
+                                     orderedStations: List<Station> ->
                             // Sort timeTables according to user's settings.
                             val orderedTimeTables: MutableList<OneDayTimeTable> = mutableListOf()
                             orderedStations.forEach { s ->

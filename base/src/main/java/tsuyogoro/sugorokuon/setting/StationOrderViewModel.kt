@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.service.SettingsService
+import tsuyogoro.sugorokuon.station.Station
 
 class StationOrderViewModel(
         private val settingsService: SettingsService
@@ -21,7 +22,7 @@ class StationOrderViewModel(
         }
     }
 
-    private val orderedStations = MutableLiveData<List<StationResponse.Station>>()
+    private val orderedStations = MutableLiveData<List<Station>>()
 
     private val disposables = CompositeDisposable()
 
@@ -38,10 +39,10 @@ class StationOrderViewModel(
         disposables.dispose()
     }
 
-    fun updateStationOrder(orderedStations: List<StationResponse.Station>) {
+    fun updateStationOrder(orderedStations: List<Station>) {
         settingsService.updateStationOrder(orderedStations)
     }
 
-    fun observeOrderedStations(): LiveData<List<StationResponse.Station>> = orderedStations
+    fun observeOrderedStations(): LiveData<List<Station>> = orderedStations
 
 }

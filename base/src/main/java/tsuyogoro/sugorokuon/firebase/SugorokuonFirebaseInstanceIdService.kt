@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.firebase
 
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
+import tsuyogoro.sugorokuon.SugorokuonLog
 
 class SugorokuonFirebaseInstanceIdService : FirebaseInstanceIdService() {
 

@@ -3,7 +3,7 @@ package tsuyogoro.sugorokuon.setting
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.data.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.service.SettingsService
 
 @Module

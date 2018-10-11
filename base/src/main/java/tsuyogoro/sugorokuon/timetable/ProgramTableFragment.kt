@@ -19,8 +19,8 @@ import android.widget.TextView
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.station.Station
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,8 +106,8 @@ class ProgramTableFragment : Fragment(),
         viewModel.selectDate(date)
     }
 
-    override fun onStationSiteClicked(station: StationResponse.Station) {
-        SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.webSite))
+    override fun onStationSiteClicked(station: Station) {
+        SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.url))
     }
 
     override fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point) {

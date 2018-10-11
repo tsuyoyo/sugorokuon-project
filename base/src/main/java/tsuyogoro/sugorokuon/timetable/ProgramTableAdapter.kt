@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.graphics.Rect
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +11,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.station.Station
 
 class ProgramTableAdapter(
         private val listener: ProgramTableAdapterListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface ProgramTableAdapterListener {
-        fun onStationSiteClicked(station: StationResponse.Station)
+        fun onStationSiteClicked(station: Station)
 
         fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point)
     }
@@ -69,9 +68,9 @@ class ProgramTableAdapter(
         }
 
         fun setStation(timeTable: OneDayTimeTable) {
-            if (timeTable.station.logos.isNotEmpty()) {
+            if (timeTable.station.logo.isNotEmpty()) {
                 Glide.with(stationLogo)
-                        .load(timeTable.station.logos[0].url)
+                        .load(timeTable.station.logo[0].url)
                         .into(stationLogo)
             }
 
@@ -90,9 +89,6 @@ class ProgramTableAdapter(
 
             // Focus the position of now.
             programList.scrollToPosition(programsAdapter.getCurrentTimePosition())
-
-
-
 
             programList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

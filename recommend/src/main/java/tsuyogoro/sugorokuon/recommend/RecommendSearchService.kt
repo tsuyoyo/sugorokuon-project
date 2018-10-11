@@ -3,12 +3,11 @@ package tsuyogoro.sugorokuon.recommend
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import tsuyogoro.sugorokuon.constant.Area
-import tsuyogoro.sugorokuon.data.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
-import tsuyogoro.sugorokuon.recommend.database.RecommendProgram
-import tsuyogoro.sugorokuon.recommend.database.RecommendProgramsDao
+import tsuyogoro.sugorokuon.radiko.extension.toRecommendProgram
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import java.net.URLEncoder
 import java.util.*
@@ -47,7 +46,7 @@ class RecommendSearchService(
     private fun storeRecommendToDb(searchResponse: SearchResponse) {
         searchResponse.programs
             .filter { it.start.time > Calendar.getInstance().timeInMillis }
-            .map { RecommendProgram.create(it) }
+            .map { it.toRecommendProgram() }
             .forEach(recommendProgramsDao::insert)
     }
 

@@ -2,11 +2,9 @@
  * Copyright (c)
  * 2015 Tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.utils;
+package tsuyogoro.sugorokuon;
 
 import android.util.Log;
-
-import tsuyogoro.sugorokuon.LogSettings;
 
 public class SugorokuonLog {
 

@@ -10,11 +10,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.StationService
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
+import tsuyogoro.sugorokuon.station.Station
+import tsuyogoro.sugorokuon.SugorokuonLog
 
 class SearchViewModel(
         private val searchService: SearchService,
@@ -46,7 +46,7 @@ class SearchViewModel(
 
     data class SearchResultData(
             val program: SearchResponse.Program,
-            val station: StationResponse.Station
+            val station: Station
     )
 
     private val searchResults: MutableLiveData<List<SearchResultData>> = MutableLiveData()
@@ -55,11 +55,12 @@ class SearchViewModel(
     private val isSearching: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        Flowable.combineLatest(
+        disposables.add(
+            Flowable.combineLatest(
                 searchService.observeSearchResults(),
                 stationService.observeStations(),
                 BiFunction { foundPrograms: List<SearchResponse.Program>,
-                             stations: List<StationResponse.Station> ->
+                             stations: List<Station> ->
 
                     val results = mutableListOf<SearchResultData>()
                     foundPrograms.forEach {
@@ -84,6 +85,7 @@ class SearchViewModel(
                         {},
                         { e -> SugorokuonLog.e(e.message) }
                 )
+        )
 
         searchCondition.postValue("")
     }

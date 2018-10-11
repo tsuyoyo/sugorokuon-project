@@ -22,7 +22,6 @@ import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 import tsuyogoro.sugorokuon.di.RepositoryModule;
 import tsuyogoro.sugorokuon.di.SugorokuonAppComponent;
 import tsuyogoro.sugorokuon.di.SugorokuonAppModule;
-import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class SugorokuonApplication extends Application {
 

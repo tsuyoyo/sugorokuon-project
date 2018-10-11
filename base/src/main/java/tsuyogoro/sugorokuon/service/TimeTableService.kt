@@ -10,6 +10,7 @@ import tsuyogoro.sugorokuon.radiko.api.TimeTableApi
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.repository.TimeTableRepository
+import tsuyogoro.sugorokuon.station.Station
 import tsuyogoro.sugorokuon.timetable.OneDayTimeTable
 import java.util.*
 
@@ -45,7 +46,7 @@ class TimeTableService(
                     observeTimeTable(),
                     stationService.observeStations(),
                     BiFunction { timeTables: List<TimeTableResponse.Station>,
-                                 stations: List<StationResponse.Station> ->
+                                 stations: List<Station> ->
 
                         return@BiFunction mutableListOf<OneDayTimeTable>().apply {
                             timeTables.forEach { timeTable ->
