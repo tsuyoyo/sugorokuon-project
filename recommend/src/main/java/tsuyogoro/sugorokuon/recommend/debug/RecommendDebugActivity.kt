@@ -1,4 +1,4 @@
-package tsuyogoro.sugorokuon.debug
+package tsuyogoro.sugorokuon.recommend.debug
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,38 +8,48 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import io.reactivex.schedulers.Schedulers
-import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.notification.RecommendRemindTimerSubmitter
+import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.recommend.R
 import tsuyogoro.sugorokuon.recommend.RecommendModule
-import tsuyogoro.sugorokuon.recommend.RecommendSearchService
 import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.RecommendSearchService
+import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindTimerSubmitter
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import java.util.*
-import javax.inject.Inject
 
+// TODO : Componentは使えなくなるけど、recommend moduleへ動かしたほうが平和なのでは
 class RecommendDebugActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var recommendSearchService: RecommendSearchService
+    private lateinit var recommendSearchService: RecommendSearchService
 
-    @Inject
-    lateinit var recommendProgramsDao: RecommendProgramsDao
+    // TODO : repositoryにする
+    private lateinit var recommendProgramsDao: RecommendProgramsDao
 
-    @Inject
-    lateinit var recommendRemindNotifier: RecommendRemindNotifier
+    private lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
-    @Inject
-    lateinit var remindTimerSubmitter: RecommendRemindTimerSubmitter
+    private lateinit var remindTimerSubmitter : RecommendRemindTimerSubmitter
+
+    private fun solveDependencies() {
+        val dataModule = DataModule()
+        val recommendModule = RecommendModule()
+
+        recommendRemindNotifier = recommendModule.provideRecommendRemindNotifier(
+            this,
+            recommendModule.provideRecommendSettingsRepository(this),
+            dataModule.provideStationRepository(this)
+        )
+
+        recommendProgramsDao = dataModule.provideRecommendProgramsDao(
+            dataModule.provideRecommendProgramsDatabase(this)
+        )
+
+        remindTimerSubmitter = RecommendRemindTimerSubmitter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        solveDependencies()
         setContentView(R.layout.activity_recommend_debug)
-
-        SugorokuonApplication.application(this)
-            .appComponent()
-            .debugSubComponent(RecommendModule())
-            .inject(this)
 
         findViewById<View>(R.id.fetch_recommend).setOnClickListener {
             recommendSearchService.fetchRecommendPrograms()
@@ -77,7 +87,6 @@ class RecommendDebugActivity : AppCompatActivity() {
                     .subscribe()
             }
         }
-
 
         setupNotifyTimerDebug()
     }

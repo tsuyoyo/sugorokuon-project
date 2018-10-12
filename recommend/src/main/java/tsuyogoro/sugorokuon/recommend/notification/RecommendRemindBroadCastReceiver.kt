@@ -63,4 +63,6 @@ class RecommendRemindBroadCastReceiver: BroadcastReceiver() {
         SugorokuonLog.d("RecommendRemindBroadCastReceiver - E")
     }
 
+    // TODO : Bootcompleteを取る
+
 }

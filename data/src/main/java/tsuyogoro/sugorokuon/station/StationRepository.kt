@@ -3,9 +3,9 @@ package tsuyogoro.sugorokuon.station
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 
-class StationRepository(
+class StationRepository {
+
     private val stations: BehaviorProcessor<List<Station>> = BehaviorProcessor.create()
-) {
 
     private lateinit var stationDao: StationDao
 

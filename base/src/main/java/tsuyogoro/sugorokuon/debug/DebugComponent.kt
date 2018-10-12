@@ -1,12 +1,11 @@
 package tsuyogoro.sugorokuon.debug
 
 import dagger.Subcomponent
-import tsuyogoro.sugorokuon.notification.TimerModule
 import tsuyogoro.sugorokuon.recommend.RecommendModule
+import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
 
 @Subcomponent(modules = [
-    RecommendModule::class,
-    TimerModule::class
+    RecommendModule::class
 ])
 interface DebugComponent {
 

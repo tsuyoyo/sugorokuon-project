@@ -86,10 +86,6 @@
             </intent-filter>
         </service>
 
-        <receiver
-            android:name="tsuyogoro.sugorokuon.notification.RecommendRemindBroadCastReceiver"
-            android:process=":remote" />
-
         <!-- Referred : https://qiita.com/sho5nn/items/f63ebd7ccc0c86d98e4b -->
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
@@ -111,9 +107,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/app_accent" />
-
-        <!-- For debug -->
-        <activity android:name="tsuyogoro.sugorokuon.debug.RecommendDebugActivity"/>
 
     </application>
 

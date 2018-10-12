@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.transition.Slide
 import android.support.v4.app.Fragment
@@ -21,7 +20,7 @@ import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.BuildConfig
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.debug.RecommendDebugActivity
+import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject

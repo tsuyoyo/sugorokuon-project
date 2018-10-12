@@ -5,6 +5,9 @@
         <receiver
             android:name="tsuyogoro.sugorokuon.recommend.notification.RecommendRemindBroadCastReceiver"
             android:process=":remote" />
+
+        <!-- For debug -->
+        <activity android:name="tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity"/>
     </application>
 
 </manifest>
