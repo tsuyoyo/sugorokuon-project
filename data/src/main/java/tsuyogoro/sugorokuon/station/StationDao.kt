@@ -6,7 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 
 @Dao
-interface StationDao {
+internal interface StationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(station: Station)
 

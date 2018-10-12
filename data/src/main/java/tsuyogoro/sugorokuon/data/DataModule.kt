@@ -9,6 +9,8 @@ import tsuyogoro.sugorokuon.appstate.AppPrefs
 import tsuyogoro.sugorokuon.preference.AreaPrefs
 import tsuyogoro.sugorokuon.preference.SearchMethodPrefs
 import tsuyogoro.sugorokuon.preference.StationPrefs
+import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.RecommendProgramsDatabase
 import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.station.StationDao
 import tsuyogoro.sugorokuon.station.StationDatabase
@@ -32,8 +34,28 @@ class DataModule {
     fun provideAppPrefsRepository(appContext: Context): AppPrefRepository =
         AppPrefRepository(appPrefs = AppPrefs.get(appContext))
 
+    @Singleton
     @Provides
-    fun provideStationDatabase(context: Context): StationDatabase = Room
+    fun provideStationRepository(context: Context): StationRepository =
+        StationRepository().apply {
+            initialize(provideStationDao(provideStationDatabase(context)))
+        }
+
+    @Provides
+    fun provideRecommendProgramsDatabase(context: Context): RecommendProgramsDatabase = Room
+        .databaseBuilder(
+            context.applicationContext,
+            RecommendProgramsDatabase::class.java,
+            "recommend_program_database"
+        )
+        .allowMainThreadQueries()
+        .build()
+
+    @Provides
+    fun provideRecommendProgramsDao(database: RecommendProgramsDatabase): RecommendProgramsDao =
+        database.recommendProgramsDao()
+
+    private fun provideStationDatabase(context: Context): StationDatabase = Room
         .databaseBuilder(
             context.applicationContext,
             StationDatabase::class.java,
@@ -42,12 +64,7 @@ class DataModule {
         .allowMainThreadQueries()
         .build()
 
-    @Provides
-    fun provideStationDao(database: StationDatabase): StationDao =
+    private fun provideStationDao(database: StationDatabase): StationDao =
         database.stationDao()
 
-    @Singleton
-    @Provides
-    fun provideStationRepository(stationDao: StationDao): StationRepository =
-        StationRepository(stationDao = stationDao)
 }

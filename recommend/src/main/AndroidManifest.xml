@@ -2,6 +2,9 @@
     package="tsuyogoro.sugorokuon.recommend">
 
     <application>
+        <receiver
+            android:name="tsuyogoro.sugorokuon.recommend.notification.RecommendRemindBroadCastReceiver"
+            android:process=":remote" />
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@
  * Copyright (c)
  * 2018 tsuyoyo. All Rights Reserved.
  */
-package tsuyogoro.sugorokuon.notification
+package tsuyogoro.sugorokuon.recommend.notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent

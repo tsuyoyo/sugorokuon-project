@@ -1,14 +1,14 @@
-package tsuyogoro.sugorokuon.notification
+package tsuyogoro.sugorokuon.recommend.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import io.reactivex.schedulers.Schedulers
-import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonLog
+import tsuyogoro.sugorokuon.data.DataModule
+import tsuyogoro.sugorokuon.recommend.RecommendModule
 import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
-import javax.inject.Inject
 
 class RecommendRemindBroadCastReceiver: BroadcastReceiver() {
 
@@ -19,30 +19,43 @@ class RecommendRemindBroadCastReceiver: BroadcastReceiver() {
             Intent(context, RecommendRemindBroadCastReceiver::class.java)
     }
 
-    @Inject
     lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
-    @Inject
+    // TODO : RecommendProgramRepositoryの方がよさそう (Daoはinternalクラスにする)
     lateinit var recommendProgramsDao: RecommendProgramsDao
 
-    @Inject
     lateinit var recommendRemindTimerSubmitter: RecommendRemindTimerSubmitter
+
+    private fun solveDependencies(context: Context) {
+        val dataModule = DataModule()
+        val recommendModule = RecommendModule()
+
+        recommendRemindNotifier = recommendModule.provideRecommendRemindNotifier(
+            context,
+            recommendModule.provideRecommendSettingsRepository(context),
+            dataModule.provideStationRepository(context)
+        )
+
+        recommendProgramsDao = dataModule.provideRecommendProgramsDao(
+            dataModule.provideRecommendProgramsDatabase(context)
+        )
+
+        recommendRemindTimerSubmitter = RecommendRemindTimerSubmitter(context)
+    }
 
     override fun onReceive(context: Context, intent: Intent?) {
         SugorokuonLog.d("RecommendRemindBroadCastReceiver - S")
 
-        SugorokuonApplication
-            .application(context)
-            .appComponent()
-            .timerComponent(TimerModule())
-            .inject(this)
+        solveDependencies(context)
 
         val programs = recommendProgramsDao.getAll()
         if (programs.isNotEmpty()) {
             recommendRemindNotifier.notifyReminder(context, programs[0])
                 .subscribeOn(Schedulers.io())
                 .doOnComplete {
-                    // TODO : 次のtimerをセットして、programs[0] をDBから消す
+                    // TODO : optoion 1) 次のtimerをセットして、programs[0] をDBから消す
+
+                    // TODO : option 2) intentの中にprogram更新フラグが入ってたらfetchしなおして、全てのrecommendのnotificationをセットしておく
                 }
                 .subscribe()
         }

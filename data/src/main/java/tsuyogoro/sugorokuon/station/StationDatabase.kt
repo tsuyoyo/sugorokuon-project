@@ -8,7 +8,7 @@ import tsuyogoro.sugorokuon.typeconverter.StationLogoConverter
 
 @Database(entities = [Station::class], version = 1)
 @TypeConverters(StationLogoConverter::class, AreaConverter::class)
-abstract class StationDatabase : RoomDatabase() {
+internal abstract class StationDatabase : RoomDatabase() {
 
     abstract fun stationDao(): StationDao
 

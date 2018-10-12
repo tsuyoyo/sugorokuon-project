@@ -27,6 +27,12 @@ class RecommendSearchService(
             }
         }
 
+    // TODO : set remiders
+    //  - DB上にある全ての番組のtimerを張る
+    //  - idは番組の放送日時 + stationIDで作ったhash値
+    //  - 最後のnotificationには、"program取り直しのflag" を入れる
+    //  - もし1つもrecommendが無かったら、1日後にprogram取り直しを走らせるtimerを張る
+
     private fun recommendKeywordsStream() = Flowable
         .fromIterable(recommendSettingsRepository.getRecommentKeywords())
         .filter { it.keyword.isNotBlank() }

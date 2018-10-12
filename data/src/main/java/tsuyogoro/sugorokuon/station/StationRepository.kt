@@ -4,10 +4,13 @@ import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 
 class StationRepository(
-    private val stations: BehaviorProcessor<List<Station>> = BehaviorProcessor.create(),
-    private val stationDao: StationDao
+    private val stations: BehaviorProcessor<List<Station>> = BehaviorProcessor.create()
 ) {
-    init {
+
+    private lateinit var stationDao: StationDao
+
+    internal fun initialize(stationDao: StationDao) {
+        this.stationDao = stationDao
         updateStations()
     }
 
