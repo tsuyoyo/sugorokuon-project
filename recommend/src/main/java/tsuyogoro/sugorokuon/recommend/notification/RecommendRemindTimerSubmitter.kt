@@ -8,7 +8,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 
-class RecommendRemindTimerSubmitter(private val context: Context) {
+internal class RecommendRemindTimerSubmitter(private val context: Context) {
 
     fun setTimer(timeInMilliSec: Long) {
         // TODO : Androidバージョンで分岐を

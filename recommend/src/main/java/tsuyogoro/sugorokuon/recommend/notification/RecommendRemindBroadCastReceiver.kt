@@ -7,8 +7,9 @@ import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.recommend.RecommendModule
-import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
+import javax.inject.Inject
 
 class RecommendRemindBroadCastReceiver: BroadcastReceiver() {
 
@@ -19,36 +20,24 @@ class RecommendRemindBroadCastReceiver: BroadcastReceiver() {
             Intent(context, RecommendRemindBroadCastReceiver::class.java)
     }
 
-    lateinit var recommendRemindNotifier: RecommendRemindNotifier
+    @Inject
+    lateinit var recommendProgramRepository: RecommendProgramRepository
 
-    // TODO : RecommendProgramRepositoryの方がよさそう (Daoはinternalクラスにする)
-    lateinit var recommendProgramsDao: RecommendProgramsDao
+    @Inject
+    internal lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
-    lateinit var recommendRemindTimerSubmitter: RecommendRemindTimerSubmitter
-
-    private fun solveDependencies(context: Context) {
-        val dataModule = DataModule()
-        val recommendModule = RecommendModule()
-
-        recommendRemindNotifier = recommendModule.provideRecommendRemindNotifier(
-            context,
-            recommendModule.provideRecommendSettingsRepository(context),
-            dataModule.provideStationRepository(context)
-        )
-
-        recommendProgramsDao = dataModule.provideRecommendProgramsDao(
-            dataModule.provideRecommendProgramsDatabase(context)
-        )
-
-        recommendRemindTimerSubmitter = RecommendRemindTimerSubmitter(context)
-    }
+    @Inject
+    internal lateinit var recommendRemindTimerSubmitter: RecommendRemindTimerSubmitter
 
     override fun onReceive(context: Context, intent: Intent?) {
         SugorokuonLog.d("RecommendRemindBroadCastReceiver - S")
 
-        solveDependencies(context)
+        DaggerRecommendReminderComponent.builder()
+            .module(RecommendReminderComponent.Module(context))
+            .build()
+            .inject(this)
 
-        val programs = recommendProgramsDao.getAll()
+        val programs = recommendProgramRepository.getRecommendPrograms()
         if (programs.isNotEmpty()) {
             recommendRemindNotifier.notifyReminder(context, programs[0])
                 .subscribeOn(Schedulers.io())

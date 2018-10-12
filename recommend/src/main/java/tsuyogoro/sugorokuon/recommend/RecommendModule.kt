@@ -9,10 +9,8 @@ import android.support.v7.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
-import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.settings.SettingsRepository
-import tsuyogoro.sugorokuon.station.StationRepository
 
 @Module
 class RecommendModule {
@@ -24,23 +22,13 @@ class RecommendModule {
     @Provides
     fun provideRecommendSearchService(
         searchApi: SearchApi,
-        recommendProgramsDao: RecommendProgramsDao,
+        recommendProgramRepository: RecommendProgramRepository,
         recommendSettingsRepository: RecommendSettingsRepository,
         settingsRepository: SettingsRepository
     ): RecommendSearchService = RecommendSearchService(
         searchApi = searchApi,
-        recommendProgramsDao = recommendProgramsDao,
+        recommendProgramRepository = recommendProgramRepository,
         recommendSettingsRepository = recommendSettingsRepository,
         settingsRepository = settingsRepository
-    )
-
-    // TODO : これも外に出す必要は無いのでは?
-    @Provides
-    fun provideRecommendRemindNotifier(
-        context: Context,
-        recommendSettingsRepository: RecommendSettingsRepository,
-        stationRepository: StationRepository
-    ): RecommendRemindNotifier = RecommendRemindNotifier(
-        context, recommendSettingsRepository, stationRepository
     )
 }

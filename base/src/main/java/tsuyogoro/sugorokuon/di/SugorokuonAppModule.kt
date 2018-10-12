@@ -39,8 +39,4 @@ class SugorokuonAppModule(
     @Provides
     fun provideSugorokuonAppState(): SugorokuonAppState = SugorokuonAppState()
 
-    @Singleton
-    @Provides
-    fun provideSearchUuidGenerator(): SearchUuidGenerator = SearchUuidGenerator()
-
 }

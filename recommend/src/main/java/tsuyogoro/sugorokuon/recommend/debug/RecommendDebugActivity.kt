@@ -8,47 +8,39 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import io.reactivex.schedulers.Schedulers
-import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.recommend.R
-import tsuyogoro.sugorokuon.recommend.RecommendModule
-import tsuyogoro.sugorokuon.recommend.RecommendProgramsDao
+import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
 import tsuyogoro.sugorokuon.recommend.RecommendSearchService
+import tsuyogoro.sugorokuon.recommend.notification.DaggerRecommendReminderComponent
 import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindTimerSubmitter
+import tsuyogoro.sugorokuon.recommend.notification.RecommendReminderComponent
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import java.util.*
+import javax.inject.Inject
 
 // TODO : Componentは使えなくなるけど、recommend moduleへ動かしたほうが平和なのでは
 class RecommendDebugActivity : AppCompatActivity() {
 
-    private lateinit var recommendSearchService: RecommendSearchService
+    @Inject
+    lateinit var recommendSearchService: RecommendSearchService
 
-    // TODO : repositoryにする
-    private lateinit var recommendProgramsDao: RecommendProgramsDao
+    @Inject
+    lateinit var recommendProgramRepository: RecommendProgramRepository
 
-    private lateinit var recommendRemindNotifier: RecommendRemindNotifier
+    @Inject
+    internal lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
-    private lateinit var remindTimerSubmitter : RecommendRemindTimerSubmitter
-
-    private fun solveDependencies() {
-        val dataModule = DataModule()
-        val recommendModule = RecommendModule()
-
-        recommendRemindNotifier = recommendModule.provideRecommendRemindNotifier(
-            this,
-            recommendModule.provideRecommendSettingsRepository(this),
-            dataModule.provideStationRepository(this)
-        )
-
-        recommendProgramsDao = dataModule.provideRecommendProgramsDao(
-            dataModule.provideRecommendProgramsDatabase(this)
-        )
-
-        remindTimerSubmitter = RecommendRemindTimerSubmitter(this)
-    }
+    @Inject
+    internal lateinit var remindTimerSubmitter : RecommendRemindTimerSubmitter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        solveDependencies()
+
+        DaggerRecommendReminderComponent.builder()
+            .module(RecommendReminderComponent.Module(this))
+            .build()
+            .inject(this)
+
         setContentView(R.layout.activity_recommend_debug)
 
         findViewById<View>(R.id.fetch_recommend).setOnClickListener {
@@ -62,7 +54,7 @@ class RecommendDebugActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.dump_db).setOnClickListener {
             Log.d("TestTestTest", "Dump recommend database")
-            recommendProgramsDao.getAll().forEach {
+            recommendProgramRepository.getRecommendPrograms().forEach {
                 val startDate = DateFormat.format("yyyy/MM/dd hh:mm", it.start)
                 Log.d("TestTestTest", "$startDate - ${it.title} (${it.personality})")
             }
@@ -70,13 +62,13 @@ class RecommendDebugActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.clear_db).setOnClickListener {
-            recommendProgramsDao.clearTable()
+            recommendProgramRepository.clear()
             Toast.makeText(this@RecommendDebugActivity, "Cleaned DB", Toast.LENGTH_SHORT)
                 .show()
         }
 
         findViewById<View>(R.id.notify_reminder).setOnClickListener {
-            val programs = recommendProgramsDao.getAll()
+            val programs = recommendProgramRepository.getRecommendPrograms()
             if (programs.isEmpty()) {
                 Toast.makeText(this@RecommendDebugActivity, "No program is in DB", Toast.LENGTH_SHORT)
                     .show()

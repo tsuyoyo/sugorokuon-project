@@ -4,11 +4,9 @@ import dagger.Component
 import tsuyogoro.sugorokuon.SugorokuonTopModule
 import tsuyogoro.sugorokuon.SugorokuonTopSubComponent
 import tsuyogoro.sugorokuon.data.DataModule
-import tsuyogoro.sugorokuon.debug.DebugComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingModule
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule
-import tsuyogoro.sugorokuon.recommend.RecommendModule
 import tsuyogoro.sugorokuon.search.SearchModule
 import tsuyogoro.sugorokuon.search.SearchSubComponent
 import tsuyogoro.sugorokuon.setting.SettingsModule
@@ -57,5 +55,4 @@ interface SugorokuonAppComponent {
     fun onBoardingSubComponent(onboardingModule: OnboardingModule)
             : OnboardingComponent
 
-    fun debugSubComponent(recommendModule: RecommendModule) : DebugComponent
 }

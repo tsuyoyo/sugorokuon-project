@@ -7,10 +7,13 @@ package tsuyogoro.sugorokuon.recommend
 import android.arch.persistence.room.*
 
 @Dao
-interface RecommendProgramsDao {
+internal interface RecommendProgramsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recommendProgram: RecommendProgram)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(recommendPrograms: List<RecommendProgram>)
 
     @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
     fun getAll(): List<RecommendProgram>

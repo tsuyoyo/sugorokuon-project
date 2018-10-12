@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import tsuyogoro.sugorokuon.radiko.api.*
 import java.util.*
+import javax.inject.Singleton
 
 @Module
 class RadikoApiModule {
@@ -40,6 +41,9 @@ class RadikoApiModule {
     fun provideFeedApi() : FeedApi = retrofitBuilderForXmlResponseApi()
         .build()
         .create(FeedApi::class.java)
+
+    @Provides
+    fun provideSearchUuidGenerator(): SearchUuidGenerator = SearchUuidGenerator()
 
     private val apiConfig = ApiConfig()
 

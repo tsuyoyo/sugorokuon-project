@@ -3,19 +3,19 @@ package tsuyogoro.sugorokuon.recommend
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import tsuyogoro.sugorokuon.constant.Area
-import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 import tsuyogoro.sugorokuon.radiko.extension.toRecommendProgram
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 import java.net.URLEncoder
 import java.util.*
 
 class RecommendSearchService(
     private val searchUuidGenerator: SearchUuidGenerator = SearchUuidGenerator(),
     private val searchApi: SearchApi,
-    private val recommendProgramsDao: RecommendProgramsDao,
+    private val recommendProgramRepository: RecommendProgramRepository,
     private val recommendSettingsRepository: RecommendSettingsRepository,
     private val settingsRepository: SettingsRepository
 ) {
@@ -50,10 +50,10 @@ class RecommendSearchService(
         .ignoreElement()
 
     private fun storeRecommendToDb(searchResponse: SearchResponse) {
-        searchResponse.programs
-            .filter { it.start.time > Calendar.getInstance().timeInMillis }
-            .map { it.toRecommendProgram() }
-            .forEach(recommendProgramsDao::insert)
+        recommendProgramRepository.setRecommendPrograms(
+            searchResponse.programs
+                .filter { it.start.time > Calendar.getInstance().timeInMillis }
+                .map { it.toRecommendProgram() }
+        )
     }
-
 }

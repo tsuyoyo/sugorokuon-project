@@ -1,3 +1,7 @@
+/**
+ * Copyright (c)
+ * 2018 tsuyoyo. All Rights Reserved.
+ */
 package tsuyogoro.sugorokuon.recommend.reminder
 
 import android.app.Notification
@@ -19,15 +23,16 @@ import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.station.StationRepository
 import java.net.URL
 
-
-class RecommendRemindNotifier(
+internal class RecommendRemindNotifier(
     context: Context,
     private val recommendSettingsRepository: RecommendSettingsRepository,
     private val stationRepository: StationRepository
 ) {
     companion object {
         private const val CHANNEL_ID = "sugorokuon_recommend"
+
         private const val CHANNEL_NAME = "SugorokuonRecommendChannel"
+
         private const val NOTIFICATION_LARGE_ICON_SIZE_DP = 16f
 
         private const val REMINDER_NOTIFICATION_ID = 100
