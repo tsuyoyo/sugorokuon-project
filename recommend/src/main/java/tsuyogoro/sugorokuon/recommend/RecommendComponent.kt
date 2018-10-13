@@ -1,11 +1,10 @@
-package tsuyogoro.sugorokuon.recommend.notification
+package tsuyogoro.sugorokuon.recommend
 
 import android.content.Context
 import dagger.Component
 import dagger.Provides
 import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule
-import tsuyogoro.sugorokuon.recommend.RecommendModule
 import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
@@ -17,11 +16,11 @@ import javax.inject.Singleton
     RadikoApiModule::class,
     RecommendModule::class,
     DataModule::class,
-    RecommendReminderComponent.Module::class
+    RecommendComponent.Module::class
 ])
-internal interface RecommendReminderComponent {
+internal interface RecommendComponent {
 
-    fun inject(recommendReminderBroadCastReceiver: RecommendRemindBroadCastReceiver)
+    fun inject(recommendReminderBroadCastReceiver: RecommendBroadCastReceiver)
 
     fun inject(recommendDebugActivity: RecommendDebugActivity)
 
@@ -35,7 +34,7 @@ internal interface RecommendReminderComponent {
 
         @Provides
         fun provideRecommendRemindTimerSubmitter(context: Context) =
-            RecommendRemindTimerSubmitter(context)
+            RecommendTimerSubmitter(context)
 
         // TODO : これも外に出す必要は無いのでは?
         @Provides

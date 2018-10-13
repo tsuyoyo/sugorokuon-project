@@ -3,7 +3,7 @@
 
     <application>
         <receiver
-            android:name="tsuyogoro.sugorokuon.recommend.notification.RecommendRemindBroadCastReceiver"
+            android:name="tsuyogoro.sugorokuon.recommend.RecommendBroadCastReceiver"
             android:process=":remote" />
 
         <!-- For debug -->

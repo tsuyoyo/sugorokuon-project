@@ -20,6 +20,10 @@ class RecommendProgramRepository {
         updateRecommendPrograms()
     }
 
+    fun delete(recommendProgram: RecommendProgram) {
+        recommendProgramsDao.delete(recommendProgram)
+    }
+
     fun clear() {
         recommendProgramsDao.clearTable()
         updateRecommendPrograms()

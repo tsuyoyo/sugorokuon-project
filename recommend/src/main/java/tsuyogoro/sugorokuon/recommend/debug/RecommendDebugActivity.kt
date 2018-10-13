@@ -8,17 +8,11 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import io.reactivex.schedulers.Schedulers
-import tsuyogoro.sugorokuon.recommend.R
-import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
-import tsuyogoro.sugorokuon.recommend.RecommendSearchService
-import tsuyogoro.sugorokuon.recommend.notification.DaggerRecommendReminderComponent
-import tsuyogoro.sugorokuon.recommend.notification.RecommendRemindTimerSubmitter
-import tsuyogoro.sugorokuon.recommend.notification.RecommendReminderComponent
+import tsuyogoro.sugorokuon.recommend.*
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import java.util.*
 import javax.inject.Inject
 
-// TODO : Componentは使えなくなるけど、recommend moduleへ動かしたほうが平和なのでは
 class RecommendDebugActivity : AppCompatActivity() {
 
     @Inject
@@ -31,13 +25,13 @@ class RecommendDebugActivity : AppCompatActivity() {
     internal lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
     @Inject
-    internal lateinit var remindTimerSubmitter : RecommendRemindTimerSubmitter
+    internal lateinit var timerSubmitter : RecommendTimerSubmitter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DaggerRecommendReminderComponent.builder()
-            .module(RecommendReminderComponent.Module(this))
+        DaggerRecommendComponent.builder()
+            .module(RecommendComponent.Module(this))
             .build()
             .inject(this)
 
@@ -90,7 +84,7 @@ class RecommendDebugActivity : AppCompatActivity() {
                 val sec = Integer.parseInt(secInput.text.toString())
                 val setTime = Calendar.getInstance().timeInMillis + sec * 1000
 
-                remindTimerSubmitter.setTimer(setTime)
+                timerSubmitter.setRemindTimer(setTime, 100)
 
                 Toast.makeText(
                     this@RecommendDebugActivity,
