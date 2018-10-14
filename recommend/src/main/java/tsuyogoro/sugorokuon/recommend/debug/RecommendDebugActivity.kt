@@ -1,13 +1,17 @@
 package tsuyogoro.sugorokuon.recommend.debug
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.*
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import java.util.*
@@ -25,42 +29,69 @@ class RecommendDebugActivity : AppCompatActivity() {
     internal lateinit var recommendRemindNotifier: RecommendRemindNotifier
 
     @Inject
-    internal lateinit var timerSubmitter : RecommendTimerSubmitter
+    internal lateinit var recommendTimerService: RecommendTimerService
+
+    internal lateinit var recommendConfigPrefs: RecommendConfigPrefs
+
+    private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        recommendConfigPrefs = RecommendConfigPrefs.get(this)
+
         DaggerRecommendComponent.builder()
-            .module(RecommendComponent.Module(this))
+            .recommendInternalModule(RecommendInternalModule(this))
             .build()
             .inject(this)
 
         setContentView(R.layout.activity_recommend_debug)
 
+        setupFetchLatestRecommend()
+        setupDumpRecommendDatabase()
+        setupClearRecommendDatabase()
+        setupReminderTest()
+        setupRecommendRemindTimerDebug()
+        setupRecommendUpdateTimerDebug()
+    }
+
+    private fun setupFetchLatestRecommend() {
         findViewById<View>(R.id.fetch_recommend).setOnClickListener {
-            recommendSearchService.fetchRecommendPrograms()
+            recommendSearchService
+                .fetchRecommendPrograms()
+                .doOnSuccess { SugorokuonLog.d("Success to fetch programs") }
+                .doOnSuccess { recommendSearchService.updateRecommendProgramsInDatabase(it) }
+                .ignoreElement()
                 .subscribeOn(Schedulers.io())
-                .doOnComplete { Log.d("TestTestTest", "Complete") }
-                .doOnError { Log.d("TestTestTest", "Error - ${it.message}") }
-                .subscribe( { }, { })
+                .doOnComplete { SugorokuonLog.d("Done store DB") }
+                .subscribeBy(
+                    onError = {
+                        SugorokuonLog.d("Failed to fetch latest recommend : ${it.message}")
+                    })
+                .addTo(disposables)
         }
+    }
 
-
+    private fun setupDumpRecommendDatabase() {
         findViewById<View>(R.id.dump_db).setOnClickListener {
-            Log.d("TestTestTest", "Dump recommend database")
+            SugorokuonLog.d("Dump recommend database")
             recommendProgramRepository.getRecommendPrograms().forEach {
                 val startDate = DateFormat.format("yyyy/MM/dd hh:mm", it.start)
-                Log.d("TestTestTest", "$startDate - ${it.title} (${it.personality})")
+                SugorokuonLog.d("$startDate - ${it.title} (${it.personality})")
             }
-            Log.d("TestTestTest", "-----------------------")
+            SugorokuonLog.d("-----------------------")
         }
+    }
 
+    private fun setupClearRecommendDatabase() {
         findViewById<View>(R.id.clear_db).setOnClickListener {
             recommendProgramRepository.clear()
             Toast.makeText(this@RecommendDebugActivity, "Cleaned DB", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
 
+    private fun setupReminderTest() {
         findViewById<View>(R.id.notify_reminder).setOnClickListener {
             val programs = recommendProgramRepository.getRecommendPrograms()
             if (programs.isEmpty()) {
@@ -73,32 +104,134 @@ class RecommendDebugActivity : AppCompatActivity() {
                     .subscribe()
             }
         }
-
-        setupNotifyTimerDebug()
     }
 
-    private fun setupNotifyTimerDebug() {
-        findViewById<View>(R.id.notify_set).setOnClickListener {
-            val secInput = findViewById<EditText>(R.id.notify_after_sec)
-            try {
-                val sec = Integer.parseInt(secInput.text.toString())
-                val setTime = Calendar.getInstance().timeInMillis + sec * 1000
+    // Register some dummy programs on database in specific interval.
+    // Then, set timer for the next coming one.
+    private fun setupRecommendRemindTimerDebug() {
+        val showErrorToast: () -> Unit = {
+            Toast.makeText(
+                this@RecommendDebugActivity,
+                "enter seconds (e.g. 100)",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        val readIntervalSec: () -> Int = {
+            val secInput = findViewById<EditText>(R.id.notify_interval_sec)
+            Integer.parseInt(secInput.text.toString())
+        }
+        val registerDummyPrograms: (Int, RecommendProgram) -> Unit = {
+            intervalSec, referenceProgram ->
 
-                timerSubmitter.setRemindTimer(setTime, 100)
+            val dummyPrograms = mutableListOf<RecommendProgram>()
+            for (i in 1..5) {
+                val startTime = Calendar.getInstance().apply {
+                    add(Calendar.SECOND, intervalSec * i)
+                }.timeInMillis / 1000
 
-                Toast.makeText(
-                    this@RecommendDebugActivity,
-                    "Set timer after $sec seconds",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            } catch (e: Exception) {
-                Toast.makeText(
-                    this@RecommendDebugActivity,
-                    "enter seconds (e.g. 100)",
-                    Toast.LENGTH_SHORT
-                ).show()
+                dummyPrograms.add(
+                    RecommendProgram(
+                        "dummy$i",
+                        startTime,
+                        startTime + 1000,
+                        referenceProgram.stationId,
+                        "Dummy program $i",
+                        "personality -- dummy $i",
+                        referenceProgram.image,
+                        referenceProgram.url,
+                        "(Description) this is a dummy program on debug view",
+                        "(Info) this is a dummy program on debug view"
+                    )
+                )
             }
+            recommendProgramRepository.clear()
+            recommendProgramRepository.setRecommendPrograms(dummyPrograms)
+        }
+
+        recommendProgramRepository.observeRecommendPrograms()
+            .observe(this, Observer {
+                var message: String = ""
+                if (it != null && it.isNotEmpty()) {
+                    SugorokuonLog.d("Detect recommend programs change : this instance = ${this}")
+                    message = "Set timer for next"
+
+                    recommendTimerService.setNextRemindTimer(
+                        RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR)
+                } else {
+                    SugorokuonLog.d("Detect recommend programs empty : this instance = ${this}")
+                    message = "Repository has been empty"
+                }
+                Toast.makeText(
+                    this@RecommendDebugActivity,
+                    message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
+
+        findViewById<View>(R.id.notify_set).setOnClickListener {
+            if (recommendProgramRepository.getRecommendPrograms().isEmpty()) {
+                Toast.makeText(
+                    this@RecommendDebugActivity,
+                    "Try after fetching program",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            try {
+                val interval = readIntervalSec.invoke()
+                registerDummyPrograms.invoke(
+                    interval,
+                    recommendProgramRepository.getRecommendPrograms()[0]
+                )
+            } catch (e: Exception) {
+                showErrorToast.invoke()
+            }
+        }
+    }
+
+    fun setupRecommendUpdateTimerDebug() {
+        val showErrorToast: () -> Unit = {
+            Toast.makeText(
+                this@RecommendDebugActivity,
+                "enter seconds (e.g. 100)",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        val readIntervalSec: () -> Int = {
+            val secInput = findViewById<EditText>(R.id.recommend_update_interval)
+            Integer.parseInt(secInput.text.toString())
+        }
+        findViewById<View>(R.id.recommend_update_set).setOnClickListener {
+            try {
+                val interval = readIntervalSec.invoke()
+                if (interval > 10) {
+                    recommendConfigPrefs.putUpdateIntervalForDebugInSec(interval.toLong())
+                    recommendTimerService.setUpdateRecommendTimer(
+                        RecommendBroadCastReceiver.REQUEST_CODE_UPDATE_RECOMMEND)
+
+                    Toast.makeText(
+                        this@RecommendDebugActivity,
+                        "Set recommend update timer",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@RecommendDebugActivity,
+                        "Set longer than 10 sec for interval",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                showErrorToast.invoke()
+            }
+        }
+        findViewById<View>(R.id.recommend_update_cancel).setOnClickListener {
+            recommendTimerService.cancelUpdateRecommendTimer(
+                RecommendBroadCastReceiver.REQUEST_CODE_UPDATE_RECOMMEND)
+        }
+        findViewById<View>(R.id.recommend_update_configure_reset).setOnClickListener {
+            recommendConfigPrefs.removeUpdateIntervalForDebugInSec()
         }
     }
 }

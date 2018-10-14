@@ -10,8 +10,8 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "recommend_programs")
 data class RecommendProgram constructor(
     @PrimaryKey val id: String, // start + end + stationId のstring
-    val start: Long,
-    val end: Long,
+    val start: Long, // sec
+    val end: Long, // sec
     val stationId: String,
     val title: String,
     val personality: String,

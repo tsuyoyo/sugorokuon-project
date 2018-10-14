@@ -68,6 +68,7 @@ ext {
     rxJava2Version = "2.1.6"
     rxAndroidVersion = "2.0.2"
     rxBindingVersion = "2.1.1"
+    rxKotlin = "2.3.0"
 
     kvsSchemaVersion = "5.0.1"
     androidArchitectureComponent = "1.1.1"

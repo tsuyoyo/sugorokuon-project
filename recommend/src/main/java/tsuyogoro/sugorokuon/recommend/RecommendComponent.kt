@@ -5,10 +5,8 @@ import dagger.Component
 import dagger.Provides
 import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule
+import tsuyogoro.sugorokuon.recommend.debug.RecommendConfigPrefs
 import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
-import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
-import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
-import tsuyogoro.sugorokuon.station.StationRepository
 import javax.inject.Singleton
 
 @Singleton
@@ -16,6 +14,7 @@ import javax.inject.Singleton
     RadikoApiModule::class,
     RecommendModule::class,
     DataModule::class,
+    RecommendInternalModule::class,
     RecommendComponent.Module::class
 ])
 internal interface RecommendComponent {
@@ -25,25 +24,13 @@ internal interface RecommendComponent {
     fun inject(recommendDebugActivity: RecommendDebugActivity)
 
     @dagger.Module
-    class Module(c: Context) {
-        private val context: Context = c.applicationContext
+    class Module {
 
         @Singleton
         @Provides
-        fun provideAppContext(): Context = context
+        fun provideRecommendConfig(context: Context): RecommendConfigs =
+            RecommendConfigs(RecommendConfigPrefs.get(context))
 
-        @Provides
-        fun provideRecommendRemindTimerSubmitter(context: Context) =
-            RecommendTimerSubmitter(context)
-
-        // TODO : これも外に出す必要は無いのでは?
-        @Provides
-        fun provideRecommendRemindNotifier(
-            context: Context,
-            recommendSettingsRepository: RecommendSettingsRepository,
-            stationRepository: StationRepository
-        ): RecommendRemindNotifier = RecommendRemindNotifier(
-            context, recommendSettingsRepository, stationRepository
-        )
     }
+
 }

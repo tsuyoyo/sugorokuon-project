@@ -33,7 +33,8 @@ class RecommendSettingsRepository(
 
     private val reminderTypes = BehaviorProcessor.create<List<ReminderType>>()
 
-    private val reminderTiming: BehaviorProcessor<ReminderTiming> = BehaviorProcessor.create()
+    private val reminderTiming: BehaviorProcessor<ReminderTiming> =
+        BehaviorProcessor.createDefault(ReminderTiming.NOT_SET)
 
     init {
         // Set initial value
@@ -61,11 +62,11 @@ class RecommendSettingsRepository(
 
     fun observeReminderTiming(): Flowable<ReminderTiming> = reminderTiming.hide()
 
-    fun getRecommentKeywords(): List<RecommendKeyword> = recommendKeywords.value
+    fun getRecommentKeywords(): List<RecommendKeyword> = recommendKeywords.value ?: emptyList()
 
-    fun getReminderTypes(): List<ReminderType> = reminderTypes.value
+    fun getReminderTypes(): List<ReminderType> = reminderTypes.value ?: emptyList()
 
-    fun getReminderTiming(): ReminderTiming = reminderTiming.value
+    fun getReminderTiming(): ReminderTiming = reminderTiming.value ?: ReminderTiming.NOT_SET
 
     private fun updateRecommendKeywords(sharedPreferences: SharedPreferences) {
         val keywords = mutableListOf<RecommendKeyword>().apply {

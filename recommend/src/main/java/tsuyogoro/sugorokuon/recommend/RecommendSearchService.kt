@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.recommend
 
-import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
@@ -19,19 +19,20 @@ class RecommendSearchService(
     private val recommendSettingsRepository: RecommendSettingsRepository,
     private val settingsRepository: SettingsRepository
 ) {
-
-    fun fetchRecommendPrograms(): Completable =
-        recommendKeywordsStream().flatMapCompletable { recommendKey ->
-            areasStream().flatMapCompletable { area ->
-                fetchRecommendsAndStoreDb(recommendKey.keyword, area)
+    fun fetchRecommendPrograms(): Single<List<RecommendProgram>> =
+        recommendKeywordsStream()
+            .flatMap { keyword ->
+                areasStream()
+                    .flatMapMaybe { area -> callSearchApi(keyword.keyword, area) }
+                    .map { it.filterComingPrograms().map { it.toRecommendProgram() } }
+                    .flatMap { recommendPrograms -> Flowable.fromIterable(recommendPrograms) }
             }
-        }
+            .toList()
 
-    // TODO : set remiders
-    //  - DB上にある全ての番組のtimerを張る
-    //  - idは番組の放送日時 + stationIDで作ったhash値
-    //  - 最後のnotificationには、"program取り直しのflag" を入れる
-    //  - もし1つもrecommendが無かったら、1日後にprogram取り直しを走らせるtimerを張る
+    fun updateRecommendProgramsInDatabase(recommendPrograms: List<RecommendProgram>) {
+//        recommendProgramRepository.clear()
+        recommendProgramRepository.setRecommendPrograms(recommendPrograms)
+    }
 
     private fun recommendKeywordsStream() = Flowable
         .fromIterable(recommendSettingsRepository.getRecommentKeywords())
@@ -40,20 +41,13 @@ class RecommendSearchService(
     private fun areasStream() = Flowable
         .fromIterable(settingsRepository.getAreaSettings())
 
-    private fun fetchRecommendsAndStoreDb(keyword: String, area: Area) = searchApi
+    private fun SearchResponse.filterComingPrograms(): List<SearchResponse.Program> =
+        programs.filter { it.start.time > Calendar.getInstance().timeInMillis }
+
+    private fun callSearchApi(keyword: String, area: Area) = searchApi
         .search(
             encodedWord = URLEncoder.encode(keyword, "UTF-8"),
             areaId = area.id,
             culAreaId = area.id,
             uid = searchUuidGenerator.generateSearchUuid())
-        .doOnSuccess(this::storeRecommendToDb)
-        .ignoreElement()
-
-    private fun storeRecommendToDb(searchResponse: SearchResponse) {
-        recommendProgramRepository.setRecommendPrograms(
-            searchResponse.programs
-                .filter { it.start.time > Calendar.getInstance().timeInMillis }
-                .map { it.toRecommendProgram() }
-        )
-    }
 }

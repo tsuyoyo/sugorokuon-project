@@ -4,6 +4,7 @@
  */
 package tsuyogoro.sugorokuon.recommend
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 
 @Dao
@@ -16,7 +17,10 @@ internal interface RecommendProgramsDao {
     fun insert(recommendPrograms: List<RecommendProgram>)
 
     @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
-    fun getAll(): List<RecommendProgram>
+    fun observePrograms(): LiveData<List<RecommendProgram>>
+
+    @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
+    fun getPrograms(): List<RecommendProgram>
 
     @Query("SELECT * ,MIN(start) FROM recommend_programs GROUP BY start")
     fun getOnAirSoon(): List<RecommendProgram>
