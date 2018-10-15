@@ -1,10 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tsuyogoro.sugorokuon.recommend">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application>
-        <receiver
-            android:name="tsuyogoro.sugorokuon.recommend.RecommendBroadCastReceiver"
-            android:process=":remote" />
+        <receiver android:name="tsuyogoro.sugorokuon.recommend.RecommendBroadCastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <!-- For debug -->
         <activity android:name="tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity"/>

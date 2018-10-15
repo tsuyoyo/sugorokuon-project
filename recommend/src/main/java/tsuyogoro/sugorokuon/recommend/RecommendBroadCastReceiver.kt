@@ -56,6 +56,10 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
             .inject(this)
 
         when (intent?.action) {
+            Intent.ACTION_BOOT_COMPLETED -> {
+                SugorokuonLog.d("Boot completed!!!")
+                updateRecommend()
+            }
             ACTION_REMIND_ON_AIR -> remindOnAirProgram(context)
             ACTION_UPDATE_RECOMMEND -> updateRecommend()
         }
@@ -99,11 +103,16 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
             }
             .subscribeBy(
                 onSuccess = {
-                    SugorokuonLog.d("Success to update recommend"
-                        + "-- # of recommend programs in DB : "
-                        + "${recommendProgramRepository.getRecommendPrograms().size}")
+                    SugorokuonLog.d(
+                        "Success to update recommend" +
+                            "-- # of recommend programs in DB : " +
+                            "${recommendProgramRepository.getRecommendPrograms().size}")
                 },
-                onError = { SugorokuonLog.e("Failed to update recommend : ${it.message}") }
+                onError = {
+                    // Anyway, set timer to invoke update next time.
+                    recommendTimerService.setNextRemindTimer(REQUEST_CODE_REMIND_ON_AIR)
+                    SugorokuonLog.e("Failed to update recommend : ${it.message}")
+                }
             )
             .addTo(disposables)
     }
