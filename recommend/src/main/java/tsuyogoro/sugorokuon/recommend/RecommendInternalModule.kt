@@ -17,13 +17,6 @@ internal class RecommendInternalModule(c: Context) {
     fun provideAppContext(): Context = context
 
     @Provides
-    fun provideRecommendRemindTimerService(
-        context: Context,
-        recommendProgramRepository: RecommendProgramRepository,
-        recommendConfigs: RecommendConfigs
-    ) = RecommendTimerService(context, recommendProgramRepository, recommendConfigs)
-
-    @Provides
     fun provideRecommendRemindNotifier(
         context: Context,
         recommendSettingsRepository: RecommendSettingsRepository,

@@ -125,7 +125,7 @@
             android:background="?android:selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingStart="16dp"
-            android:text="Cancel recommend timer" />
+            android:text="Cancel recommend update timer" />
 
         <TextView
             android:id="@+id/recommend_update_configure_reset"

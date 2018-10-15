@@ -8,16 +8,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
+import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.R
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeyword
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordPreferenceKeys
-import tsuyogoro.sugorokuon.recommend.reminder.ReminderTiming
 import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsPreference
+import tsuyogoro.sugorokuon.recommend.reminder.ReminderTiming
 import tsuyogoro.sugorokuon.recommend.reminder.ReminderType
 
 class RecommendSettingsRepository(
     context: Context,
-    sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences
 ) {
     private val keywordPreferenceKeys = RecommendKeywordPreferenceKeys.getAll(context)
 
@@ -36,14 +37,15 @@ class RecommendSettingsRepository(
     private val reminderTiming: BehaviorProcessor<ReminderTiming> =
         BehaviorProcessor.createDefault(ReminderTiming.NOT_SET)
 
-    init {
-        // Set initial value
-        updateRecommendKeywords(sharedPreferences)
-        updateReminderTypes(sharedPreferences)
-        updateReminderTiming(sharedPreferences)
-
-        // Observe sharedPreference to keep recommendKeywords the latest
-        sharedPreferences.registerOnSharedPreferenceChangeListener { pref, key ->
+    // Note :
+    // anonymous inner class should not be passed to registerOnSharedPreferenceChangeListener.
+    // Because sharedPreferennce manages change listener with WeakReference,
+    // so, it's easy to be involved to GC.
+    // https://stackoverflow.com/questions/2542938/sharedpreferences-onsharedpreferencechangelistener-not-being-called-consistently/3104265#3104265
+    private val sharedPreferenceChangeListener = object :
+        SharedPreferences.OnSharedPreferenceChangeListener {
+        override fun onSharedPreferenceChanged(pref: SharedPreferences, key: String) {
+            SugorokuonLog.d("Preference is updated - key = $key : $this")
             if (keywordPreferenceKeys.contains(key)) {
                 updateRecommendKeywords(pref)
             }
@@ -54,6 +56,18 @@ class RecommendSettingsRepository(
                 updateReminderTypes(sharedPreferences)
             }
         }
+    }
+
+    init {
+        SugorokuonLog.d("Initialize RecommendSettingsRepository : $this (preference : $sharedPreferences)")
+
+        // Set initial value
+        updateRecommendKeywords(sharedPreferences)
+        updateReminderTypes(sharedPreferences)
+        updateReminderTiming(sharedPreferences)
+
+        // Observe sharedPreference to keep recommendKeywords the latest
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
     }
 
     fun observeRecommendKeywords(): Flowable<List<RecommendKeyword>> = recommendKeywords.hide()

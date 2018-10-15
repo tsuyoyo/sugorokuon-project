@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.recommend
 
 import tsuyogoro.sugorokuon.recommend.debug.RecommendConfigPrefs
 
-internal class RecommendConfigs(
+class RecommendConfigs(
     private val recommendConfigPrefs: RecommendConfigPrefs
 ) {
 

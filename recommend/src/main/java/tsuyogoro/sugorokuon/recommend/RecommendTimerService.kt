@@ -8,15 +8,15 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import tsuyogoro.sugorokuon.SugorokuonLog
 import java.util.*
 
-internal class RecommendTimerService(
+class RecommendTimerService(
     private val context: Context,
     private val recommendProgramRepository: RecommendProgramRepository,
     private val recommendConfigs: RecommendConfigs
 ) {
-    fun setNextRemindTimer(requestCode: Int) {
+    fun setNextRemindTimer(
+        requestCode: Int = RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR) {
         recommendProgramRepository
             .getRecommendPrograms()
             .let {
@@ -29,11 +29,13 @@ internal class RecommendTimerService(
             }
     }
 
-    fun cancelRemindTimer(requestCode: Int) {
+    fun cancelRemindTimer(
+        requestCode: Int = RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR) {
         cancelTimer(createPendingIntentForRemindOnAir(requestCode))
     }
 
-    fun setUpdateRecommendTimer(requestCode: Int) {
+    fun setUpdateRecommendTimer(
+        requestCode: Int = RecommendBroadCastReceiver.REQUEST_CODE_UPDATE_RECOMMEND) {
         setTimer(
             getNextUpdateTimeInMilliSec(),
             createPendingIntentForUpdateRecommend(requestCode)
@@ -43,7 +45,8 @@ internal class RecommendTimerService(
     private fun getNextUpdateTimeInMilliSec() =
         Calendar.getInstance().timeInMillis + recommendConfigs.getUpdateIntervalInSec() * 1000
 
-    fun cancelUpdateRecommendTimer(requestCode: Int) {
+    fun cancelUpdateRecommendTimer(
+        requestCode: Int = RecommendBroadCastReceiver.REQUEST_CODE_UPDATE_RECOMMEND) {
         cancelTimer(createPendingIntentForUpdateRecommend(requestCode))
     }
 

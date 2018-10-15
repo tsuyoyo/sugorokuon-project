@@ -1,11 +1,12 @@
 package tsuyogoro.sugorokuon
 
 import dagger.Subcomponent
-import tsuyogoro.sugorokuon.SugorokuonTopActivity
-import tsuyogoro.sugorokuon.SugorokuonTopModule
+import tsuyogoro.sugorokuon.recommend.RecommendModule
+import javax.inject.Singleton
 
 @Subcomponent(modules = [
-    SugorokuonTopModule::class
+    SugorokuonTopModule::class,
+    RecommendModule::class
 ])
 interface SugorokuonTopSubComponent {
 

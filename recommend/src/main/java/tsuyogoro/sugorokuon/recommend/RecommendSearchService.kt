@@ -2,6 +2,7 @@ package tsuyogoro.sugorokuon.recommend
 
 import io.reactivex.Flowable
 import io.reactivex.Single
+import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.radiko.SearchUuidGenerator
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
@@ -23,14 +24,17 @@ class RecommendSearchService(
         recommendKeywordsStream()
             .flatMap { keyword ->
                 areasStream()
-                    .flatMapMaybe { area -> callSearchApi(keyword.keyword, area) }
+                    .flatMapMaybe { area ->
+                        SugorokuonLog.d("- search with ${keyword.keyword} in ${area.code}")
+                        callSearchApi(keyword.keyword, area)
+                    }
                     .map { it.filterComingPrograms().map { it.toRecommendProgram() } }
                     .flatMap { recommendPrograms -> Flowable.fromIterable(recommendPrograms) }
             }
             .toList()
 
     fun updateRecommendProgramsInDatabase(recommendPrograms: List<RecommendProgram>) {
-//        recommendProgramRepository.clear()
+        recommendProgramRepository.clear()
         recommendProgramRepository.setRecommendPrograms(recommendPrograms)
     }
 

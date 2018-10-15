@@ -7,6 +7,7 @@ import tsuyogoro.sugorokuon.data.DataModule
 import tsuyogoro.sugorokuon.onboarding.OnboardingComponent
 import tsuyogoro.sugorokuon.onboarding.OnboardingModule
 import tsuyogoro.sugorokuon.radiko.RadikoApiModule
+import tsuyogoro.sugorokuon.recommend.RecommendDataModule
 import tsuyogoro.sugorokuon.search.SearchModule
 import tsuyogoro.sugorokuon.search.SearchSubComponent
 import tsuyogoro.sugorokuon.setting.SettingsModule
@@ -27,7 +28,8 @@ import javax.inject.Singleton
     RadikoApiModule::class,
     ServiceModule::class,
     RepositoryModule::class,
-    DataModule::class
+    DataModule::class,
+    RecommendDataModule::class
 ])
 interface SugorokuonAppComponent {
 

@@ -14,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.*
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
+import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import java.util.*
 import javax.inject.Inject
 
@@ -30,6 +31,9 @@ class RecommendDebugActivity : AppCompatActivity() {
 
     @Inject
     internal lateinit var recommendTimerService: RecommendTimerService
+
+    @Inject
+    internal lateinit var recommendSettingsRepository: RecommendSettingsRepository
 
     internal lateinit var recommendConfigPrefs: RecommendConfigPrefs
 
@@ -74,6 +78,9 @@ class RecommendDebugActivity : AppCompatActivity() {
 
     private fun setupDumpRecommendDatabase() {
         findViewById<View>(R.id.dump_db).setOnClickListener {
+
+            SugorokuonLog.d("${recommendSettingsRepository.getRecommentKeywords().size}")
+
             SugorokuonLog.d("Dump recommend database")
             recommendProgramRepository.getRecommendPrograms().forEach {
                 val startDate = DateFormat.format("yyyy/MM/dd hh:mm", it.start)

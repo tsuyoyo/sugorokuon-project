@@ -2,6 +2,7 @@ package tsuyogoro.sugorokuon.recommend.reminder
 
 import android.content.Context
 import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceManager
 import android.support.v7.preference.PreferenceViewHolder
 import android.util.AttributeSet
 import android.widget.RadioButton
@@ -33,7 +34,7 @@ class ReminderSettingsPreference : Preference {
     override fun onBindViewHolder(holder: PreferenceViewHolder?) {
         super.onBindViewHolder(holder)
 
-        val currentSettings = preferenceManager.sharedPreferences
+        val currentSettings = PreferenceManager.getDefaultSharedPreferences(context)
             .getInt(PREFERENCE_KEY, defaultValue().ordinal)
 
         checkBoxViewIds.forEachIndexed { index, id ->
@@ -50,7 +51,7 @@ class ReminderSettingsPreference : Preference {
     }
 
     private fun updatePreference(index: Int) {
-        preferenceManager.sharedPreferences.edit()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putInt(PREFERENCE_KEY, index)
             .apply()
     }

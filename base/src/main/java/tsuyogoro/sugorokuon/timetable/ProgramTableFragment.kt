@@ -155,7 +155,6 @@ class ProgramTableFragment : Fragment(),
         // TODO : 縦横回転時にdatePickerDialog閉じないとリークするっぽいのでそれも対応
     }
 
-
     class ProgramTableItemDecoration: RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(outRect: Rect?,

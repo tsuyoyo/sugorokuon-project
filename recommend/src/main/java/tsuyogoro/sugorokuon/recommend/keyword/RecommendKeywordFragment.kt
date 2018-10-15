@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.preference.EditTextPreference
 import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.preference.PreferenceManager
 import android.view.View
 import tsuyogoro.sugorokuon.recommend.R
 
@@ -26,7 +27,8 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.keyword_settings, rootKey)
         setupViews()
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,7 +37,8 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
     }
 
     override fun onDestroy() {
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
     }
 
@@ -62,7 +65,8 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
         resources.getString(R.string.settings_keyword_slot), index + 1)
 
     private fun getCurrentValue(preferenceKey: String) =
-        preferenceManager.sharedPreferences.getString(preferenceKey, "")
+        PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(preferenceKey, "")
 
     private fun updateEditTextPreferenceTitle(sharedPreferences: SharedPreferences,
                                               preferenceKey: String) {
