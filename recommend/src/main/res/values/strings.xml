@@ -16,5 +16,5 @@
     <string name="settings_remindtiming_five_hour_before">5時間前</string>
 
     <string name="recommend_reminder_ticker">まもなくオススメのラジオ番組が始まります</string>
-    <string name="recommend_reminder_text">%s からonAir</string>
+    <string name="recommend_reminder_text">%1$s から %2$s でonAir</string>
 </resources>

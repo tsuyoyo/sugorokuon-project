@@ -41,6 +41,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
 
+    // TODO : apply from で他のファイルから引っ張ってくるように
     // Dagger2 : http://google.github.io/dagger/
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
