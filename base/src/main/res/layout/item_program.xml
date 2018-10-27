@@ -11,6 +11,7 @@
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="72dp"
+        android:scaleType="fitXY"
         tools:background="@android:color/holo_red_light"/>
 
     <TextView
@@ -24,6 +25,7 @@
         android:textColor="@android:color/white"
         android:background="@color/semiTransparentBackground"
         android:ellipsize="end"
+        android:visibility="invisible"
         tools:text="とんカツワイド"/>
 
     <RelativeLayout
