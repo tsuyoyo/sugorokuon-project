@@ -144,6 +144,8 @@
     <string name="settings_station_order">番組表の表示順を変更</string>
     <string name="settings_station_order_guide">ドラッグ&amp;ドロップで並び順を変更します</string>
     <string name="settings_way_to_serach_song">曲の検索方法</string>
+    <string name="settings_recommend_keyword">オススメ番組を自動検索するキーワードを設定</string>
+    <string name="settings_reminder">リマインダ通知の設定</string>
 
     <string name="license">OSS License</string>
     <string name="app_version">Version</string>

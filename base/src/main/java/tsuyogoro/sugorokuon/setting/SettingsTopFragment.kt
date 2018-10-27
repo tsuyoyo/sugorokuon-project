@@ -22,6 +22,7 @@ import tsuyogoro.sugorokuon.base.BuildConfig
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
+import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsFragment
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
 
@@ -31,6 +32,8 @@ class SettingsTopFragment : Fragment() {
         val AREA_SETTINGS = "area"
         val STATION_ORDER_SETTINGS = "stationOrder"
         val SONG_SEARCH_METHOD_SETTINGS = "songSearchMethod"
+        val KEYWORD_SETTINGS = "keyword"
+        val REMINDER_SETTINGS = "reminder"
     }
 
     @Inject
@@ -41,6 +44,12 @@ class SettingsTopFragment : Fragment() {
 
     private val areaSettings: View
         get() = view!!.findViewById(R.id.area_settings)
+
+    private val keywordSettings: View
+        get() = view!!.findViewById(R.id.keyword_settings)
+
+    private val reminderSettings: View
+        get() = view!!.findViewById(R.id.reminder_settings)
 
     private val selectedSearchSongWay: TextView
         get() = view!!.findViewById(R.id.selected_way_to_search_song)
@@ -112,9 +121,24 @@ class SettingsTopFragment : Fragment() {
 
         stationOrder.setOnClickListener {
             (activity as? SugorokuonTopActivity)?.switchFragment(
-//                    StationOrderFragment(),
-                RecommendKeywordFragment.createInstance(),
+                StationOrderFragment(),
                 SubFragmentTags.STATION_ORDER_SETTINGS,
+                Slide(Gravity.START)
+            )
+        }
+
+        keywordSettings.setOnClickListener {
+            (activity as? SugorokuonTopActivity)?.switchFragment(
+                RecommendKeywordFragment.createInstance(),
+                SubFragmentTags.KEYWORD_SETTINGS,
+                Slide(Gravity.START)
+            )
+        }
+
+        reminderSettings.setOnClickListener {
+            (activity as? SugorokuonTopActivity)?.switchFragment(
+                ReminderSettingsFragment.createInstance(),
+                SubFragmentTags.REMINDER_SETTINGS,
                 Slide(Gravity.START)
             )
         }

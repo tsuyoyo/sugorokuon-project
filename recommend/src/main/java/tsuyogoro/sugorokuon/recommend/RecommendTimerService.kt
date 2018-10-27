@@ -8,12 +8,14 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import java.util.*
 
 class RecommendTimerService(
     private val context: Context,
     private val recommendProgramRepository: RecommendProgramRepository,
-    private val recommendConfigs: RecommendConfigs
+    private val recommendConfigs: RecommendConfigs,
+    private val recommendSettingsRepository: RecommendSettingsRepository
 ) {
     fun setNextRemindTimer(
         requestCode: Int = RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR) {
@@ -22,7 +24,9 @@ class RecommendTimerService(
             .let {
                 if (it.isNotEmpty()) {
                     setTimer(
-                        it[0].start * 1000,
+                        recommendSettingsRepository.getReminderTiming()
+                            .calculateNotifyTime(it[0].start)
+                            ?.timeInMillis ?: return@let,
                         createPendingIntentForRemindOnAir(requestCode)
                     )
                 }

@@ -5,7 +5,6 @@
 package tsuyogoro.sugorokuon.recommend
 
 import android.content.Context
-import android.support.v7.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
@@ -33,8 +32,14 @@ class RecommendModule {
     fun provideRecommendRemindTimerService(
         context: Context,
         recommendProgramRepository: RecommendProgramRepository,
-        recommendConfigs: RecommendConfigs
-    ) = RecommendTimerService(context, recommendProgramRepository, recommendConfigs)
+        recommendConfigs: RecommendConfigs,
+        recommendSettingsRepository: RecommendSettingsRepository) =
+        RecommendTimerService(
+            context,
+            recommendProgramRepository,
+            recommendConfigs,
+            recommendSettingsRepository
+        )
 
     @Provides
     fun provideRecommendConfig(context: Context): RecommendConfigs =

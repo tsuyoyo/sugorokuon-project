@@ -155,6 +155,7 @@ class RecommendDebugActivity : AppCompatActivity() {
             recommendProgramRepository.setRecommendPrograms(dummyPrograms)
         }
 
+
         recommendProgramRepository.observeRecommendPrograms()
             .observe(this, Observer {
                 var message: String = ""
