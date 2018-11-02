@@ -7,23 +7,36 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
+import tsuyogoro.sugorokuon.recommend.RecommendSearchService
+import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.TimeTableService
 import tsuyogoro.sugorokuon.station.Station
+import tsuyogoro.sugorokuon.station.StationRepository
 import java.util.*
 
 class ProgramTableViewModel(
         timeTableService: TimeTableService,
+        recommendProgramRepository: RecommendProgramRepository,
+        stationRepository: StationRepository,
         private val settingsService: SettingsService
 ) : ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
             private val timeTableService: TimeTableService,
+            private val recommendProgramRepository: RecommendProgramRepository,
+            private val stationRepository: StationRepository,
             private val settingsService: SettingsService
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ProgramTableViewModel(timeTableService, settingsService) as T
+            return ProgramTableViewModel(
+                timeTableService,
+                recommendProgramRepository,
+                stationRepository,
+                settingsService
+            ) as T
         }
     }
 
@@ -31,6 +44,7 @@ class ProgramTableViewModel(
 
     private val selectedDate: MutableLiveData<Calendar> = MutableLiveData()
     private val timeTablesData: MutableLiveData<List<OneDayTimeTable>> = MutableLiveData()
+    private val recommendPrograms: MutableLiveData<List<RecommendProgramData>> = MutableLiveData()
     private val isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
@@ -61,6 +75,18 @@ class ProgramTableViewModel(
                         .doOnNext { selectedDate.postValue(it) }
                         .subscribe()
         )
+        recommendProgramRepository
+            .observeRecommendPrograms()
+            .observeForever {
+                val recommends = (it?.map { p ->
+                    stationRepository
+                        .getStations()
+                        .find { it.id == p.stationId }
+                        ?.let { station -> RecommendProgramData(p, station) }
+                } ?: emptyList<RecommendProgramData>()).filterNotNull()
+
+                recommendPrograms.postValue(recommends)
+            }
     }
 
     override fun onCleared() {
@@ -73,6 +99,8 @@ class ProgramTableViewModel(
     fun observeTimeTable() : LiveData<List<OneDayTimeTable>> = timeTablesData
 
     fun observeIsLoading(): LiveData<Boolean> = isLoading
+
+    fun observeRecommendPrograms(): LiveData<List<RecommendProgramData>> = recommendPrograms
 
     fun selectDate(date: Calendar) {
         settingsService.setDate(date)

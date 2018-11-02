@@ -39,6 +39,7 @@
 
     <string name="program_list_no_data">番組情報がありません</string>
     <string name="program_list_no_recommend">おすすめ番組はありません</string>
+    <string name="program_list_try_recommend">お気に入りの番組を聞き逃さないように\nキーワードを設定してみましょう</string>
 
     <string name="data_loading">番組表を取得しています</string>
     <string name="data_loading_progress">番組表を取得しています\n(%1$d件のラジオ局のうち、%2$d件取得完了)</string>
