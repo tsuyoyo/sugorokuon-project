@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
 import tsuyogoro.sugorokuon.recommend.RecommendSearchService
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
@@ -73,20 +74,21 @@ class ProgramTableViewModel(
                 settingsService
                         .observeDate()
                         .doOnNext { selectedDate.postValue(it) }
-                        .subscribe()
-        )
-        recommendProgramRepository
-            .observeRecommendPrograms()
-            .observeForever {
-                val recommends = (it?.map { p ->
-                    stationRepository
-                        .getStations()
-                        .find { it.id == p.stationId }
-                        ?.let { station -> RecommendProgramData(p, station) }
-                } ?: emptyList<RecommendProgramData>()).filterNotNull()
+                        .subscribe(),
 
-                recommendPrograms.postValue(recommends)
-            }
+            recommendProgramRepository
+                .observeRecommendPrograms()
+                .subscribe {
+                    val recommends = (it?.map { p ->
+                        stationRepository
+                            .getStations()
+                            .find { it.id == p.stationId }
+                            ?.let { station -> RecommendProgramData(p, station) }
+                    } ?: emptyList<RecommendProgramData>()).filterNotNull()
+
+                    recommendPrograms.postValue(recommends)
+                }
+        )
     }
 
     override fun onCleared() {

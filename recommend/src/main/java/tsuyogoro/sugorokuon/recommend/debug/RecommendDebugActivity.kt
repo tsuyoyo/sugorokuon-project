@@ -7,6 +7,7 @@ import android.text.format.DateFormat
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -157,7 +158,8 @@ class RecommendDebugActivity : AppCompatActivity() {
 
 
         recommendProgramRepository.observeRecommendPrograms()
-            .observe(this, Observer {
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
                 var message: String = ""
                 if (it != null && it.isNotEmpty()) {
                     SugorokuonLog.d("Detect recommend programs change : this instance = ${this}")
@@ -174,7 +176,7 @@ class RecommendDebugActivity : AppCompatActivity() {
                     message,
                     Toast.LENGTH_SHORT
                 ).show()
-            })
+            }
 
         findViewById<View>(R.id.notify_set).setOnClickListener {
             if (recommendProgramRepository.getRecommendPrograms().isEmpty()) {

@@ -26,7 +26,7 @@ class RecommendSearchService(
                 areasStream()
                     .flatMapMaybe { area ->
                         SugorokuonLog.d("- search with ${keyword.keyword} in ${area.code}")
-                        callSearchApi(keyword.keyword, area)
+                        callSearchApi(keyword.keyword, area).retry(3)
                     }
                     .map { it.filterComingPrograms().map { it.toRecommendProgram() } }
                     .flatMap { recommendPrograms -> Flowable.fromIterable(recommendPrograms) }

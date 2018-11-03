@@ -35,13 +35,16 @@ dependencies {
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
 
     implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
     kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
 
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
+    implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
 
-    // TODO : apply from で他のファイルから引っ張ってくるように
+    // TODO : apply
+    // from で他のファイルから引っ張ってくるように
     // Dagger2 : http://google.github.io/dagger/
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"

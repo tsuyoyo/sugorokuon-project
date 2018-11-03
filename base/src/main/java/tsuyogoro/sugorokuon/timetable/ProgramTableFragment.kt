@@ -109,6 +109,7 @@ class ProgramTableFragment : Fragment(),
         viewModel.observeRecommendPrograms()
             .observe(this, Observer {
                 programTableAdapter.setRecommend(it ?: emptyList())
+                programTableAdapter.notifyDataSetChanged()
             })
     }
 

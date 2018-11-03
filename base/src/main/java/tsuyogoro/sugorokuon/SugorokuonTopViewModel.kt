@@ -144,7 +144,6 @@ class SugorokuonTopViewModel(
                             settingsService.observeAreas()
                         )
                         .throttleLast(3, TimeUnit.SECONDS)
-                        .doOnNext { SugorokuonLog.d("Detect recommend settings change") }
                         .doOnNext {
                             recommendTimerService.cancelUpdateRecommendTimer()
                         }
@@ -166,7 +165,6 @@ class SugorokuonTopViewModel(
     override fun onCleared() {
         super.onCleared()
         disposables.dispose()
-        SugorokuonLog.d("SugorokuonTopViewModel#onCleard")
     }
 
     fun observeRequestToShowTutorial(): LiveData<Boolean> = signalShowTutorial

@@ -33,6 +33,7 @@ dependencies {
 
     implementation "android.arch.lifecycle:livedata:${project.roomVersion}"
     implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
     kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
 
     // Dagger2 : http://google.github.io/dagger/

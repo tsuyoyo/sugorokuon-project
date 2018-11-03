@@ -1,6 +1,7 @@
 package tsuyogoro.sugorokuon.recommend
 
-import android.arch.lifecycle.LiveData
+import io.reactivex.Flowable
+import tsuyogoro.sugorokuon.SugorokuonLog
 
 class RecommendProgramRepository {
 
@@ -8,6 +9,7 @@ class RecommendProgramRepository {
 
     internal fun initialize(recommendProgramsDao: RecommendProgramsDao) {
         this.recommendProgramsDao = recommendProgramsDao
+        SugorokuonLog.d("Initialize RecommendProgramRepository : ${this}")
     }
 
     fun setRecommendPrograms(recommendPrograms: List<RecommendProgram>) {
@@ -22,7 +24,7 @@ class RecommendProgramRepository {
         recommendProgramsDao.clearTable()
     }
 
-    fun observeRecommendPrograms(): LiveData<List<RecommendProgram>> =
+    fun observeRecommendPrograms(): Flowable<List<RecommendProgram>> =
         recommendProgramsDao.observePrograms()
 
     fun getRecommendPrograms(): List<RecommendProgram> =

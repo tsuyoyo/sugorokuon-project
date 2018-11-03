@@ -4,8 +4,8 @@
  */
 package tsuyogoro.sugorokuon.recommend
 
-import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
+import io.reactivex.Flowable
 
 @Dao
 internal interface RecommendProgramsDao {
@@ -17,7 +17,7 @@ internal interface RecommendProgramsDao {
     fun insert(recommendPrograms: List<RecommendProgram>)
 
     @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
-    fun observePrograms(): LiveData<List<RecommendProgram>>
+    fun observePrograms(): Flowable<List<RecommendProgram>>
 
     @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
     fun getPrograms(): List<RecommendProgram>
