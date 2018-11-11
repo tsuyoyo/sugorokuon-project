@@ -23,6 +23,7 @@ import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.onboarding.OnboardingActivity
+import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.search.SearchFragment
 import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.songs.OnAirSongsRootFragment
@@ -38,6 +39,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
         val SEARCH = "search"
         val SETTINGS = "settings"
         val AREA_SETTINGS = "area_settings"
+        val KEYWORD_SETTINGS = "recommend_keyword"
     }
 
     private object REQUEST_CODE {
@@ -161,6 +163,13 @@ class SugorokuonTopActivity : AppCompatActivity() {
         } else {
             return super.onKeyDown(keyCode, event)
         }
+    }
+
+    fun gotoRecoomendKeywordSettings() {
+        pushFragment(
+            RecommendKeywordFragment.createInstance(),
+            FragmentTags.KEYWORD_SETTINGS
+        )
     }
 
     private fun setupActionBar() {

@@ -34,6 +34,8 @@ class ProgramTableAdapter(
         fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point)
 
         fun onRecommendProgramClicked(program: RecommendProgram)
+
+        fun onGotoKeywordSettingsClicked()
     }
 
     private var timeTables: List<OneDayTimeTable> = emptyList()
@@ -99,32 +101,34 @@ class ProgramTableAdapter(
                     itemView.context, LinearLayoutManager.HORIZONTAL, false)
             }
             recommendPrograms.addItemDecoration(ProgramListItemDecoration())
+            gotoKeywordSettings.setOnClickListener {
+                listener.onGotoKeywordSettingsClicked()
+            }
         }
 
         fun setRecommendPrograms(
             recommends: List<RecommendProgramData>,
             keywords: List<RecommendKeyword>
         ) {
-            noRecommend.visibility = if (keywords.isNotEmpty() && recommends.isEmpty()) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            noRecommend.visibility =
+                if (keywords.any { it.keyword.isNotEmpty() } && recommends.isEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             recommendPrograms.visibility = if (keywords.isNotEmpty() && recommends.isNotEmpty()) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
-            gotoKeywordSettings.visibility = if (keywords.isEmpty()) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-            recommendTitle.visibility = if (keywords.isEmpty()) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            gotoKeywordSettings.visibility =
+                if (!keywords.any { it.keyword.isNotEmpty() }) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            recommendTitle.visibility = View.VISIBLE
+
             carouselAdapter.setRecommendPrograms(recommends)
             carouselAdapter.notifyDataSetChanged()
         }

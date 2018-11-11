@@ -9,6 +9,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
+import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import javax.inject.Inject
 
 class RecommendBroadCastReceiver : BroadcastReceiver() {
@@ -45,6 +46,9 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
 
     @Inject
     internal lateinit var recommendConfigs: RecommendConfigs
+
+    @Inject
+    internal lateinit var recommendSettingsRepository: RecommendSettingsRepository
 
     private val disposables = CompositeDisposable()
 
@@ -90,11 +94,14 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
 
     private fun updateRecommend() {
         recommendTimerService.cancelUpdateRecommendTimer(REQUEST_CODE_UPDATE_RECOMMEND)
-
         recommendSearchService
             .fetchRecommendPrograms()
             .doOnSuccess {
-                recommendSearchService.updateRecommendProgramsInDatabase(it)
+                val comingPrograms = it.filter { p ->
+                    val notifyTiming = recommendSettingsRepository.getReminderTiming()
+                    (p.start - notifyTiming.inMilliSec()) > System.currentTimeMillis()
+                }
+                recommendSearchService.updateRecommendProgramsInDatabase(comingPrograms)
             }
             .subscribeOn(Schedulers.io())
             .doOnSuccess {

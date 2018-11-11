@@ -21,7 +21,9 @@ import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
+import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
+import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.station.Station
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
@@ -140,6 +142,10 @@ class ProgramTableFragment : Fragment(),
             ProgramInfoFragment.createInstance(program),
             ProgramInfoFragment.FRAGMENT_TAG
         )
+    }
+
+    override fun onGotoKeywordSettingsClicked() {
+        (activity as? SugorokuonTopActivity)?.gotoRecoomendKeywordSettings()
     }
 
     private fun onDateSelectionClicked() {

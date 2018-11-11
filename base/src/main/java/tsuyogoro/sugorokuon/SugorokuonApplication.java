@@ -46,6 +46,9 @@ public class SugorokuonApplication extends Application {
         setupDebugMenu();
         SugorokuonLog.d("SugorokuonApplication : onCreate()");
         StethoWrapper.setup(this);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
         mRefWatcher = LeakCanary.install(this);
 
         appComponent = DaggerSugorokuonAppComponent.builder()

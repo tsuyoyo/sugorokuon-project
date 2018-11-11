@@ -39,6 +39,6 @@ enum class ReminderTiming (@StringRes var optionStrId: Int) {
         BEFORE_30_MIN -> 30 * 60 * 1000
         BEFORE_1_HOUR -> 60 * 60 * 1000
         BEFORE_2_HOUR -> 120 * 60 * 1000
-        BEFORE_5_HOUR -> 180 * 60 * 1000
+        BEFORE_5_HOUR -> 300 * 60 * 1000
     }
 }
