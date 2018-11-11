@@ -111,12 +111,9 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
                 onError = {
                     // Anyway, set timer to invoke update next time.
                     recommendTimerService.setNextRemindTimer(REQUEST_CODE_REMIND_ON_AIR)
-                    SugorokuonLog.e("Failed to update recommend : ${it.message}")
+                    SugorokuonLog.e("Failed to update recommend in RecommendBroadCastReceiver: ${it.message}")
                 }
             )
             .addTo(disposables)
     }
-
-    // TODO : Bootcompleteを取る
-
 }

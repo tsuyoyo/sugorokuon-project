@@ -128,8 +128,7 @@ class RecommendDebugActivity : AppCompatActivity() {
             val secInput = findViewById<EditText>(R.id.notify_interval_sec)
             Integer.parseInt(secInput.text.toString())
         }
-        val registerDummyPrograms: (Int, RecommendProgram) -> Unit = {
-            intervalSec, referenceProgram ->
+        val registerDummyPrograms: (Int, RecommendProgram) -> Unit = { intervalSec, referenceProgram ->
 
             val dummyPrograms = mutableListOf<RecommendProgram>()
             for (i in 1..5) {
@@ -157,26 +156,28 @@ class RecommendDebugActivity : AppCompatActivity() {
         }
 
 
-        recommendProgramRepository.observeRecommendPrograms()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                var message: String = ""
-                if (it != null && it.isNotEmpty()) {
-                    SugorokuonLog.d("Detect recommend programs change : this instance = ${this}")
-                    message = "Set timer for next"
+        disposables.add(
+            recommendProgramRepository.observeRecommendPrograms()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    var message: String = ""
+                    if (it != null && it.isNotEmpty()) {
+                        SugorokuonLog.d("Detect recommend programs change : this instance = ${this}")
+                        message = "Set timer for next"
 
-                    recommendTimerService.setNextRemindTimer(
-                        RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR)
-                } else {
-                    SugorokuonLog.d("Detect recommend programs empty : this instance = ${this}")
-                    message = "Repository has been empty"
+                        recommendTimerService.setNextRemindTimer(
+                            RecommendBroadCastReceiver.REQUEST_CODE_REMIND_ON_AIR)
+                    } else {
+                        SugorokuonLog.d("Detect recommend programs empty : this instance = ${this}")
+                        message = "Repository has been empty"
+                    }
+                    Toast.makeText(
+                        this@RecommendDebugActivity,
+                        message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                Toast.makeText(
-                    this@RecommendDebugActivity,
-                    message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        )
 
         findViewById<View>(R.id.notify_set).setOnClickListener {
             if (recommendProgramRepository.getRecommendPrograms().isEmpty()) {

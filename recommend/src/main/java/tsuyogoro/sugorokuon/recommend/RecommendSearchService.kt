@@ -47,11 +47,8 @@ class RecommendSearchService(
 
     private fun SearchResponse.filterComingPrograms(): List<SearchResponse.Program> =
         programs.filter {
-            val notifyBefore = recommendSettingsRepository.getReminderTiming()
-                .calculateNotifyTime(it.start.time)?.timeInMillis
-                ?: 0
-
-            it.start.time > (Calendar.getInstance().timeInMillis - notifyBefore)
+            val notifyTiming = recommendSettingsRepository.getReminderTiming()
+            it.start.time > (Calendar.getInstance().timeInMillis - notifyTiming.inMilliSec())
         }
 
     private fun callSearchApi(keyword: String, area: Area) = searchApi

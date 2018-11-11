@@ -86,6 +86,7 @@ dependencies {
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${project.rxBindingVersion}"
 
     implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar"){

@@ -32,4 +32,13 @@ enum class ReminderTiming (@StringRes var optionStrId: Int) {
                 }
                 return@let it
             }
+
+    fun inMilliSec(): Long = when (this) {
+        NOT_SET -> 0
+        BEFORE_10_MIN -> 10 * 60 * 1000
+        BEFORE_30_MIN -> 30 * 60 * 1000
+        BEFORE_1_HOUR -> 60 * 60 * 1000
+        BEFORE_2_HOUR -> 120 * 60 * 1000
+        BEFORE_5_HOUR -> 180 * 60 * 1000
+    }
 }

@@ -10,9 +10,9 @@ class SearchResponseRepository(
 ) {
     fun add(searchResponse: SearchResponse) {
         searchResponses.onNext(
-                searchResponses.value.toMutableList().apply {
+                searchResponses.value?.toMutableList().apply {
                     add(searchResponse)
-                }
+                } ?: return
         )
     }
 

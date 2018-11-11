@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.recommend.RecommendSearchService
@@ -31,7 +32,7 @@ class SugorokuonTopViewModel(
 ): ViewModel() {
 
     object Constants {
-        val RETRY_TIME: Long = 3
+        const val RETRY_TIME: Long = 3
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -65,6 +66,7 @@ class SugorokuonTopViewModel(
     private val signalOnErrorFetchTimeTable: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchStation: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchFeeds: MutableLiveData<Boolean> = MutableLiveData()
+    private val signalOnErrorFetchRecommends: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         disposables.addAll(
@@ -158,7 +160,12 @@ class SugorokuonTopViewModel(
                             recommendTimerService.setUpdateRecommendTimer()
                         }
                         .subscribeOn(Schedulers.io())
-                        .subscribe()
+                        .subscribeBy (
+                            onError = { e ->
+                                SugorokuonLog.e("Failed to fetch recommends : ${e.message}")
+                                signalOnErrorFetchRecommends.postValue(true)
+                            }
+                        )
         )
     }
 

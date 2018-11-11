@@ -10,7 +10,7 @@ class FeedRepository(
 ) {
 
     fun set(stationId: String, response: FeedResponse) {
-        val values = responses.value.toMutableMap()
+        val values = responses.value?.toMutableMap() ?: return
         values[stationId] = response
         responses.onNext(values)
     }
