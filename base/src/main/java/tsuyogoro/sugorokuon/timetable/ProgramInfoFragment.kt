@@ -5,6 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.support.transition.ChangeBounds
+import android.support.transition.ChangeImageTransform
+import android.support.transition.ChangeTransform
+import android.support.transition.TransitionSet
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.*
@@ -125,6 +130,12 @@ class ProgramInfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        sharedElementEnterTransition = TransitionSet().apply {
+            addTransition(ChangeBounds())
+            addTransition(ChangeTransform())
+            addTransition(ChangeImageTransform())
+        }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater,

@@ -31,7 +31,7 @@ class ProgramTableAdapter(
     interface ProgramTableAdapterListener {
         fun onStationSiteClicked(station: Station)
 
-        fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point)
+        fun onProgramClicked(program: TimeTableResponse.Program, sharedImageView: ImageView)
 
         fun onRecommendProgramClicked(program: RecommendProgram)
 

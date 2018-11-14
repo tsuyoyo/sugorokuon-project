@@ -71,12 +71,7 @@ class TimeTableAdapter(
                 val tappedPosition = IntArray(2).apply {
                     itemView.getLocationOnScreen(this)
                 }
-                listener.onProgramClicked(program,
-                        Point(
-                                tappedPosition[0] + itemView.width / 2,
-                                tappedPosition[1]
-                        )
-                )
+                listener.onProgramClicked(program, thumbnail)
             }
 
             Glide.with(thumbnail)

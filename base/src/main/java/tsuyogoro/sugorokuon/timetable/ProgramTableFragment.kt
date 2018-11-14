@@ -7,7 +7,9 @@ import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.support.transition.*
 import android.support.v4.app.Fragment
+import android.support.v4.app.SharedElementCallback
 import android.support.v4.widget.ContentLoadingProgressBar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -15,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
@@ -29,6 +32,7 @@ import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 class ProgramTableFragment : Fragment(),
         DateSelectorAdapter.DateSelectorListener,
@@ -123,17 +127,30 @@ class ProgramTableFragment : Fragment(),
         SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.url))
     }
 
-    override fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point) {
+    override fun onProgramClicked(program: TimeTableResponse.Program, sharedImageView: ImageView) {
+        setEnterSharedElementCallback(null)
         (activity as? SugorokuonTopActivity)?.pushFragment(
-                ProgramInfoFragment.createInstance(
-                        program,
-                        ProgramInfoFragment.TransitionParameters(
-                                clickedPosition.x,
-                                clickedPosition.y,
-                                Math.max(view?.width ?: 0, view?.height ?: 0)
-                        )
-                ),
-                ProgramInfoFragment.FRAGMENT_TAG
+            ProgramInfoFragment.createInstance(
+                program, null
+            )
+                .apply {
+                sharedElementEnterTransition = TransitionSet().apply {
+                    addTransition(ChangeBounds())
+                    addTransition(ChangeTransform())
+                    addTransition(ChangeImageTransform())
+                }
+                sharedElementReturnTransition = TransitionSet().apply {
+                    addTransition(ChangeBounds())
+                    addTransition(ChangeTransform())
+                    addTransition(ChangeImageTransform())
+                }
+                enterTransition = TransitionSet().apply {
+                    addTransition(ChangeBounds())
+                    addTransition(ChangeTransform())
+                    addTransition(ChangeImageTransform())                }
+            },
+            ProgramInfoFragment.FRAGMENT_TAG,
+            sharedElement = Pair(sharedImageView, "program_image_transition")
         )
     }
 

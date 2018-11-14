@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.transition.Transition
 import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.KeyEvent
@@ -245,7 +246,9 @@ class SugorokuonTopActivity : AppCompatActivity() {
         }
     }
 
-    fun pushFragment(fragment: Fragment, tag: String, transition: Transition? = null) {
+    fun pushFragment(fragment: Fragment, tag: String,
+                     transition: Transition? = null,
+                     sharedElement: Pair<View, String>? = null) {
         val fm = supportFragmentManager
         val topIndex = fm.backStackEntryCount - 1
         if (topIndex >= 0
@@ -253,10 +256,14 @@ class SugorokuonTopActivity : AppCompatActivity() {
             if (transition != null) {
                 fragment.enterTransition = TransitionSet().addTransition(transition)
             }
-            fm.beginTransaction()
-                    .add(R.id.fragment_area, fragment, tag)
-                    .addToBackStack(tag)
-                    .commit()
+            val transition = fm.beginTransaction()
+                .add(R.id.fragment_area, fragment, tag)
+                .addToBackStack(tag)
+            if (sharedElement != null) {
+//                ViewCompat.setTransitionName(sharedElement.first, sharedElement.second)
+                transition.addSharedElement(sharedElement.first, sharedElement.second)
+            }
+            transition.commit()
         }
     }
 
