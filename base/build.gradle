@@ -60,6 +60,8 @@ android {
 
 dependencies {
     implementation project(":radiko")
+    implementation project(":data")
+    implementation project(":recommend")
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -84,6 +86,7 @@ dependencies {
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${project.rxBindingVersion}"
 
     implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar"){
@@ -104,15 +107,19 @@ dependencies {
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
-    // KvsSchema
-    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
-    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
-
     // Architecture component
     implementation "android.arch.lifecycle:extensions:${project.androidArchitectureComponent}"
     testImplementation "android.arch.core:core-testing:${project.androidArchitectureComponent}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
+
+    // debug menu
+    debugImplementation("com.tomoima.debot:debot:${project.debotVersion}") {
+        exclude group: "com.android.support"
+    }
+    releaseImplementation("com.tomoima.debot:debot-no-op:${project.debotVersion}") {
+        exclude group: "com.android.support"
+    }
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.13.0'

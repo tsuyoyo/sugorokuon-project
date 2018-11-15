@@ -19,9 +19,9 @@ class TimeTableRepository(
 
     fun setTimeTableResponse(area: Area, response: TimeTableResponse) {
         cachedTimeTableResponse.onNext(
-                cachedTimeTableResponse.value.toMutableMap().apply {
+                cachedTimeTableResponse.value?.toMutableMap()?.apply {
                     put(area.id, response)
-                }
+                } ?: return
         )
     }
 

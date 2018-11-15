@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.service
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import tsuyogoro.sugorokuon.repository.AppPrefRepository
+import tsuyogoro.sugorokuon.appstate.AppPrefRepository
 
 class TutorialService(
         private val appPrefRepository: AppPrefRepository

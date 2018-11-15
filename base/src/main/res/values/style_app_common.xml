@@ -11,11 +11,17 @@ http://developer.android.com/guide/topics/ui/actionbar.html
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorPrimaryDark">@color/app_primary</item>
         <item name="colorAccent">@color/app_accent</item>
-        <!--<item name="android:textColorPrimary">@color/primary_text_default_material_dark</item>-->
+
+        <!--Note : without setting prefereceTheme, crash happens in onCreate of PreferenceFragmentCompat -->
+        <item name="preferenceTheme">@style/SugorokuonPreferenceThemeOverlay</item>
     </style>
 
     <style name="SugorokuonToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/app_primary</item>
+    </style>
+
+    <!-- For setting view customization -->
+    <style name="SugorokuonPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay.v14.Material">
     </style>
 
 </resources>

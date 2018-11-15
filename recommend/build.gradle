@@ -1,0 +1,58 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+    defaultConfig {
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":radiko")
+    implementation project(":data")
+
+    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    implementation "com.android.support:design:${project.supportLibVersion}"
+    implementation "com.android.support:preference-v14:${project.supportLibVersion}"
+
+    // KvsSchema
+    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
+    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
+
+    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+
+    implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
+    implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
+    implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
+
+    // TODO : apply
+    // from で他のファイルから引っ張ってくるように
+    // Dagger2 : http://google.github.io/dagger/
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}

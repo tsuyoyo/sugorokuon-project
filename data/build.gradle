@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+        minSdkVersion project.minSdkVersion.toInteger()
+        targetSdkVersion project.targetSdkVersion.toInteger()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+
+    implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
+
+    // KvsSchema
+    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
+    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
+
+    implementation "android.arch.lifecycle:livedata:${project.roomVersion}"
+    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+
+    // Dagger2 : http://google.github.io/dagger/
+    implementation "com.google.dagger:dagger:${project.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    implementation "com.google.code.gson:gson:${project.gsonVersion}"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

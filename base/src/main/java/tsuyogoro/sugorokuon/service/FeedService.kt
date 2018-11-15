@@ -8,8 +8,8 @@ import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.radiko.api.FeedApi
 import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.repository.FeedRepository
+import tsuyogoro.sugorokuon.station.Station
 
 class FeedService(
         private val stationService: StationService,
@@ -43,12 +43,12 @@ class FeedService(
                     .ignoreElement()
                     .onErrorResumeNext { Completable.complete() }
 
-    fun observeFeedAvailableStations(): Flowable<List<StationResponse.Station>> =
+    fun observeFeedAvailableStations(): Flowable<List<Station>> =
             Flowable.combineLatest(
                     stationService.observeStations(),
                     feedRepository.observeFeeds(),
                     BiFunction {
-                        stations: List<StationResponse.Station>,
+                        stations: List<Station>,
                         feeds : Map<String, FeedResponse> ->
                         return@BiFunction feeds.mapNotNull {
                             stations.find { s -> s.id == it.key } // key has stationID

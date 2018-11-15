@@ -5,13 +5,13 @@ import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
 import tsuyogoro.sugorokuon.constant.Area
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
-import tsuyogoro.sugorokuon.repository.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
+import tsuyogoro.sugorokuon.station.Station
 import java.util.*
 
 class SettingsService(
-        private val settingsRepository: SettingsRepository,
-        private val stationService: StationService
+    private val settingsRepository: SettingsRepository,
+    private val stationService: StationService
 ) {
     init {
         val now = Calendar.getInstance()
@@ -50,15 +50,15 @@ class SettingsService(
 
     fun observeAreas(): Flowable<Set<Area>> = settingsRepository.observeAreaSettings()
 
-    fun observeOrderedStations(): Flowable<List<StationResponse.Station>> =
+    fun observeOrderedStations(): Flowable<List<Station>> =
             Flowable.combineLatest(
                     settingsRepository.observeOrderedStationIds(),
                     stationService.observeStations(),
-                    BiFunction { ids: List<String>, stations: List<StationResponse.Station> ->
+                    BiFunction { ids: List<String>, stations: List<Station> ->
                         if (ids.isEmpty()) {
                             return@BiFunction stations
                         } else {
-                            val orderedStations = mutableListOf<StationResponse.Station>()
+                            val orderedStations = mutableListOf<Station>()
                             ids.forEach { id ->
                                 stations.find { it.id == id }
                                         ?.let(orderedStations::add)
@@ -68,7 +68,7 @@ class SettingsService(
                     }
             )
 
-    fun updateStationOrder(orderedStations: List<StationResponse.Station>) {
+    fun updateStationOrder(orderedStations: List<Station>) {
         settingsRepository.setStationOrder(orderedStations.map { it.id })
     }
 

@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdView
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.recommend.RecommendProgram
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -67,6 +68,28 @@ class ProgramInfoFragment : Fragment() {
                         putSerializable(KEY_TRANSITION_PARAMS, transitionParams)
                     }
                 }
+
+        fun createInstance(program: RecommendProgram,
+                           transitionParams: TransitionParameters? = null) =
+            ProgramInfoFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(KEY_PROGRAM, TimeTableResponse.Program().apply {
+                        start = Calendar.getInstance().apply {
+                            timeInMillis = program.start
+                        }
+                        end = Calendar.getInstance().apply {
+                            timeInMillis = program.end
+                        }
+                        title = program.title
+                        url = program.url
+                        description = program.description
+                        info = program.info
+                        perfonality = program.personality
+                        image = program.image
+                    })
+                    putSerializable(KEY_TRANSITION_PARAMS, transitionParams)
+                }
+            }
     }
 
     private val thumbnail: ImageView

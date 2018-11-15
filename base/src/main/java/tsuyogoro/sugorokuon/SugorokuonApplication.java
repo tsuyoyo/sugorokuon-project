@@ -11,14 +11,17 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tomoima.debot.DebotConfigurator;
+import com.tomoima.debot.DebotStrategyBuilder;
 
-import tsuyogoro.sugorokuon.di.RadikoApiModule;
 import tsuyogoro.sugorokuon.base.R;
+import tsuyogoro.sugorokuon.debug.DebugMenuStrategy;
+import tsuyogoro.sugorokuon.debug.RecommendDebugStrategy;
 import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
+import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 import tsuyogoro.sugorokuon.di.RepositoryModule;
 import tsuyogoro.sugorokuon.di.SugorokuonAppComponent;
 import tsuyogoro.sugorokuon.di.SugorokuonAppModule;
-import tsuyogoro.sugorokuon.utils.SugorokuonLog;
 
 public class SugorokuonApplication extends Application {
 
@@ -27,9 +30,6 @@ public class SugorokuonApplication extends Application {
     private RefWatcher mRefWatcher;
 
     private SugorokuonAppComponent appComponent;
-
-    // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
-//    public static FirebaseAnalytics firebaseAnalytics;
 
     synchronized public Tracker getTracker() {
         // https://developers.google.com/analytics/devguides/collection/android/v4/?hl=ja
@@ -43,8 +43,12 @@ public class SugorokuonApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setupDebugMenu();
         SugorokuonLog.d("SugorokuonApplication : onCreate()");
         StethoWrapper.setup(this);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
         mRefWatcher = LeakCanary.install(this);
 
         appComponent = DaggerSugorokuonAppComponent.builder()
@@ -53,8 +57,6 @@ public class SugorokuonApplication extends Application {
                 .repositoryModule(new RepositoryModule())
                 .build();
 
-        // v2.3.1 : アプリが再起動しなくなったり、動きが怪しいので消した
-//        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     public static RefWatcher getRefWatcher(Context context) {
@@ -67,5 +69,18 @@ public class SugorokuonApplication extends Application {
 
     public SugorokuonAppComponent appComponent() {
         return appComponent;
+    }
+
+    private void setupDebugMenu() {
+        // Debot (Debug menu which is displayed by shaking device)
+        DebotConfigurator.configureWithCustomizedMenu(
+                new DebotStrategyBuilder.Builder()
+                        .registerMenu("Debug menu",
+                                new DebugMenuStrategy())
+                        .registerMenu("Recommend debug menu",
+                                new RecommendDebugStrategy())
+                        .build()
+                        .getStrategyList()
+        );
     }
 }

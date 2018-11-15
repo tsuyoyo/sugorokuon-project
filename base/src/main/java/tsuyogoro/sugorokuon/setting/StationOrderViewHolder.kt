@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.station.Station
 
 class StationOrderViewHolder(parent: ViewGroup) : AbstractDraggableItemViewHolder(
         LayoutInflater.from(parent.context)
@@ -23,10 +23,10 @@ class StationOrderViewHolder(parent: ViewGroup) : AbstractDraggableItemViewHolde
     private val logo: ImageView
         get() = itemView.findViewById(R.id.station_logo)
 
-    fun setStation(station: StationResponse.Station,
+    fun setStation(station: Station,
                    @IntRange(from = 1) order: Int) {
         stationName.text = station.name
         orderLabel.text = order.toString()
-        Glide.with(itemView).load(station.logos[0].url).into(logo)
+        Glide.with(itemView).load(station.logo[0].url).into(logo)
     }
 }

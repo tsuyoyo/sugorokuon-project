@@ -19,8 +19,12 @@ import android.widget.TextView
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
+import tsuyogoro.sugorokuon.recommend.RecommendProgram
+import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
+import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
+import tsuyogoro.sugorokuon.setting.SettingsTopFragment
+import tsuyogoro.sugorokuon.station.Station
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +36,9 @@ class ProgramTableFragment : Fragment(),
 
     @Inject
     lateinit var viewModelFactory: ProgramTableViewModel.Factory
+
+    @Inject
+    lateinit var recommendSettingsRepository: RecommendSettingsRepository
 
     private val programTable: RecyclerView
         get() = view!!.findViewById(R.id.program_table)
@@ -78,7 +85,7 @@ class ProgramTableFragment : Fragment(),
                     }
                 })
 
-        programTableAdapter = ProgramTableAdapter(this)
+        programTableAdapter = ProgramTableAdapter(this, recommendSettingsRepository)
 
         programTable.apply {
             adapter = programTableAdapter
@@ -100,14 +107,20 @@ class ProgramTableFragment : Fragment(),
                 .observe(this, Observer {
                     loading.visibility = if (it != null && it) { View.VISIBLE } else { View.GONE }
                 })
+
+        viewModel.observeRecommendPrograms()
+            .observe(this, Observer {
+                programTableAdapter.setRecommend(it ?: emptyList())
+                programTableAdapter.notifyDataSetChanged()
+            })
     }
 
     override fun onDateSelected(date: Calendar) {
         viewModel.selectDate(date)
     }
 
-    override fun onStationSiteClicked(station: StationResponse.Station) {
-        SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.webSite))
+    override fun onStationSiteClicked(station: Station) {
+        SugorokuonUtils.launchChromeTab(activity, Uri.parse(station.url))
     }
 
     override fun onProgramClicked(program: TimeTableResponse.Program, clickedPosition: Point) {
@@ -122,6 +135,17 @@ class ProgramTableFragment : Fragment(),
                 ),
                 ProgramInfoFragment.FRAGMENT_TAG
         )
+    }
+
+    override fun onRecommendProgramClicked(program: RecommendProgram) {
+        (activity as? SugorokuonTopActivity)?.pushFragment(
+            ProgramInfoFragment.createInstance(program),
+            ProgramInfoFragment.FRAGMENT_TAG
+        )
+    }
+
+    override fun onGotoKeywordSettingsClicked() {
+        (activity as? SugorokuonTopActivity)?.gotoRecoomendKeywordSettings()
     }
 
     private fun onDateSelectionClicked() {
@@ -154,7 +178,6 @@ class ProgramTableFragment : Fragment(),
         // TODO : ジョニーのEventRegisterFragmentを参考にして、回転時の対応を
         // TODO : 縦横回転時にdatePickerDialog閉じないとリークするっぽいのでそれも対応
     }
-
 
     class ProgramTableItemDecoration: RecyclerView.ItemDecoration() {
 

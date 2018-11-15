@@ -23,7 +23,7 @@ import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
-import tsuyogoro.sugorokuon.utils.SugorokuonLog
+import tsuyogoro.sugorokuon.SugorokuonLog
 import javax.inject.Inject
 
 class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDialogHost {

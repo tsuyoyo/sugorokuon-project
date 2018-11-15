@@ -40,8 +40,8 @@ subprojects {
 }
 
 ext {
-    installVersionCode = 323
-    installVersionName = "3.2.3"
+    installVersionCode = 324
+    installVersionName = "3.2.4"
 
     instantVersionCode = 311
     instantVersionName = "3.1.1.instant"
@@ -68,10 +68,14 @@ ext {
     rxJava2Version = "2.1.6"
     rxAndroidVersion = "2.0.2"
     rxBindingVersion = "2.1.1"
+    rxKotlin = "2.3.0"
 
     kvsSchemaVersion = "5.0.1"
     androidArchitectureComponent = "1.1.1"
+    roomVersion = "1.1.1"
 
     crashlyticsVersion = "2.7.1"
+
+    debotVersion = "2.0.4"
 }
 

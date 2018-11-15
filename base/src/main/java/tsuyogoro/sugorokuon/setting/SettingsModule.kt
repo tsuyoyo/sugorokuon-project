@@ -3,7 +3,7 @@ package tsuyogoro.sugorokuon.setting
 import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
-import tsuyogoro.sugorokuon.repository.SettingsRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
 import tsuyogoro.sugorokuon.service.SettingsService
 
 @Module
@@ -17,8 +17,8 @@ class SettingsModule {
 
     @Provides
     fun provideSettingsTopViewModelFactory(
-            settingsRepository: SettingsRepository,
-            resources: Resources
+        settingsRepository: SettingsRepository,
+        resources: Resources
     ) = SettingsTopViewModel.Factory(settingsRepository, resources)
 
     @Provides

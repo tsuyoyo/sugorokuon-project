@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="108dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/on_air_time_end"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@android:color/holo_red_light" />
+
+    <TextView
+        android:id="@+id/on_air_time_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/app_accent"
+        android:textSize="@dimen/textsize_standard"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/on_air_date"
+        app:layout_constraintTop_toBottomOf="@+id/on_air_date"
+        tools:text="21:30" />
+
+    <TextView
+        android:id="@+id/on_air_time_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@+id/on_air_time_start"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:text="-"
+        android:textColor="@color/app_accent"
+        android:textSize="@dimen/textsize_large"
+        app:layout_constraintBottom_toBottomOf="@+id/on_air_time_start"
+        app:layout_constraintStart_toEndOf="@+id/on_air_time_start"
+        app:layout_constraintTop_toTopOf="@+id/on_air_time_start" />
+
+    <TextView
+        android:id="@+id/on_air_time_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@+id/on_air_time_separator"
+        android:textColor="@color/app_accent"
+        android:textSize="@dimen/textsize_standard"
+        app:layout_constraintBottom_toBottomOf="@+id/on_air_time_start"
+        app:layout_constraintStart_toEndOf="@+id/on_air_time_separator"
+        tools:text="24:00" />
+
+
+    <ImageView
+        android:id="@+id/station_logo"
+        android:layout_width="48dp"
+        android:layout_height="27dp"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+        app:layout_constraintStart_toStartOf="@+id/on_air_time_start"
+        app:srcCompat="@android:color/holo_blue_dark" />
+
+    <TextView
+        android:id="@+id/on_air_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/app_accent"
+        android:textSize="@dimen/textsize_standard"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="12/23(水)" />
+
+    <android.support.constraint.Group
+        android:id="@+id/tap_area_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="on_air_time_end,on_air_date,on_air_time_start,on_air_time_separator,station_logo,thumbnail,personalities,title" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:singleLine="true"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/station_logo"
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
+
+    <TextView
+        android:id="@+id/personalities"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:singleLine="true"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+</android.support.constraint.ConstraintLayout>

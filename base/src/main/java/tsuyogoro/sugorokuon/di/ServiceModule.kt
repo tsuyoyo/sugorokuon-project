@@ -2,11 +2,15 @@ package tsuyogoro.sugorokuon.di
 
 import dagger.Module
 import dagger.Provides
+import tsuyogoro.sugorokuon.appstate.AppPrefRepository
+import tsuyogoro.sugorokuon.settings.SettingsRepository
+import tsuyogoro.sugorokuon.model.SugorokuonAppState
 import tsuyogoro.sugorokuon.radiko.api.FeedApi
 import tsuyogoro.sugorokuon.radiko.api.StationApi
 import tsuyogoro.sugorokuon.radiko.api.TimeTableApi
-import tsuyogoro.sugorokuon.model.SugorokuonAppState
-import tsuyogoro.sugorokuon.repository.*
+import tsuyogoro.sugorokuon.repository.FeedRepository
+import tsuyogoro.sugorokuon.station.StationRepository
+import tsuyogoro.sugorokuon.repository.TimeTableRepository
 import tsuyogoro.sugorokuon.service.*
 
 @Module

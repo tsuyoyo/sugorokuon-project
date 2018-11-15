@@ -7,9 +7,9 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.service.FeedService
 import tsuyogoro.sugorokuon.service.SettingsService
+import tsuyogoro.sugorokuon.station.Station
 
 class OnAirSongsRootViewModel(
         feedService: FeedService,
@@ -17,7 +17,7 @@ class OnAirSongsRootViewModel(
         private val disposables: CompositeDisposable = CompositeDisposable()
 ) : ViewModel() {
 
-    private val onAirSongsDataList = MutableLiveData<List<StationResponse.Station>>()
+    private val onAirSongsDataList = MutableLiveData<List<Station>>()
 
     private val isLoading = MutableLiveData<Boolean>()
 
@@ -35,9 +35,9 @@ class OnAirSongsRootViewModel(
                 Flowable.combineLatest(
                         feedService.observeFeedAvailableStations(),
                         settingsService.observeOrderedStations(),
-                        BiFunction { availableStations: List<StationResponse.Station>,
-                                     orderedStations: List<StationResponse.Station> ->
-                            val orderedAvailableStations = mutableListOf<StationResponse.Station>()
+                        BiFunction { availableStations: List<Station>,
+                                     orderedStations: List<Station> ->
+                            val orderedAvailableStations = mutableListOf<Station>()
                             orderedStations.forEach { s ->
                                 availableStations.find { it.id == s.id }
                                         ?.let(orderedAvailableStations::add)
@@ -54,7 +54,7 @@ class OnAirSongsRootViewModel(
         super.onCleared()
     }
 
-    fun observeFeedAvailableStations(): LiveData<List<StationResponse.Station>> = onAirSongsDataList
+    fun observeFeedAvailableStations(): LiveData<List<Station>> = onAirSongsDataList
 
     fun observeIsLoading(): LiveData<Boolean> = isLoading
 

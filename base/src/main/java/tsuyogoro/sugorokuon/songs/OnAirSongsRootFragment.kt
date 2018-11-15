@@ -14,6 +14,7 @@ import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.extension.getFocusedFragment
+import tsuyogoro.sugorokuon.station.Station
 import javax.inject.Inject
 
 class OnAirSongsRootFragment : Fragment() {
@@ -91,7 +92,7 @@ class OnAirSongsRootFragment : Fragment() {
         })
     }
 
-    private fun onAvailableStationsFetched() = Observer<List<StationResponse.Station>> {
+    private fun onAvailableStationsFetched() = Observer<List<Station>> {
         if (it != null) {
             fragmentPagerAdapter.apply {
                 setOnAirSongsAvailableStations(it)

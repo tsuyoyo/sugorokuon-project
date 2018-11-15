@@ -18,10 +18,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import com.google.android.gms.ads.MobileAds
+import com.tomoima.debot.Debot
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.onboarding.OnboardingActivity
+import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.search.SearchFragment
 import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.songs.OnAirSongsRootFragment
@@ -37,6 +39,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
         val SEARCH = "search"
         val SETTINGS = "settings"
         val AREA_SETTINGS = "area_settings"
+        val KEYWORD_SETTINGS = "recommend_keyword"
     }
 
     private object REQUEST_CODE {
@@ -73,8 +76,13 @@ class SugorokuonTopActivity : AppCompatActivity() {
 
     private val searchWordPublisher: PublishProcessor<String> = PublishProcessor.create()
 
+    lateinit var debot: Debot
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        debot = Debot.getInstance()
+        debot.allowShake(applicationContext)
 
         SugorokuonApplication.application(this)
                 .appComponent()
@@ -122,12 +130,14 @@ class SugorokuonTopActivity : AppCompatActivity() {
         super.onResume()
         viewModel.observeRequestToShowTutorial()
                 .observe(this, showTutorialSignalObserver)
+        debot.startSensor(this)
     }
 
     override fun onPause() {
         viewModel.observeRequestToShowTutorial()
                 .removeObserver(showTutorialSignalObserver)
         super.onPause()
+        debot.stopSensor()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -147,9 +157,19 @@ class SugorokuonTopActivity : AppCompatActivity() {
             searchForm.text.clear()
             searchWordPublisher.onNext("")
             return true
+        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
+            debot.showDebugMenu(this)
+            return super.onKeyDown(keyCode, event)
         } else {
             return super.onKeyDown(keyCode, event)
         }
+    }
+
+    fun gotoRecoomendKeywordSettings() {
+        pushFragment(
+            RecommendKeywordFragment.createInstance(),
+            FragmentTags.KEYWORD_SETTINGS
+        )
     }
 
     private fun setupActionBar() {

@@ -45,5 +45,4 @@ public class SearchResponse {
         @SerializedName("info")
         public String info;
     }
-
 }

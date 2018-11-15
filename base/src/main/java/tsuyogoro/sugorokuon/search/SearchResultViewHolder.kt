@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.SearchResponse
 import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.station.Station
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -75,8 +76,8 @@ class SearchResultViewHolder(
         personalities.text = program.personality
     }
 
-    private fun setStationArea(station: StationResponse.Station) {
+    private fun setStationArea(station: Station) {
         stationName.text = station.name
-        Glide.with(stationLogo).load(station.logos[0].url).into(stationLogo)
+        Glide.with(stationLogo).load(station.logo[0].url).into(stationLogo)
     }
 }

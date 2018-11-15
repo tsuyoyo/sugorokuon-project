@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.SugorokuonApplication
+import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.Area
 import javax.inject.Inject
 
