@@ -5,24 +5,35 @@ buildscript {
     }
 }
 
-apply plugin: 'com.android.feature'
+apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
+//apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    baseFeature true
+//    baseFeature true
+    // signingConfigs
+    apply from: 'signature/debug.gradle', to: android
+    apply from: 'signature/release.gradle', to: android
 
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
     defaultConfig {
+        applicationId "tsuyogoro.sugorokuon"
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
+        versionCode project.installVersionCode
+        versionName project.installVersionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.releaseSignature
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -35,6 +46,8 @@ android {
         }
         debug {
             minifyEnabled false
+            applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // ここに書いてあるTest用のadUnitId
@@ -125,3 +138,5 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

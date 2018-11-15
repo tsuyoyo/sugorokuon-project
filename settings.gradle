@@ -1,1 +1,1 @@
-include ':base', ':installed', ':instant', ':radiko', ':recommend', ':data'
+include ':base', ':radiko', ':recommend', ':data'
