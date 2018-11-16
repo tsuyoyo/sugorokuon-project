@@ -40,8 +40,8 @@ subprojects {
 }
 
 ext {
-    installVersionCode = 324
-    installVersionName = "3.2.4"
+    installVersionCode = 325
+    installVersionName = "3.2.5"
 
     instantVersionCode = 311
     instantVersionName = "3.1.1.instant"
