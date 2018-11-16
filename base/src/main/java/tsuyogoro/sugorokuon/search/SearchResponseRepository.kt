@@ -9,11 +9,9 @@ class SearchResponseRepository(
                 BehaviorProcessor.createDefault(emptyList())
 ) {
     fun add(searchResponse: SearchResponse) {
-        searchResponses.onNext(
-                searchResponses.value?.toMutableList().apply {
-                    add(searchResponse)
-                } ?: return
-        )
+        val list = searchResponses.value?.toMutableList() ?: return
+        list.add(searchResponse)
+        searchResponses.onNext(list)
     }
 
     fun clear() {
