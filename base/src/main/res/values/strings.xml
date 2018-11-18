@@ -202,5 +202,6 @@
     <string name="ad_fragment_label">広告ページ</string>
 
     <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="title_dynamic_feature">Module Title</string>
 
 </resources>

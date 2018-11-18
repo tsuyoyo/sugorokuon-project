@@ -14,7 +14,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-//    baseFeature true
     // signingConfigs
     apply from: 'signature/debug.gradle', to: android
     apply from: 'signature/release.gradle', to: android
@@ -30,11 +29,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+
+    dynamicFeatures = [":recommend"]
+
     buildTypes {
         release {
             minifyEnabled true
             signingConfig signingConfigs.releaseSignature
-            shrinkResources true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
@@ -69,12 +71,25 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildToolsVersion project.buildToolsVersion
+    bundle {
+        language {
+            // Specifies that the app bundle should not support
+            // configuration APKs for language resources. These
+            // resources are instead packaged with each base and
+            // dynamic feature APK.
+            enableSplit = false
+        }
+        density {
+            // This property is set to true by default.
+            enableSplit = true
+        }
+    }
 }
 
 dependencies {
     implementation project(":radiko")
     implementation project(":data")
-    implementation project(":recommend")
+//    implementation project(":recommend")
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -87,6 +102,7 @@ dependencies {
     implementation "com.android.support:cardview-v7:${project.supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${project.supportLibVersion}"
     implementation "com.android.support.constraint:constraint-layout:${project.constraintLayoutVersion}"
+    implementation "com.android.support:preference-v14:${project.supportLibVersion}"
     implementation "com.google.android.gms:play-services-analytics:${project.playServiceVersion}"
     implementation "com.google.android.gms:play-services-ads:15.0.1"
     implementation "com.google.firebase:firebase-core:${project.playServiceVersion}"
@@ -102,8 +118,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${project.rxBindingVersion}"
 
-    implementation ("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar"){
-        transitive=true
+    implementation("com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${project.advancedRecyclerViewVersion}@aar") {
+        transitive = true
     }
 
     // Dagger2 : http://google.github.io/dagger/
