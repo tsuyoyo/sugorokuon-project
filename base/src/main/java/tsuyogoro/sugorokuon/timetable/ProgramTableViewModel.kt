@@ -7,10 +7,7 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.recommend.RecommendProgramRepository
-import tsuyogoro.sugorokuon.recommend.RecommendSearchService
-import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.service.SettingsService
 import tsuyogoro.sugorokuon.service.TimeTableService
 import tsuyogoro.sugorokuon.station.Station

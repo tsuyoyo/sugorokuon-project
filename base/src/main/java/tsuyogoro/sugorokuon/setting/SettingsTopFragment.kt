@@ -20,9 +20,7 @@ import tsuyogoro.sugorokuon.SugorokuonApplication
 import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.BuildConfig
 import tsuyogoro.sugorokuon.base.R
-import tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity
-import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
-import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsFragment
+import tsuyogoro.sugorokuon.dynamicfeature.RecommendModuleDependencyResolver
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import javax.inject.Inject
 
@@ -38,6 +36,8 @@ class SettingsTopFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: SettingsTopViewModel.Factory
+
+    private val recommendModuleDependencyResolver = RecommendModuleDependencyResolver()
 
     private val selectedAreas: TextView
         get() = view!!.findViewById(R.id.selected_areas)
@@ -127,20 +127,36 @@ class SettingsTopFragment : Fragment() {
             )
         }
 
-        keywordSettings.setOnClickListener {
-            (activity as? SugorokuonTopActivity)?.switchFragment(
-                RecommendKeywordFragment.createInstance(),
-                SubFragmentTags.KEYWORD_SETTINGS,
-                Slide(Gravity.START)
-            )
+        // Switch visibility according to module installation state.
+        val recommendKeywordFragment = recommendModuleDependencyResolver
+            .getRecommendKeywordSettingsFragent()
+        if (recommendKeywordFragment != null) {
+            keywordSettings.visibility = View.VISIBLE
+            keywordSettings.setOnClickListener {
+                (activity as? SugorokuonTopActivity)?.switchFragment(
+                    recommendKeywordFragment,
+                    SubFragmentTags.KEYWORD_SETTINGS,
+                    Slide(Gravity.START)
+                )
+            }
+        } else {
+            keywordSettings.visibility = View.GONE
         }
 
-        reminderSettings.setOnClickListener {
-            (activity as? SugorokuonTopActivity)?.switchFragment(
-                ReminderSettingsFragment.createInstance(),
-                SubFragmentTags.REMINDER_SETTINGS,
-                Slide(Gravity.START)
-            )
+        // Switch visibility according to module installation state.
+        val reminderSettingFragment = recommendModuleDependencyResolver
+            .getRecommendReminderSettingsFragent()
+        if (reminderSettingFragment != null) {
+            reminderSettings.visibility = View.VISIBLE
+            reminderSettings.setOnClickListener {
+                (activity as? SugorokuonTopActivity)?.switchFragment(
+                    reminderSettingFragment,
+                    SubFragmentTags.REMINDER_SETTINGS,
+                    Slide(Gravity.START)
+                )
+            }
+        } else {
+            reminderSettings.visibility = View.GONE
         }
 
         context?.let {
@@ -172,9 +188,16 @@ class SettingsTopFragment : Fragment() {
     }
 
     private fun setupDebugMenu() {
-        debugRecommendFeature.visibility = View.VISIBLE
-        debugRecommendFeature.setOnClickListener {
-            startActivity(Intent(activity, RecommendDebugActivity::class.java))
+        val recommendDebugIntent = context?.let {
+            recommendModuleDependencyResolver.getRecommendDebugActivityIntent(it)
+        }
+        if (recommendDebugIntent != null) {
+            debugRecommendFeature.visibility = View.VISIBLE
+            debugRecommendFeature.setOnClickListener {
+                startActivity(recommendDebugIntent)
+            }
+        } else {
+            debugRecommendFeature.visibility = View.GONE
         }
     }
 

@@ -1,4 +1,4 @@
-package tsuyogoro.sugorokuon.timetable
+package tsuyogoro.sugorokuon.recommend.view
 
 import android.support.constraint.Group
 import android.support.v7.widget.RecyclerView
@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.timetable.ProgramTableAdapter
+import tsuyogoro.sugorokuon.timetable.RecommendProgramData
 import java.text.SimpleDateFormat
 import java.util.*
 

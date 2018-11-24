@@ -22,8 +22,8 @@ import com.tomoima.debot.Debot
 import io.reactivex.Flowable
 import io.reactivex.processors.PublishProcessor
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.dynamicfeature.RecommendModuleDependencyResolver
 import tsuyogoro.sugorokuon.onboarding.OnboardingActivity
-import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
 import tsuyogoro.sugorokuon.search.SearchFragment
 import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.songs.OnAirSongsRootFragment
@@ -77,6 +77,8 @@ class SugorokuonTopActivity : AppCompatActivity() {
     private val searchWordPublisher: PublishProcessor<String> = PublishProcessor.create()
 
     lateinit var debot: Debot
+
+    private val recommendModuleDependencyResolver = RecommendModuleDependencyResolver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -166,10 +168,9 @@ class SugorokuonTopActivity : AppCompatActivity() {
     }
 
     fun gotoRecoomendKeywordSettings() {
-        pushFragment(
-            RecommendKeywordFragment.createInstance(),
-            FragmentTags.KEYWORD_SETTINGS
-        )
+        recommendModuleDependencyResolver.getRecommendKeywordSettingsFragent()?.let {
+            pushFragment(it, FragmentTags.KEYWORD_SETTINGS)
+        }
     }
 
     private fun setupActionBar() {

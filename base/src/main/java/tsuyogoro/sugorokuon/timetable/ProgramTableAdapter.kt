@@ -7,20 +7,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
-import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeyword
-import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.station.Station
 
 class ProgramTableAdapter(
-    private val listener: ProgramTableAdapterListener,
-    private val recommendSettingsRepository: RecommendSettingsRepository
+    private val listener: ProgramTableAdapterListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -53,10 +49,12 @@ class ProgramTableAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is TimeTableViewHolder) {
             holder.setStation(timeTables[position - 1])
-        } else if (holder is RecommendViewHolder) {
-            holder.setRecommendPrograms(
-                recommends, recommendSettingsRepository.getRecommentKeywords())
         }
+        // TODO : 別に無くてもいいかも(viewの中で全て閉じる)
+//        else if (holder is RecommendViewHolder) {
+//            holder.setRecommendPrograms(
+//                recommends, recommendSettingsRepository.getRecommentKeywords())
+//        }
     }
 
     override fun getItemViewType(position: Int): Int =
@@ -66,73 +64,17 @@ class ProgramTableAdapter(
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        when (viewType) {
-            TYPE_RECOMMEND -> RecommendViewHolder(parent)
-            else -> TimeTableViewHolder(parent, listener)
-        }
+        TimeTableViewHolder(parent, listener)
+
+//        when (viewType) {
+//            TYPE_RECOMMEND -> {
+//             // RecommendViewHolder(parent)
+//             // recommendモジュールがあるかどうかで表示するviewを変える
+//        }
+//            else -> TimeTableViewHolder(parent, listener)
+//        }
 
     override fun getItemCount(): Int = timeTables.size + 1
-
-    inner class RecommendViewHolder(
-        parent: ViewGroup
-    ) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recommend_carousel, parent, false)
-    ) {
-        private val recommendTitle: TextView
-            get() = itemView.findViewById(R.id.recommend_title)
-
-        private val noRecommend: TextView
-            get() = itemView.findViewById(R.id.no_recommend)
-
-        private val recommendPrograms: RecyclerView
-            get() = itemView.findViewById(R.id.recommend_programs)
-
-        private val gotoKeywordSettings: Button
-            get() = itemView.findViewById(R.id.goto_keyword_settings_button)
-
-        private val carouselAdapter: RecommendProgramsCarouselAdapter =
-            RecommendProgramsCarouselAdapter(listener)
-
-        init {
-            recommendPrograms.apply {
-                adapter = carouselAdapter
-                layoutManager = LinearLayoutManager(
-                    itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            }
-            recommendPrograms.addItemDecoration(ProgramListItemDecoration())
-            gotoKeywordSettings.setOnClickListener {
-                listener.onGotoKeywordSettingsClicked()
-            }
-        }
-
-        fun setRecommendPrograms(
-            recommends: List<RecommendProgramData>,
-            keywords: List<RecommendKeyword>
-        ) {
-            noRecommend.visibility =
-                if (keywords.any { it.keyword.isNotEmpty() } && recommends.isEmpty()) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            recommendPrograms.visibility = if (keywords.isNotEmpty() && recommends.isNotEmpty()) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-            gotoKeywordSettings.visibility =
-                if (!keywords.any { it.keyword.isNotEmpty() }) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            recommendTitle.visibility = View.VISIBLE
-
-            carouselAdapter.setRecommendPrograms(recommends)
-            carouselAdapter.notifyDataSetChanged()
-        }
-    }
 
     class TimeTableViewHolder(
         parent: ViewGroup?,

@@ -21,9 +21,6 @@ import tsuyogoro.sugorokuon.SugorokuonTopActivity
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
-import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordFragment
-import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
-import tsuyogoro.sugorokuon.setting.SettingsTopFragment
 import tsuyogoro.sugorokuon.station.Station
 import tsuyogoro.sugorokuon.utils.SugorokuonUtils
 import java.text.SimpleDateFormat
@@ -36,9 +33,6 @@ class ProgramTableFragment : Fragment(),
 
     @Inject
     lateinit var viewModelFactory: ProgramTableViewModel.Factory
-
-    @Inject
-    lateinit var recommendSettingsRepository: RecommendSettingsRepository
 
     private val programTable: RecyclerView
         get() = view!!.findViewById(R.id.program_table)
@@ -85,7 +79,7 @@ class ProgramTableFragment : Fragment(),
                     }
                 })
 
-        programTableAdapter = ProgramTableAdapter(this, recommendSettingsRepository)
+        programTableAdapter = ProgramTableAdapter(this)
 
         programTable.apply {
             adapter = programTableAdapter

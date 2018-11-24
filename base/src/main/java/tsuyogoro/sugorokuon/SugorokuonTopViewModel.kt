@@ -7,16 +7,10 @@ import android.arch.lifecycle.ViewModelProvider
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.constant.Area
-import tsuyogoro.sugorokuon.recommend.RecommendSearchService
-import tsuyogoro.sugorokuon.recommend.RecommendTimerService
-import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.rx.SchedulerProvider
 import tsuyogoro.sugorokuon.service.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class SugorokuonTopViewModel(
         private val settingsService: SettingsService,
@@ -24,9 +18,6 @@ class SugorokuonTopViewModel(
         private val stationService: StationService,
         private val feedService: FeedService,
         private val tutorialService: TutorialService,
-        private val recommendSearchService: RecommendSearchService,
-        private val recommendTimerService: RecommendTimerService,
-        private val recommendSettingsRepository: RecommendSettingsRepository,
         private val schedulerProvider: SchedulerProvider,
         private val disposables: CompositeDisposable = CompositeDisposable()
 ): ViewModel() {
@@ -42,9 +33,6 @@ class SugorokuonTopViewModel(
             private val stationService: StationService,
             private val feedService: FeedService,
             private val tutorialService: TutorialService,
-            private val recommendSearchService: RecommendSearchService,
-            private val recommendTimerService: RecommendTimerService,
-            private val recommendSettingsRepository: RecommendSettingsRepository,
             private val schedulerProvider: SchedulerProvider
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -54,9 +42,6 @@ class SugorokuonTopViewModel(
                     stationService,
                     feedService,
                     tutorialService,
-                    recommendSearchService,
-                    recommendTimerService,
-                    recommendSettingsRepository,
                     schedulerProvider
             ) as T
         }
@@ -66,7 +51,6 @@ class SugorokuonTopViewModel(
     private val signalOnErrorFetchTimeTable: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchStation: MutableLiveData<Boolean> = MutableLiveData()
     private val signalOnErrorFetchFeeds: MutableLiveData<Boolean> = MutableLiveData()
-    private val signalOnErrorFetchRecommends: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         disposables.addAll(
@@ -137,35 +121,37 @@ class SugorokuonTopViewModel(
                                     SugorokuonLog.e("Failed to fetch feeds : ${e.message}")
                                     signalOnErrorFetchFeeds.postValue(true)
                                 }
-                        ),
+                        )
 
-                Flowable
-                        .merge(
-                            recommendSettingsRepository.observeRecommendKeywords().doOnNext { SugorokuonLog.d("SugorokuonTopViewModel detected change") },
-                            recommendSettingsRepository.observeReminderTiming(),
-                            settingsService.observeAreas()
-                        )
-                        .throttleLast(3, TimeUnit.SECONDS)
-                        .doOnNext {
-                            recommendTimerService.cancelUpdateRecommendTimer()
-                        }
-                        .flatMapSingle {
-                            recommendSearchService
-                                .fetchRecommendPrograms()
-                                .doOnSuccess(
-                                    recommendSearchService::updateRecommendProgramsInDatabase
-                                )
-                        }
-                        .doOnNext {
-                            recommendTimerService.setUpdateRecommendTimer()
-                        }
-                        .subscribeOn(Schedulers.io())
-                        .subscribeBy (
-                            onError = { e ->
-                                SugorokuonLog.e("Failed to fetch recommends : ${e.message}")
-                                signalOnErrorFetchRecommends.postValue(true)
-                            }
-                        )
+            // TODO :
+            //
+//                Flowable
+//                        .merge(
+//                            recommendSettingsRepository.observeRecommendKeywords().doOnNext { SugorokuonLog.d("SugorokuonTopViewModel detected change") },
+//                            recommendSettingsRepository.observeReminderTiming(),
+//                            settingsService.observeAreas()
+//                        )
+//                        .throttleLast(3, TimeUnit.SECONDS)
+//                        .doOnNext {
+//                            recommendTimerService.cancelUpdateRecommendTimer()
+//                        }
+//                        .flatMapSingle {
+//                            recommendSearchService
+//                                .fetchRecommendPrograms()
+//                                .doOnSuccess(
+//                                    recommendSearchService::updateRecommendProgramsInDatabase
+//                                )
+//                        }
+//                        .doOnNext {
+//                            recommendTimerService.setUpdateRecommendTimer()
+//                        }
+//                        .subscribeOn(Schedulers.io())
+//                        .subscribeBy (
+//                            onError = { e ->
+//                                SugorokuonLog.e("Failed to fetch recommends : ${e.message}")
+//                                signalOnErrorFetchRecommends.postValue(true)
+//                            }
+//                        )
         )
     }
 
