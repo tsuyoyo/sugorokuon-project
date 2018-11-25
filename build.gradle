@@ -40,8 +40,8 @@ subprojects {
 }
 
 ext {
-    installVersionCode = 325
-    installVersionName = "3.2.5"
+    installVersionCode = 330
+    installVersionName = "3.3.0"
 
     instantVersionCode = 311
     instantVersionName = "3.1.1.instant"
@@ -54,6 +54,7 @@ ext {
 
     constraintLayoutVersion = "1.1.3"
     playServiceVersion = "16.0.3"
+    playCoreVersion = "1.3.6"
     retrofitVersion = "2.3.0"
     daggerVersion = "2.9"
     leakcanaryVersion = "1.6.1"

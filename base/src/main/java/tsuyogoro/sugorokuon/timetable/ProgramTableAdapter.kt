@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.dynamicfeature.RecommendModuleDependencyResolver
 import tsuyogoro.sugorokuon.radiko.api.response.TimeTableResponse
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
 import tsuyogoro.sugorokuon.station.Station
@@ -38,6 +40,8 @@ class ProgramTableAdapter(
 
     private var recommends: List<RecommendProgramData> = emptyList()
 
+    private val recommendModuleDependencyResolver = RecommendModuleDependencyResolver()
+
     fun setTimeTables(timeTables: List<OneDayTimeTable>) {
         this.timeTables = timeTables
     }
@@ -64,15 +68,22 @@ class ProgramTableAdapter(
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        TimeTableViewHolder(parent, listener)
-
-//        when (viewType) {
-//            TYPE_RECOMMEND -> {
-//             // RecommendViewHolder(parent)
-//             // recommendモジュールがあるかどうかで表示するviewを変える
-//        }
-//            else -> TimeTableViewHolder(parent, listener)
-//        }
+//        TimeTableViewHolder(parent, listener)
+        when (viewType) {
+            TYPE_RECOMMEND -> {
+                SplitInstallManagerFactory.create(parent.context).let {
+                    val isRecommendInstalled = it.installedModules.contains("recommend")
+                    if (isRecommendInstalled) {
+                        DummyViewHolderAlreadyInstalled(parent)
+                    } else {
+                        DummyViewHolderNotInstalled(parent)
+                    }
+                }
+             // RecommendViewHolder(parent)
+             // recommendモジュールがあるかどうかで表示するviewを変える
+        }
+            else -> TimeTableViewHolder(parent, listener)
+        }
 
     override fun getItemCount(): Int = timeTables.size + 1
 
@@ -156,5 +167,19 @@ class ProgramTableAdapter(
                 outRect?.right = (density * 4).toInt()
             }
         }
+    }
+
+    class DummyViewHolderNotInstalled(parent: ViewGroup) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_install_recommend, parent, false)
+    ) {
+
+    }
+
+    class DummyViewHolderAlreadyInstalled(parent: ViewGroup) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_install_recommend_dummy, parent, false)
+    ) {
+
     }
 }
