@@ -9,10 +9,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.preference.EditTextPreference
+import android.support.v7.preference.PreferenceCategory
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceManager
 import android.view.View
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 
 class RecommendKeywordFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -26,6 +27,22 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.keyword_settings, rootKey)
+
+//        context?.let {
+//            preferenceScreen.addPreference(PreferenceCategory(it)
+//                .apply { title = getString(R.string.title_recommend_keyword) })
+//
+//            RecommendKeywordPreferenceKeys.getAll(it)
+//                .forEach { prefKey ->
+//                    preferenceScreen.addPreference(
+//                        EditTextPreference(it).apply {
+//                            key = prefKey
+//                            title = ""
+//                        }
+//                    )
+//                }
+//        }
+
         setupViews()
         PreferenceManager.getDefaultSharedPreferences(context)
             .registerOnSharedPreferenceChangeListener(this)

@@ -6,7 +6,7 @@ import com.rejasupotaro.android.kvs.serializers.PrefsSerializer
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 
 @Table(name = "searchMethod")
-class SearchMethodPrefsSchema {
+internal class SearchMethodPrefsSchema {
 
     @Key(name = "searchSongWay", serializer = SearchSongWaySerializer::class)
     var searchSongWay: String = ""

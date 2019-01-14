@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.recommend.reminder
 
 import android.support.annotation.StringRes
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 import java.util.*
 
 enum class ReminderTiming (@StringRes var optionStrId: Int) {

@@ -10,7 +10,9 @@ import dagger.Provides
 import tsuyogoro.sugorokuon.radiko.api.SearchApi
 import tsuyogoro.sugorokuon.recommend.debug.RecommendConfigPrefs
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
+import tsuyogoro.sugorokuon.recommend.view.RecommendViewHolderViewModel
 import tsuyogoro.sugorokuon.settings.SettingsRepository
+import tsuyogoro.sugorokuon.station.StationRepository
 
 @Module
 class RecommendModule {
@@ -44,4 +46,15 @@ class RecommendModule {
     @Provides
     fun provideRecommendConfig(context: Context): RecommendConfigs =
         RecommendConfigs(RecommendConfigPrefs.get(context))
+
+    @Provides
+    fun provideRecommendViewHolderViewModel(
+        recommendProgramRepository: RecommendProgramRepository,
+        stationRepository: StationRepository,
+        recommendSettingsRepository: RecommendSettingsRepository
+    ): RecommendViewHolderViewModel = RecommendViewHolderViewModel(
+        recommendProgramRepository,
+        stationRepository,
+        recommendSettingsRepository
+    )
 }

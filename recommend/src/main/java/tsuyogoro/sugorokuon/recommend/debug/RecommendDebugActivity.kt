@@ -1,6 +1,5 @@
 package tsuyogoro.sugorokuon.recommend.debug
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
@@ -13,11 +12,12 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import tsuyogoro.sugorokuon.SugorokuonLog
-import tsuyogoro.sugorokuon.recommend.*
 import tsuyogoro.sugorokuon.recommend.reminder.RecommendRemindNotifier
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import java.util.*
 import javax.inject.Inject
+import tsuyogoro.sugorokuon.base.R
+import tsuyogoro.sugorokuon.recommend.*
 
 class RecommendDebugActivity : AppCompatActivity() {
 

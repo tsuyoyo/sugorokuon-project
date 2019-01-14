@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main画面 -->
+    <string name="title_recommends">今週のおすすめ</string>
+    <string name="launching_app">起動中です&#8230;</string>
+
+    <string name="date_tab_switcher_monday">月</string>
+    <string name="date_tab_switcher_tuesday">火</string>
+    <string name="date_tab_switcher_wednesday">水</string>
+    <string name="date_tab_switcher_thursday">木</string>
+    <string name="date_tab_switcher_friday">金</string>
+    <string name="date_tab_switcher_saturday">土</string>
+    <string name="date_tab_switcher_sunday">日</string>
+
+    <string name="dropdown_list_recommend">今週のおすすめ</string>
+    <string name="dropdown_list_app_c_advertisement">おすすめアプリ(AD)</string>
+
+    <string name="program_viewer_switch_homepage">番組サイト</string>
+    <string name="program_viewer_switch_info">番組紹介</string>
+    <string name="program_viewer_switch_loading">onAir曲情報をdownload中&#8230;</string>
+    <string name="program_viewer_onair_song_reload">今すぐ更新</string>
+    <string name="program_viewer_onair_song_search_youtube">Youtubeを検索</string>
+    <string name="program_viewer_onair_song_search_web">Googleを検索</string>
+    <string name="program_viewer_onair_song_search_info">%sの最新のonAir曲（tapで検索）</string>
+    <string name="program_viewer_onair_song_search_no_info">%sは直近のonAir曲情報を提供していないようです</string>
+    <string name="program_viewer_onair_song_search_no_info_for_recommend">この機能は各ラジオ局の番組表を開いている時に有効です。</string>
+
+    <string name="program_viewer_onair_song_search_error">取得中にエラーが発生しました。更新ボタンを押してリトライください。</string>
+
+    <string name="option_update_now">最新の番組表を取得</string>
+    <string name="option_settings">設定</string>
+    <string name="option_search_program">番組を検索</string>
+    <string name="option_launch_radio_app">聴取アプリを起動</string>
+    <string name="option_check_update_date">番組更新日時の確認</string>
+    <string name="option_about_app">このアプリについて</string>
+    <string name="option_rate_app">このアプリを評価</string>
+    <string name="option_appc_advertisement">おすすめアプリ情報</string>
+
+    <string name="program_list_no_data">番組情報がありません</string>
+    <string name="program_list_no_recommend">おすすめ番組はありません</string>
+    <string name="program_list_try_recommend">お気に入りの番組を聞き逃さないように\nキーワードを設定してみましょう</string>
+
+    <string name="data_loading">番組表を取得しています</string>
+    <string name="data_loading_progress">番組表を取得しています\n(%1$d件のラジオ局のうち、%2$d件取得完了)</string>
+
+    <string name="date_loading_error_title">エラー</string>
+    <string name="date_loading_error_msg">番組表取得に失敗しました。</string>
+
+    <string name="no_update_title">info</string>
+    <string name="no_update_message">最新の番組表を取得済みです\n\n (最終更新 %s)</string>
+
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="ok">OK</string>
+
+    <string name="ask_if_to_update_data_title">番組データの取得</string>
+    <string name="ask_if_to_update_data_message">最新の番組表の取得を行います</string>
+    <string name="ask_if_to_update_weekly_message">一週間分全て更新</string>
+    <string name="ask_if_to_update_today_message">今日の分だけ更新</string>
+
+    <string name="notify_load_continue_background">番組データ取得は、アプリを閉じてもバックグラウンドで行われます</string>
+    <string name="notify_settings_changed_title">設定が変更されました</string>
+    <string name="notify_settings_changed_message">
+        	エリア情報/おまかせキーワードが変更されました。
+        	番組表を更新する必要があります。時間がかかる場合がありますが、続行しますか？</string>
+    <string name="update_status_dialog_title">番組更新日時</string>
+    <string name="update_status_dialog_last_update">最終番組更新\nMM月 dd日 (EEE) HH:mm</string>
+    <string name="update_status_dialog_next_update">次の自動番組更新\nMM月 dd日 (EEE) HH:mm</string>
+    <string name="program_has_no_website">この番組にはホームページがありません。</string>
+    <string name="no_area_dialog_title">エリアを設定してください</string>
+    <string name="no_area_dialog_message">設定の「エリア設定」より、聴取エリアを設定してください。</string>
+
+    <string name="station_list_dialog_title">ラジオ局一覧</string>
+    <string name="station_list_dialog_description">長押しで局のホームページが開きます</string>
+
+    <!-- Permission系 -->
+    <string name="permission_not_enough_to_launch_app">アプリを使うのに必要なpermissionが許可されませんでした</string>
+    <string name="permission_mandatory_never_asked_again">
+        アプリを使うのに必要なpermissionが完全に拒否されています。設定からpermissionの設定を変更して下さい。
+    </string>
+
+    <!-- OnAir曲リスト画面 -->
+    <string name="weekly_onair_song_title">今週のON AIR曲</string>
+    <string name="onair_song_no_data_for_the_day">この日のデータがありません</string>
+    <string name="menu_title_fetch_latest">最新の情報を取得</string>
+    <string name="feteching_onair_songs">最新の曲情報を取得中</string>
+
+    <!-- 通知系 -->
+    <string name="progress_notification_title">ラジコンシェルジュ 番組表更新</string>
+    <string name="progress_notification_text">ラジオ局一覧を取得中</string>
+    <string name="progress_notification_text_progress">%1$dつのラジオ局のうち%2$d局取得済み</string>
+    <string name="progress_notification_ticker">ラジコンシェルジュ - 番組表更新</string>
+    <string name="progress_notification_ticker_complete">ラジコンシェルジュの番組表更新完了</string>
+    <string name="progress_notification_text_complete">ラジコンシェルジュの番組表更新完了</string>
+    <string name="progress_notification_ticker_failed">ラジコンシェルジュが番組表更新に失敗しました</string>
+    <string name="progress_notification_text_failed">ラジコンシェルジュが番組表更新に失敗しました</string>
+
+    <string name="recommend_reminder_more">他 %d件</string>
+
+    <!-- 日付・時刻系 -->
+    <string name="date_yymmdd">yyyy年 MM月 dd日</string>
+    <string name="date_mmddeee">MM月 dd日 (EEE)</string>
+    <string name="date_mmddeeehhmm">MM月 dd日 (EEE) HH:mm</string>
+    <string name="date_mm_sl_dd_eehhmm">MM/dd(EEE) HH:mm</string>
+    <string name="date_yyyymmddhhmmss">yyyy/MM/dd/HH:mm:ss</string>
+    <string name="date_hhmm">HH:mm</string>
+    <string name="date_switcher_recommend_begin">MM月 dd日 (EEE) から</string>
+    <string name="date_switcher_recommend_end">MM月 dd日 (EEE) のオススメ</string>
+    <string name="onair_start_time">HH:mm</string>
+    <string name="onair_end_time"> - HH:mm</string>
+    <string name="onair_date">MM/dd(EEE)</string>
+
+    <!-- About this app -->
+    <string name="copyright">Copyright &#169; 2012-2015 tsuyoyo All Rights Reserved.</string>
+    <string name="contact_title">作者にメール</string>
+    <string name="context_subtitle">感想・ご要望・不具合報告など、フィードバックお待ちしています</string>
+    <string name="version_info">Version : %s</string>
+    <string name="version_log_title">更新履歴</string>
+
+    <string name="fab_menu_onair_songs">OnAir曲を表示</string>
+    <string name="fab_menu_recommend">今週のオススメ</string>
+
+    <string name="ohen_dialog_text">
+        次に表示されるサイトからアプリをインストール (無料) 頂くと、
+        ラジコンシェルジュ作者に広告費が入る仕組みになっております。
+        励みになりますので、ご協力頂けますと嬉しいです (インストールされたアプリは、
+        お気に召さない場合はアンインストールして頂いて構いません) 。
+    </string>
+
+    <string name="ohen_text">
+        良かったらClickお願いします!!励みになります!!
+    </string>
+    <string name="title_activity_area_select">AreaSelectActivity</string>
+
+    <!-- Bottom navigation -->
+    <string name="bottom_navigation_program">番組表</string>
+    <string name="bottom_navigation_on_air_songs">OnAir曲</string>
+    <string name="bottom_navigation_search">検索</string>
+    <string name="bottom_navigation_settings">設定</string>
+
+    <!-- Settings -->
+    <string name="settings_area_not_selected">番組表を見たいエリアを選択してください</string>
+    <string name="settings_area_selected">選択中のエリア : %1$s</string>
+    <string name="settings_station_order">番組表の表示順を変更</string>
+    <string name="settings_station_order_guide">ドラッグ&amp;ドロップで並び順を変更します</string>
+    <string name="settings_way_to_serach_song">曲の検索方法</string>
+    <string name="settings_recommend_keyword">オススメ番組を自動検索するキーワード</string>
+    <string name="settings_reminder">リマインダ通知の設定</string>
+
+    <string name="license">OSS License</string>
+    <string name="app_version">Version</string>
+
+    <!-- Timetable -->
+    <string name="date_selector_day_in_week">(%1$s)</string>
+    <string name="station_home_page">Web site</string>
+
+    <string name="date_label">yyyy/MM/dd(EEE)</string>
+    <string name="date_select">他の日を選択</string>
+
+    <!-- OnAirSongs -->
+    <string name="on_air_song_search_library">検索</string>
+
+    <string name="button_open_web_site">番組サイト</string>
+    <string name="button_share_program">シェア</string>
+    <string name="button_register_calendar">カレンダーに登録</string>
+    <string name="register_calendar_confirm">この番組をスマホのカレンダーに登録しますか?</string>
+    <string name="button_back_to_timetable">番組表へ戻る</string>
+    <string name="button_close">閉じる</string>
+
+    <string name="select_search_way_title">検索方法を選択</string>
+    <string name="select_search_player">音楽プレイヤーで検索</string>
+    <string name="select_search_google">Googleで検索</string>
+    <string name="select_search_clipboard">クリップボードにコピー</string>
+    <string name="select_search_select_every_time">毎回選ぶ</string>
+    <string name="select_search_method_save">この検索方法をデフォルトにする</string>
+    <string name="copy_on_song_title">曲名とアーティスト名を\nクリップボードにコピーしました</string>
+    <string name="song_search_tutorial_search">検索の使い方</string>
+    <string name="song_search_tutorial_note_show_ad">まもなく広告が表示されます</string>
+
+    <string name="song_search_player_guide">お使いの端末にインストールされている音楽プレイヤーを使って曲を検索します。Google Play Music のようなストリーミングサービスのアプリをお使いであれば、そのアプリの上で曲が検索されます (アプリによっては検索機能が動かないことがあります) 。</string>
+    <string name="song_search_google_guide">お使いの端末にインストールされているGoogleのアプリを使って曲を検索します。Google検索の結果を行うのと同じ結果が得られます。</string>
+    <string name="song_search_clipboard_guide">曲のタイトルとアーティストをクリップボードにコピーします。上記二つの検索以外の方法が必要な時にお使いください。</string>
+
+    <!-- Search -->
+    <string name="error_search">検索できませんでした。通信環境の良いところで再度お試しください。(%1$s)</string>
+    <string name="search_hint">ラジオ番組を検索</string>
+    <string name="search_condition">%1$s の検索結果</string>
+
+    <!-- OnBoarding -->
+    <string name="tutorial_page_0_title">はじめまして、\"ラジ番\" です</string>
+    <string name="tutorial_page_0_message">番組情報やホームページにも手軽にアクセス\nラジオをより楽しむためのアプリです</string>
+    <string name="tutorial_page_1_title">今、流れた音楽を調べよう</string>
+    <string name="tutorial_page_1_message">今かかった曲が気になったらラジ番で調べましょう\n他のアプリを使って曲を探すことも出来ます</string>
+    <string name="tutorial_page_2_title">好きな番組は、絶対聴こう</string>
+    <string name="tutorial_page_2_message">気になった番組はスマホのカレンダーに登録しましょう\nラジ番から簡単に登録できます</string>
+
+    <string name="tutorial_next">Next</string>
+    <string name="onboarding_done">ラジ番を始める!!</string>
+
+    <string name="ad">広告</string>
+    <string name="ad_fragment_label">広告ページ</string>
+
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="title_dynamic_feature">Module Title</string>
+
+    <string name="recommend_module_name">recommend</string>
+
+    <string name="installing">Installing &#8230; </string>
+</resources>
