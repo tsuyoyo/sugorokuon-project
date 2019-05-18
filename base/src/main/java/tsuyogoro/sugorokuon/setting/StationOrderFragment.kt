@@ -1,11 +1,11 @@
 package tsuyogoro.sugorokuon.setting
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,20 +17,20 @@ import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
 import tsuyogoro.sugorokuon.station.Station
 import javax.inject.Inject
 
-class StationOrderFragment : Fragment(), StationOrderAdapter.StationOrderAdapterListener {
+class StationOrderFragment : androidx.fragment.app.Fragment(), StationOrderAdapter.StationOrderAdapterListener {
 
     lateinit var viewModel: StationOrderViewModel
 
     lateinit var adapter: StationOrderAdapter
 
-    private var wrappedAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
+    private var wrappedAdapter: androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>? = null
 
     private var recyclerViewDragDropManager: RecyclerViewDragDropManager? = null
 
     @Inject
     lateinit var viewModelFactory: StationOrderViewModel.Factory
 
-    private val stationList: RecyclerView
+    private val stationList: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.stations_list)
 
     override fun onCreateView(
@@ -71,7 +71,7 @@ class StationOrderFragment : Fragment(), StationOrderAdapter.StationOrderAdapter
 
         stationList.apply {
             adapter = wrappedAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 //            itemAnimator = DraggableItemAnimator()
         }
 

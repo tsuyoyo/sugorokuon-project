@@ -10,7 +10,7 @@ android {
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -26,17 +26,17 @@ dependencies {
     implementation project(":radiko")
     implementation project(":data")
 
-    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
-    implementation "com.android.support:design:${project.supportLibVersion}"
-    implementation "com.android.support:preference-v14:${project.supportLibVersion}"
+    implementation "androidx.appcompat:appcompat:${project.androidxAppCompatVersion}"
+    implementation "com.google.android.material:material:${materialComponentsVersion}"
+    implementation "androidx.legacy:legacy-preference-v14:${androidxLegacyPreferenceVersion}"
 
     // KvsSchema
     kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
 
-    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
-    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
-    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+    implementation "androidx.room:room-runtime:${project.androidxRoomVersion}"
+    implementation "androidx.room:room-rxjava2:${project.androidxRoomVersion}"
+    kapt "androidx.room:room-compiler:${project.androidxRoomVersion}"
 
     implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
@@ -50,9 +50,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation "junit:junit:${project.junitVersion}"
+    androidTestImplementation "androidx.test:runner:${project.androidxTestRunner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${project.androidxEsperssoCore}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }

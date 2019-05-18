@@ -16,7 +16,7 @@
             android:orderInCategory="1"
             myapp:showAsAction="always"
             android:title="@string/option_search_program"
-            myapp:actionViewClass="android.support.v7.widget.SearchView"/>
+            myapp:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
         <item
             android:id="@+id/launch_radiko"

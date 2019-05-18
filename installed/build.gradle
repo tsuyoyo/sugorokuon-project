@@ -16,7 +16,7 @@ android {
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode project.installVersionCode
         versionName project.installVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

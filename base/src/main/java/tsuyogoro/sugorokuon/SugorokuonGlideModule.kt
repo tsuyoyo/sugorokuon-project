@@ -9,7 +9,7 @@ import com.bumptech.glide.module.AppGlideModule
 @GlideModule
 class SugorokuonGlideModule : AppGlideModule() {
 
-    override fun applyOptions(context: Context?, builder: GlideBuilder?) {
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
         builder?.setDiskCache(InternalCacheDiskCacheFactory(context, 1024 * 1024 * 10))
     }
 }

@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.timetable
 
 import android.graphics.Point
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +15,17 @@ import java.util.*
 
 class TimeTableAdapter(
         private val listener: ProgramTableAdapter.ProgramTableAdapterListener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private lateinit var programs: List<TimeTableResponse.Program>
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         (holder as? ProgramViewHolder)?.setProgram(programs[position])
     }
 
     override fun getItemCount(): Int = programs.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder =
             ProgramViewHolder(parent, listener)
 
     fun setPrograms(programs: List<TimeTableResponse.Program>) {
@@ -44,7 +44,7 @@ class TimeTableAdapter(
 
     class ProgramViewHolder(parent: ViewGroup?,
                             private val listener: ProgramTableAdapter.ProgramTableAdapterListener
-    ): RecyclerView.ViewHolder(
+    ): androidx.recyclerview.widget.RecyclerView.ViewHolder(
             LayoutInflater.from(parent?.context)
                     .inflate(R.layout.item_program, parent, false)
     ) {

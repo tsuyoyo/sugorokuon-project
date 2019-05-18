@@ -1,13 +1,13 @@
 package tsuyogoro.sugorokuon.search
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import tsuyogoro.sugorokuon.ad.AdBannerViewHolder
 
 class SearchResultListAdapter(
         private val listener: SearchResultListAdapterListener,
         private var searchResults: List<SearchViewModel.SearchResultData> = emptyList()
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private object Type {
         const val PROGRAM = 0
@@ -22,7 +22,7 @@ class SearchResultListAdapter(
         this.searchResults = searchResults
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder =
             when (viewType) {
                 Type.AD -> AdBannerViewHolder(parent)
                 else -> SearchResultViewHolder(parent, listener)
@@ -37,7 +37,7 @@ class SearchResultListAdapter(
                 Type.PROGRAM
             }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         if (position > 0) {
             // Ad is on first index.
             (holder as SearchResultViewHolder).setSearchResult(searchResults[position - 1])

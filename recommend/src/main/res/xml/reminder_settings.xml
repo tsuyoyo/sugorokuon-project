@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen
+<androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/settings_remindtiming_title">
 
         <tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsPreference />
 
-    </android.support.v7.preference.PreferenceCategory>¬
+    </androidx.preference.PreferenceCategory>¬
 
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/settings_remind_behavior_title">
 
         <CheckBoxPreference
@@ -24,6 +24,6 @@
             android:key="@string/pref_key_reminder_vibration"
             android:title="@string/settings_remind_behavior_vibration" />
 
-    </android.support.v7.preference.PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

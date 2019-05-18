@@ -65,19 +65,19 @@ dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation "com.google.android.gms:play-services-oss-licenses:16.0.0"
+    implementation "com.google.android.gms:play-services-oss-licenses:${project.playServicesOssLicensesVersion}"
 
     //noinspection GradleCompatible
-    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
-    implementation "com.android.support:customtabs:${project.supportLibVersion}"
-    implementation "com.android.support:design:${project.supportLibVersion}"
-    implementation "com.android.support:cardview-v7:${project.supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${project.supportLibVersion}"
-    implementation "com.android.support.constraint:constraint-layout:${project.constraintLayoutVersion}"
+    implementation "androidx.appcompat:appcompat:${project.androidxAppCompatVersion}"
+    implementation "androidx.browser:browser:${project.androidxBrowser}"
+    implementation "com.google.android.material:material:${project.materialComponentsVersion}"
+    implementation "androidx.cardview:cardview:${project.androidxCardViewVersion}"
+    implementation "androidx.recyclerview:recyclerview:${project.androidxRecyclerViewVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${project.androidxConstraintLayoutVersion}"
     implementation "com.google.android.gms:play-services-analytics:${project.playServiceVersion}"
-    implementation "com.google.android.gms:play-services-ads:15.0.1"
+    implementation "com.google.android.gms:play-services-ads:${project.playServiceAdsVersion}"
     implementation "com.google.firebase:firebase-core:${project.playServiceVersion}"
-    implementation "com.google.firebase:firebase-messaging:17.3.0"
+    implementation "com.google.firebase:firebase-messaging:${project.firebaseMessagingVersion}"
 
     implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
     implementation "com.github.bumptech.glide:annotations:${project.glideVersion}"
@@ -108,8 +108,8 @@ dependencies {
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
     // Architecture component
-    implementation "android.arch.lifecycle:extensions:${project.androidArchitectureComponent}"
-    testImplementation "android.arch.core:core-testing:${project.androidArchitectureComponent}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${project.androidxLifecycleExtensionsVersion}"
+    testImplementation "androidx.arch.core:core-testing:${project.androidxCoreTestingVersionVersion}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}"
 
@@ -121,7 +121,7 @@ dependencies {
         exclude group: "com.android.support"
     }
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.13.0'
-    testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
+    testImplementation "junit:junit:${project.junitVersion}"
+    testImplementation "org.mockito:mockito-core:${project.mockitoCoreVersion}"
+    testImplementation "com.nhaarman:mockito-kotlin:${project.mockitoKotlinVersion}"
 }

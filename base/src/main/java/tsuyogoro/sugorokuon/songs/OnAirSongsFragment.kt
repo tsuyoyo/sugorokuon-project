@@ -1,18 +1,18 @@
 package tsuyogoro.sugorokuon.songs
 
 import android.app.SearchManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,15 +26,15 @@ import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 import tsuyogoro.sugorokuon.SugorokuonLog
 import javax.inject.Inject
 
-class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDialogHost {
+class OnAirSongsFragment : androidx.fragment.app.Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDialogHost {
 
     @Inject
     lateinit var viewModelFactory: OnAirSongsViewModel.Factory
 
-    private val songsList: RecyclerView
+    private val songsList: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.songs_list)
 
-    private val swipeRefreshLayout: SwipeRefreshLayout
+    private val swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         get() = view!!.findViewById(R.id.swipe_refresh_layout)
 
     private val disposables = CompositeDisposable()
@@ -95,10 +95,10 @@ class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDi
 
         songsList.apply {
             adapter = onAirSongsAdapter
-            layoutManager = LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                context,
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
+                false)
         }
 
         viewModel.observeOnAirSongs()

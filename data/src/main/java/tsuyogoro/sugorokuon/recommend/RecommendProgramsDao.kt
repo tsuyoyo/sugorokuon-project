@@ -4,7 +4,7 @@
  */
 package tsuyogoro.sugorokuon.recommend
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Flowable
 
 @Dao

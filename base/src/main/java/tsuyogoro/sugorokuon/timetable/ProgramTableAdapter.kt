@@ -2,8 +2,8 @@ package tsuyogoro.sugorokuon.timetable
 
 import android.graphics.Point
 import android.graphics.Rect
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +21,7 @@ import tsuyogoro.sugorokuon.station.Station
 class ProgramTableAdapter(
     private val listener: ProgramTableAdapterListener,
     private val recommendSettingsRepository: RecommendSettingsRepository
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_RECOMMEND = 0
@@ -50,7 +50,7 @@ class ProgramTableAdapter(
         this.recommends = recommends
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         if (holder is TimeTableViewHolder) {
             holder.setStation(timeTables[position - 1])
         } else if (holder is RecommendViewHolder) {
@@ -65,7 +65,7 @@ class ProgramTableAdapter(
             else -> TYPE_TIMETABLE
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder =
         when (viewType) {
             TYPE_RECOMMEND -> RecommendViewHolder(parent)
             else -> TimeTableViewHolder(parent, listener)
@@ -75,7 +75,7 @@ class ProgramTableAdapter(
 
     inner class RecommendViewHolder(
         parent: ViewGroup
-    ) : RecyclerView.ViewHolder(
+    ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recommend_carousel, parent, false)
     ) {
@@ -85,7 +85,7 @@ class ProgramTableAdapter(
         private val noRecommend: TextView
             get() = itemView.findViewById(R.id.no_recommend)
 
-        private val recommendPrograms: RecyclerView
+        private val recommendPrograms: androidx.recyclerview.widget.RecyclerView
             get() = itemView.findViewById(R.id.recommend_programs)
 
         private val gotoKeywordSettings: Button
@@ -97,8 +97,8 @@ class ProgramTableAdapter(
         init {
             recommendPrograms.apply {
                 adapter = carouselAdapter
-                layoutManager = LinearLayoutManager(
-                    itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                    itemView.context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
             }
             recommendPrograms.addItemDecoration(ProgramListItemDecoration())
             gotoKeywordSettings.setOnClickListener {
@@ -136,7 +136,7 @@ class ProgramTableAdapter(
 
     class TimeTableViewHolder(
         parent: ViewGroup?,
-        private val listener: ProgramTableAdapterListener) : RecyclerView.ViewHolder(
+        private val listener: ProgramTableAdapterListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
 
         LayoutInflater
             .from(parent!!.context)
@@ -151,10 +151,10 @@ class ProgramTableAdapter(
         private val stationSiteButton: TextView
             get() = itemView.findViewById(R.id.station_site_btn)
 
-        private val programList: RecyclerView
+        private val programList: androidx.recyclerview.widget.RecyclerView
             get() = itemView.findViewById(R.id.program_list)
 
-        private lateinit var layoutManager: LinearLayoutManager
+        private lateinit var layoutManager: androidx.recyclerview.widget.LinearLayoutManager
 
         init {
             programList.addItemDecoration(ProgramListItemDecoration())
@@ -172,8 +172,8 @@ class ProgramTableAdapter(
             val programsAdapter = TimeTableAdapter(listener).apply {
                 setPrograms(timeTable.programs)
             }
-            layoutManager = LinearLayoutManager(
-                itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                itemView.context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
             programList.apply {
                 adapter = programsAdapter
                 layoutManager = this@TimeTableViewHolder.layoutManager
@@ -183,12 +183,12 @@ class ProgramTableAdapter(
             // Focus the position of now.
             programList.scrollToPosition(programsAdapter.getCurrentTimePosition())
 
-            programList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            programList.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                 }
 
-                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                 }
             })
@@ -199,12 +199,12 @@ class ProgramTableAdapter(
         }
     }
 
-    class ProgramListItemDecoration : RecyclerView.ItemDecoration() {
+    class ProgramListItemDecoration : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
 
-        override fun getItemOffsets(outRect: Rect?,
-                                    view: View?,
-                                    parent: RecyclerView?,
-                                    state: RecyclerView.State?) {
+        override fun getItemOffsets(outRect: Rect,
+                                    view: View,
+                                    parent: androidx.recyclerview.widget.RecyclerView,
+                                    state: androidx.recyclerview.widget.RecyclerView.State) {
             super.getItemOffsets(outRect, view, parent, state)
             if (view != null) {
                 val resources = view.context.resources

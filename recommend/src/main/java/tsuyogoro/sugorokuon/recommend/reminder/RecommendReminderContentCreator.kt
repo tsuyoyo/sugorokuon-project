@@ -4,7 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import tsuyogoro.sugorokuon.recommend.R
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
 import tsuyogoro.sugorokuon.station.Station

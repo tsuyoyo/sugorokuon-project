@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.recommend
 
 import android.content.Context
-import android.support.v7.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository

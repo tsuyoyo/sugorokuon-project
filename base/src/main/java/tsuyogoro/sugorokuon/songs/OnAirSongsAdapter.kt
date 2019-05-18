@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.songs
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemListener)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     interface OnAirSongsItemListener {
         fun onSearchSong(song: FeedResponse.Song)
@@ -40,13 +40,13 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
             TYPE_SONG
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder =
         when (viewType) {
             TYPE_AD -> OnAirSongsAdViewHolder(parent)
             else -> OnAirSongsViewHolder(parent, listener)
         }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         if (position < onAirSongs.size) {
             (holder as? OnAirSongsViewHolder)?.setSong(onAirSongs[position])
         }
@@ -54,7 +54,7 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
 
     override fun getItemCount(): Int = onAirSongs.size + 1
 
-    class OnAirSongsAdViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    class OnAirSongsAdViewHolder(parent: ViewGroup) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_on_air_song_ad, parent, false)
     ) {
@@ -69,7 +69,7 @@ class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemLi
     class OnAirSongsViewHolder(
         parent: ViewGroup?,
         private val listener: OnAirSongsItemListener
-    ) : RecyclerView.ViewHolder(
+    ) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater
             .from(parent?.context)
             .inflate(R.layout.item_on_air_song, parent, false)

@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.setting
 
-import android.support.annotation.IntRange
+import androidx.annotation.IntRange
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
