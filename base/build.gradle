@@ -1,7 +1,7 @@
 buildscript {
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlin_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${project.kotlinVersion}"
     }
 }
 
@@ -111,7 +111,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${project.androidArchitectureComponent}"
     testImplementation "android.arch.core:core-testing:${project.androidArchitectureComponent}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${project.kotlinVersion}"
 
     // debug menu
     debugImplementation("com.tomoima.debot:debot:${project.debotVersion}") {
