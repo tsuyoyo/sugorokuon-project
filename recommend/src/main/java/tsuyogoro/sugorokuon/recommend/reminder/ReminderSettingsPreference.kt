@@ -6,7 +6,7 @@ import android.support.v7.preference.PreferenceManager
 import android.support.v7.preference.PreferenceViewHolder
 import android.util.AttributeSet
 import android.widget.RadioButton
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 
 class ReminderSettingsPreference : Preference {
 

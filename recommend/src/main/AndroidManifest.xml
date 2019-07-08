@@ -1,9 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tsuyogoro.sugorokuon.recommend">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tsuyogoro.sugorokuon.recommend"
+    split="recommend">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <application>
+    <application tools:ignore="GoogleAppIndexingWarning">
         <receiver android:name="tsuyogoro.sugorokuon.recommend.RecommendBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -14,5 +18,11 @@
         <!-- For debug -->
         <activity android:name="tsuyogoro.sugorokuon.recommend.debug.RecommendDebugActivity"/>
     </application>
+
+    <dist:module
+        dist:onDemand="true"
+        dist:title="@string/recommend_module_name">
+        <dist:fusing dist:include="true" />
+    </dist:module>
 
 </manifest>

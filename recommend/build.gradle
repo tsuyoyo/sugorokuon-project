@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
@@ -16,7 +16,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -25,10 +25,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":radiko")
     implementation project(":data")
+    implementation project(':app')
 
     implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
     implementation "com.android.support:design:${project.supportLibVersion}"
     implementation "com.android.support:preference-v14:${project.supportLibVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${project.constraintLayoutVersion}"
 
     // KvsSchema
     kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
@@ -49,6 +51,10 @@ dependencies {
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
     compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    implementation "com.github.bumptech.glide:glide:${project.glideVersion}"
+    implementation "com.github.bumptech.glide:annotations:${project.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${project.glideVersion}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

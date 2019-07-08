@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_remind_behavior_light">ランプ点滅</string>
+    <string name="settings_remind_behavior_sound">通知音</string>
+    <string name="settings_remind_behavior_vibration">バイブレーション</string>
+
+    <string name="settings_remindtiming_title">onAirのどのくらい前にお知らせしますか？</string>
+    <string name="settings_remind_behavior_title">お知らせの際の動作を選んでください</string>
+    <string name="title_recommend_keyword">お気に入り番組のキーワード</string>
+    <string name="pref_key_reminder_light">remindWithLight</string>
+    <string name="pref_key_reminder_sound">remindWithSound</string>
+    <string name="pref_key_reminder_vibration">remindWithVibration</string>
+
+    <string name="settings_remindtiming_not_set">お知らせ不要</string>
+    <string name="settings_remindtiming_ten_min_before">10分前</string>
+    <string name="settings_remindtiming_thirty_min_before">30分前</string>
+    <string name="settings_remindtiming_one_hour_before">1時間前</string>
+    <string name="settings_remindtiming_two_hour_before">2時間前</string>
+    <string name="settings_remindtiming_five_hour_before">5時間前</string>
+
+    <string name="recommend_reminder_ticker">まもなくオススメのラジオ番組が始まります</string>
+    <string name="recommend_reminder_text">%1$s から %2$s でonAir</string>
+
+    <string name="pref_key_keyword_01">keyword01</string>
+    <string name="pref_key_keyword_02">keyword02</string>
+    <string name="pref_key_keyword_03">keyword03</string>
+    <string name="pref_key_keyword_04">keyword04</string>
+    <string name="pref_key_keyword_05">keyword05</string>
+    <string name="pref_key_keyword_06">keyword06</string>
+    <string name="pref_key_keyword_07">keyword07</string>
+    <string name="pref_key_keyword_08">keyword08</string>
+    <string name="pref_key_keyword_09">keyword09</string>
+    <string name="pref_key_keyword_10">keyword10</string>
+</resources>

@@ -1,0 +1,7 @@
+/build
+/src/main/res/values/values_not_commit.xml
+/src/main/res/xml/global_tracker.xml
+/src/debug/google-services.json
+/src/release/google-services.json
+/release
+/signature

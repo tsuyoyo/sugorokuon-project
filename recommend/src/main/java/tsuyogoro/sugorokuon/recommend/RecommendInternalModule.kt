@@ -10,6 +10,7 @@ import javax.inject.Singleton
 
 @Module
 internal class RecommendInternalModule(c: Context) {
+
     private val context: Context = c.applicationContext
 
     @Singleton

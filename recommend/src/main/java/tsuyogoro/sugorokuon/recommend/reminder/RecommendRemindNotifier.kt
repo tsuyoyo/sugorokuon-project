@@ -8,20 +8,15 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Matrix
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import io.reactivex.Completable
-import io.reactivex.Maybe
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.recommend.RecommendProgram
 import tsuyogoro.sugorokuon.recommend.settings.RecommendSettingsRepository
 import tsuyogoro.sugorokuon.station.StationRepository
-import java.net.URL
 
 internal class RecommendRemindNotifier(
     context: Context,

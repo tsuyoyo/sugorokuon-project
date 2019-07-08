@@ -23,27 +23,28 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
-
-    implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
-
-    // KvsSchema
-    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
-    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
-
-    implementation "android.arch.lifecycle:livedata:${project.roomVersion}"
-    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
-    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
-    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
-
     // Dagger2 : http://google.github.io/dagger/
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${project.daggerVersion}"
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
+    implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
+
     implementation "com.google.code.gson:gson:${project.gsonVersion}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+
+    // KvsSchema
+    kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
+    implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
+
+    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
+    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+
+    implementation "android.arch.lifecycle:livedata:${project.roomVersion}"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

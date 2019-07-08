@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<android.support.v7.preference.PreferenceCategory-->
+        <!--android:title="@string/settings_remindtiming_title">-->
+
+        <!--<tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsPreference />-->
+
+    <!--</android.support.v7.preference.PreferenceCategory>¬-->
+
+    <!--<android.support.v7.preference.PreferenceCategory-->
+        <!--android:title="@string/settings_remind_behavior_title">-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="@string/pref_key_reminder_light"-->
+            <!--android:title="@string/settings_remind_behavior_light" />-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="@string/pref_key_reminder_sound"-->
+            <!--android:title="@string/settings_remind_behavior_sound" />-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="@string/pref_key_reminder_vibration"-->
+            <!--android:title="@string/settings_remind_behavior_vibration" />-->
+
+    <!--</android.support.v7.preference.PreferenceCategory>-->
+
+    <!--<android.support.v7.preference.PreferenceCategory-->
+        <!--android:title="aaa">-->
+
+        <!--<CheckBoxPreference-->
+            <!--android:key="bbb"-->
+            <!--android:title="ccc" />-->
+
+    <!--</android.support.v7.preference.PreferenceCategory>-->
+
+</android.support.v7.preference.PreferenceScreen>

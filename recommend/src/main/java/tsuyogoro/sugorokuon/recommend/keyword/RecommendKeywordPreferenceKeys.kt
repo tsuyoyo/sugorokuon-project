@@ -5,7 +5,7 @@
 package tsuyogoro.sugorokuon.recommend.keyword
 
 import android.content.Context
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 
 internal object RecommendKeywordPreferenceKeys {
     fun getAll(context: Context): List<String> =

@@ -7,9 +7,11 @@ package tsuyogoro.sugorokuon.recommend.reminder
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.preference.CheckBoxPreference
+import android.support.v7.preference.PreferenceCategory
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.View
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 
 class ReminderSettingsFragment : PreferenceFragmentCompat() {
 
@@ -26,6 +28,37 @@ class ReminderSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.reminder_settings, rootKey)
+        setPreferencesFromResource(tsuyogoro.sugorokuon.base.R.xml.reminder_settings, rootKey)
+
+        preferenceScreen.addPreference(
+            PreferenceCategory(context!!).apply {
+                title = getString(R.string.settings_remind_behavior_title)
+            }
+        )
+        preferenceScreen.addPreference(ReminderSettingsPreference(context!!))
+
+        preferenceScreen.addPreference(
+            PreferenceCategory(context!!).apply {
+                title = getString(R.string.settings_remind_behavior_title)
+            }
+        )
+        preferenceScreen.addPreference(
+            CheckBoxPreference(context!!).apply {
+                key = getString(R.string.pref_key_reminder_light)
+                title = getString(R.string.settings_remind_behavior_light)
+            })
+        preferenceScreen.addPreference(
+            CheckBoxPreference(context!!).apply {
+                key = getString(R.string.pref_key_reminder_sound)
+                title = getString(R.string.settings_remind_behavior_sound)
+            }
+        )
+        preferenceScreen.addPreference(
+            CheckBoxPreference(context!!).apply {
+                key = getString(R.string.pref_key_reminder_vibration)
+                title = getString(R.string.settings_remind_behavior_vibration)
+            }
+        )
+
     }
 }

@@ -53,6 +53,7 @@ class RecommendBroadCastReceiver : BroadcastReceiver() {
     private val disposables = CompositeDisposable()
 
     override fun onReceive(context: Context, intent: Intent?) {
+
         SugorokuonLog.d("RecommendBroadCastReceiver - S")
         DaggerRecommendComponent.builder()
             .recommendInternalModule(RecommendInternalModule(context))

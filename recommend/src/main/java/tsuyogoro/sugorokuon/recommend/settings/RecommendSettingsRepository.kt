@@ -9,7 +9,7 @@ import android.content.SharedPreferences
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import tsuyogoro.sugorokuon.SugorokuonLog
-import tsuyogoro.sugorokuon.recommend.R
+import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeyword
 import tsuyogoro.sugorokuon.recommend.keyword.RecommendKeywordPreferenceKeys
 import tsuyogoro.sugorokuon.recommend.reminder.ReminderSettingsPreference

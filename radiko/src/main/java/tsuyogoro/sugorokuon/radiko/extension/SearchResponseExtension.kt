@@ -15,7 +15,7 @@ fun SearchResponse.Program.toRecommendProgram(): RecommendProgram =
         stationId,
         title,
         personality,
-        image,
+        image ?: "",
         url,
         description,
         info
