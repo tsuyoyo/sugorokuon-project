@@ -26,45 +26,47 @@
             android:value="@integer/gms_version"
             tools:replace="android:value" />
 
-        <activity
-            android:name="tsuyogoro.sugorokuon.SugorokuonTopActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="tsuyogoro.sugorokuon.action_open_timetable" />
+        <!--<activity-->
+            <!--android:name="tsuyogoro.sugorokuon.SugorokuonTopActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="tsuyogoro.sugorokuon.action_open_timetable" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+            <!---->
+            <!--<intent-filter android:autoVerify="true">-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:host="sugorokuonapp.firebaseapp.com"
-                    android:scheme="http"
-                    android:pathPrefix="/top" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+                <!--<data-->
+                    <!--android:host="sugorokuonapp.firebaseapp.com"-->
+                    <!--android:scheme="http"-->
+                    <!--android:pathPrefix="/top" />-->
+            <!--</intent-filter>-->
+            <!---->
+            <!--<intent-filter android:autoVerify="true">-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:host="sugorokuonapp.firebaseapp.com"
-                    android:scheme="https"
-                    android:pathPrefix="/top" />
-            </intent-filter>
+                <!--<data-->
+                    <!--android:host="sugorokuonapp.firebaseapp.com"-->
+                    <!--android:scheme="https"-->
+                    <!--android:pathPrefix="/top" />-->
+            <!--</intent-filter>-->
 
-            <meta-data
-                android:name="default-url"
-                android:value="https://sugorokuonapp.firebaseapp.com/top" />
-        </activity>
+            <!--<meta-data-->
+                <!--android:name="default-url"-->
+                <!--android:value="https://sugorokuonapp.firebaseapp.com/top" />-->
+        <!--</activity>-->
 
         <activity android:name="tsuyogoro.sugorokuon.onboarding.OnboardingActivity" />
 
@@ -77,12 +79,6 @@
         <service android:name="tsuyogoro.sugorokuon.notification.SugorokuonMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <service android:name="tsuyogoro.sugorokuon.firebase.SugorokuonFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

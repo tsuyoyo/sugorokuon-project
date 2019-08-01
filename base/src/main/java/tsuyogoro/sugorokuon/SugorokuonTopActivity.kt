@@ -17,6 +17,7 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.MobileAds
 import com.tomoima.debot.Debot
 import io.reactivex.Flowable

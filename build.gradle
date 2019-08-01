@@ -19,7 +19,7 @@ buildscript {
 
         classpath 'com.google.gms:oss-licenses:0.9.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
-        classpath 'io.fabric.tools:gradle:1.25.4'
+        classpath 'io.fabric.tools:gradle:1.29.0'
     }
 }
 subprojects {
@@ -91,7 +91,7 @@ ext {
     androidxLivedataVersion = "2.0.0"
     androidxRoomVersion = "2.0.0"
 
-    crashlyticsVersion = "2.7.1"
+    crashlyticsVersion = "2.10.1"
 
     debotVersion = "2.0.4"
 
