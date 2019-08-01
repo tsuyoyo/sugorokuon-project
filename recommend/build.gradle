@@ -38,7 +38,6 @@ dependencies {
     implementation "androidx.room:room-rxjava2:${project.androidxRoomVersion}"
     kapt "androidx.room:room-compiler:${project.androidxRoomVersion}"
 
-    implementation "io.reactivex:rxjava:${project.rxJavaVersion}"
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
     implementation "io.reactivex.rxjava2:rxkotlin:${project.rxKotlin}"
     implementation "io.reactivex.rxjava2:rxandroid:${project.rxAndroidVersion}"
