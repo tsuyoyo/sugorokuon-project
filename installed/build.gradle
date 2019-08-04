@@ -18,6 +18,8 @@ android {
         versionCode project.installVersionCode
         versionName project.installVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [adMobAppId: project.property("AD_MOB_APP_ID_RADIBANG_BANNER")];
     }
     buildTypes {
         release {
