@@ -7,6 +7,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name" >
 
+
+        <!-- TODO : Migrate old instant app to new one -->
+        <!-- https://developer.android.com/topic/google-play-instant/feature-module-migration?hl=JA -->
         <activity
             android:name="tsuyogoro.sugorokuon.SugorokuonTopActivity"
             android:label="@string/app_name"
