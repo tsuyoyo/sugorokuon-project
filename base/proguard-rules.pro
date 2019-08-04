@@ -16,13 +16,15 @@
 #   public *;
 #}
 
-#-keepattributes *Annotation*
-#-keepattributes Signature
-#-keepattributes InnerClasses
-
 # App
 -keep class tsuyogoro.sugorokuon.** { *; }
 -keepnames class ** { *; }
+
+# For crashlytics
+# https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports?hl=ja&platform=android
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
 
 #------------------------------------------------------------
 # OkHttp3

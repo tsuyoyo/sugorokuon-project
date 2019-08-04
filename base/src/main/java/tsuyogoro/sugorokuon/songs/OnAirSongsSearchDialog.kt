@@ -2,8 +2,8 @@ package tsuyogoro.sugorokuon.songs
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
@@ -12,7 +12,7 @@ import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 
-class OnAirSongsSearchDialog : DialogFragment() {
+class OnAirSongsSearchDialog : androidx.fragment.app.DialogFragment() {
 
     interface OnAirSongsSearchDialogHost {
         fun onSaveSettings(isSave: Boolean, searchSongMethod: SearchSongMethod)

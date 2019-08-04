@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.setting
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
@@ -12,7 +12,7 @@ class AreaSettingsListAdapter(
     private val areas: List<Area>,
     private val listener: OnAreaSelectedListener,
     private val selectedAreas: MutableList<Area> = mutableListOf()
-) : RecyclerView.Adapter<AreaSettingsListAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<AreaSettingsListAdapter.ViewHolder>() {
 
     interface OnAreaSelectedListener {
         fun onAreaSelected(area: Area)
@@ -36,7 +36,7 @@ class AreaSettingsListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(parent, listener)
 
     class ViewHolder(parent: ViewGroup,
-                     private val listener: OnAreaSelectedListener) : RecyclerView.ViewHolder(
+                     private val listener: OnAreaSelectedListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_area_settings, parent, false)

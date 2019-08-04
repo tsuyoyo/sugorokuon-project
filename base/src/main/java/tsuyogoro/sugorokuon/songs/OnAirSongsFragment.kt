@@ -1,32 +1,31 @@
 package tsuyogoro.sugorokuon.songs
 
 import android.app.SearchManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.SugorokuonApplication
+import tsuyogoro.sugorokuon.SugorokuonLog
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
-import tsuyogoro.sugorokuon.SugorokuonLog
 import javax.inject.Inject
 
-class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDialogHost {
+class OnAirSongsFragment : androidx.fragment.app.Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDialogHost {
 
     @Inject
     lateinit var viewModelFactory: OnAirSongsViewModel.Factory
@@ -96,9 +95,9 @@ class OnAirSongsFragment : Fragment(), OnAirSongsSearchDialog.OnAirSongsSearchDi
         songsList.apply {
             adapter = onAirSongsAdapter
             layoutManager = LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false)
+                context,
+                RecyclerView.VERTICAL,
+                false)
         }
 
         viewModel.observeOnAirSongs()

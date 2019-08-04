@@ -1,15 +1,15 @@
 package tsuyogoro.sugorokuon.search
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.transition.Slide
-import android.support.v4.app.Fragment
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
+import androidx.transition.Slide
+import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.SearchView
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -22,7 +22,7 @@ import tsuyogoro.sugorokuon.timetable.ProgramInfoFragment
 import javax.inject.Inject
 
 
-class SearchFragment : Fragment(),
+class SearchFragment : androidx.fragment.app.Fragment(),
         SearchResultListAdapter.SearchResultListAdapterListener {
 
     @Inject
@@ -31,10 +31,10 @@ class SearchFragment : Fragment(),
     private val searchCondition: TextView
         get() = view!!.findViewById(R.id.search_condition)
 
-    private val searchResults: RecyclerView
+    private val searchResults: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.search_results)
 
-    private val swipeRefreshLayout: SwipeRefreshLayout
+    private val swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         get() = view!!.findViewById(R.id.swipe_refresh_layout)
 
     lateinit var searchResultListAdapter: SearchResultListAdapter
@@ -67,8 +67,8 @@ class SearchFragment : Fragment(),
 
         searchResultListAdapter = SearchResultListAdapter(this)
         searchResults.adapter = searchResultListAdapter
-        searchResults.layoutManager = LinearLayoutManager(
-                context, LinearLayoutManager.VERTICAL, false)
+        searchResults.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+            context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
 
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)

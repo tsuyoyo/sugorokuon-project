@@ -1,22 +1,23 @@
 package tsuyogoro.sugorokuon
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.BottomNavigationView
-import android.support.transition.Transition
-import android.support.transition.TransitionSet
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.view.KeyEvent
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.MobileAds
 import com.tomoima.debot.Debot
 import io.reactivex.Flowable
@@ -228,7 +229,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
         switchFragment(SettingsTopFragment(), FragmentTags.SETTINGS)
     }
 
-    fun switchFragment(fragment: Fragment, tag: String, transition: Transition? = null) {
+    fun switchFragment(fragment: androidx.fragment.app.Fragment, tag: String, transition: Transition? = null) {
         val fm = supportFragmentManager
         if (fm.findFragmentByTag(tag) == null) {
             if (transition != null) {
@@ -245,7 +246,7 @@ class SugorokuonTopActivity : AppCompatActivity() {
         }
     }
 
-    fun pushFragment(fragment: Fragment, tag: String, transition: Transition? = null) {
+    fun pushFragment(fragment: androidx.fragment.app.Fragment, tag: String, transition: Transition? = null) {
         val fm = supportFragmentManager
         val topIndex = fm.backStackEntryCount - 1
         if (topIndex >= 0

@@ -1,11 +1,11 @@
 package tsuyogoro.sugorokuon.setting
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +15,9 @@ import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.Area
 import javax.inject.Inject
 
-class AreaSettingsFragment : Fragment(), AreaSettingsListAdapter.OnAreaSelectedListener {
+class AreaSettingsFragment : androidx.fragment.app.Fragment(), AreaSettingsListAdapter.OnAreaSelectedListener {
 
-    private val areaList: RecyclerView
+    private val areaList: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.area_list)
 
     private val selectedAreasLabel: TextView
@@ -55,8 +55,8 @@ class AreaSettingsFragment : Fragment(), AreaSettingsListAdapter.OnAreaSelectedL
                         areaListAdapter = AreaSettingsListAdapter(it, this@AreaSettingsFragment)
                         areaList.apply {
                             adapter = areaListAdapter
-                            layoutManager = LinearLayoutManager(
-                                    context, LinearLayoutManager.VERTICAL, false)
+                            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+                                context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
                         }
                         areaListAdapter.notifyDataSetChanged()
                     }

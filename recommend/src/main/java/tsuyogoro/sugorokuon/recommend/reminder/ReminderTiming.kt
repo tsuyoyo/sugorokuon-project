@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.recommend.reminder
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import tsuyogoro.sugorokuon.recommend.R
 import java.util.*
 

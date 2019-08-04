@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.typeconverter
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import tsuyogoro.sugorokuon.constant.Area
 
 internal class AreaConverter {

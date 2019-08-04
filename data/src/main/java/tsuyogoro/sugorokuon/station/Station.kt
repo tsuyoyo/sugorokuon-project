@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.station
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import tsuyogoro.sugorokuon.constant.Area
 
 @Entity(tableName = "stations")

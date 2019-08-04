@@ -1,14 +1,14 @@
 package tsuyogoro.sugorokuon.onboarding
 
 import android.os.Bundle
-import android.support.annotation.IntRange
-import android.support.v4.app.Fragment
+import androidx.annotation.IntRange
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tsuyogoro.sugorokuon.base.R
 
-class TutorialFragment : Fragment() {
+class TutorialFragment : androidx.fragment.app.Fragment() {
 
     companion object {
 

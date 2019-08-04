@@ -1,8 +1,8 @@
 package tsuyogoro.sugorokuon.station
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import tsuyogoro.sugorokuon.typeconverter.AreaConverter
 import tsuyogoro.sugorokuon.typeconverter.StationLogoConverter
 

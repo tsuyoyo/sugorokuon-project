@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.songs
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import tsuyogoro.sugorokuon.radiko.api.response.FeedResponse
 import java.text.SimpleDateFormat
 import java.util.*
 
-class OnAirSongsAdapter(private val listener: OnAirSongsAdapter.OnAirSongsItemListener)
+class OnAirSongsAdapter(private val listener: OnAirSongsItemListener)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnAirSongsItemListener {

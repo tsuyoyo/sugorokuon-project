@@ -2,7 +2,7 @@ package tsuyogoro.sugorokuon.songs
 
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import tsuyogoro.sugorokuon.base.R
 
-class OnAirSongsSearchTutorialFragment : Fragment() {
+class OnAirSongsSearchTutorialFragment : androidx.fragment.app.Fragment() {
 
     companion object {
         const val INTERVAL_BEFORE_SHOWING_AD_IN_MILLI_SEC = 3000L

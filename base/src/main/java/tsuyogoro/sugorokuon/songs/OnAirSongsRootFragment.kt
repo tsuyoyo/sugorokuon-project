@@ -1,23 +1,21 @@
 package tsuyogoro.sugorokuon.songs
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.PagerTabStrip
-import android.support.v4.view.ViewPager
-import android.support.v4.widget.ContentLoadingProgressBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import tsuyogoro.sugorokuon.base.R
+import androidx.core.widget.ContentLoadingProgressBar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.PagerTabStrip
+import androidx.viewpager.widget.ViewPager
 import tsuyogoro.sugorokuon.SugorokuonApplication
-import tsuyogoro.sugorokuon.radiko.api.response.StationResponse
+import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.extension.getFocusedFragment
 import tsuyogoro.sugorokuon.station.Station
 import javax.inject.Inject
 
-class OnAirSongsRootFragment : Fragment() {
+class OnAirSongsRootFragment : androidx.fragment.app.Fragment() {
 
     private val viewPager: ViewPager
         get() = view!!.findViewById(R.id.view_pager)
@@ -74,7 +72,7 @@ class OnAirSongsRootFragment : Fragment() {
                     }
                 })
 
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        viewPager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 

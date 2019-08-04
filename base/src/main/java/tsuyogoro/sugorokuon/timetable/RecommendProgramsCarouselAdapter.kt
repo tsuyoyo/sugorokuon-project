@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.timetable
 
-import android.support.constraint.Group
-import android.support.v7.widget.RecyclerView
+import androidx.constraintlayout.widget.Group
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import java.util.*
 
 class RecommendProgramsCarouselAdapter(
     private val listener: ProgramTableAdapter.ProgramTableAdapterListener
-) : RecyclerView.Adapter<RecommendProgramsCarouselAdapter.RecommendProgramViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<RecommendProgramsCarouselAdapter.RecommendProgramViewHolder>() {
 
     private var recommendPrograms: List<RecommendProgramData> = emptyList()
 
@@ -32,7 +32,7 @@ class RecommendProgramsCarouselAdapter(
         this.recommendPrograms = recommendPrograms
     }
 
-    inner class RecommendProgramViewHolder(parent: ViewGroup?) : RecyclerView.ViewHolder(
+    inner class RecommendProgramViewHolder(parent: ViewGroup?) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater
             .from(parent!!.context)
             .inflate(R.layout.item_recommend_program, parent, false)

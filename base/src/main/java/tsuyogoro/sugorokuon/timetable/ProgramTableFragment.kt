@@ -1,16 +1,16 @@
 package tsuyogoro.sugorokuon.timetable
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.graphics.Point
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.widget.ContentLoadingProgressBar
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.core.widget.ContentLoadingProgressBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class ProgramTableFragment : Fragment(),
+class ProgramTableFragment : androidx.fragment.app.Fragment(),
         DateSelectorAdapter.DateSelectorListener,
         ProgramTableAdapter.ProgramTableAdapterListener {
 
@@ -40,7 +40,7 @@ class ProgramTableFragment : Fragment(),
     @Inject
     lateinit var recommendSettingsRepository: RecommendSettingsRepository
 
-    private val programTable: RecyclerView
+    private val programTable: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.program_table)
 
     private val loading: ContentLoadingProgressBar
@@ -89,7 +89,7 @@ class ProgramTableFragment : Fragment(),
 
         programTable.apply {
             adapter = programTableAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
             addItemDecoration(ProgramTableItemDecoration())
         }
 
@@ -179,12 +179,12 @@ class ProgramTableFragment : Fragment(),
         // TODO : 縦横回転時にdatePickerDialog閉じないとリークするっぽいのでそれも対応
     }
 
-    class ProgramTableItemDecoration: RecyclerView.ItemDecoration() {
+    class ProgramTableItemDecoration: androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
 
-        override fun getItemOffsets(outRect: Rect?,
-                                    view: View?,
-                                    parent: RecyclerView?,
-                                    state: RecyclerView.State?) {
+        override fun getItemOffsets(outRect: Rect,
+                                    view: View,
+                                    parent: androidx.recyclerview.widget.RecyclerView,
+                                    state: androidx.recyclerview.widget.RecyclerView.State) {
             super.getItemOffsets(outRect, view, parent, state)
             if (view != null) {
                 val resources = view.context.resources

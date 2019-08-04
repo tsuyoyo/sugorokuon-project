@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.search
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +18,7 @@ import java.util.*
 class SearchResultViewHolder(
         parent: ViewGroup?,
         private val listener: SearchResultListAdapter.SearchResultListAdapterListener)
-    : RecyclerView.ViewHolder(
+    : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater.from(parent!!.context)
                 .inflate(R.layout.item_search_result, parent, false)
 ) {

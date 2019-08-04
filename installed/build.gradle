@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'io.fabric'
 
 android {
     // signingConfigs
@@ -16,7 +17,9 @@ android {
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode project.installVersionCode
         versionName project.installVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [adMobAppId: project.property("AD_MOB_APP_ID_RADIBANG_BANNER")];
     }
     buildTypes {
         release {
@@ -34,6 +37,9 @@ android {
 dependencies {
     implementation project(':base')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "com.google.firebase:firebase-core:${project.firebaseCoreVersion}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${project.crashlyticsVersion}"
 }
 
 apply plugin: 'com.google.gms.google-services'

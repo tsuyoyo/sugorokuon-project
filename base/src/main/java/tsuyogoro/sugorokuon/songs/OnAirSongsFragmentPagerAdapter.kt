@@ -1,16 +1,16 @@
 package tsuyogoro.sugorokuon.songs
 
 import android.content.res.Resources
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.station.Station
 
 class OnAirSongsFragmentPagerAdapter(
-        fragmentManager: FragmentManager,
-        private val resources: Resources
-) : FragmentPagerAdapter(fragmentManager) {
+    fragmentManager: androidx.fragment.app.FragmentManager,
+    private val resources: Resources
+) : androidx.fragment.app.FragmentPagerAdapter(fragmentManager) {
 
     private var feedAvailableStations = mutableListOf<Station>()
 
@@ -19,7 +19,7 @@ class OnAirSongsFragmentPagerAdapter(
         this.feedAvailableStations.addAll(stations)
     }
 
-    override fun getItem(position: Int): Fragment =
+    override fun getItem(position: Int): androidx.fragment.app.Fragment =
             if (position == 0) {
                 OnAirSongsSearchTutorialFragment()
             } else {

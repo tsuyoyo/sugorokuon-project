@@ -1,7 +1,7 @@
 package tsuyogoro.sugorokuon.timetable
 
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,7 +11,7 @@ import java.util.*
 
 class DateSelectorAdapter(
         private val listener: DateSelectorListener
-) : RecyclerView.Adapter<DateSelectorAdapter.DateSelectorViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<DateSelectorAdapter.DateSelectorViewHolder>() {
 
     private val selectableDates: List<Calendar>
 
@@ -71,7 +71,7 @@ class DateSelectorAdapter(
 
     class DateSelectorViewHolder(
             parent: ViewGroup,
-            private val listener: DateSelectorListener) : RecyclerView.ViewHolder(
+            private val listener: DateSelectorListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_date_selector, parent, false)
     ) {

@@ -1,8 +1,8 @@
 package tsuyogoro.sugorokuon.recommend.debug
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.EditText

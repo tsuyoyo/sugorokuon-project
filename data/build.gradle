@@ -23,7 +23,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    implementation "androidx.appcompat:appcompat:${project.androidxAppCompatVersion}"
 
     implementation "io.reactivex.rxjava2:rxjava:${project.rxJava2Version}"
 
@@ -31,10 +31,10 @@ dependencies {
     kapt "com.rejasupotaro:kvs-schema-compiler:${project.kvsSchemaVersion}"
     implementation "com.rejasupotaro:kvs-schema:${project.kvsSchemaVersion}"
 
-    implementation "android.arch.lifecycle:livedata:${project.roomVersion}"
-    implementation "android.arch.persistence.room:runtime:${project.roomVersion}"
-    implementation "android.arch.persistence.room:rxjava2:${project.roomVersion}"
-    kapt "android.arch.persistence.room:compiler:${project.roomVersion}"
+    implementation "androidx.lifecycle:lifecycle-livedata:${project.androidxLivedataVersion}"
+    implementation "androidx.room:room-runtime:${project.androidxRoomVersion}"
+    implementation "androidx.room:room-rxjava2:${project.androidxRoomVersion}"
+    kapt "androidx.room:room-compiler:${project.androidxRoomVersion}"
 
     // Dagger2 : http://google.github.io/dagger/
     implementation "com.google.dagger:dagger:${project.daggerVersion}"
@@ -43,9 +43,9 @@ dependencies {
 
     implementation "com.google.code.gson:gson:${project.gsonVersion}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation "junit:junit:${project.junitVersion}"
+    androidTestImplementation "androidx.test:runner:${project.androidxTestRunner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${project.androidxEsperssoCore}"
 }

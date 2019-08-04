@@ -5,6 +5,57 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="@string/app_name" />
+        android:label="@string/app_name" >
+
+
+        <!-- TODO : Migrate old instant app to new one -->
+        <!-- https://developer.android.com/topic/google-play-instant/feature-module-migration?hl=JA -->
+        <activity
+            android:name="tsuyogoro.sugorokuon.SugorokuonTopActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="tsuyogoro.sugorokuon.action_open_timetable" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sugorokuonapp.firebaseapp.com"
+                    android:scheme="http"
+                    android:pathPrefix="/top" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sugorokuonapp.firebaseapp.com"
+                    android:scheme="https"
+                    android:pathPrefix="/top" />
+            </intent-filter>
+
+            <meta-data
+                android:name="default-url"
+                android:value="https://sugorokuonapp.firebaseapp.com/top" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${adMobAppId}" />
+
+    </application>
 
 </manifest>

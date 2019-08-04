@@ -6,11 +6,11 @@ package tsuyogoro.sugorokuon.recommend.keyword
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.preference.EditTextPreference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceManager
+import androidx.fragment.app.Fragment
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.EditTextPreference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import android.view.View
 import tsuyogoro.sugorokuon.recommend.R
 
@@ -21,7 +21,7 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
         // Note :
         // Let's use this static method to get this fragment instead of calling constructor.
         // To call constructor, the module needs to depend on support preference lib.
-        fun createInstance(): Fragment = RecommendKeywordFragment()
+        fun createInstance(): androidx.fragment.app.Fragment = RecommendKeywordFragment()
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

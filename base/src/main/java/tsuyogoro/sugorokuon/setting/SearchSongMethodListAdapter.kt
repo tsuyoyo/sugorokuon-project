@@ -1,6 +1,6 @@
 package tsuyogoro.sugorokuon.setting
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.RadioButton
@@ -12,7 +12,7 @@ class SearchSongMethodListAdapter(
         private val methods: MutableList<SearchSongMethod> = mutableListOf(),
         private var selectedMethod: SearchSongMethod? = null,
         private val listener: SearchSongMethodListListener
-) : RecyclerView.Adapter<SearchSongMethodListAdapter.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<SearchSongMethodListAdapter.ViewHolder>() {
 
     interface SearchSongMethodListListener {
         fun onSearchSongMethodSelected(selectedMethod: SearchSongMethod)
@@ -39,7 +39,7 @@ class SearchSongMethodListAdapter(
     }
 
     class ViewHolder(parent: ViewGroup,
-                     private val listener: SearchSongMethodListListener) : RecyclerView.ViewHolder(
+                     private val listener: SearchSongMethodListListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.item_song_search_method, parent, false)

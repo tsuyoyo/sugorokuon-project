@@ -2,14 +2,14 @@ package tsuyogoro.sugorokuon.setting
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import tsuyogoro.sugorokuon.base.R
 import tsuyogoro.sugorokuon.constant.SearchSongMethod
 
-class SearchSongMethodSettingDialog: DialogFragment() {
+class SearchSongMethodSettingDialog: androidx.fragment.app.DialogFragment() {
 
     // TODO : listenerの定義
 

@@ -5,9 +5,9 @@
 package tsuyogoro.sugorokuon.recommend.reminder
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceFragmentCompat
 import android.view.View
 import tsuyogoro.sugorokuon.recommend.R
 
@@ -17,7 +17,7 @@ class ReminderSettingsFragment : PreferenceFragmentCompat() {
         // Note :
         // Let's use this static method to get this fragment instead of calling constructor.
         // To call constructor, the module needs to depend on support preference lib.
-        fun createInstance(): Fragment = ReminderSettingsFragment()
+        fun createInstance(): androidx.fragment.app.Fragment = ReminderSettingsFragment()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
