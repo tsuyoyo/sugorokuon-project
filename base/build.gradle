@@ -5,13 +5,13 @@ buildscript {
     }
 }
 
-apply plugin: 'com.android.feature'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    baseFeature true
+//    baseFeature true
 
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
@@ -23,7 +23,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             resValue "string", "adUnitId", "${AD_MOB_UNIT_ID_RELEASE}"
