@@ -1,18 +1,19 @@
 package tsuyogoro.sugorokuon.search
 
+import android.app.Activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import androidx.transition.Slide
 import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import tsuyogoro.sugorokuon.base.R
@@ -34,7 +35,7 @@ class SearchFragment : androidx.fragment.app.Fragment(),
     private val searchResults: androidx.recyclerview.widget.RecyclerView
         get() = view!!.findViewById(R.id.search_results)
 
-    private val swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    private val swipeRefreshLayout: SwipeRefreshLayout
         get() = view!!.findViewById(R.id.swipe_refresh_layout)
 
     lateinit var searchResultListAdapter: SearchResultListAdapter
@@ -114,16 +115,16 @@ class SearchFragment : androidx.fragment.app.Fragment(),
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val disposable = (context as? SugorokuonTopActivity)
-                ?.observeSearchKeyword()
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe {
-                    viewModel.search(it)
-                    closeKeyboard()
-                }
+            ?.observeSearchKeyword()
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe {
+                viewModel.search(it)
+                closeKeyboard()
+            }
         if (disposable != null) {
             disposables.add(disposable)
         }

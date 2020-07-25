@@ -72,6 +72,7 @@ dependencies {
     implementation "com.google.android.material:material:${project.materialComponentsVersion}"
     implementation "androidx.cardview:cardview:${project.androidxCardViewVersion}"
     implementation "androidx.recyclerview:recyclerview:${project.androidxRecyclerViewVersion}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${project.androidxSwipeRefreshLayoutVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${project.androidxConstraintLayoutVersion}"
     implementation "com.google.android.gms:play-services-analytics:${project.playServiceVersion}"
     implementation "com.google.android.gms:play-services-ads:${project.playServiceAdsVersion}"
@@ -103,8 +104,6 @@ dependencies {
 
     // Leakcanary : https://github.com/square/leakcanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${project.leakcanaryVersion}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${project.leakcanaryVersion}"
 
     // Architecture component
     implementation "androidx.lifecycle:lifecycle-extensions:${project.androidxLifecycleExtensionsVersion}"
@@ -121,6 +120,7 @@ dependencies {
     }
 
     implementation "com.crashlytics.sdk.android:crashlytics:${project.crashlyticsVersion}"
+    implementation "com.google.android.gms:play-services-instantapps:${project.playServiceInstantAppVersion}"
 
     testImplementation "junit:junit:${project.junitVersion}"
     testImplementation "org.mockito:mockito-core:${project.mockitoCoreVersion}"

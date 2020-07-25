@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tsuyogoro.sugorokuon">
+    package="tsuyogoro.sugorokuon"
+    xmlns:dist="http://schemas.android.com/apk/distribution">
 
+    <dist:module dist:instant="true" />
     <application
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

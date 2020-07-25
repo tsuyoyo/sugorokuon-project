@@ -26,7 +26,7 @@ class StationRepository {
 
     fun observeStations(): Flowable<List<Station>> = stations.hide()
 
-    fun getStations(): List<Station> = stations.value
+    fun getStations(): List<Station> = stations.value ?: listOf()
 
     private fun updateStations() {
         stations.onNext(stationDao.getAll())

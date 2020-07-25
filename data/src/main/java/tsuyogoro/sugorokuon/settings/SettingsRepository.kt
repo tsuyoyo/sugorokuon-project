@@ -40,7 +40,7 @@ class SettingsRepository(
      */
     fun observeAreaSettings(): Flowable<Set<Area>> = areaSettings.hide()
 
-    fun getAreaSettings(): Set<Area> = areaSettings.value
+    fun getAreaSettings(): Set<Area> = areaSettings.value ?: setOf()
 
     fun setData(date: Calendar) {
         selectedDate.onNext(date)

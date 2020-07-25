@@ -9,25 +9,23 @@ import android.content.Context;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.tomoima.debot.DebotConfigurator;
 import com.tomoima.debot.DebotStrategyBuilder;
 
+import leakcanary.AppWatcher;
+import leakcanary.ObjectWatcher;
 import tsuyogoro.sugorokuon.base.R;
 import tsuyogoro.sugorokuon.debug.DebugMenuStrategy;
 import tsuyogoro.sugorokuon.debug.RecommendDebugStrategy;
 import tsuyogoro.sugorokuon.di.DaggerSugorokuonAppComponent;
-import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 import tsuyogoro.sugorokuon.di.RepositoryModule;
 import tsuyogoro.sugorokuon.di.SugorokuonAppComponent;
 import tsuyogoro.sugorokuon.di.SugorokuonAppModule;
+import tsuyogoro.sugorokuon.radiko.RadikoApiModule;
 
 public class SugorokuonApplication extends Application {
 
     private Tracker mTracker;
-
-    private RefWatcher mRefWatcher;
 
     private SugorokuonAppComponent appComponent;
 
@@ -45,12 +43,6 @@ public class SugorokuonApplication extends Application {
         super.onCreate();
         setupDebugMenu();
         SugorokuonLog.d("SugorokuonApplication : onCreate()");
-        StethoWrapper.setup(this);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        mRefWatcher = LeakCanary.install(this);
-
         appComponent = DaggerSugorokuonAppComponent.builder()
                 .sugorokuonAppModule(new SugorokuonAppModule(this))
                 .radikoApiModule(new RadikoApiModule())
@@ -59,8 +51,8 @@ public class SugorokuonApplication extends Application {
 
     }
 
-    public static RefWatcher getRefWatcher(Context context) {
-        return ((SugorokuonApplication) context.getApplicationContext()).mRefWatcher;
+    public static ObjectWatcher getRefWatcher() {
+        return AppWatcher.INSTANCE.getObjectWatcher();
     }
 
     public static SugorokuonApplication application(Context context) {

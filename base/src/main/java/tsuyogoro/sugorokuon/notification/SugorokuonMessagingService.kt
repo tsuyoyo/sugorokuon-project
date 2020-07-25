@@ -10,13 +10,14 @@ import tsuyogoro.sugorokuon.SugorokuonLog
  */
 class SugorokuonMessagingService : FirebaseMessagingService() {
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        super.onMessageReceived(remoteMessage)
 
-        SugorokuonLog.d("onMessageReceived")
-        SugorokuonLog.d("  from : ${remoteMessage?.from}")
-        SugorokuonLog.d("  message : ${remoteMessage?.notification?.body}")
-    }
+//    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+//        super.onMessageReceived(remoteMessage)
+//
+//        SugorokuonLog.d("onMessageReceived")
+//        SugorokuonLog.d("  from : ${remoteMessage?.from}")
+//        SugorokuonLog.d("  message : ${remoteMessage?.notification?.body}")
+//    }
 
 //    override fun zzd(p0: Intent?) {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

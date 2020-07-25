@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'io.fabric'
 
@@ -11,7 +10,10 @@ android {
 
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "tsuyogoro.sugorokuon"
         minSdkVersion project.minSdkVersion.toInteger()
@@ -45,3 +47,4 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.getkeepsafe.dexcount'

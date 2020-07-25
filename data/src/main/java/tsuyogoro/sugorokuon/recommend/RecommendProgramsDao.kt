@@ -22,7 +22,7 @@ internal interface RecommendProgramsDao {
     @Query("SELECT * FROM recommend_programs ORDER BY start ASC")
     fun getPrograms(): List<RecommendProgram>
 
-    @Query("SELECT * ,MIN(start) FROM recommend_programs GROUP BY start")
+    @Query("SELECT * FROM recommend_programs GROUP BY start")
     fun getOnAirSoon(): List<RecommendProgram>
 
     @Delete

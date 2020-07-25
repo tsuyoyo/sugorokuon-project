@@ -170,6 +170,7 @@ class OnAirSongsFragment : androidx.fragment.app.Fragment(), OnAirSongsSearchDia
     }
 
     private fun showSearchDialog(song: FeedResponse.Song) {
+        val fragmentManager = fragmentManager ?: return
         val dialog = OnAirSongsSearchDialog.createDialog(song)
         dialog.setTargetFragment(this, 0)
         dialog.show(fragmentManager, TAG_SEARCH_DIALOG)
