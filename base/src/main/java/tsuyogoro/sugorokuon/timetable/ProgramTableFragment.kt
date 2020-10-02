@@ -150,7 +150,7 @@ class ProgramTableFragment : androidx.fragment.app.Fragment(),
 
     private fun onDateSelectionClicked() {
         val today = Calendar.getInstance()
-
+        val context = context ?: return
         val datePickerDialog = DatePickerDialog(context,
                 DatePickerDialog.OnDateSetListener { _, year, month, day ->
                     viewModel.selectDate(Calendar.getInstance().apply {

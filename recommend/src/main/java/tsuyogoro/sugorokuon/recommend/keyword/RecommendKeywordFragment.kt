@@ -54,7 +54,7 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
         getEditTextPreference(preferenceKey)?.let {
             it.summary = getSlotName(index)
             it.dialogTitle = getSlotName(index)
-            it.title = getCurrentValue(preferenceKey).let(this::getSlotTitle)
+            it.title = getCurrentValue(preferenceKey)?.let(this::getSlotTitle)
         }
     }
 
@@ -71,7 +71,7 @@ class RecommendKeywordFragment : PreferenceFragmentCompat(),
     private fun updateEditTextPreferenceTitle(sharedPreferences: SharedPreferences,
                                               preferenceKey: String) {
         getEditTextPreference(preferenceKey)?.title = getSlotTitle(
-            sharedPreferences.getString(preferenceKey, ""))
+            sharedPreferences.getString(preferenceKey, "") ?: "")
     }
 
     private fun getSlotTitle(keyword: String) = if (keyword.isEmpty()) {

@@ -85,7 +85,7 @@ class RecommendSettingsRepository(
     private fun updateRecommendKeywords(sharedPreferences: SharedPreferences) {
         val keywords = mutableListOf<RecommendKeyword>().apply {
             keywordPreferenceKeys.forEachIndexed { index, key ->
-                add(RecommendKeyword(index, sharedPreferences.getString(key, "")))
+                add(RecommendKeyword(index, sharedPreferences.getString(key, "") ?: ""))
             }
         }
         recommendKeywords.onNext(keywords)

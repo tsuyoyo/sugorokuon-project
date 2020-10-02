@@ -162,8 +162,9 @@ class OnAirSongsFragment : androidx.fragment.app.Fragment(), OnAirSongsSearchDia
     override fun onCopySongAndArtist(song: FeedResponse.Song) {
         context?.let {
             val clipboard = it.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-            clipboard?.primaryClip = ClipData.newPlainText(
-                    "Copied Text", "${song.title} ${song.artist}")
+            clipboard?.setPrimaryClip(ClipData.newPlainText(
+                "Copied Text", "${song.title} ${song.artist}")
+            )
 
             Toast.makeText(context, R.string.copy_on_song_title, Toast.LENGTH_SHORT).show()
         }
