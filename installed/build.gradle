@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
-apply plugin: 'io.fabric'
 
 android {
     // signingConfigs
@@ -43,8 +42,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "com.google.firebase:firebase-core:${project.firebaseCoreVersion}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${project.crashlyticsVersion}"
+    implementation "com.google.firebase:firebase-crashlytics:${project.firebaseCrashlyticsVersion}"
+    implementation "com.google.firebase:firebase-analytics:${project.firebaseAnalyticsVersion}"
 }
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.google.firebase.crashlytics'

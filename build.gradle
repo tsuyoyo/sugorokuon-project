@@ -9,7 +9,6 @@ buildscript {
         jcenter()
         maven { url "https://maven.google.com" }
         maven { url "https://dl.bintray.com/android/android-tools" }
-        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
@@ -19,7 +18,7 @@ buildscript {
 
         classpath 'com.google.gms:oss-licenses:0.9.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.3'
-        classpath 'io.fabric.tools:gradle:1.29.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.1'
     }
 }
 subprojects {
@@ -68,6 +67,9 @@ ext {
     playServiceInstantAppVersion = "17.0.0"
     firebaseCoreVersion = "17.4.4"
     firebaseMessagingVersion = "20.2.3"
+    firebaseCrashlyticsVersion = "17.2.1"
+    firebaseAnalyticsVersion = "17.5.0"
+
     retrofitVersion = "2.3.0"
     daggerVersion = "2.27"
     leakcanaryVersion = "2.4"
@@ -92,8 +94,6 @@ ext {
     androidxCoreTestingVersionVersion = "2.1.0"
     androidxLivedataVersion = "2.2.0"
     androidxRoomVersion = "2.2.5"
-
-    crashlyticsVersion = "2.10.1"
 
     debotVersion = "2.0.5"
 
